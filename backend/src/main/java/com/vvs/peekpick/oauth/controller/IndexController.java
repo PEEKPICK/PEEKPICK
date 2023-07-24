@@ -11,8 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
 
     @GetMapping("/")
-    public String index(Model model, Authentication authentication,  @AuthenticationPrincipal PrincipalUser principalUser){
-//        OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken)authentication;
+    public String index(Model model, Authentication authentication, @AuthenticationPrincipal PrincipalUser principalUser){
 
         if(authentication != null) {
             String userName = principalUser.getProviderUser().getUsername();

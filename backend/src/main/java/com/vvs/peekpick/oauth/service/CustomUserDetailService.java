@@ -3,7 +3,7 @@ package com.vvs.peekpick.oauth.service;
 import com.vvs.peekpick.oauth.common.converters.ProviderUserRequest;
 import com.vvs.peekpick.oauth.model.PrincipalUser;
 import com.vvs.peekpick.oauth.model.ProviderUser;
-import com.vvs.peekpick.oauth.model.users.User;
+import com.vvs.peekpick.member.dto.User;
 import com.vvs.peekpick.oauth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,7 +22,8 @@ public class CustomUserDetailService extends AbstractOAuth2UserService implement
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User member = userRepository.findByUsername(username);
-
+        // TODO
+        // 현재는 테스트를 위해 사용자가 없으면 더미로 만드는데 이건 문제가 많다 + 이게 필요할까 ?
         if (member == null) {
             member = member.builder()
                     .id("1")

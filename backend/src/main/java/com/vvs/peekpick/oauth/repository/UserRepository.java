@@ -1,6 +1,6 @@
 package com.vvs.peekpick.oauth.repository;
 
-import com.vvs.peekpick.oauth.model.users.User;
+import com.vvs.peekpick.member.dto.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

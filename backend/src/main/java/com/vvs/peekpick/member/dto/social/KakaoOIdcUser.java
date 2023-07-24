@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.model.social;
+package com.vvs.peekpick.member.dto.social;
 
 import com.vvs.peekpick.oauth.model.Attributes;
 import com.vvs.peekpick.oauth.model.OAuth2ProviderUser;
@@ -26,11 +26,6 @@ public class KakaoOIdcUser extends OAuth2ProviderUser {
     @Override
     public String getBirthYear() {
         return null;
-    }
-
-    @Override
-    public String getPicture() {
-        return (String)getAttributes().get("profile_image_url");
     }
 
     @Override

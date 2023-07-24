@@ -55,11 +55,6 @@ public class FormUser implements ProviderUser {
     }
 
     @Override
-    public String getPicture() {
-        return null;
-    }
-
-    @Override
     public String getProvider() {
         return null;
     }

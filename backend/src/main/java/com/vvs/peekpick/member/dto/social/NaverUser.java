@@ -1,19 +1,14 @@
-package com.vvs.peekpick.oauth.model.social;
+package com.vvs.peekpick.member.dto.social;
 
 import com.vvs.peekpick.oauth.model.Attributes;
 import com.vvs.peekpick.oauth.model.OAuth2ProviderUser;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Map;
+public class NaverUser extends OAuth2ProviderUser {
 
-public class KakaoUser extends OAuth2ProviderUser {
-
-    private Map<String, Object> otherAttributes;
-
-    public KakaoUser(Attributes attributes, OAuth2User oAuth2User, ClientRegistration clientRegistration){
+    public NaverUser(Attributes attributes, OAuth2User oAuth2User, ClientRegistration clientRegistration){
         super(attributes.getSubAttributes(), oAuth2User, clientRegistration);
-        this.otherAttributes = attributes.getOtherAttributes();
     }
 
     @Override
@@ -23,23 +18,19 @@ public class KakaoUser extends OAuth2ProviderUser {
 
     @Override
     public String getUsername() {
-        return (String)otherAttributes.get("nickname");
+        return (String)getAttributes().get("email");
     }
 
     @Override
     public String getBirthYear() {
-        return null;
-    }
-
-    @Override
-    public String getPicture() {
-        return (String)otherAttributes.get("profile_image_url");
+        return (String)getAttributes().get("birthyear");
     }
 
     @Override
     public String getPhoneNumber() {
-        return (String)getAttributes().get("phone_number");
+        return (String)getAttributes().get("mobile");
     }
+
     @Override
     public String getGender() {
         return (String)getAttributes().get("gender");

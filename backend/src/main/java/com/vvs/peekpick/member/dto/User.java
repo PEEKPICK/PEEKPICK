@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.model.users;
+package com.vvs.peekpick.member.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.List;
 
+// OAuth 구글, 카카오, 네이버 통합 DTO
 @Data
 @Builder
 public class User {
@@ -14,7 +15,6 @@ public class User {
     private String id;
     private String username;
     private String password;
-    private String provider;
     private String email;
     private String birthYear;
     private String birthday;
@@ -29,7 +29,6 @@ public class User {
                 ", id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", provider='" + provider + '\'' +
                 ", email='" + email + '\'' +
                 ", birthyear='" + birthYear + '\'' +
                 ", birthday='" + birthday + '\'' +

@@ -3,7 +3,7 @@ package com.vvs.peekpick.oauth.service;
 import com.vvs.peekpick.oauth.common.converters.ProviderUserConverter;
 import com.vvs.peekpick.oauth.common.converters.ProviderUserRequest;
 import com.vvs.peekpick.oauth.model.ProviderUser;
-import com.vvs.peekpick.oauth.model.users.User;
+import com.vvs.peekpick.member.dto.User;
 import com.vvs.peekpick.oauth.repository.UserRepository;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
