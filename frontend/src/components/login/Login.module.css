@@ -1,0 +1,9 @@
+.background {
+  background-image: url("./assets/loginBackgroundImage.png");
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
