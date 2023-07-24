@@ -1,0 +1,9 @@
+.formStyle {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.box {
+  border: 1px solid lightgray;
+}
