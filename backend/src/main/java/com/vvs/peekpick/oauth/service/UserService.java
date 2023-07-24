@@ -21,7 +21,10 @@ public class UserService {
                 .authorities(providerUser.getAuthorities())
                 .provider(providerUser.getProvider())
                 .email(providerUser.getEmail())
+                .birthYear(providerUser.getBirthYear())
                 .birthday(providerUser.getBirthDay())
+                .gender(providerUser.getGender())
+                .phoneNumber(providerUser.getPhoneNumber())
                 .build();
 
         userRepository.register(user);

@@ -9,8 +9,6 @@ import java.util.Map;
 
 public class KakaoOIdcUser extends OAuth2ProviderUser {
 
-    private Map<String, Object> otherAttributes;
-
     public KakaoOIdcUser(Attributes attributes, OAuth2User oAuth2User, ClientRegistration clientRegistration){
         super(attributes.getMainAttributes(), oAuth2User, clientRegistration);
     }
@@ -26,7 +24,22 @@ public class KakaoOIdcUser extends OAuth2ProviderUser {
     }
 
     @Override
+    public String getBirthYear() {
+        return null;
+    }
+
+    @Override
     public String getPicture() {
         return (String)getAttributes().get("profile_image_url");
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return (String)getAttributes().get("phone_number");
+    }
+
+    @Override
+    public String getGender() {
+        return (String)getAttributes().get("gender");
     }
 }

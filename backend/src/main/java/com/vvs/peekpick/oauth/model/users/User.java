@@ -16,7 +16,10 @@ public class User {
     private String password;
     private String provider;
     private String email;
+    private String birthYear;
     private String birthday;
+    private String gender;
+    private String phoneNumber;
     private List<? extends GrantedAuthority> authorities;
 
     @Override
@@ -28,7 +31,10 @@ public class User {
                 ", password='" + password + '\'' +
                 ", provider='" + provider + '\'' +
                 ", email='" + email + '\'' +
+                ", birthyear='" + birthYear + '\'' +
                 ", birthday='" + birthday + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
                 ", authorities=" + authorities +
                 '}';
     }

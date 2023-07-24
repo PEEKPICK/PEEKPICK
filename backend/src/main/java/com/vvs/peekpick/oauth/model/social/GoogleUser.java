@@ -22,7 +22,22 @@ public class GoogleUser extends OAuth2ProviderUser {
     }
 
     @Override
+    public String getBirthYear() {
+        return null;
+    }
+
+    @Override
     public String getPicture() {
+        return null;
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return null;
+    }
+
+    @Override
+    public String getGender() {
         return null;
     }
 

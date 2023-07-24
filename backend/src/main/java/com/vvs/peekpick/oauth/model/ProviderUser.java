@@ -12,9 +12,13 @@ public interface ProviderUser {
     public String getUsername();
     public String getPassword();
     public String getEmail();
+    public String getBirthYear();
     public String getBirthDay();
     public String getPicture();
     public String getProvider();
+    public String getPhoneNumber();
+    public String getGender();
+
     public List<? extends GrantedAuthority> getAuthorities();
     public Map<String, Object> getAttributes();
 

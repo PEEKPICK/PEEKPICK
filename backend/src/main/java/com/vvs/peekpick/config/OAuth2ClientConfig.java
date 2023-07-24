@@ -36,12 +36,12 @@ public class OAuth2ClientConfig {
                 .permitAll()
                 .anyRequest().authenticated());
         http.formLogin().loginPage("/login").loginProcessingUrl("/loginProc").defaultSuccessUrl("/").permitAll();
-//        http.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
-//                userInfoEndpointConfig -> userInfoEndpointConfig
-//                        .userService(customOAuth2UserService)
-//                        .oidcUserService(customOidcUserService)));
-////        http.logout().logoutSuccessUrl("/");
-//        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+        http.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
+                userInfoEndpointConfig -> userInfoEndpointConfig
+                        .userService(customOAuth2UserService)
+                        .oidcUserService(customOidcUserService)));
+//        http.logout().logoutSuccessUrl("/");
+        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 
         return http.build();
    }

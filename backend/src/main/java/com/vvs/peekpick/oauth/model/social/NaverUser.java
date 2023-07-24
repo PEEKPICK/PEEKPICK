@@ -22,7 +22,21 @@ public class NaverUser extends OAuth2ProviderUser {
     }
 
     @Override
+    public String getBirthYear() {
+        return (String)getAttributes().get("birthyear");
+    }
+
+    @Override
     public String getPicture() {
         return (String)getAttributes().get("profile_image");
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return (String)getAttributes().get("mobile");
+    }
+    @Override
+    public String getGender() {
+        return (String)getAttributes().get("gender");
     }
 }

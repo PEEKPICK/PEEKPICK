@@ -27,7 +27,21 @@ public class KakaoUser extends OAuth2ProviderUser {
     }
 
     @Override
+    public String getBirthYear() {
+        return null;
+    }
+
+    @Override
     public String getPicture() {
         return (String)otherAttributes.get("profile_image_url");
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return (String)getAttributes().get("phone_number");
+    }
+    @Override
+    public String getGender() {
+        return (String)getAttributes().get("gender");
     }
 }
