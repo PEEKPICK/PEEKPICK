@@ -27,7 +27,7 @@ function App() {
   const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
 
   return (
-    <div className="App">
+    <div>
       {/* 라우터 */}
       <Routes>
         {/* 준형 */}
