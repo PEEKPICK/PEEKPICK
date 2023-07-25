@@ -10,10 +10,7 @@ import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -36,7 +33,7 @@ public class MemberController {
      * @return Avatar
      * 이 요청은 신규회원임이 보장된다.
      */
-    @GetMapping("/signup")
+    @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto) {
         Avatar result = memberService.signup(signUpDto);
 

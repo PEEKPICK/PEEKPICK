@@ -25,18 +25,21 @@ public class OAuth2ClientConfig {
 
     @Bean
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests
+
+        // 23.07.25 CSRF 비활성화
+        // Form 로그인 처리 X
+        http.csrf().disable()
+                .authorizeRequests((requests) -> requests
                 .antMatchers("/api/user")
                 .access("hasAnyRole('SCOPE_profile','SCOPE_email')")
 //                .access("hasAuthority('SCOPE_profile')")
                 .antMatchers("/api/oidc")
                 .access("hasRole('SCOPE_openid')")
                 //.access("hasAuthority('SCOPE_openid')")
-                .antMatchers("/", "/login")
+                .antMatchers("/", "/member/signup", "/login")
                 .permitAll()
 //                .anyRequest().authenticated());
                 .anyRequest().permitAll());
-          // 23.07.25 Form 로그인 처리 X
 //        http.formLogin()
 //                .loginPage("/login")
 //                .loginProcessingUrl("/loginProc")
