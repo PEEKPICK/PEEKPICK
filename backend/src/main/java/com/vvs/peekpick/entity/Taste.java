@@ -1,6 +1,5 @@
 package com.vvs.peekpick.entity;
 
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

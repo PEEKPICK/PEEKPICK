@@ -32,14 +32,22 @@ public class OAuth2ClientConfig {
                 .antMatchers("/api/oidc")
                 .access("hasRole('SCOPE_openid')")
                 //.access("hasAuthority('SCOPE_openid')")
-                .antMatchers("/")
+                .antMatchers("/", "/login")
                 .permitAll()
-                .anyRequest().authenticated());
-//        http.formLogin().loginPage("/login").loginProcessingUrl("/loginProc").defaultSuccessUrl("/").permitAll();
+//                .anyRequest().authenticated());
+                .anyRequest().permitAll());
+          // 23.07.25 Form 로그인 처리 X
+//        http.formLogin()
+//                .loginPage("/login")
+//                .loginProcessingUrl("/loginProc")
+//                .defaultSuccessUrl("/")
+//                .permitAll();
+
         http.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
                 userInfoEndpointConfig -> userInfoEndpointConfig
                         .userService(customOAuth2UserService)
                         .oidcUserService(customOidcUserService)));
+
 //        http.logout().logoutSuccessUrl("/");
         http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 

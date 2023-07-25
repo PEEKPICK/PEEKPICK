@@ -23,16 +23,16 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-5" sec:authorize="isAnonymous()">
-                <div class="social-login text-center">
-                    <form th:action="@{/loginProc}" method="post">
-                        <label for="username">Username</label>:
-                        <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
-                        <label for="password">Password</label>:
-                        <input type="password" id="password" name="password" /> <br />
-                        <input type="submit" value="Log in" />
-                    </form>
-                </div>
-                </br>
+<!--                <div class="social-login text-center">-->
+<!--                    <form th:action="@{/loginProc}" method="post">-->
+<!--                        <label for="username">Username</label>:-->
+<!--                        <input type="text" id="username" name="username" autofocus="autofocus" /> <br />-->
+<!--                        <label for="password">Password</label>:-->
+<!--                        <input type="password" id="password" name="password" /> <br />-->
+<!--                        <input type="submit" value="Log in" />-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--                </br>-->
                 <div class="social-login text-center">
                     <a th:href="@{/oauth2/authorization/google}" class="google btn btn-block">
                         <span>Sign in with Google</span>
