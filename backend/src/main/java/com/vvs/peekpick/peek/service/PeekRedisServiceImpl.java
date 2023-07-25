@@ -60,4 +60,20 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         geoOps.remove("PeekLocation", peekId.toString());
         hashOps.delete("Peek", peekId.toString());
     }
+
+    /**
+     * Point(경도, 위도) 반경 radius(m)에 있는 Peek들 찾기
+     */
+    @Override
+    public List<PeekDto> findNearPeek(Point point, double radius) {
+        Circle circle = new Circle(point, new Distance(radius, RedisGeoCommands.DistanceUnit.METERS));
+        GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius("PeekLocation", circle);
+
+        List<PeekDto> nearPeek = new ArrayList<>();
+        for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
+            nearPeek.add(findPeekById(Long.valueOf((String) peekLocation.getContent().getName())));
+        }
+        return nearPeek;
+    }
+
 }

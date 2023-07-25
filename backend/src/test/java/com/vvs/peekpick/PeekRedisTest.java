@@ -66,7 +66,6 @@ public class PeekRedisTest {
         List<Point> result = geoOps.geoPos("PeekLocation", peekLocationDto.getPeekId().toString());
         assertTrue(result == null || result.isEmpty());
     }
-
-
+    
 
 }

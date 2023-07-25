@@ -10,5 +10,7 @@ public interface PeekRedisService {
     public void addPeek(PeekLocationDto peekLocationDto, PeekDto peekDto);
     public PeekDto findPeekById(Long peekId);
     public void deletePeek(Long peekId);
+    public List<PeekDto> findNearPeek(Point point, double radius);
+
 
 }
