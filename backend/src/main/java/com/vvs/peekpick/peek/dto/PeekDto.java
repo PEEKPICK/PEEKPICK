@@ -2,16 +2,19 @@ package com.vvs.peekpick.peek.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-@RedisHash(value = "PeekRedis")
-public class PeekRedisDto {
+@RedisHash(value = "Peek")
+public class PeekDto implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
     private Long peekId;
     private Long memberId;
     private String content;
@@ -19,5 +22,4 @@ public class PeekRedisDto {
     private int likeCount;
     private int disLikeCount;
     private LocalDateTime writeTime;
-
 }
