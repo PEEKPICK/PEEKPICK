@@ -67,6 +67,9 @@ public class PickerServiceImpl implements PickerService {
             while (pickerList.size() < MAX_PICKER_COUNT) {
                 int randomIdx = random.nextInt(pickerSize);
                 GeoResult<RedisGeoCommands.GeoLocation<String>> value = radius.getContent().get(randomIdx);
+                // 검색 결과에서 본인 제거
+                if (value.getContent().getName().equals(picker.getMemberId().toString())) continue;
+
                 pickerList.add(value.getContent().getName());
             }
         }
