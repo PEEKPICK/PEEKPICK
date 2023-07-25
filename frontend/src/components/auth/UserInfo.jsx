@@ -1,7 +1,7 @@
 const UserInfo = () => {
   return (
     <div>
-      <h1>UserInfo</h1>
+      <h1>회원가입</h1>
     </div>
   );
 }
