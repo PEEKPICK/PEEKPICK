@@ -1,0 +1,19 @@
+.container {
+  height: 100vh;
+  max-width: 100vh;
+  background-image: url('../../../public/img/background.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons button {
+  border: 1px solid black;
+}
