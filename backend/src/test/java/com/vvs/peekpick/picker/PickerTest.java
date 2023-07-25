@@ -13,7 +13,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @SpringBootTest
-class PickerControllerTest {
+class PickerTest {
 
     private final String CONNECT_SESSION = "session";
 
