@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import classes from './UserProfile.module.css';
 
 const UserProfile = () => {
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
+  const navigate = useNavigate();
 
   // 이모지 다시 뽑기를 위한 버튼
   const randomGacha = () => {
@@ -13,6 +15,11 @@ const UserProfile = () => {
     var random_index = Math.floor(Math.random() * emoji.length);
     var selectedEmoji = emoji[random_index]
     setRandomEmoji(selectedEmoji);
+  };
+
+  // 다음으로 이동
+  const moveToUserNickname = () => {
+    navigate('/usernickname')
   };
 
   return (
@@ -32,7 +39,7 @@ const UserProfile = () => {
         <button onClick={randomGacha}>다시뽑기</button>
       </div>
       <div>
-        <button>다음으로</button>
+        <button onClick={moveToUserNickname}>다음으로</button>
       </div>
     </div>
   );
