@@ -10,7 +10,7 @@ import UserNickname from "./components/auth/UserNickname";
 import UserLike from "./components/auth/UserLike";
 import UserHate from "./components/auth/UserHate";
 import Welcome from "./components/auth/Welcome";
-// import UserLikeHate from "./components/auth/UserLikeHate";
+import UserLikeHate from "./components/auth/UserLikeHate";
 // 용범
 import MyPage from "./components/mypages/MyPage";
 import Profile from "./components/mypages/Profile";
@@ -55,7 +55,7 @@ function App() {
               <Route path="/userprofile" element={<UserProfile />} />
               <Route path="/usernickname" element={<UserNickname />} />
               <Route path="/userlike" element={<UserLike />} />
-              {/* <Route path="/UserLikeHate" element={<UserLikeHate />} /> */}
+              <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
               {/* 기타 */}

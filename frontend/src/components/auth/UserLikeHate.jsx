@@ -1,21 +1,21 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
-import classes from "./style/UserLikeHate.module.css";
+import classes from './style/UserLikeHate.module.css';
 
 const UserLikeHate = () => {
   const navigate = useNavigate();
 
   const moveToUserLike = () => {
-    navigate("/userlike");
-  };
+    navigate('/userlike')
+  }
 
   const moveToUserHate = () => {
-    navigate("/userhate");
-  };
+    navigate('/userhate')
+  }
 
   const moveToWelcome = () => {
-    navigate("/welcome");
-  };
+    navigate('/welcome')
+  }
 
   return (
     <div>
