@@ -1,8 +1,13 @@
+import React from 'react';
+
+
 const HateEdit = () => {
   return (
     <div>
-      <h1>HateEdit</h1>
+      {/* 준형이꺼 꺼억 */}
+      <p>HateEdit</p>
     </div>
   );
 }
+
 export default HateEdit;
