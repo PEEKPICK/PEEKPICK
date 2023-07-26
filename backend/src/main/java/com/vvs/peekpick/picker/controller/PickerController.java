@@ -25,6 +25,12 @@ public class PickerController {
         return pickerServiceImpl.connectSession(picker);
     }
 
+    /* 접속 종료(종료, 홈으로 이동)시 세션에서 내 정보 제거 */
+    @PostMapping("/disconnect")
+    public CommonResponse disconnectSession(@RequestBody ConnectingPickerDto picker) {
+        return pickerServiceImpl.disconnectSession(picker);
+    }
+
     /* 내 위치로부터 설정한 거리 이내 PICKER 조회 */
     @PostMapping
     public DataResponse<List> getPickerListByDistance(@RequestBody SearchPickerDto picker) {

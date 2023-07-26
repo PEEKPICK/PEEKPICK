@@ -47,6 +47,14 @@ public class PickerServiceImpl implements PickerService {
         return responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
     }
 
+    /* 백그라운드로 나가거나, 웹 종료시 세션에서 제거 */
+    @Override
+    public CommonResponse disconnectSession(ConnectingPickerDto picker) {
+        GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
+        geoOperations.remove(CONNECT_SESSION, picker.getMemberId().toString());
+        return responseService.successCommonResponse(ResponseStatus.DISCONNECT_SUCCESS);
+    }
+
     /* 거리순으로 Picker 조회 */
     @Override
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
@@ -76,6 +84,5 @@ public class PickerServiceImpl implements PickerService {
 
         return responseService.successDataResponse(ResponseStatus.CONNECTION_LIST_SEARCH_SUCCESS, pickerList);
     }
-
 
 }

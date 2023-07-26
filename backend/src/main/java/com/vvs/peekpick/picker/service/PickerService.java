@@ -12,4 +12,6 @@ public interface PickerService {
     CommonResponse connectSession(ConnectingPickerDto picker);
 
     DataResponse<List> getPickerListByDistance(SearchPickerDto picker);
+
+    CommonResponse disconnectSession(ConnectingPickerDto picker);
 }
