@@ -1,26 +1,28 @@
 package com.vvs.peekpick.config;
 
+import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
 import com.vvs.peekpick.oauth.service.CustomOidcUserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class OAuth2ClientConfig {
 
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-    @Autowired
-    private CustomOidcUserService customOidcUserService;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOidcUserService customOidcUserService;
+    private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/static/js/**", "/static/images/**", "/static/css/**","/static/scss/**");
@@ -45,13 +47,14 @@ public class OAuth2ClientConfig {
                 .anyRequest().permitAll());
 
         http
-                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
-                    userInfoEndpointConfig -> userInfoEndpointConfig
-                        .userService(customOAuth2UserService)
-                        .oidcUserService(customOidcUserService)
-                    ));
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 네이버
+                                .oidcUserService(customOidcUserService) // 구글, 카카오
+                                .and()
+                                .successHandler(customOAuth2LoginSuccessHandler))); // 인증 성공
+//                        .failureHandler(customOAuth2LoginFailureHandler)); // 인증 실패 (미구현)
 
-//        http.logout().logoutSuccessUrl("/");
         http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 
         return http.build();
