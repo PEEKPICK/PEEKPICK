@@ -5,7 +5,7 @@ function Layout() {
   return (
     <div className={classes.layout}>
       <Outlet />
-      <NavigationBar/>
+      <NavigationBar />
     </div>
   );
 }
