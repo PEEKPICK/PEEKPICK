@@ -3,14 +3,13 @@ import { Routes, Route } from "react-router-dom";
 
 // router import
 // 준형
-import Login from "./components/auth/Login";
-import UserInfo from "./components/auth/UserInfo";
-import UserProfile from "./components/auth/UserProfile";
-import UserNickname from "./components/auth/UserNickname";
-import UserLike from "./components/auth/UserLike";
-import UserHate from "./components/auth/UserHate";
-import Welcome from "./components/auth/Welcome";
-import UserLikeHate from "./components/auth/UserLikeHate";
+import Login from './components/auth/Login';
+import UserInfo from './components/auth/UserInfo';
+import UserProfile from './components/auth/UserProfile';
+import UserNickname from './components/auth/UserNickname';
+import UserLike from './components/auth/UserLike';
+import UserHate from './components/auth/UserHate';
+import Welcome from './components/auth/Welcome';
 // 용범
 import MyPage from "./components/mypages/MyPage";
 import Profile from "./components/mypages/Profile";
@@ -31,38 +30,26 @@ function App() {
     <div>
       {/* 라우터 */}
       <Routes>
-        <>
-          {!isAuthenticated && (
-            <>
-              <Route path="/*" element={<Login />} />
-            </>
-          )}
-          {isAuthenticated && (
-            <>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Picker />} />
-                <Route path="picky" element={<Picky />} />
-                {/* 용범  */}
-                <Route path="mypage" element={<MyPage />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="announcement" element={<Announcement />} />
-                <Route path="likeedit" element={<LikeEdit />} />
-                <Route path="hateedit" element={<HateEdit />} />
-              </Route>
-              {/* 준형 */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/userinfo" element={<UserInfo />} />
-              <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/usernickname" element={<UserNickname />} />
-              <Route path="/userlike" element={<UserLike />} />
-              <Route path="/UserLikeHate" element={<UserLikeHate />} />
-              <Route path="/userhate" element={<UserHate />} />
-              <Route path="/welcome" element={<Welcome />} />
-              {/* 기타 */}
-              <Route path="/*" element={<AlreadyLogin />} />
-            </>
-          )}
-        </>
+        {/* 준형 */}
+        {isAuthenticated && <Route path='/login' element={<Login />}/>}
+        {/* 위 코드에 토큰은 !붙여서 처리할 것! */}
+        {isAuthenticated && <Route path='/userinfo' element={<UserInfo />}/>}
+        {isAuthenticated && <Route path='/userprofile' element={<UserProfile />}/>}
+        {isAuthenticated && <Route path='/usernickname' element={<UserNickname />}/>}
+        {isAuthenticated && <Route path='/userlike' element={<UserLike />}/>}
+        {isAuthenticated && <Route path='/userhate' element={<UserHate />}/>}
+        {isAuthenticated && <Route path='/welcome' element={<Welcome />}/>}
+        {/* 용범 */}
+        {isAuthenticated && <Route path='/mypage' element={<MyPage />}/>}
+        {isAuthenticated && <Route path='/profile' element={<Profile />}/>}
+        {isAuthenticated && <Route path='/announcement' element={<Announcement />}/>}
+        {isAuthenticated && <Route path='/likeedit' element={<LikeEdit />}/>}
+        {isAuthenticated && <Route path='/hateedit' element={<HateEdit />}/>}
+        {/* 동민 */}
+        {isAuthenticated && <Route path='/picker' element={<Picker />}/>}
+        {isAuthenticated && <Route path='/picky' element={<Picky />}/>}
+        {/* 기타 */}
+        <Route path='/*' element={<NotFound />}/>
       </Routes>
     </div>
   );
