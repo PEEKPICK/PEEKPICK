@@ -1,6 +1,6 @@
 .container {
   height: 100vh;
-  background-image: url('../../../public/img/background.png');
+  background-image: url('../../../../public/img/background.png');
   /* background-size: cover; */
   display: flex;
   flex-direction: column;

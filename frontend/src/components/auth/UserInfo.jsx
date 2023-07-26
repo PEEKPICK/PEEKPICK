@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import classes from './UserInfo.module.css';
+import classes from './style/UserInfo.module.css';
 
 const UserInfo = () => {
   const navigate = useNavigate();
