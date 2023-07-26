@@ -26,7 +26,6 @@ public class MemberController {
     // 1. 이력 조회
     // 1-1 회원이라면 -> 정상 로그인 처리
     // 1-2 회원이 아니라면 -> 회원가입 로직 처리
-
     /**
      * 회원가입 처리
      * @param signUpDto

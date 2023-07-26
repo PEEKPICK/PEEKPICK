@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
 public class OAuth2ClientConfig {
@@ -28,40 +31,43 @@ public class OAuth2ClientConfig {
 
         // 23.07.25 CSRF 비활성화
         // Form 로그인 처리 X
-        http.csrf().disable()
+        http
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .csrf().disable()
                 .authorizeRequests((requests) -> requests
                 .antMatchers("/api/user")
                 .access("hasAnyRole('SCOPE_profile','SCOPE_email')")
-//                .access("hasAuthority('SCOPE_profile')")
                 .antMatchers("/api/oidc")
                 .access("hasRole('SCOPE_openid')")
-                //.access("hasAuthority('SCOPE_openid')")
                 .antMatchers("/", "/member/signup", "/login")
                 .permitAll()
-//                .anyRequest().authenticated());
                 .anyRequest().permitAll());
-//        http.formLogin()
-//                .loginPage("/login")
-//                .loginProcessingUrl("/loginProc")
-//                .defaultSuccessUrl("/")
-//                .permitAll();
 
-        http.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
-                userInfoEndpointConfig -> userInfoEndpointConfig
+        http
+                .oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
+                    userInfoEndpointConfig -> userInfoEndpointConfig
                         .userService(customOAuth2UserService)
-                        .oidcUserService(customOidcUserService)));
+                        .oidcUserService(customOidcUserService)
+                    ));
 
 //        http.logout().logoutSuccessUrl("/");
         http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 
         return http.build();
    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
 
-   /*@Bean // hasAuthority 일경우 정의하지 않는다
-    public GrantedAuthoritiesMapper grantedAuthoritiesMapper(){
-       SimpleAuthorityMapper simpleAuthorityMapper = new SimpleAuthorityMapper();
-       simpleAuthorityMapper.setPrefix("ROLE_");
-       return simpleAuthorityMapper;
-   }*/
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
 
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.setAllowCredentials(false);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
 }

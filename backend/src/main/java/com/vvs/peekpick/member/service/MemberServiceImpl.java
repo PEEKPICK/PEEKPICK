@@ -15,14 +15,13 @@ import java.time.LocalDateTime;
 @Transactional
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    private final TasteRepository tasteRepository;
-
     private final MemberRepository memberRepository;
     private final AvatarRepository avatarRepository;
 
     private final EmojiRepository emojiRepository;
     private final WorldRepository worldRepository;
     private final PrefixRepository prefixRepository;
+    private final TasteRepository tasteRepository;
     private final CategoryRepository categoryRepository;
     private final AchievementRepository achievementRepository;
 
@@ -40,6 +39,7 @@ public class MemberServiceImpl implements MemberService {
         Achievement achievement = createAchievement();
         Member member = createMember(signUpDto, avatar, achievement);
         addTastes(signUpDto, avatar);
+
         // 회원가입 완료 시 로그인 처리를 위해 avatar return
         return avatar;
     }

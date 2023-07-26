@@ -2,7 +2,9 @@ package com.vvs.peekpick.oauth.service;
 
 import com.vvs.peekpick.oauth.model.ProviderUser;
 import com.vvs.peekpick.member.dto.User;
-import com.vvs.peekpick.oauth.repository.UserRepository;
+import com.vvs.peekpick.response.DataResponse;
+import com.vvs.peekpick.response.ResponseService;
+import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,8 +12,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    public void register(String registrationId, ProviderUser providerUser) {
+    private final ResponseService responseService;
+    public DataResponse register(String registrationId, ProviderUser providerUser) {
 
         User user = User.builder().registrationId(registrationId)
                 .id(providerUser.getId())
@@ -25,6 +27,8 @@ public class UserService {
                 .phoneNumber(providerUser.getPhoneNumber())
                 .build();
 
-        userRepository.register(user);
+        System.out.println(user);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_SAMPLE, user);
+//        userRepository.register(user);
     }
 }
