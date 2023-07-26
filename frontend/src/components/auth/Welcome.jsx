@@ -2,6 +2,12 @@
 import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
+  const navigate = useNavigate();
+
+  const startapp = () => {
+    navigate('/');
+  };
+
   return (
     <div>
       <h1>환영합니다!</h1>

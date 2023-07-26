@@ -1,11 +1,15 @@
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 import classes from './style/Login.module.css';
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const kakao = () => {
     axios.get('https://jsonplaceholder.typicode.com/todos/1')
       .then(response => {
+        dispatch();
         console.log(response.data)
       })
       .catch(error => {
