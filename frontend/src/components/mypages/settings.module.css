@@ -1,0 +1,33 @@
+.back{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1% solid lightgray;
+  border-radius: 5%;
+  position:relative;
+}
+
+.modalback{
+  width: 40%;
+  background-color: rebeccapurple;
+  position: fixed;
+  /* 자식 컴포넌트인 모달창을 가운데 오게 하기 위한 flex */
+  justify-content: center;
+  align-items: center;
+  margin-top: 40%;
+}
+.view{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 200px;
+  height: 100px;
+  border-radius: 1rem;
+  background-color: white;
+  > .close-btn {
+    position: absolute;
+    top: 10px;
+    cursor: pointer;
+  }
+}
