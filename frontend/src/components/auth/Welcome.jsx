@@ -2,14 +2,6 @@
 import { useNavigate } from 'react-router-dom';
 
 const Welcome = () => {
-  // navigate 함수 사용
-  const navigate = useNavigate();
-
-  // startapp 클릭 시 메인페이지(피커찾기)로 이동
-  const startapp = () => {
-    navigate("/picker");
-  };
-
   return (
     <div>
       <h1>환영합니다!</h1>
