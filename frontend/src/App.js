@@ -7,6 +7,7 @@ import Login from './components/auth/Login';
 import UserInfo from './components/auth/UserInfo';
 import UserProfile from './components/auth/UserProfile';
 import UserNickname from './components/auth/UserNickname';
+import UserLikeHate from './components/auth/UserLikeHate';
 import UserLike from './components/auth/UserLike';
 import UserHate from './components/auth/UserHate';
 import Welcome from './components/auth/Welcome';
@@ -36,6 +37,7 @@ function App() {
         {isAuthenticated && <Route path='/userinfo' element={<UserInfo />}/>}
         {isAuthenticated && <Route path='/userprofile' element={<UserProfile />}/>}
         {isAuthenticated && <Route path='/usernickname' element={<UserNickname />}/>}
+        {isAuthenticated && <Route path='/userlikehate' element={<UserLikeHate />}/>}
         {isAuthenticated && <Route path='/userlike' element={<UserLike />}/>}
         {isAuthenticated && <Route path='/userhate' element={<UserHate />}/>}
         {isAuthenticated && <Route path='/welcome' element={<Welcome />}/>}
