@@ -77,11 +77,19 @@ pipeline {
             }
         }
 
-        // be 컨테이너 실행
-        stage("be container run") {
+        // be 컨테이너 실행 (개별)
+        // stage("be container run") {
+        //     steps {
+        //         script {
+        //             sh "docker run -d -p 8081:8081 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
+        //         }
+        //     }
+        // }
+
+        stage("container run through compose") {
             steps {
                 script {
-                    sh "docker run -d -p 8081:8081 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
+                    sh "docker-compose up -d"
                 }
             }
         }
