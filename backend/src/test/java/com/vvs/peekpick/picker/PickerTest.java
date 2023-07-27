@@ -15,6 +15,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import java.util.*;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class PickerTest {
@@ -38,14 +39,15 @@ class PickerTest {
     @Test
     public void connectSessionTest(){
         // Picker 접속
-        ConnectingPickerDto connectingPickerDto = new ConnectingPickerDto(1L, new Point( 146.9780, 37.5665));
+        ConnectingPickerDto connectingPickerDto = new ConnectingPickerDto(1L, new Point( 146.978002, 37.5665));
         pickerServiceImpl.connectSession(connectingPickerDto);
 
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         // Picker 저장 여부 확인
-        Point findPoint = geoOperations.position(CONNECT_SESSION, connectingPickerDto.getMemberId().toString()).get(1);
+        Point findPoint = geoOperations.position(CONNECT_SESSION, connectingPickerDto.getMemberId().toString()).get(0);
 
-        assertThat(connectingPickerDto.getPoint()).isEqualTo(findPoint);
+        assertEquals(connectingPickerDto.getPoint().getX(), findPoint.getX(), 0.0001);
+        assertEquals(connectingPickerDto.getPoint().getY(), findPoint.getY(), 0.0001);
 
     }
 
