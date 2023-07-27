@@ -19,7 +19,7 @@ pipeline {
 
         stage("copy yml") {
             steps {
-                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src"
+                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/main"
             }
         }
 
