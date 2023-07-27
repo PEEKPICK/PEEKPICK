@@ -48,7 +48,7 @@ function App() {
         }));
 
         dispatch(authActions.updateProfile({
-          profile: userData.profile,
+          profile: userData.profile
         }));
 
         dispatch(authActions.updateUserNickname({

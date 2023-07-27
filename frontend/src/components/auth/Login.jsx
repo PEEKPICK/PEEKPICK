@@ -1,15 +1,13 @@
 // import axios from 'axios';
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import classes from './style/Login.module.css';
 
 const Login = () => {
-  const userInfo = useSelector(state => state.auth)
 
   const kakao = () => {
-    console.log(userInfo)
     console.log('kakao')
+    window.location.href = `http://192.168.31.26:8081/oauth2/authorization/kakao`;
   };
 
   const naver = () => {
