@@ -65,5 +65,14 @@ pipeline {
                 // }
             }
         }
+
+        // be 컨테이너 실행
+        stage("be container run") {
+            steps {
+                script {
+                    sh "docker run -d -p 8081:8081 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
+                }
+            }
+        }
     }
 }
