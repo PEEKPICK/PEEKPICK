@@ -7,13 +7,14 @@ const authSlice = createSlice({
     name: '',
     email: '',
     phone: '',
-    birth: '',
-    sex: '',
-    profile: 'https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png',
+    birthday: '',
+    gender: '',
+    emojiId: '',
+    prefixId: '',
     title: '',
     nickname: '',
-    like: [],
-    hate: [],
+    likes: [],
+    dislikes: [],
   },
   reducers: {
     // 리듀서를 회원가입 페이지 마다 작성해서 처리.
@@ -22,8 +23,8 @@ const authSlice = createSlice({
       state.name = newItem.name;
       state.email = newItem.email;
       state.phone = newItem.phone;
-      state.birth = newItem.birth;
-      state.sex = newItem.sex;
+      state.birthday = newItem.birthday;
+      state.gender = newItem.gender;
     },
     updateProfile (state, action) {
       const newItem = action.payload;

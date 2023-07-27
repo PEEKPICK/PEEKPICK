@@ -7,7 +7,7 @@ const Login = () => {
 
   const kakao = () => {
     console.log('kakao')
-    window.location.href = `http://192.168.31.26:8081/oauth2/authorization/kakao`;
+    // window.location.href = `http://192.168.31.26:8081/oauth2/authorization/kakao`;
   };
 
   const naver = () => {

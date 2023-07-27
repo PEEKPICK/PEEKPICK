@@ -33,26 +33,28 @@ function App() {
   // 2023. 07. 27 리덕스 작업 (유저 정보 저장)
   const dispatch = useDispatch();
   useEffect(() => {
-    const userAPI = 'https://react-http-4710c-default-rtdb.firebaseio.com/user.json';
+    const value = 14;
+    // const userAPI = 'https://react-http-4710c-default-rtdb.firebaseio.com/user.json';
+    const userAPI = `http://192.168.31.26:8081/member/signup/info?id=${value}`;
 
     axios.get(userAPI)
       .then(response => {
-        const userData = response.data;
+        const userData = response.data.data;
 
         dispatch(authActions.updateUserInfo({
           name: userData.name,
           email: userData.email,
           phone: userData.phone,
-          birth: userData.birth,
-          sex: userData.sex,
+          birthday: userData.birthday,
+          gender: userData.gender,
         }));
 
         dispatch(authActions.updateProfile({
-          profile: userData.profile
+          emojiId: userData.emojiId
         }));
 
         dispatch(authActions.updateUserNickname({
-          title: userData.title,
+          prefixId: userData.prefixId,
           nickname: userData.nickname,
         }));
       })
