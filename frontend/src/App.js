@@ -1,5 +1,10 @@
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
+// 2023. 07. 27 Redux작업을 위한 useEffect, Dispatch, axios, authActions 추가
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { authActions } from "./store/authSlice";
+import axios from "axios";
 
 // router import
 // 준형
@@ -25,6 +30,37 @@ import Layout from "./components/Layout";
 import AlreadyLogin from "./components/AlreadyLogin";
 
 function App() {
+  // 2023. 07. 27 리덕스 작업 (유저 정보 저장)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const userAPI = 'https://react-http-4710c-default-rtdb.firebaseio.com/user.json';
+
+    axios.get(userAPI)
+      .then(response => {
+        const userData = response.data;
+
+        dispatch(authActions.updateUserInfo({
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          birth: userData.birth,
+          sex: userData.sex,
+        }));
+
+        dispatch(authActions.updateProfile({
+          profile: userData.profile,
+        }));
+
+        dispatch(authActions.updateUserNickname({
+          title: userData.title,
+          nickname: userData.nickname,
+        }));
+      })
+      .catch(error => {
+        console.log('에러 내용 : ', error);
+      })
+  }, [dispatch])
+
   const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
 
   return (

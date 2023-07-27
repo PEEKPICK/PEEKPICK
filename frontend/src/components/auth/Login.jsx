@@ -1,10 +1,14 @@
 // import axios from 'axios';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import classes from './style/Login.module.css';
 
 const Login = () => {
+  const userInfo = useSelector(state => state.auth)
+
   const kakao = () => {
+    console.log(userInfo)
     console.log('kakao')
   };
 
@@ -17,9 +21,8 @@ const Login = () => {
   };
 
   useEffect(() => {
-    kakao();
-    naver();
-    google();
+    naver()
+    google()
   }, [])
 ;
   return (
