@@ -50,7 +50,8 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
         List<PeekDto> nearPeek = new ArrayList<>();
         for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
-            nearPeek.add(hashOps.get(Peek_Redis, peekId.toString()));
+            String peekId = peekLocation.getContent().getName().toString();
+            nearPeek.add(hashOps.get(Peek_Redis, peekId));
         }
         return responseService.successDataResponse(ResponseStatus.Loading_Peek_LIST_SUCCESS, nearPeek);
     }
