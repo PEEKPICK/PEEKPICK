@@ -2,21 +2,20 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Settings from './Settings';
 import classes from './MyPage.module.css';
-import { Outlet } from 'react-router-dom';
+import LogOut from './LogOut';
 const MyPage = () => {
   const [visible, setVisible] = useState(false);
+  const [logoutView, setLogoutView] = useState(false);
   const onSettings= ()=>{
     setVisible(!visible);
   }
-  // const offSettings=()=>{
-  //   if(visible){
-  //     setVisible(false)
-  //   }
-  // }
+  const LogOutDisplay = () =>{
+    setLogoutView(!logoutView);
+  }
   return (
-    // <div onClick={offSettings}>
     <div>
-      {visible && <Settings view={visible}/>}
+      {logoutView && <LogOut setLogoutView={setLogoutView}/>}
+      {visible && <Settings view={visible} setVisible={setVisible} LogOutDisplay={LogOutDisplay}/>}
       <div className={classes.basic}>
         <h2>마이페이지</h2>
         {/* 설정 버튼 components 제작 고려중 or 클릭시 components 이동 */}
@@ -67,7 +66,6 @@ const MyPage = () => {
       {/* <div>
         <NavigationBar />
       </div> */}
-      <Outlet />
     </div>
   );
 };

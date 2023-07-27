@@ -1,0 +1,24 @@
+.hi{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid black;
+  width: 70%;
+  height: 40%;
+  text-align: center;
+}
+.hate{
+  position:absolute;
+  top:70%;
+  left:20%;
+}
+
+.like{
+  position: absolute;
+  top:70%;
+  right: 20%;
+}
