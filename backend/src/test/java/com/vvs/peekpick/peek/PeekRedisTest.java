@@ -2,6 +2,7 @@ package com.vvs.peekpick.peek;
 
 import com.vvs.peekpick.peek.dto.PeekDto;
 import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +87,8 @@ public class PeekRedisTest {
             peekRedisService.addPeek(locationDto, peekDto);
         }
 
-        List<PeekDto> nearPeeks = peekRedisService.findNearPeek(new Point(127, 37), 100).getData();
+        List<PeekDto> nearPeeks = peekRedisService.findNearPeek(new SearchPeekDto(new Point(127, 37), 100)).getData();
+        System.out.println(nearPeeks);
         List<Long> nearPeekIds = Arrays.asList(1L, 2L, 3L);
         for(PeekDto peekDto : nearPeeks) {
             assertTrue(nearPeekIds.contains(peekDto.getPeekId()));

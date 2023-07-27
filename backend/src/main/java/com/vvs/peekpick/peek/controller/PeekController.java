@@ -2,6 +2,7 @@ package com.vvs.peekpick.peek.controller;
 
 import com.vvs.peekpick.peek.dto.PeekDto;
 import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
@@ -19,10 +20,12 @@ public class PeekController {
 
     private final PeekRedisService peekRedisService;
 
+
     @PostMapping
-    public ResponseEntity<CommonResponse> addPeek(@RequestBody PeekLocationDto peekLocationDto, @RequestBody PeekDto peekDto) {
-        return ResponseEntity.ok(peekRedisService.addPeek(peekLocationDto, peekDto));
+    public ResponseEntity<DataResponse> findNearPeek(@RequestBody SearchPeekDto searchPeekDto) {
+        return ResponseEntity.ok(peekRedisService.findNearPeek(searchPeekDto));
     }
+
 
     @GetMapping("/{peekId}")
     public ResponseEntity<DataResponse> findPeekById(@PathVariable Long peekId) {
@@ -34,9 +37,9 @@ public class PeekController {
         return ResponseEntity.ok(peekRedisService.deletePeek(peekId));
     }
 
-    @GetMapping("/near")
-    public ResponseEntity<DataResponse> findNearPeek(@RequestBody Point point, @RequestParam double radius) {
-        return ResponseEntity.ok(peekRedisService.findNearPeek(point, radius));
+    @PostMapping("/write")
+    public ResponseEntity<CommonResponse> addPeek(@RequestBody PeekLocationDto peekLocationDto, @RequestBody PeekDto peekDto) {
+        return ResponseEntity.ok(peekRedisService.addPeek(peekLocationDto, peekDto));
     }
 
     @PostMapping("/{peekId}/reaction")

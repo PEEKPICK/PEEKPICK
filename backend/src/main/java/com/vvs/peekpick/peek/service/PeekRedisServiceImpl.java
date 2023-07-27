@@ -2,6 +2,7 @@ package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.peek.dto.PeekDto;
 import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
@@ -41,11 +42,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     /**
-     * Point(경도, 위도) 반경 radius(m)에 있는 Peek들 찾기
+     * Point(경도, 위도) 반경 distance (m)에 있는 Peek들 찾기
      */
     @Override
-    public DataResponse findNearPeek(Point point, double radius) {
-        Circle circle = new Circle(point, new Distance(radius, RedisGeoCommands.DistanceUnit.METERS));
+    public DataResponse findNearPeek(SearchPeekDto searchPeekDto) {
+        Circle circle = new Circle(searchPeekDto.getPoint(), new Distance(searchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
         GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PeekLocation_Redis, circle);
 
         List<PeekDto> nearPeek = new ArrayList<>();
