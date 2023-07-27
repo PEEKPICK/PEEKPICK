@@ -11,9 +11,15 @@ pipeline {
                     APPLICATION_YML_PATH = "/usr/spring/resources"
                     CONTAINER_NAME_FE = "peekpick_be"
                     CONTAINER_NAME_BE = "peekpick_fe"
-                    PROJECT_DIR_FE = "frontend/"
-                    PROJECT_DIR_BE = "backend/"
+                    PROJECT_DIR_FE = "frontend"
+                    PROJECT_DIR_BE = "backend"
                 }
+            }
+        }
+
+        stage("copy yml") {
+            steps {
+                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/main"
             }
         }
 
