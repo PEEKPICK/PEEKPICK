@@ -3,7 +3,7 @@ package com.vvs.peekpick.oauth.common.converters;
 import com.vvs.peekpick.oauth.common.enums.OAuth2Config;
 import com.vvs.peekpick.oauth.common.util.OAuth2Utils;
 import com.vvs.peekpick.oauth.model.ProviderUser;
-import com.vvs.peekpick.oauth.model.social.KakaoUser;
+import com.vvs.peekpick.member.dto.social.KakaoUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 public class OAuth2KakaoProviderUserConverter implements ProviderUserConverter<ProviderUserRequest, ProviderUser> {

@@ -1,17 +1,14 @@
 package com.vvs.peekpick.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Achievement {
     @Id
@@ -22,5 +19,6 @@ public class Achievement {
     private int likeCount;
     private int disLikeCount;
     private int pickPoint;
+
     private LocalDateTime updateDate;
 }
