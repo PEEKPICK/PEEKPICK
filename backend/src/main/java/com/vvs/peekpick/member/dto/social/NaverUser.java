@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.model.social;
+package com.vvs.peekpick.member.dto.social;
 
 import com.vvs.peekpick.oauth.model.Attributes;
 import com.vvs.peekpick.oauth.model.OAuth2ProviderUser;
@@ -22,7 +22,17 @@ public class NaverUser extends OAuth2ProviderUser {
     }
 
     @Override
-    public String getPicture() {
-        return (String)getAttributes().get("profile_image");
+    public String getBirthYear() {
+        return (String)getAttributes().get("birthyear");
+    }
+
+    @Override
+    public String getPhoneNumber() {
+        return (String)getAttributes().get("mobile");
+    }
+
+    @Override
+    public String getGender() {
+        return (String)getAttributes().get("gender");
     }
 }

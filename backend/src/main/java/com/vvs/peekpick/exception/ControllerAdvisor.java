@@ -20,8 +20,6 @@ public class ControllerAdvisor {
     /* 어디에서도 잡지 못한 예외 핸들링 */
     @ExceptionHandler(Exception.class)
     public CommonResponse exceptionHandler(Exception e) {
-        // For logging
-        log.info("{}", e.getStackTrace());
         CommonResponse response = new CommonResponse();
         response.setCode("9999");
         response.setMessage("예외가 발생했습니다.");

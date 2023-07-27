@@ -33,4 +33,17 @@ public class Avatar {
 
     @OneToMany(mappedBy = "avatar")
     List<Taste> tasteList;
+
+    @Override
+    public String toString() {
+        return "Avatar{" +
+                "avatarId=" + avatarId +
+                ", nickname='" + nickname + '\'' +
+                ", bio='" + bio + '\'' +
+                ", emoji=" + emoji +
+                ", prefix=" + prefix +
+                ", world=" + world +
+                ", tasteList=" + tasteList +
+                '}';
+    }
 }
