@@ -35,6 +35,9 @@ dependencies {
 	// 23.07.24 화면 나오기전 타임리프로 대체
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+	// 23.07.24 Spring Data Redis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
