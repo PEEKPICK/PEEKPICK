@@ -6,4 +6,4 @@ COPY build/libs/*.jar application.jar
 
 EXPOSE 8081
 
-ENTRYPOINT ["java","-Duser.timezone=Asia/Seoul","-jar","-Dspring.config.location=resources/application.yml,resources/application-db.yml", "application.jar"]
+ENTRYPOINT ["java","-jar", "application.jar"]
