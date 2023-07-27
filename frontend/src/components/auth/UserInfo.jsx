@@ -6,14 +6,19 @@ import { authActions } from '../../store/authSlice';
 import classes from './style/UserInfo.module.css';
 
 const UserInfo = () => {
+  // 바꿀 store 선택
   const userInfo = useSelector(state => state.auth);
 
+  // 상태관리
   const [gender, setGender] = useState('M')
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
+
+  // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
   const moveToUserProfile = () => {
     const changedUserData = {
       name: userInfo.name,
@@ -26,8 +31,7 @@ const UserInfo = () => {
     navigate('/userprofile')
   };
 
-  
-
+  // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
     if (userInfo.phone) {
       return (
@@ -42,6 +46,7 @@ const UserInfo = () => {
     }
   };
 
+  // 생일이 있으면 있는거 보여주고, 없으면 input 보여줌
   const birthdayIsValid = () => {
     if (userInfo.birthday) {
       return (
@@ -81,7 +86,7 @@ const UserInfo = () => {
           <div className={classes.switch}>
             <input type="radio" id="radio-one" name="switch-one" value="M" checked={gender === 'M'} onChange={() => setGender('M')}/>
             <label htmlFor="radio-one">남자</label>
-            <input type="radio" id="radio-two" name="switch-one" value="W" checked={gender === 'W'} onChange={() => setGender('W')}/>
+            <input type="radio" id="radio-two" name="switch-one" value="F" checked={gender === 'F'} onChange={() => setGender('F')}/>
             <label htmlFor="radio-two">여자</label>
           </div>
           <input type="button" value="다음으로" onClick={moveToUserProfile} />
