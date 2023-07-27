@@ -37,14 +37,25 @@ pipeline {
         // 컨테이너 중단
         stage("container cleaning") {
             steps{
-                sh "docker stop ${CONTAINER_NAME_BE} -q | xargs -r docker rm -f"
+                script {
+                    def isContainerRunning = sh(
+                        script: "docker ps -q -f name=${CONTAINER_NAME_BE}",
+                        returnStatus: true
+                    )
+                    if (isContainerRunning == 0) {
+                        sh "docker stop ${CONTAINER_NAME_BE}"
+                        sh "docker rm -f ${CONTAINER_NAME_BE}"
+                    } else {
+                        echo "Container ${CONTAINER_NAME_BE} is not running."
+                    }
+                }
             }
         }
 
         // 이미지 삭제
         stage("image cleaning") {
             steps{
-                sh "docker image ${IMAGE_NAME_BE} -q | xargs -r docker rmi -f"
+                sh "docker images ${IMAGE_NAME_BE} -q | xargs -r docker rmi -f"
                 // sh "docker image ${IMAGE_NAME_FE} -q | xargs -r docker rmi -f"
             }
         }
