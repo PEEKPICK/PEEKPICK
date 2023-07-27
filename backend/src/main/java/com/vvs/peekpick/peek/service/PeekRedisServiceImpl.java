@@ -19,6 +19,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService {
+
+    private final String Peek_Redis = "Peek";
+    private final String PeekLocation_Redis = "PeekLocation";
+
     private final RedisTemplate<String, Object> peekTemplate;
     private final RedisTemplate<String, Object> locationTemplate;
     private HashOperations<String, Object, PeekDto> hashOps;
@@ -31,43 +35,12 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     /**
-     * Peek 등록
-     * - Key : PeekLocation
-     *   Value : Point(Peek의 경도, 위도)
-     * - Key : Peek
-     *   value : {Key : peekId 직렬화 값, Value : PeekDto} 
-     */
-    @Override
-    public void addPeek(PeekLocationDto peekLocationDto, PeekDto peekDto) {
-        geoOps.add("PeekLocation", peekLocationDto.getPoint(), peekLocationDto.getPeekId().toString());
-        hashOps.put("Peek", peekDto.getPeekId().toString(), peekDto);
-    }
-
-    /**
-     * peekId로 peekDto 찾기
-     */
-    @Override
-    public PeekDto findPeekById(Long peekId) {
-        return hashOps.get("Peek", peekId.toString());
-    }
-
-    /**
-     * peek 삭제
-     * - PeekLocation, PeekDto 각 삭제
-     */
-    @Override
-    public void deletePeek(Long peekId) {
-        geoOps.remove("PeekLocation", peekId.toString());
-        hashOps.delete("Peek", peekId.toString());
-    }
-
-    /**
      * Point(경도, 위도) 반경 radius(m)에 있는 Peek들 찾기
      */
     @Override
     public List<PeekDto> findNearPeek(Point point, double radius) {
         Circle circle = new Circle(point, new Distance(radius, RedisGeoCommands.DistanceUnit.METERS));
-        GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius("PeekLocation", circle);
+        GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PeekLocation_Redis, circle);
 
         List<PeekDto> nearPeek = new ArrayList<>();
         for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
@@ -76,4 +49,49 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         return nearPeek;
     }
 
+    /**
+     * Peek 등록
+     * - Key : PeekLocation
+     *   Value : Point(Peek의 경도, 위도)
+     * - Key : Peek
+     *   value : {Key : peekId 직렬화 값, Value : PeekDto} 
+     */
+    @Override
+    public void addPeek(PeekLocationDto peekLocationDto, PeekDto peekDto) {
+        geoOps.add(PeekLocation_Redis, peekLocationDto.getPoint(), peekLocationDto.getPeekId().toString());
+        hashOps.put(Peek_Redis, peekDto.getPeekId().toString(), peekDto);
+    }
+
+    /**
+     * peekId로 peekDto 찾기
+     */
+    @Override
+    public PeekDto findPeekById(Long peekId) {
+        return hashOps.get(Peek_Redis, peekId.toString());
+    }
+
+    /**
+     * peek 삭제
+     * - PeekLocation, PeekDto 각 삭제
+     */
+    @Override
+    public void deletePeek(Long peekId) {
+        geoOps.remove(PeekLocation_Redis, peekId.toString());
+        hashOps.delete(Peek_Redis, peekId.toString());
+    }
+
+
+    /**
+     * Peek의 반응 수정
+     */
+    @Override
+    public void addReaction(Long peekId, boolean like, int count) {
+        PeekDto peekDto = findPeekById(peekId);
+        if (like) {
+            peekDto.setLikeCount(peekDto.getLikeCount() + count);
+        } else {
+            peekDto.setDisLikeCount(peekDto.getDisLikeCount() + count);
+        }
+        hashOps.put(Peek_Redis, peekId.toString(), peekDto);
+    }
 }
