@@ -1,6 +1,6 @@
 FROM openjdk:11-jdk
 
-COPY usr/spring/resources ./resources
+#COPY usr/spring/resources ./resources
 
 COPY build/libs/*.jar application.jar
 
