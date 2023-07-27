@@ -19,12 +19,12 @@ pipeline {
 
         stage("be build") {
             // build
-            steps(
+            steps{
                 sh """
-                    cd ${PROJECT_DIR_BE}
-                    ./gradlew clean build
-                """
-            )
+                cd ${PROJECT_DIR_BE}
+                ./gradlew clean build
+                """.indent
+            }
         }
 
         // 컨테이너 중단
