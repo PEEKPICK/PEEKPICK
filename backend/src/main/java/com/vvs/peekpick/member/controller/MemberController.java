@@ -1,10 +1,7 @@
 package com.vvs.peekpick.member.controller;
 
 
-import com.vvs.peekpick.entity.Avatar;
-import com.vvs.peekpick.entity.Emoji;
-import com.vvs.peekpick.entity.Prefix;
-import com.vvs.peekpick.entity.Taste;
+import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.service.MemberService;
 import com.vvs.peekpick.response.DataResponse;
@@ -13,6 +10,8 @@ import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -37,7 +36,6 @@ public class MemberController {
     @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto) {
         Avatar result = memberService.signup(signUpDto);
-
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, result);
     }
 
@@ -50,6 +48,12 @@ public class MemberController {
     @GetMapping("/prefix")
     public DataResponse RandomPrefix() {
         Prefix result = memberService.RandomPrefix();
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
+
+    @GetMapping("/world")
+    public DataResponse RandomWorld() {
+        List<World> result = memberService.RandomWorld();
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 }

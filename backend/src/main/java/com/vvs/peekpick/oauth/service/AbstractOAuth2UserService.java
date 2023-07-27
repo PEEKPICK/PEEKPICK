@@ -31,7 +31,8 @@ public abstract class AbstractOAuth2UserService {
     private final ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter;
     private final ResponseService responseService;
 
-//    public void checkRegister(ProviderUser providerUser, OAuth2UserRequest userRequest) {
+//    // 가회원 등록 처리
+//    public void register(ProviderUser providerUser, OAuth2UserRequest userRequest) {
 //
 //        Optional<Member> memberOptional = memberRepository.findByNameAndProvider(providerUser.getUsername(), providerUser.getProvider());
 //        // 가입이력 있는 회원이라면

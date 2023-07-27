@@ -18,6 +18,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.GeneralSecurityException;
 import java.security.Key;
 import java.util.Optional;
 
@@ -31,7 +34,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     private String redirectUrl = "http://localhost:3000/userinfo";
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException{
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
         Optional<Member> member = memberRepository.findByNameAndProvider(principalUser.getProviderUser(). getUsername(),
@@ -42,47 +45,61 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
             ProviderUser providerUser = principalUser.getProviderUser();
             log.info("providerUser={}", providerUser);
             log.info("providerUser={}", providerUser.getUsername());
+
+            // 맘에 안드는 로직
             try {
-                String encryptedEmail = providerUser.getEmail() != null ? encrypt(providerUser.getEmail()) : null;
-                String encryptedName = providerUser.getUsername() != null ? encrypt(providerUser.getUsername()) : null;
-                String encryptedPhone = providerUser.getPhoneNumber() != null ? encrypt(providerUser.getPhoneNumber()) : null;
-                String encryptedGender = providerUser.getGender() != null ? encrypt(providerUser.getGender()) : null;
-
-                redirectUrl += "?";
-                if(encryptedEmail != null) {
-                    redirectUrl += "email=" + encryptedEmail + "&";
-                }
-                if(encryptedName != null) {
-                    redirectUrl += "name=" + encryptedName + "&";
-                }
-                if(encryptedPhone != null) {
-                    redirectUrl += "phone=" + encryptedPhone + "&";
-                }
-                if(encryptedGender != null) {
-                    redirectUrl += "gender=" + encryptedGender;
-                }
-
-                if(redirectUrl.endsWith("&")) {
-                    redirectUrl = redirectUrl.substring(0, redirectUrl.length() - 1); // Remove trailing '&'
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
+                getRedirectUrl(providerUser);
+            } catch (IOException | GeneralSecurityException e) {
+                throw new RuntimeException(e);
             }
         } else {
             response.getWriter().write(member.toString());
         }
 
+        log.info("redirectUrl={}", redirectUrl);
         // 신규 회원이면 회원정보 return
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 
-    private String encrypt(String data) throws Exception {
+    private void getRedirectUrl(ProviderUser providerUser) throws IOException, GeneralSecurityException {
+        StringBuilder urlBuilder = new StringBuilder(redirectUrl);
+
+        urlBuilder.append("?");
+        urlBuilder.append(getQueryString("email", providerUser.getEmail()));
+        urlBuilder.append(getQueryString("name", providerUser.getUsername()));
+        urlBuilder.append(getQueryString("phone", providerUser.getPhoneNumber()));
+        urlBuilder.append(getQueryString("gender", providerUser.getGender()));
+
+        urlBuilder.append("provider").append(providerUser.getProvider());
+
+        if(urlBuilder.toString().endsWith("&")) {
+            urlBuilder.setLength(urlBuilder.length() - 1); // Remove trailing '&'
+        }
+
+        redirectUrl = urlBuilder.toString();
+    }
+
+    private String getQueryString(String key, String value) {
+        return Optional.ofNullable(value)
+                .map(v -> {
+                    try {
+                        return encrypt(v);
+                    } catch (IOException | GeneralSecurityException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .map(encrypted -> key + "=" + encrypted + "&")
+                .orElse("");
+    }
+
+
+    private String encrypt(String data) throws IOException, GeneralSecurityException {
         Key key = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedData = cipher.doFinal(data.getBytes());
+        String encodedString = Base64.encodeBase64String(encryptedData);
 
-        return Base64.encodeBase64String(encryptedData);
+        return URLEncoder.encode(encodedString, StandardCharsets.UTF_8.toString());
     }
 }
