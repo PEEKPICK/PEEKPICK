@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,12 +10,14 @@ const UserProfile = () => {
 
   // 이모지 다시 뽑기를 위한 버튼
   const randomGacha = () => {
-    var emoji = ['https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png',
-                'https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Biting+Lip.png',
-                'https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Cat+with+Tears+of+Joy.png']
-    var random_index = Math.floor(Math.random() * emoji.length);
-    var selectedEmoji = emoji[random_index]
-    setRandomEmoji(selectedEmoji);
+    axios.get('http://192.168.31.26:8081/member/emoji')
+      .then(response => {
+        console.log(response.data.data)
+        setRandomEmoji(response.data.data.animatedImageUrl);
+      })
+      .catch(error => {
+        console.log(error)
+      })
   };
 
   // 다음으로 이동
@@ -33,7 +36,7 @@ const UserProfile = () => {
       </div>
       <div className={classes.line}></div>
       <div>
-        <img src={randomEmoji} alt="dummy_emoji" />
+        <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
       <div>
         <button onClick={randomGacha}>다시뽑기</button>
