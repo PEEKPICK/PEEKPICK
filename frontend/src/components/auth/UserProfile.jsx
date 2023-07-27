@@ -9,7 +9,7 @@ import classes from './style/UserProfile.module.css';
 const UserProfile = () => {
   // 상태관리
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
-  const [emoji, setEmoji] = useState('1');
+  const [emojiId, setEmojiId] = useState('1');
 
   // redux, router, redux선택 처리
   const navigate = useNavigate();
@@ -19,7 +19,8 @@ const UserProfile = () => {
   const randomGacha = () => {
     axios.get('http://192.168.31.26:8081/member/emoji')
       .then(response => {
-        setEmoji(response.data.data.emojiId);
+        console.log(response.data.data)
+        setEmojiId(response.data.data.emojiId);
         setRandomEmoji(response.data.data.animatedImageUrl);
       })
       .catch(error => {
@@ -29,7 +30,7 @@ const UserProfile = () => {
 
   // 다음으로 이동
   const moveToUserNickname = () => {
-    dispatch(authActions.updateProfile(emoji));
+    dispatch(authActions.updateProfile({emojiId: emojiId}));
     navigate('/usernickname')
   };
 
