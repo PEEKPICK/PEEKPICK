@@ -11,7 +11,6 @@ const authSlice = createSlice({
     gender: '',
     emojiId: '',
     prefixId: '',
-    title: '',
     nickname: '',
     likes: [],
     dislikes: [],
@@ -28,11 +27,11 @@ const authSlice = createSlice({
     },
     updateProfile (state, action) {
       const newItem = action.payload;
-      state.profile = newItem.profile;
+      state.emojiId = newItem.emojiId;
     },
     updateUserNickname (state, action) {
       const newItem = action.payload;
-      state.title = newItem.title;
+      state.prefixId = newItem.prefixId;
       state.nickname = newItem.nickname;
     },
   },
