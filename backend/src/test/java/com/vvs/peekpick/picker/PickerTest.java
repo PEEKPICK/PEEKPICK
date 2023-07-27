@@ -44,7 +44,7 @@ class PickerTest {
 
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         // Picker 저장 여부 확인
-        Point findPoint = geoOperations.position(CONNECT_SESSION, connectingPickerDto.getMemberId().toString()).get(0);
+        Point findPoint = geoOperations.position(CONNECT_SESSION, String.valueOf(connectingPickerDto.getMemberId())).get(0);
 
         assertEquals(connectingPickerDto.getPoint().getX(), findPoint.getX(), 0.0001);
         assertEquals(connectingPickerDto.getPoint().getY(), findPoint.getY(), 0.0001);
