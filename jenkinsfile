@@ -4,7 +4,7 @@ pipeline {
         stage("Set Variable") {
             steps {
                 script {
-                    IMAGE_NAME_FE = ""
+                    IMAGE_NAME_FE = "wnsdud12365/peekpick-react"
                     IMAGE_NAME_BE = "wnsdud12365/peekpick-springboot"
                     IMAGE_STORAGE = "https://registry.hub.docker.com"
                     IMAGE_STORAGE_CREDENTIAL = "docker-hub"
@@ -34,8 +34,8 @@ pipeline {
             }
         }
 
-        // 컨테이너 중단
-        stage("container cleaning") {
+        // BE 컨테이너 중단
+        stage("BE container cleaning") {
             steps{
                 script {
                     def isContainerRunning = sh(
@@ -52,11 +52,29 @@ pipeline {
             }
         }
 
+        // FE 컨테이너 중단
+        stage("FE container cleaning") {
+            steps{
+                script {
+                    def isContainerRunning = sh(
+                        script: "docker ps -q -f name=${CONTAINER_NAME_FE}",
+                        returnStatus: true
+                    )
+                    if (isContainerRunning == 0) {
+                        sh "docker stop ${CONTAINER_NAME_FE}"
+                    } else {
+                        echo "Container ${CONTAINER_NAME_FE} is not running."
+                    }
+                    sh "docker rm -f ${CONTAINER_NAME_FE}"
+                }
+            }
+        }
+
         // 이미지 삭제
         stage("image cleaning") {
             steps{
                 sh "docker images ${IMAGE_NAME_BE} -q | xargs -r docker rmi -f"
-                // sh "docker image ${IMAGE_NAME_FE} -q | xargs -r docker rmi -f"
+                sh "docker images ${IMAGE_NAME_FE} -q | xargs -r docker rmi -f"
             }
         }
         
@@ -66,6 +84,7 @@ pipeline {
                 dir("${PROJECT_DIR_BE}") {
                     script {
                         sh "docker build --no-cache -t ${IMAGE_NAME_BE} ."
+                        sh "docker build --no-cache -t ${IMAGE_NAME_FE} ."
                     }
                 }
                 
