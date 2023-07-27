@@ -7,11 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserNickname.module.css';
 
-import { useSelector } from 'react-redux';
-
 const UserNickname = () => {
-  const check = useSelector(state => state.auth)
-
   // 상태관리
   const [prefix, setPrefix] = useState('37');
   const [content, setContent] = useState('아빠같은');
@@ -40,7 +36,6 @@ const UserNickname = () => {
       nickname: nickname,
     }
     dispatch(authActions.updateUserNickname(changedNickname));
-    console.log(check)
     navigate('/userlikehate')
   }
 

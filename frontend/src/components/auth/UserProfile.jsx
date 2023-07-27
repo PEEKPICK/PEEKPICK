@@ -19,7 +19,6 @@ const UserProfile = () => {
   const randomGacha = () => {
     axios.get('http://192.168.31.26:8081/member/emoji')
       .then(response => {
-        console.log(response.data.data)
         setEmojiId(response.data.data.emojiId);
         setRandomEmoji(response.data.data.animatedImageUrl);
       })
