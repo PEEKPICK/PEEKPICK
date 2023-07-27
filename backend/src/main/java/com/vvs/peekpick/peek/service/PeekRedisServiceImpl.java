@@ -73,7 +73,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
      * peekId로 peekDto 찾기
      */
     @Override
-    public DataResponse findPeekById(Long peekId) {
+    public DataResponse getPeek(Long peekId) {
         PeekDto peekDto = hashOps.get(Peek_Redis, peekId.toString());
         return responseService.successDataResponse(ResponseStatus.Loading_Peek_SUCCESS, peekDto);
     }

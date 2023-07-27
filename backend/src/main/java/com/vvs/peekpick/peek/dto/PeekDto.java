@@ -25,4 +25,5 @@ public class PeekDto implements Serializable {
     private int likeCount;
     private int disLikeCount;
     private LocalDateTime writeTime;
+    
 }
