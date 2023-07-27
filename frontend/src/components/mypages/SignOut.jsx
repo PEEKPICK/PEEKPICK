@@ -13,13 +13,16 @@ const SignOut = forwardRef((props,ref) => {
         props.setSignoutView(false);
       }
     }
+    const SignOutDisplay=()=>{
+      props.setSignoutView(false);
+    }
   return (
     <div className={classes.hi} ref={wrapperRef}>
       {/* 모달창 */}
       <div>
         <h3>CAUTION</h3>
         {/* x 버튼 click 시 회원 탈퇴 화면 종료 */}
-        <img src="" alt="" />
+        <img src="img/cancel.png" alt="" onClick={SignOutDisplay}/>
       </div>
       <hr />
       <div>

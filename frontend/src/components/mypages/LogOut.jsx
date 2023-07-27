@@ -22,7 +22,7 @@ const LogOut = forwardRef((props,ref) => {
       <div>
         <h3>CAUTION</h3>
         {/* x 버튼 click 시 로그아웃 화면 종료 */}
-        <img src="" alt="" />
+        <img src="img/cancel.png" alt="" onClick={LogOutDisplay}/>
       </div>
       <hr />
       <div>

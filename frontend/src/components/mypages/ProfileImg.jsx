@@ -6,7 +6,7 @@ const ProfileImg = (props) => {
       <div>
         <h1>프로필 변경</h1>
         {/* 클릭시 마이페이지로 이동하는 x 버튼 */}
-        <img src="" alt="" />
+        <img src="img/cancel.png" alt="" />
       </div>
       <hr />
       <div>

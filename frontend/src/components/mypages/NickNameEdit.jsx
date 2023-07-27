@@ -1,13 +1,28 @@
-import React from 'react';
-
-const NameEdit = (props) => {
+import React,{useEffect,useRef,forwardRef} from 'react';
+import classes from './NickNameEdit.module.css';
+const NickNameEdit = forwardRef((props,ref) => {
+  let wrapperRef = useRef();
+  useEffect(()=>{
+    document.addEventListener('mousedown', handleClickOutside);
+    return()=>{
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+  })
+  const handleClickOutside=(event)=>{
+    if (wrapperRef && !wrapperRef.current.contains(event.target)){
+      props.setNicknameView(false);
+    }
+  }
+  const NickNameEditDisplay=()=>{
+    props.setNicknameView(false);
+  }
   return (
-    <div>
+    <div ref={wrapperRef} className={classes.hi}>
       {/* 모달창 */}
       <div>
         <h4>닉네임 변경</h4>
         {/* 클릭시 마이페이지 이동 */}
-        <img src="" alt="" />
+        <img src="img/cancel.png" alt="" onClick={NickNameEditDisplay}/>
       </div>
       <div>
         <h4>타이틀</h4>
@@ -33,6 +48,6 @@ const NameEdit = (props) => {
       </div>
     </div>
   );
-}
+})
 
-export default NameEdit;
+export default NickNameEdit;

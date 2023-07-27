@@ -30,7 +30,7 @@ const Settings = forwardRef((props, ref) =>{
     <div className={classes.hi} ref={wrapperRef}>
       <div>
         {/* onClick 시 공지사항 components */}
-        <Link to={"/announcement"}>
+        <Link to={"/announcement"} style={{ textDecoration: "none" ,color:"black"}}>
         <div>
           <h2>공지사항</h2>
         </div>
