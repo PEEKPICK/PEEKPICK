@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -42,6 +43,14 @@ public class MemberServiceImpl implements MemberService {
 
         // 회원가입 완료 시 로그인 처리를 위해 avatar return
         return avatar;
+    }
+
+    public Emoji RandomEmoji() {
+        return emojiRepository.getRandomEmoji().orElseThrow();
+    }
+
+    public Prefix RandomPrefix() {
+        return prefixRepository.getRandomEmoji().orElseThrow();
     }
 
     private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {

@@ -2,6 +2,8 @@ package com.vvs.peekpick.member.controller;
 
 
 import com.vvs.peekpick.entity.Avatar;
+import com.vvs.peekpick.entity.Emoji;
+import com.vvs.peekpick.entity.Prefix;
 import com.vvs.peekpick.entity.Taste;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.service.MemberService;
@@ -39,4 +41,15 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, result);
     }
 
+    @GetMapping("/emoji")
+    public DataResponse RandomEmoji() {
+        Emoji result = memberService.RandomEmoji();
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
+
+    @GetMapping("/prefix")
+    public DataResponse RandomPrefix() {
+        Prefix result = memberService.RandomPrefix();
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
 }
