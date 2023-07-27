@@ -82,7 +82,4 @@ public class PrincipalUser implements UserDetails, OidcUser, OAuth2User {
         return providerUser;
     }
 
-    public void setProviderUser(ProviderUser providerUser) {
-        this.providerUser = providerUser;
-    }
 }
