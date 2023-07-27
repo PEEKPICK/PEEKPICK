@@ -72,5 +72,29 @@ public class PeekRedisTest {
         assertNull(peekRedisService.getPeek(peekLocationDto.getPeekId()).getData());
         assertNull(peekRedisService.getPeek(peekDto.getPeekId()).getData());
     }
- 
+
+    @Test
+    public void testFindNearPeek() {
+        List<Long> ids = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L);
+        List<Point> points = Arrays.asList(
+                new Point(127.0001, 37.0001), new Point(127.0002, 37.0002), new Point(127.0003, 37.0003),
+                new Point(127.002, 37.002), new Point(127.003, 37.003), new Point(127.004, 37.004)
+        );
+        for(int i = 0; i < ids.size(); i++) {
+            PeekLocationDto locationDto = new PeekLocationDto(ids.get(i), points.get(i));
+            PeekDto peekDto = new PeekDto(ids.get(i), ids.get(i), "content", "imageUrl", 0, 0, LocalDateTime.now());
+            peekRedisService.addPeek(locationDto, peekDto);
+        }
+
+        List<PeekDto> nearPeeks = peekRedisService.findNearPeek(new Point(127, 37), 100).getData();
+        List<Long> nearPeekIds = Arrays.asList(1L, 2L, 3L);
+        for(PeekDto peekDto : nearPeeks) {
+            assertTrue(nearPeekIds.contains(peekDto.getPeekId()));
+        }
+
+        List<Long> notNearPeekIds = Arrays.asList(4L, 5L, 6L);
+        for(PeekDto peekDto : nearPeeks) {
+            assertFalse(notNearPeekIds.contains(peekDto.getPeekId()));
+        }
+    }
 }
