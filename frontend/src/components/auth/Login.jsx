@@ -1,22 +1,11 @@
-import axios from 'axios';
-import { useDispatch } from 'react-redux';
+// import axios from 'axios';
 import { useEffect } from 'react';
 
-// import { authActions } from '../../store/authSlice';
 import classes from './style/Login.module.css';
 
 const Login = () => {
-  const dispatch = useDispatch();
-
   const kakao = () => {
-    axios.get('http://192.168.31.26:8081/member/emoji')
-      .then(response => {
-        // dispatch(authActions.updateProfile);
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    console.log('kakao')
   };
 
   const naver = () => {
