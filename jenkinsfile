@@ -29,17 +29,17 @@ pipeline {
 
         // 컨테이너 중단
         stage("container cleaning") {
-            steps(
+            steps{
                 sh "docker stop ${CONTAINER_NAME_BE} -q | xargs -r docker rm -f"
-            )
+            }
         }
 
         // 이미지 삭제
         stage("image cleaning") {
-            steps(
+            steps{
                 sh "docker image ${IMAGE_NAME_BE} -q | xargs -r docker rmi -f"
                 // sh "docker image ${IMAGE_NAME_FE} -q | xargs -r docker rmi -f"
-            )
+            }
         }
         
         // 도커 이미지 빌드
