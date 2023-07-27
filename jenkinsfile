@@ -23,6 +23,7 @@ pipeline {
                 sh """
                 cd ${PROJECT_DIR_BE}
                 chmod 777 ./gradlew
+                cp /usr/spring/resources ${PROJECT_DIR_BE}/src
                 ./gradlew clean build
                 """
             }
