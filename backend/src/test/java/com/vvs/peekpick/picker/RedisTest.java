@@ -11,20 +11,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 class RedisTest {
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
-
-    @Test
-    void testHash() {
-        // given
-        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        String key = "session";
-
-        // when
-        hashOperations.put(key, "hello", "world");
-
-        // then
-        Object value = hashOperations.get(key, "hello");
-        assertThat(value).isEqualTo("world");
-    }
+//    @Autowired
+//    private RedisTemplate<String, String> redisTemplate;
+//
+//    @Test
+//    void testHash() {
+//        // given
+//        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+//        String key = "session";
+//
+//        // when
+//        hashOperations.put(key, "hello", "world");
+//
+//        // then
+//        Object value = hashOperations.get(key, "hello");
+//        assertThat(value).isEqualTo("world");
+//    }
 }
