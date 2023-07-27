@@ -42,7 +42,7 @@ pipeline {
                         script: "docker ps -q -f name=${CONTAINER_NAME_BE}",
                         returnStatus: true
                     )
-                    if (isContainerRunning == 0) {
+                    if (isContainerRunning != 0) {
                         sh "docker stop ${CONTAINER_NAME_BE}"
                         sh "docker rm -f ${CONTAINER_NAME_BE}"
                     } else {
