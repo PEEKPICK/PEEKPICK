@@ -3,6 +3,7 @@ package com.vvs.peekpick.member.controller;
 
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.member.dto.SignUpDto;
+import com.vvs.peekpick.member.dto.TempSignUpDto;
 import com.vvs.peekpick.member.service.MemberService;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
@@ -54,6 +55,28 @@ public class MemberController {
     @GetMapping("/world")
     public DataResponse RandomWorld() {
         List<World> result = memberService.RandomWorld();
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
+
+    @GetMapping("/taste")
+    public DataResponse TasteList(@RequestParam("category_large") String categoryLarge) {
+        List<Category> result = memberService.categoryList();
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+
+    }
+
+    @GetMapping("/signup/info")
+    public DataResponse MemberInfo(@RequestParam("id") Long memberId) {
+        Member member = memberService.getMemberInfo(memberId);
+
+        TempSignUpDto result = new TempSignUpDto();
+        result.setName(member.getName());
+        result.setEmail(member.getEmail());
+        result.setPhone(member.getPhone());
+        result.setGender(member.getGender());
+        result.setBirthday(member.getBirthday());
+
+        log.info("member = {}", member);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 }

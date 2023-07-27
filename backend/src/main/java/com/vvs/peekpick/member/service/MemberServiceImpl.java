@@ -1,6 +1,7 @@
 package com.vvs.peekpick.member.service;
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +44,7 @@ public class MemberServiceImpl implements MemberService {
         addTastes(signUpDto, avatar);
 
         // 회원가입 완료 시 로그인 처리를 위해 avatar return
+
         return avatar;
     }
 
@@ -56,6 +58,15 @@ public class MemberServiceImpl implements MemberService {
 
     public List<World> RandomWorld() {
         return worldRepository.findAll();
+    }
+
+    public Member getMemberInfo(Long memberId) {
+        return memberRepository.findById(memberId).orElseThrow();
+    }
+
+    @Override
+    public List<Category> categoryList() {
+        return categoryRepository.findLarge();
     }
 
     private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {

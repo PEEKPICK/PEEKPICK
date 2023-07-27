@@ -8,6 +8,7 @@ import com.vvs.peekpick.oauth.model.ProviderUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -30,76 +31,47 @@ import java.util.Optional;
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
-    private static String SECRET_KEY = "PEIKPECKPEIKPECK";
-    private String redirectUrl = "http://localhost:3000/userinfo";
+    @Value("${auth.secretKey}")
+    private String SECRET_KEY;
+    @Value("${auth.redirectUrl}")
+    private String redirectUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException{
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
+        // 이름 + provider로 조회
         Optional<Member> member = memberRepository.findByNameAndProvider(principalUser.getProviderUser(). getUsername(),
                 principalUser.getProviderUser().getProvider());
 
         // 회원이 아니라면
         if (!member.isPresent()) {
+            // 가회원 등록 및 redirect
             ProviderUser providerUser = principalUser.getProviderUser();
-            log.info("providerUser={}", providerUser);
-            log.info("providerUser={}", providerUser.getUsername());
+            Member newMember = Member.builder()
+                            .name(providerUser.getUsername())
+                            .provider(providerUser.getProvider())
+                            .email(providerUser.getEmail())
+                            .gender(providerUser.getGender())
+                            .phone(providerUser.getPhoneNumber())
+                            .birthday(getBirthday(providerUser))
+                            .build();
 
-            // 맘에 안드는 로직
-            try {
-                getRedirectUrl(providerUser);
-            } catch (IOException | GeneralSecurityException e) {
-                throw new RuntimeException(e);
-            }
+            Member signupMember = memberRepository.save(newMember);
+            redirectUrl += "?id=" + signupMember.getMemberId();
+
+            log.info("signupMember={}", signupMember);
         } else {
-            response.getWriter().write(member.toString());
+            log.info("이미 있는 회원");
+            redirectUrl = "http://localhost:3000/login";
         }
 
-        log.info("redirectUrl={}", redirectUrl);
         // 신규 회원이면 회원정보 return
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
-
-    private void getRedirectUrl(ProviderUser providerUser) throws IOException, GeneralSecurityException {
-        StringBuilder urlBuilder = new StringBuilder(redirectUrl);
-
-        urlBuilder.append("?");
-        urlBuilder.append(getQueryString("email", providerUser.getEmail()));
-        urlBuilder.append(getQueryString("name", providerUser.getUsername()));
-        urlBuilder.append(getQueryString("phone", providerUser.getPhoneNumber()));
-        urlBuilder.append(getQueryString("gender", providerUser.getGender()));
-
-        urlBuilder.append("provider").append(providerUser.getProvider());
-
-        if(urlBuilder.toString().endsWith("&")) {
-            urlBuilder.setLength(urlBuilder.length() - 1); // Remove trailing '&'
-        }
-
-        redirectUrl = urlBuilder.toString();
-    }
-
-    private String getQueryString(String key, String value) {
-        return Optional.ofNullable(value)
-                .map(v -> {
-                    try {
-                        return encrypt(v);
-                    } catch (IOException | GeneralSecurityException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .map(encrypted -> key + "=" + encrypted + "&")
-                .orElse("");
-    }
-
-
-    private String encrypt(String data) throws IOException, GeneralSecurityException {
-        Key key = new SecretKeySpec(SECRET_KEY.getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        byte[] encryptedData = cipher.doFinal(data.getBytes());
-        String encodedString = Base64.encodeBase64String(encryptedData);
-
-        return URLEncoder.encode(encodedString, StandardCharsets.UTF_8.toString());
+    private static String getBirthday(ProviderUser providerUser) {
+        String result = providerUser.getBirthYear() + "-" + providerUser.getBirthDay();
+        if ("-".equals(result)) return null;
+        return result;
     }
 }
