@@ -17,13 +17,18 @@ pipeline {
             }
         }
 
+        stage("copy yml") {
+            steps {
+                sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src"
+            }
+        }
+
         stage("be build") {
             // build
             steps{
                 sh """
                 cd ${PROJECT_DIR_BE}
                 chmod 777 ./gradlew
-                cp /usr/spring/resources ${PROJECT_DIR_BE}/src
                 ./gradlew clean build
                 """
             }
