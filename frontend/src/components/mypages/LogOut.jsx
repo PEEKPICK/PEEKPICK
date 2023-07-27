@@ -1,5 +1,6 @@
 import React,{useEffect,useRef,forwardRef}from 'react';
 import classes from './LogOut.module.css';
+import { Link } from 'react-router-dom';
 const LogOut = forwardRef((props,ref) => {
   let wrapperRef = useRef();
     useEffect(()=>{
@@ -16,6 +17,10 @@ const LogOut = forwardRef((props,ref) => {
     const LogOutDisplay=()=>{
       props.setLogoutView(false);
     }
+    const Logout=()=>{
+      localStorage.clear()
+    }
+
   return (
     <div className={classes.hi} ref={wrapperRef}>
       {/* 모달창 */}
@@ -33,9 +38,11 @@ const LogOut = forwardRef((props,ref) => {
           <h4>싫어!</h4>
         </div>
         {/* 클릭시 로그아웃 */}
-        <div className={classes.like}>
+        <Link to="/login">
+        <div className={classes.like} onClick={Logout}>
           <h4>좋아!</h4>
         </div>
+        </Link>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useRef,forwardRef} from 'react';
+import React,{useEffect,useRef,forwardRef} from 'react';
 import classes from './settings.module.css';
 import { Link } from 'react-router-dom';
 // import { useState } from 'react';
@@ -24,6 +24,9 @@ const Settings = forwardRef((props, ref) =>{
       props.setVisible(false);
       props.setSignoutView(true);
     }
+
+
+  
   return (
     // 모달창
 

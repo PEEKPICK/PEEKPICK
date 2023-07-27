@@ -13,14 +13,14 @@ const NavigationBar = () => {
 
       {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
       <nav className={classes.navi}>
-      <Link to="/picky" className={classes.self}>
+      <Link to="picky" className={classes.self}>
         <div>
           <img src="img/heartBlack.png" alt="" />
           {/* <img src="img/heartWhite.png" alt="" /> */}
           <p>이슈</p>
         </div>
       </Link>
-      <Link to={"/picker"} className={classes.self}>
+      <Link to={""} className={classes.self}>
         <div>
           <img src="img/finderBlack.png" alt="" />
           {/* <img src="img/finderWhite.png" alt="" /> */}
@@ -28,7 +28,7 @@ const NavigationBar = () => {
           <p>사람</p>
         </div>
       </Link>
-      <Link to={"/mypage"} className={classes.self}>
+      <Link to={"mypage"} className={classes.self}>
         <div>
           <img src="img/mypageBlack.png" alt="" />
           {/* <img src="img/mypageWhite.png" alt="" /> */}
