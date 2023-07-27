@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+    stages {
+        stage("Set Variable") {
+            steps {
+                script {
+                    IMAGE_NAME_FE = ""
+                    IMAGE_NAME_BE = "wnsdud12365/peekpick-springboot"
+                    IMAGE_STORAGE = "https://registry.hub.docker.com"
+                    IMAGE_STORAGE_CREDENTIAL = "docker-hub"
+                    APPLICATION_YML_PATH = "/usr/spring/resources"
+                    CONTAINER_NAME_FE = "peekpick_be"
+                    CONTAINER_NAME_BE = "peekpick_fe"
+                    PROJECT_DIR_FE = "frontend/"
+                    PROJECT_DIR_BE = "backend/"
+                }
+            }
+        }
+
+        stage("be build") {
+            // build
+            steps(
+                sh """
+                    cd ${PROJECT_DIR_BE}
+                    ./gradlew clean build
+                """
+            )
+        }
+
+        // 컨테이너 중단
+        stage("container cleaning") {
+            steps(
+                sh "docker stop ${CONTAINER_NAME_BE} -q | xargs -r docker rm -f"
+            )
+        }
+
+        // 이미지 삭제
+        stage("image cleaning") {
+            steps(
+                sh "docker image ${IMAGE_NAME_BE} -q | xargs -r docker rmi -f"
+                // sh "docker image ${IMAGE_NAME_FE} -q | xargs -r docker rmi -f"
+            )
+        }
+        
+        // 도커 이미지 빌드
+        stage("be image build") {
+            steps {
+                dir("${PROJECT_DIR_BE}") {
+                    script {
+                        sh "docker build --no-cache -t ${IMAGE_NAME_BE} ."
+                    }
+                }
+                
+                // script {
+                //     docker.withRegistry("", ""){
+                //         sh "docker push ${IMAGE_NAME_BE}"
+                //     }
+                // }
+            }
+        }
+    }
+}
