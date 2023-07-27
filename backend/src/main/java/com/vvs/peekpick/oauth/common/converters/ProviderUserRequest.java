@@ -1,10 +1,9 @@
 package com.vvs.peekpick.oauth.common.converters;
 
-import com.vvs.peekpick.oauth.model.users.User;
+import com.vvs.peekpick.member.dto.User;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-// record = 불변 객체
 public class ProviderUserRequest {
     private ClientRegistration clientRegistration;
     private OAuth2User oAuth2User;
