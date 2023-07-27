@@ -23,7 +23,7 @@ pipeline {
                 sh """
                 cd ${PROJECT_DIR_BE}
                 ./gradlew clean build
-                """.indent
+                """
             }
         }
 
