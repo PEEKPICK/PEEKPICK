@@ -39,10 +39,10 @@ pipeline {
         // 컨테이너 클리닝
         stage("container cleaning") {
             steps{
-                sh "docker ps -q -f name=${CONTAINER_NAME_BE} | xargs docker stop"    
+                sh "docker ps -q -f name=${CONTAINER_NAME_BE} | xargs docker container stop"    
                 sh "docker ls -q -a -f name=${CONTAINER_NAME_BE} | xagrs docker rm"
 
-                sh "docker ps -q -f name=${CONTAINER_NAME_FE} | xargs docker stop"    
+                sh "docker ps -q -f name=${CONTAINER_NAME_FE} | xargs docker container stop"    
                 sh "docker ls -q -a -f name=${CONTAINER_NAME_FE} | xagrs docker rm"
             }
         }
