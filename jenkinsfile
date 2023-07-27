@@ -17,12 +17,14 @@ pipeline {
             }
         }
 
+        // 설정파일 참조
         stage("copy yml") {
             steps {
                 sh "cp -r ${APPLICATION_YML_PATH} ${PROJECT_DIR_BE}/src/main"
             }
         }
 
+        // 백엔드 프로젝트 빌드
         stage("be build") {
             // build
             steps{
@@ -34,39 +36,14 @@ pipeline {
             }
         }
 
-        // BE 컨테이너 중단
-        stage("BE container cleaning") {
+        // 컨테이너 클리닝
+        stage("container cleaning") {
             steps{
-                script {
-                    def isContainerRunning = sh(
-                        script: "docker ps -q -f name=${CONTAINER_NAME_BE}",
-                        returnStatus: true
-                    )
-                    if (isContainerRunning == 0) {
-                        sh "docker stop ${CONTAINER_NAME_BE}"
-                    } else {
-                        echo "Container ${CONTAINER_NAME_BE} is not running."
-                    }
-                    sh "docker rm -f ${CONTAINER_NAME_BE}"
-                }
-            }
-        }
+                sh "docker ps -q -f name=${CONTAINER_NAME_BE} | xargs docker stop"    
+                sh "docker ls -q -a -f name=${CONTAINER_NAME_BE} | xagrs docker rm"
 
-        // FE 컨테이너 중단
-        stage("FE container cleaning") {
-            steps{
-                script {
-                    def isContainerRunning = sh(
-                        script: "docker ps -q -f name=${CONTAINER_NAME_FE}",
-                        returnStatus: true
-                    )
-                    if (isContainerRunning == 0) {
-                        sh "docker stop ${CONTAINER_NAME_FE}"
-                    } else {
-                        echo "Container ${CONTAINER_NAME_FE} is not running."
-                    }
-                    sh "docker rm -f ${CONTAINER_NAME_FE}"
-                }
+                sh "docker ps -q -f name=${CONTAINER_NAME_FE} | xargs docker stop"    
+                sh "docker ls -q -a -f name=${CONTAINER_NAME_FE} | xagrs docker rm"
             }
         }
 
