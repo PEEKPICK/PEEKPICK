@@ -18,7 +18,11 @@ const Settings = forwardRef((props, ref) =>{
     }
     const LogOutOn=()=>{
       props.setVisible(false);
-      props.LogOutDisplay(true);
+      props.setLogoutView(true);
+    }
+    const SignOutOn=()=>{
+      props.setVisible(false);
+      props.setSignoutView(true);
     }
   return (
     // 모달창
@@ -37,7 +41,7 @@ const Settings = forwardRef((props, ref) =>{
           <h2>로그아웃</h2>
         </div>
         <hr />
-        <div>
+        <div onClick={SignOutOn}>
         {/* onClick 시 회원탈퇴 components */}
         <h2>회원탈퇴</h2>
         </div>

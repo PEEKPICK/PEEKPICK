@@ -3,19 +3,19 @@ import { Link } from 'react-router-dom';
 import Settings from './Settings';
 import classes from './MyPage.module.css';
 import LogOut from './LogOut';
+import SignOut from './SignOut';
 const MyPage = () => {
   const [visible, setVisible] = useState(false);
   const [logoutView, setLogoutView] = useState(false);
+  const [signoutView,setSignoutView] = useState(false);
   const onSettings= ()=>{
     setVisible(!visible);
-  }
-  const LogOutDisplay = () =>{
-    setLogoutView(!logoutView);
   }
   return (
     <div>
       {logoutView && <LogOut setLogoutView={setLogoutView}/>}
-      {visible && <Settings view={visible} setVisible={setVisible} LogOutDisplay={LogOutDisplay}/>}
+      {signoutView && <SignOut setSignoutView={setSignoutView}/>}
+      {visible && <Settings setVisible={setVisible} setLogoutView={setLogoutView} setSignoutView={setSignoutView}/>}
       <div className={classes.basic}>
         <h2>마이페이지</h2>
         {/* 설정 버튼 components 제작 고려중 or 클릭시 components 이동 */}

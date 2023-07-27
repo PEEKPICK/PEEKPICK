@@ -1,8 +1,20 @@
-import React from 'react';
-
-const SingOut = () => {
+import React,{useEffect,useRef,forwardRef} from 'react';
+import classes from './SignOut.module.css';
+const SignOut = forwardRef((props,ref) => {
+  let wrapperRef = useRef();
+    useEffect(()=>{
+      document.addEventListener('mousedown', handleClickOutside);
+      return()=>{
+        document.removeEventListener('mousedown', handleClickOutside);
+      }
+    })
+    const handleClickOutside=(event)=>{
+      if (wrapperRef && !wrapperRef.current.contains(event.target)){
+        props.setSignoutView(false);
+      }
+    }
   return (
-    <div>
+    <div className={classes.hi} ref={wrapperRef}>
       {/* 모달창 */}
       <div>
         <h3>CAUTION</h3>
@@ -25,6 +37,6 @@ const SingOut = () => {
       </div>
     </div>
   );
-}
+})
 
-export default SingOut;
+export default SignOut;
