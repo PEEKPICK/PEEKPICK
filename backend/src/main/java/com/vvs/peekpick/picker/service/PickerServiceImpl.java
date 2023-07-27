@@ -43,7 +43,7 @@ public class PickerServiceImpl implements PickerService {
     @Override
     public CommonResponse connectSession(ConnectingPickerDto picker) {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
-        geoOperations.add(CONNECT_SESSION, picker.getPoint(), picker.getMemberId().toString());
+        geoOperations.add(CONNECT_SESSION, picker.getPoint(), String.valueOf(picker.getMemberId()));
         return responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
     }
 
