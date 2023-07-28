@@ -18,22 +18,34 @@ import com.vvs.peekpick.response.ResponseStatus;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService {
 
-    private final String Peek_Redis = "Peek";
-    private final String PeekLocation_Redis = "PeekLocation";
+    // Redis에 Peek 객체 저장할 Key
+    private final String PEEK_REDIS = "Peek";
+
+    // Redis에 Peek 객체별 위치를 저장할 Key
+    private final String PEEK_LOCATION_REDIS = "PeekLocation";
+
+    // Peek 가져올 갯수
     private final int MAX_PEEK = 10;
+    private final Random random = new Random();
+    //좋아요, 싫어요 시 적용되는 시간 (분)
+    private final int PEEK_REACTION_TIME = 5;
+
 
     private final ResponseService responseService;
     private final RedisTemplate<String, Object> peekTemplate;
     private final RedisTemplate<String, Object> locationTemplate;
     private HashOperations<String, Object, PeekDto> hashOps;
     private GeoOperations<String, Object> geoOps;
-    private Long peekId;
+    //private Long peekId;
+
+
 
     @PostConstruct
     public void init() {
@@ -47,15 +59,28 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     @Override
     public DataResponse findNearPeek(SearchPeekDto searchPeekDto) {
         Circle circle = new Circle(searchPeekDto.getPoint(), new Distance(searchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
-        GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PeekLocation_Redis, circle);
+        GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
 
-        List<PeekDto> nearPeek = new ArrayList<>();
+        List<PeekDto> allPeeks = new ArrayList<>();
         for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
             String peekId = peekLocation.getContent().getName().toString();
-            nearPeek.add(hashOps.get(Peek_Redis, peekId));
+            allPeeks.add(hashOps.get(PEEK_REDIS, peekId));
         }
-        return responseService.successDataResponse(ResponseStatus.Loading_Peek_LIST_SUCCESS, nearPeek);
+
+        List<PeekDto> randomPeeks;
+        if(allPeeks.size() <= MAX_PEEK){ //전체가 Max보다 적다면 모든 Peek 반환
+            randomPeeks = allPeeks;
+        } else {
+            randomPeeks = new ArrayList<>();
+            for (int i = 0; i < MAX_PEEK; i++) {
+                int randomIndex = random.nextInt(allPeeks.size());
+                randomPeeks.add(allPeeks.get(randomIndex));
+                allPeeks.remove(randomIndex); // avoid duplicates
+            }
+        }
+        return responseService.successDataResponse(ResponseStatus.Loading_Peek_LIST_SUCCESS, randomPeeks);
     }
+
 
     /**
      * Peek 등록
@@ -66,8 +91,8 @@ public class PeekRedisServiceImpl implements PeekRedisService {
      */
     @Override
     public CommonResponse addPeek(PeekLocationDto peekLocationDto, PeekDto peekDto) {
-        geoOps.add(PeekLocation_Redis, peekLocationDto.getPoint(), peekLocationDto.getPeekId().toString());
-        hashOps.put(Peek_Redis, peekDto.getPeekId().toString(), peekDto);
+        geoOps.add(PEEK_LOCATION_REDIS, peekLocationDto.getPoint(), peekLocationDto.getPeekId().toString());
+        hashOps.put(PEEK_REDIS, peekDto.getPeekId().toString(), peekDto);
         return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
     }
 
@@ -76,7 +101,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
      */
     @Override
     public DataResponse getPeek(Long peekId) {
-        PeekDto peekDto = hashOps.get(Peek_Redis, peekId.toString());
+        PeekDto peekDto = hashOps.get(PEEK_REDIS, peekId.toString());
         return responseService.successDataResponse(ResponseStatus.Loading_Peek_SUCCESS, peekDto);
     }
 
@@ -86,24 +111,37 @@ public class PeekRedisServiceImpl implements PeekRedisService {
      */
     @Override
     public CommonResponse deletePeek(Long peekId) {
-        geoOps.remove(PeekLocation_Redis, peekId.toString());
-        hashOps.delete(Peek_Redis, peekId.toString());
+        geoOps.remove(PEEK_LOCATION_REDIS, peekId.toString());
+        hashOps.delete(PEEK_REDIS, peekId.toString());
         return responseService.successCommonResponse(ResponseStatus.DELETE_SUCCESS);
     }
 
 
     /**
      * Peek의 반응 수정
+     * like
+     * - true : 좋아요
+     * - false : 싫어요
+     *
+     * add
+     * - true : 안 누른 상태 -> 누름
+     * - false : 눌러져 있던 상태 -> 안 누른 상태
+     *
      */
     @Override
-    public CommonResponse addReaction(Long peekId, boolean like, int count) {
-        PeekDto peekDto = hashOps.get(Peek_Redis, peekId.toString());
-        if (like) {
-            peekDto.setLikeCount(peekDto.getLikeCount() + count);
+    public CommonResponse addReaction(Long peekId, boolean like, boolean add) {
+        int count;
+        if(add) count = 1;
+        else count = -1;
+
+        PeekDto peekDto = hashOps.get(PEEK_REDIS, peekId.toString());
+        if (like) { //좋아요를 눌렀다면
+            peekDto.setLikeCount(peekDto.getLikeCount() + count); //갯수 반영
+            peekDto.setFinishTime(peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME));
         } else {
             peekDto.setDisLikeCount(peekDto.getDisLikeCount() + count);
         }
-        hashOps.put(Peek_Redis, peekId.toString(), peekDto);
+        hashOps.put(PEEK_REDIS, peekId.toString(), peekDto);
         return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
     }
 }

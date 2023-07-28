@@ -53,7 +53,7 @@ public class PeekRedisTest {
     @Test
     public void testAddGetPeek() {
         PeekLocationDto peekLocationDto = new PeekLocationDto(1L, new Point(127.0, 37.0));
-        PeekDto peekDto = new PeekDto(1L, 1L, "content", "imageUrl", 0, 0, LocalDateTime.now());
+        PeekDto peekDto = new PeekDto(1L, 1L, "content", "imageUrl", 0, 0, LocalDateTime.now(), LocalDateTime.now());
         peekRedisService.addPeek(peekLocationDto, peekDto);
 
         Point getPeekLocation = geoOps.geoPos(PeekLocation_Redis, peekLocationDto.getPeekId().toString()).get(0);
@@ -83,7 +83,7 @@ public class PeekRedisTest {
         );
         for(int i = 0; i < ids.size(); i++) {
             PeekLocationDto locationDto = new PeekLocationDto(ids.get(i), points.get(i));
-            PeekDto peekDto = new PeekDto(ids.get(i), ids.get(i), "content", "imageUrl", 0, 0, LocalDateTime.now());
+            PeekDto peekDto = new PeekDto(ids.get(i), ids.get(i), "content", "imageUrl", 0, 0, LocalDateTime.now(), LocalDateTime.now());
             peekRedisService.addPeek(locationDto, peekDto);
         }
 

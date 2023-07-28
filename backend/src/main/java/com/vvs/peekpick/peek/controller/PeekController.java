@@ -2,6 +2,7 @@ package com.vvs.peekpick.peek.controller;
 
 import com.vvs.peekpick.peek.dto.PeekDto;
 import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.RequestPeekDto;
 import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
 import com.vvs.peekpick.response.CommonResponse;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.Point;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -38,12 +41,15 @@ public class PeekController {
     }
 
     @PostMapping("/write")
-    public ResponseEntity<CommonResponse> addPeek(@RequestBody PeekLocationDto peekLocationDto, @RequestBody PeekDto peekDto) {
-        return ResponseEntity.ok(peekRedisService.addPeek(peekLocationDto, peekDto));
+    public ResponseEntity<CommonResponse> addPeek(@RequestBody RequestPeekDto peekLocationDto) {
+        return ResponseEntity.ok(peekRedisService.addPeek(peekLocationDto.getPeekLocationDto(), peekLocationDto.getPeekDto()));
     }
 
-    @PostMapping("/{peekId}/reaction")
-    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestParam boolean like, @RequestParam int count) {
-        return ResponseEntity.ok(peekRedisService.addReaction(peekId, like, count));
+    @PostMapping("/{peekId}")
+    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {
+        boolean like = Boolean.parseBoolean(reaction.get("like").toString());
+        boolean add = Boolean.parseBoolean(reaction.get("add").toString());
+        return ResponseEntity.ok(peekRedisService.addReaction(peekId, like, add));
     }
+
 }

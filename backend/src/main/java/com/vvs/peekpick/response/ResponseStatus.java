@@ -22,7 +22,7 @@ public enum ResponseStatus {
     Loading_Peek_SUCCESS("2001", "PEEK 로딩 완료"),
     ADD_SUCCESS("2002", "PEEK 추가 완료"),
     DELETE_SUCCESS("2003", "PEEK 삭제 완료"),
-    ADD_REACTION_SUCCESS("2004", "PEEK 삭제 완료");
+    ADD_REACTION_SUCCESS("2004", "PEEK 반응 추가 완료");
 
     private final String code;
     private final String message;

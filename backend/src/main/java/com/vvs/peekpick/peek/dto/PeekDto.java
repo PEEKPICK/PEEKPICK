@@ -24,5 +24,6 @@ public class PeekDto implements Serializable {
     private String imageUrl;
     private int likeCount;
     private int disLikeCount;
-    private LocalDateTime writeTime;
+    private LocalDateTime writeTime; //작성 시간
+    private LocalDateTime finishTime; //지워지는 시간
 }
