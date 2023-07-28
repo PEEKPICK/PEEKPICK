@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import axios from 'axios';
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -17,6 +19,38 @@ const UserInfo = () => {
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  // axios 통신으로 유저 정보 불러오기
+  useEffect(() => {
+    const value = 14;
+    // const userAPI = 'https://react-http-4710c-default-rtdb.firebaseio.com/user.json';
+    const userAPI = `http://192.168.31.26:8081/member/signup/info?id=${value}`;
+
+    axios.get(userAPI)
+      .then(response => {
+        const userData = response.data.data;
+
+        dispatch(authActions.updateUserInfo({
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          birthday: userData.birthday,
+          gender: userData.gender,
+        }));
+
+        dispatch(authActions.updateProfile({
+          emojiId: userData.emojiId
+        }));
+
+        dispatch(authActions.updateUserNickname({
+          prefixId: userData.prefixId,
+          nickname: userData.nickname,
+        }));
+      })
+      .catch(error => {
+        console.log('에러 내용 : ', error);
+      })
+  }, [dispatch])
 
   // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
   const moveToUserProfile = () => {
