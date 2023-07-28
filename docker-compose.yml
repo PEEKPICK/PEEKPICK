@@ -12,7 +12,7 @@ services:
     image: wnsdud12365/peekpick-react
     container_name: peekpick_fe
     restart: always
-    posts:
+    ports:
      - 3000:3000
     networks:
      - peekpick_network
