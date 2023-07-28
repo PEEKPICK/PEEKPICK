@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -5,8 +6,15 @@ import common from './style/Common.module.css';
 import classes from './style/UserLikeHate.module.css';
 
 const UserLikeHate = () => {
-  const navigate = useNavigate();
+  // 페이지 렌더링 시
   const userInfo = useSelector(state => state.auth);
+
+  useEffect(() => {
+    console.log(userInfo)
+  }, [userInfo]);
+
+  // 함수 생성
+  const navigate = useNavigate();
 
   const moveToUserLike = () => {
     navigate('/userlike')

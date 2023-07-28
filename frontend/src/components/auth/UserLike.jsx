@@ -12,11 +12,10 @@ const UserLike = () => {
   // 상태관리
   const [dataAxios, setDataAxios] = useState(false);
   const [middleDataAxios, setMiddleDataAxios] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [likeList, setLikeList] = useState([]);
   const [middleLikeList, setMiddleLikeList] = useState([]);
   const [tempMiddleList, setTempMiddleList] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  
 
   // 기본 함수 설정
   const navigate = useNavigate();
@@ -65,9 +64,8 @@ const UserLike = () => {
   };
 
   const selectedFinish = () => {
-    setLikeList(tempMiddleList);
     const changedLikes = {
-      likes: likeList,
+      likes: tempMiddleList,
     }
     dispatch(authActions.updateUserLike(changedLikes))
     navigate('/userlikehate');
