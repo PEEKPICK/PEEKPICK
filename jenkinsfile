@@ -40,10 +40,10 @@ pipeline {
         stage("container cleaning") {
             steps{
                 sh "docker ps -q -f name=${CONTAINER_NAME_BE} | xargs --no-run-if-empty docker container stop"    
-                sh "docker ls -q -a -f name=${CONTAINER_NAME_BE} | xagrs docker rm"
+                sh "docker ls -q -a -f name=${CONTAINER_NAME_BE} | xargs docker rm"
 
                 sh "docker ps -q -f name=${CONTAINER_NAME_FE} | xargs --no-run-if-empty docker container stop"    
-                sh "docker ls -q -a -f name=${CONTAINER_NAME_FE} | xagrs docker rm"
+                sh "docker ls -q -a -f name=${CONTAINER_NAME_FE} | xargs docker rm"
             }
         }
 
