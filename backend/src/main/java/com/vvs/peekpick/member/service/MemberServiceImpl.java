@@ -65,8 +65,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<Category> categoryList() {
+    public List<String> categoryList() {
         return categoryRepository.findLarge();
+    }
+
+    @Override
+    public List<Category> detailCategoryList(String categoryLarge) {
+        return categoryRepository.findByLarge(categoryLarge);
     }
 
     private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {

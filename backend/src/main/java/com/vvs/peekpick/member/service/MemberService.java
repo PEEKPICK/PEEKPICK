@@ -15,5 +15,7 @@ public interface MemberService {
 
     Member getMemberInfo(Long memberId);
 
-    List<Category> categoryList();
+    List<String> categoryList();
+
+    List<Category> detailCategoryList(String categoryLarge);
 }

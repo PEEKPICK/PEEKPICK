@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.web.cors.CorsConfiguration;
@@ -34,15 +35,17 @@ public class OAuth2ClientConfig {
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 방식 사용 X
+                .and()
                 .csrf().disable()
-                .authorizeRequests((requests) -> requests
-                .antMatchers("/api/user")
-                .access("hasAnyRole('SCOPE_profile','SCOPE_email')")
-                .antMatchers("/api/oidc")
-                .access("hasRole('SCOPE_openid')")
-                .antMatchers("/", "/member/signup", "/login")
-                .permitAll()
-                .anyRequest().permitAll());
+                .formLogin().disable()
+                .httpBasic().disable();
+
+        http
+                .authorizeRequests()
+                .antMatchers("/**").permitAll() // 모든 경로 오픈
+                .anyRequest().authenticated();
 
         http
                 .oauth2Login(oauth2 -> oauth2

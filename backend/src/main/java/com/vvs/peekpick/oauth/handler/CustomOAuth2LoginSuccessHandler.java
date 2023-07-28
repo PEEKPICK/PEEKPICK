@@ -7,22 +7,15 @@ import com.vvs.peekpick.oauth.model.PrincipalUser;
 import com.vvs.peekpick.oauth.model.ProviderUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
-import java.security.Key;
 import java.util.Optional;
 
 @Slf4j
@@ -31,8 +24,7 @@ import java.util.Optional;
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
-    @Value("${auth.secretKey}")
-    private String SECRET_KEY;
+
     @Value("${auth.redirectUrl}")
     private String redirectUrl;
 
@@ -65,7 +57,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
             log.info("이미 있는 회원");
             redirectUrl = "http://localhost:3000/login";
         }
-
+        log.info("url={}", redirectUrl);
         // 신규 회원이면 회원정보 return
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }

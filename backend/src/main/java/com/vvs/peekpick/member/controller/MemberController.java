@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -23,11 +24,6 @@ public class MemberController {
     private final MemberService memberService;
     private final ResponseService responseService;
 
-    // TODO
-    // 소셜 로그인 버튼 클릭 시
-    // 1. 이력 조회
-    // 1-1 회원이라면 -> 정상 로그인 처리
-    // 1-2 회원이 아니라면 -> 회원가입 로직 처리
     /**
      * 회원가입 처리
      * @param signUpDto
@@ -38,6 +34,11 @@ public class MemberController {
     public DataResponse signup(@RequestBody SignUpDto signUpDto) {
         Avatar result = memberService.signup(signUpDto);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, result);
+    }
+
+    @GetMapping("/info")
+    public DataResponse memberInfo() {
+        return null;
     }
 
     @GetMapping("/emoji")
@@ -59,8 +60,14 @@ public class MemberController {
     }
 
     @GetMapping("/taste")
-    public DataResponse TasteList(@RequestParam("category_large") String categoryLarge) {
-        List<Category> result = memberService.categoryList();
+    public DataResponse TasteList(@RequestParam(value = "category_large", required = false) String categoryLarge) {
+        List<?> result;
+
+        if (categoryLarge == null) {
+            result = memberService.categoryList();
+        } else {
+            result = memberService.detailCategoryList(categoryLarge);
+        }
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
 
     }
