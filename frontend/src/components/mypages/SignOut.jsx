@@ -1,8 +1,8 @@
 import React,{useEffect,useRef,forwardRef,useState} from 'react';
 import classes from './SignOut.module.css';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 const SignOut = forwardRef((props,ref) => {
-
   const [isChecked, setIsChecked] = useState(false);
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
@@ -23,6 +23,15 @@ const SignOut = forwardRef((props,ref) => {
       props.setSignoutView(false);
     }
     // axios delete 요청하기
+    const deleteSign=() =>{
+      axios.delete('http://192.168.31.26:8081/member/secession')
+      .then((response)=>{
+        console.log('삭제 성공',response);
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+    }
   return (
     <div className={classes.hi} ref={wrapperRef}>
       {/* 모달창 */}
@@ -43,7 +52,7 @@ const SignOut = forwardRef((props,ref) => {
       {/* 색깔 변화 넣어야함 */}
       {isChecked ?(
         <Link to="/login">
-        <div>
+        <div onClick={deleteSign}>
         {/* 클릭 시 DB 계정 정보 삭제 */}
         <h4>회원탈퇴</h4>
       </div>

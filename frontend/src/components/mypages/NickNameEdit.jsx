@@ -48,8 +48,8 @@ const NickNameEdit = forwardRef((props,ref) => {
   const changeProfile=()=>{
     // 리덕스 코드 집어넣기
     axios.put("",{profile})
-    .then((response)=>{
-      console.log(response)
+    .then((request)=>{
+      console.log(request)
     })
   }
   return (

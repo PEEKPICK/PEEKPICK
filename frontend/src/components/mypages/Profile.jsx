@@ -17,11 +17,11 @@ const emojiIdSave = {
 }
 const ImgChangePut = () => {
   axios.put("", {emojiIdSave})
-  .then((response) => {
-    console.log(response)
+  .then((request) => {
+    console.log(request)
   })
-  .catch((response)=>{
-    console.log(response)
+  .catch((request)=>{
+    console.log(request)
   })
 }
   return (
