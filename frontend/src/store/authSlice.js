@@ -14,6 +14,8 @@ const authSlice = createSlice({
     nickname: '',
     likes: [],
     dislikes: [],
+    like: [],
+    hate: [],
   },
   reducers: {
     // 리듀서를 회원가입 페이지 마다 작성해서 처리.
@@ -37,10 +39,12 @@ const authSlice = createSlice({
     updateUserLike (state, action) {
       const newItem = action.payload;
       state.likes = newItem.likes;
+      state.like = newItem.like
     },
     updateUserHate (state, action) {
       const newItem = action.payload;
       state.dislikes = newItem.dislikes;
+      state.hate = newItem.hate;
     }
   },
 });

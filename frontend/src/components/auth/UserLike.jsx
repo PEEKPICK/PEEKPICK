@@ -9,6 +9,8 @@ import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
 
 const UserLike = () => {
+  // UserLikeHate에서 사용할 like hate 처리하기
+  
   // 상태관리
   const [dataAxios, setDataAxios] = useState(false);
   const [middleDataAxios, setMiddleDataAxios] = useState(false);

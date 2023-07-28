@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +27,28 @@ const UserLikeHate = () => {
   }
 
   const moveToWelcome = () => {
+    const dataToSend = {
+      id: userInfo.id,
+      name: userInfo.name,
+      email: userInfo.email,
+      phone: userInfo.phone,
+      birthday: userInfo.birthday,
+      gender: userInfo.gender,
+      emojiId: userInfo.emojiId,
+      prefixId: userInfo.prefixId,
+      nickname: userInfo.nickname,
+      likes: userInfo.likes,
+      dislikes: userInfo.dislikes,
+    }
+  
+  axios.post('http://192.168.31.26:8081/member/signup', dataToSend)
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
+
     navigate('/welcome')
   }
 
