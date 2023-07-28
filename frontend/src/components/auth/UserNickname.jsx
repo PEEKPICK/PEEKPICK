@@ -46,21 +46,24 @@ const UserNickname = () => {
         <h1>닉네임 PICK</h1>
       </div>
       <div>
-        <p>자신을 나타낼 수 있는 정보는 최대한 삼가해주세요!</p>
+        <p>자신을 나타낼 수 있는 정보는</p>
+        <p>최대한 삼가해주세요!</p>
       </div>
       <div className={common.line}></div>
       <div>
         <h3>타이틀</h3>
-        <div>
-          <div>
+        <div className={classes.titleWrap}>
+          <div className={classes.prefix}>
             {content}
           </div>
-          <img src="img/reloadWhite.png" alt="reload" className={classes.reload} onClick={randomPrefix} />
+          <div className={classes.reload}>
+            <img src="img/reloadWhite.png" alt="reload" onClick={randomPrefix} />
+          </div>
         </div>
       </div>
       <div>
         <h3>닉네임</h3>
-        <input type="text" onChange={e => setNickname(e.target.value)} />
+        <input type="text" onChange={e => setNickname(e.target.value)}/>
       </div>
       <div>
         <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>

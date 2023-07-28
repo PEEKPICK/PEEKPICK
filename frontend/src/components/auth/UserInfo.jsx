@@ -23,14 +23,18 @@ const UserInfo = () => {
 
   // axios 통신으로 유저 정보 불러오기
   useEffect(() => {
-    const value = 14;
-    // const userAPI = 'https://react-http-4710c-default-rtdb.firebaseio.com/user.json';
+    // 쿼리 파라미터에서 유저 id 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const value = urlParams.get("id");
+    // axsio 통신 url
     const userAPI = `http://192.168.31.26:8081/member/signup/info?id=${value}`;
 
+    // axsio 통신
     axios.get(userAPI)
       .then(response => {
         const userData = response.data.data;
 
+        // store에 dispatch
         dispatch(authActions.updateUserInfo({
           name: userData.name,
           email: userData.email,

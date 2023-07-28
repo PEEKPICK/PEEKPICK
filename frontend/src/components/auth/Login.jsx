@@ -1,36 +1,19 @@
-// import axios from 'axios';
-import { useEffect } from 'react';
-
 import classes from './style/Login.module.css';
 
 const Login = () => {
-
-  const kakao = () => {
-    console.log('kakao')
-    // window.location.href = `http://192.168.31.26:8081/oauth2/authorization/kakao`;
+  const loginHandler = (service) => {
+      window.location.href = `http://localhost:8081/oauth2/authorization/${service}`;
   };
 
-  const naver = () => {
-    console.log('naver')
-  };
-
-  const google = () => {
-    console.log('google')
-  };
-
-  useEffect(() => {
-    naver()
-    google()
-  }, [])
-;
   return (
     <div className={classes.container}>
       <div className={classes.buttons}>
-        <button onClick={kakao}>카카오 로그인</button>
-        <button onClick={naver}>네이버 로그인</button>
-        <button onClick={google}>구글 로그인</button>
+        <button onClick={() => loginHandler('kakao')}>카카오 로그인</button>
+        <button onClick={() => loginHandler('naver')}>네이버 로그인</button>
+        <button onClick={() => loginHandler('google')}>구글 로그인</button>
       </div>
     </div>
   );
 }
+
 export default Login;
