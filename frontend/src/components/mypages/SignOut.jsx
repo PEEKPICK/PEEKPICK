@@ -22,6 +22,7 @@ const SignOut = forwardRef((props,ref) => {
     const SignOutDisplay=()=>{
       props.setSignoutView(false);
     }
+    // axios delete 요청하기
   return (
     <div className={classes.hi} ref={wrapperRef}>
       {/* 모달창 */}

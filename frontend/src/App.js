@@ -13,18 +13,17 @@ import Welcome from "./components/auth/Welcome";
 import UserLikeHate from "./components/auth/UserLikeHate";
 // 용범
 import MyPage from "./components/mypages/MyPage";
-import Profile from "./components/mypages/Profile";
 import Announcement from "./components/mypages/Announcement";
 import LikeEdit from "./components/mypages/LikeEdit";
 import HateEdit from "./components/mypages/HateEdit";
-import LogOut from "./components/mypages/LogOut";
-import SingOut from "./components/mypages/SignOut";
+import Profile from "./components/mypages/Profile";
 // 동민
 import Picker from "./components/pick/Picker";
 import Picky from "./components/pick/Picky";
 // 기타공용
 import Layout from "./components/Layout";
 import AlreadyLogin from "./components/AlreadyLogin";
+
 
 function App() {
   const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)

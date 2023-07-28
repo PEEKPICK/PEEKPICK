@@ -20,7 +20,7 @@ const LogOut = forwardRef((props,ref) => {
     const Logout=()=>{
       localStorage.clear()
     }
-
+    // 토큰 삭제 하는 코드 추가
   return (
     <div className={classes.hi} ref={wrapperRef}>
       {/* 모달창 */}
