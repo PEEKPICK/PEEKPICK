@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Modal from './Modal';
 
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
@@ -14,6 +15,7 @@ const UserLike = () => {
   const [likeList, setLikeList] = useState([]);
   const [middleLikeList, setMiddleLikeList] = useState([]);
   const [tempMiddleList, setTempMiddleList] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
   
 
   // 기본 함수 설정
@@ -50,11 +52,16 @@ const UserLike = () => {
       if (tempMiddleList.length < 5) {
         setTempMiddleList((prevList) => [...prevList, categoryId])
       } else {
-        console.log('5개가 초과했습니다!')
+        setModalOpen(true);
       }
     } else {
       setTempMiddleList((prevList) => prevList.filter(item => item !== categoryId))
     }
+  };
+
+  // 모달창 종료
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   const selectedFinish = () => {
@@ -94,6 +101,9 @@ const UserLike = () => {
             ))}
           </ul>
         ) : (<p>중분류가 없습니다.</p>)}
+      </div>
+      <div>
+        {modalOpen && <Modal onClose={closeModal} />}
       </div>
       <div>
         <button onClick={selectedFinish}>선택완료</button>
