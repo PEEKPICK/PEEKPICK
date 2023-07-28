@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserNickname.module.css';
+import common from './style/Common.module.css';
 
 const UserNickname = () => {
   // 상태관리
@@ -47,7 +48,7 @@ const UserNickname = () => {
       <div>
         <p>자신을 나타낼 수 있는 정보는 최대한 삼가해주세요!</p>
       </div>
-      <div className={classes.line}></div>
+      <div className={common.line}></div>
       <div>
         <h3>타이틀</h3>
         <div>
@@ -62,7 +63,7 @@ const UserNickname = () => {
         <input type="text" onChange={e => setNickname(e.target.value)} />
       </div>
       <div>
-        <button onClick={moveToUserLikeHate}>다음으로</button>
+        <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
       </div>
     </div>
   );

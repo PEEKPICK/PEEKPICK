@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserInfo.module.css';
+import common from './style/Common.module.css';
 
 const UserInfo = () => {
   // 바꿀 store 선택
@@ -123,7 +124,7 @@ const UserInfo = () => {
             <input type="radio" id="radio-two" name="switch-one" value="F" checked={gender === 'F'} onChange={() => setGender('F')}/>
             <label htmlFor="radio-two">여자</label>
           </div>
-          <input type="button" value="다음으로" onClick={moveToUserProfile} />
+          <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
         </form>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import classes from './style/UserLikeHate.module.css';
+import common from './style/Common.module.css';
 
 const UserLikeHate = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const UserLikeHate = () => {
           또, 무엇을 싫어하시나요?
         </p>
       </div>
-      <div className={classes.line}></div>
+      <div className={common.line}></div>
       <div>
         <h3>좋아하는 것</h3>
         <button onClick={moveToUserLike}>+추가</button>

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserProfile.module.css';
+import common from './style/Common.module.css';
 
 const UserProfile = () => {
   // 상태관리
@@ -42,7 +43,7 @@ const UserProfile = () => {
         <p>개성넘치는 프로필을 뽑아보세요.</p>
         <p>숨겨진 프로필이 있다는 소문이...</p>
       </div>
-      <div className={classes.line}></div>
+      <div className={common.line}></div>
       <div>
         <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
@@ -50,7 +51,7 @@ const UserProfile = () => {
         <button onClick={randomGacha}>다시뽑기</button>
       </div>
       <div>
-        <button onClick={moveToUserNickname}>다음으로</button>
+        <button onClick={moveToUserNickname} className={common.next}>다음으로</button>
       </div>
     </div>
   );
