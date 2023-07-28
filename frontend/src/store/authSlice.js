@@ -34,6 +34,14 @@ const authSlice = createSlice({
       state.prefixId = newItem.prefixId;
       state.nickname = newItem.nickname;
     },
+    updateUserLike (state, action) {
+      const newItem = action.payload;
+      state.likes = newItem.likes;
+    },
+    updateUserHate (state, action) {
+      const newItem = action.payload;
+      state.dislikes = newItem.dislikes;
+    }
   },
 });
 
