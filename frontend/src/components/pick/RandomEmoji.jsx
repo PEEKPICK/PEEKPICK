@@ -1,15 +1,13 @@
+import { useState } from "react";
 import classes from "./RandomEmoji.module.css";
-
-function RandomEmoji({ EmojiData, Loading }) {
-  if (Loading) {
-    return <div>Loading...</div>;
-  }
-
+import emojiModal from "./emojiModal";
+function RandomEmoji({ EmojiData }) {
+  //ì´ëª¨ì§€ ëª¨ë‹¬ ì°½ ìƒíƒœ
   if (EmojiData === null) {
-    return <div>ÅÖ...!!!</div>;
+    return <div>í……...!!!</div>;
   }
 
-  const gridSize = 7; // °¡·Î¿Í ¼¼·Î¿¡ 10Ä­¾¿ ÃÑ 100Ä­
+  const gridSize = 7; // ê°€ë¡œì™€ ì„¸ë¡œì— 10ì¹¸ì”© ì´ 100ì¹¸
   const cellSize = `${100 / gridSize}%`;
 
   const getRandomIndexes = (max, count) => {
@@ -25,12 +23,12 @@ function RandomEmoji({ EmojiData, Loading }) {
       className={classes.emojiArea}
       style={{ display: "grid", gridTemplateColumns: `repeat(${gridSize}, ${cellSize})` }}
     >
-      {/* 100Ä­À¸·Î ºĞÇÒµÈ div ¾È¿¡ ·£´ıÇÑ 5°³ µ¥ÀÌÅÍ ¹èÄ¡ */}
+      {/* 100ì¹¸ìœ¼ë¡œ ë¶„í• ëœ div ì•ˆì— ëœë¤í•œ 5ê°œ ë°ì´í„° ë°°ì¹˜ */}
       {Array.from({ length: gridSize * gridSize }).map((_, index) => (
-        <div key={index}>
-          {/* ·£´ıÇÑ 5°³ÀÇ ¼¿¿¡¸¸ limitedData.id ¹èÄ¡ */}
+        <button key={index} className={classes.emojiButton}>
+          {/* ëœë¤í•œ 5ê°œì˜ ì…€ì—ë§Œ limitedData.id ë°°ì¹˜ */}
           {randomIndexes.includes(index) ? EmojiData[Math.floor(Math.random() * EmojiData.length)].id : null}
-        </div>
+        </button>
       ))}
     </div>
   );

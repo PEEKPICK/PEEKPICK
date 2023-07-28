@@ -12,9 +12,8 @@ function Finder() {
   }, []);
 
   const fetchEmoji = () => {
-    setLoading(true);
     fetch("http://localhost:8080/posts") // API 엔드포인트 URL
-      .then((response) => new Promise((resolve) => setTimeout(() => resolve(response.json()), 500)))
+      .then((response) => response.json())
       //정상 응답
       .then((jsonEmoji) => {
         setEmoji(jsonEmoji.posts);
@@ -31,8 +30,8 @@ function Finder() {
     <>
       <div className={classes.finderMain}>
         <button className={classes.button} onClick={fetchEmoji}>
-          <img src="/img/reloadBlue.png" alt="새로고침" />
-          피커찾기
+          {loading ? <img src="/img/reloadBlue.png" alt="새로고침" /> : <img src="/img/bad.png" alt="새로고침" />}
+          {loading ? "로딩 중" : "새로고침"}
         </button>
       </div>
       <RandomEmoji EmojiData={emoji} Loading={loading} />
