@@ -4,15 +4,15 @@ pipeline {
         stage("Set Variable") {
             steps {
                 script {
-                    IMAGE_NAME_FE = "wnsdud12365/peekpick-react"
                     IMAGE_NAME_BE = "wnsdud12365/peekpick-springboot"
+                    IMAGE_NAME_FE = "wnsdud12365/peekpick-react"
                     IMAGE_STORAGE = "https://registry.hub.docker.com"
                     IMAGE_STORAGE_CREDENTIAL = "docker-hub"
                     APPLICATION_YML_PATH = "/usr/spring/resources"
                     CONTAINER_NAME_BE = "peekpick_be"
                     CONTAINER_NAME_FE = "peekpick_fe"
-                    PROJECT_DIR_FE = "frontend"
                     PROJECT_DIR_BE = "backend"
+                    PROJECT_DIR_FE = "frontend"
                 }
             }
         }
@@ -62,6 +62,10 @@ pipeline {
                 dir("${PROJECT_DIR_BE}") {
                     script {
                         sh "docker build --no-cache -t ${IMAGE_NAME_BE} ."
+                    }
+                }
+                dir("${PROJECT_DIR_FE}") {
+                    script {
                         sh "docker build --no-cache -t ${IMAGE_NAME_FE} ."
                     }
                 }
