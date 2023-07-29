@@ -41,7 +41,7 @@ const UserLikeHate = () => {
       dislikes: userInfo.dislikes,
     }
   
-  axios.post('http://192.168.31.26:8081/member/signup', dataToSend)
+  axios.post('http://172.30.1.11:8081/member/signup', dataToSend)
     .then(response => {
       console.log(response)
     })
@@ -68,14 +68,14 @@ const UserLikeHate = () => {
       <div>
         <h3>좋아하는 것</h3>
         <div>
-          {userInfo.likes}
+          {userInfo.like}
         </div>
         <button onClick={moveToUserLike} className={classes.addButton}>+추가</button>
       </div>
       <div>
         <h3>싫어하는 것</h3>
         <div>
-          {userInfo.dislikes}
+          {userInfo.hate}
         </div>
         <button onClick={moveToUserHate} className={classes.addButton}>+추가</button>
       </div>
