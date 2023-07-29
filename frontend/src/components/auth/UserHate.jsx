@@ -11,12 +11,17 @@ import common from './style/Common.module.css';
 
 const UserHate = () => {
   // 상태관리
+  // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
   const [dataAxios, setDataAxios] = useState(false);
   const [middleDataAxios, setMiddleDataAxios] = useState(false);
+  // modal 판단을 위한 flag
   const [modalOpen, setModalOpen] = useState(false);
+  // likeList, middleLikeList는 대분류, 중분류 표시
   const [likeList, setLikeList] = useState([]);
   const [middleLikeList, setMiddleLikeList] = useState([]);
+  // tempMiddleList - 백엔드 전송을 위한 중분류 id
   const [tempMiddleList, setTempMiddleList] = useState([]);
+  // middleItem - UserLikeHate에 표시할 중분류 이름
   const [middleItem, setMiddleItem] = useState([]);
 
   // 기본 함수 설정
