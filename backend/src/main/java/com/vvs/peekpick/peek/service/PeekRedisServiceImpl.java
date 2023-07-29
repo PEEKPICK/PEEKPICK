@@ -17,6 +17,8 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import com.vvs.peekpick.response.ResponseStatus;
 import javax.annotation.PostConstruct;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -101,8 +103,22 @@ public class PeekRedisServiceImpl implements PeekRedisService {
      */
     @Override
     public CommonResponse addPeek(PeekLocationDto peekLocationDto, PeekDto peekDto) {
+        // peekId 생성 후 설정
+        Long peekId = generateId();
+        peekLocationDto.setPeekId(peekId);
+        peekDto.setPeekId(peekId);
+
+        // writeTime을 기반으로 finishTime 설정
+        peekDto.setFinishTime(peekDto.getWriteTime().plusMinutes(30));
+
         geoOps.add(PEEK_LOCATION_REDIS, peekLocationDto.getPoint(), peekLocationDto.getPeekId().toString());
         hashOps.put(PEEK_REDIS, peekDto.getPeekId().toString(), peekDto);
+
+        // PeekDto의 finishTime으로 TTL 설정
+        Duration ttl = Duration.between(LocalDateTime.now(), peekDto.getFinishTime());
+        peekTemplate.expire(peekDto.getPeekId().toString(), ttl);
+        locationTemplate.expire(peekDto.getPeekId().toString(), ttl);
+
         return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
     }
 
@@ -145,13 +161,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         else count = -1;
 
         PeekDto peekDto = hashOps.get(PEEK_REDIS, peekId.toString());
-        if (like) { //좋아요를 눌렀다면
-            peekDto.setLikeCount(peekDto.getLikeCount() + count); //갯수 반영
-            peekDto.setFinishTime(peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME));
-        } else {
-            peekDto.setDisLikeCount(peekDto.getDisLikeCount() + count);
-        }
+        if (like) peekDto.setLikeCount(peekDto.getLikeCount() + count); //갯수 반영
+        else peekDto.setDisLikeCount(peekDto.getDisLikeCount() + count);
+        peekDto.setFinishTime(peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME)); //휘발 시간 추가 반영
         hashOps.put(PEEK_REDIS, peekId.toString(), peekDto);
+
         return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
     }
 }

@@ -24,7 +24,6 @@ public class PeekController {
 
     private final PeekRedisService peekRedisService;
 
-
     @PostMapping
     public ResponseEntity<DataResponse> findNearPeek(@RequestBody SearchPeekDto searchPeekDto) {
         return ResponseEntity.ok(peekRedisService.findNearPeek(searchPeekDto));
@@ -43,14 +42,6 @@ public class PeekController {
 
     @PostMapping("/write")
     public ResponseEntity<CommonResponse> addPeek(@RequestBody RequestPeekDto requestPeekDto) {
-        Long peekId = peekRedisService.generateId();
-        requestPeekDto.getPeekLocationDto().setPeekId(peekId);  // PeekLocationDto의 Peek ID 설정
-        requestPeekDto.getPeekDto().setPeekId(peekId);  // PeekDto의 Peek ID 설정
-
-        // writeTime을 기반으로 finishTime 설정
-        LocalDateTime writeTime = requestPeekDto.getPeekDto().getWriteTime();
-        LocalDateTime finishTime = writeTime.plusMinutes(30);
-        requestPeekDto.getPeekDto().setFinishTime(finishTime);
         return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto.getPeekLocationDto(), requestPeekDto.getPeekDto()));
     }
 
