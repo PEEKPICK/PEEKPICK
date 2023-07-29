@@ -71,7 +71,7 @@ const UserHate = () => {
       dislikes: tempMiddleList,
       hate: middleItem,
     }
-    dispatch(authActions.updateUserLike(changedLikes))
+    dispatch(authActions.updateUserHate(changedLikes))
     navigate('/userlikehate');
   };
 
