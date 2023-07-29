@@ -16,6 +16,7 @@ const UserHate = () => {
   const [likeList, setLikeList] = useState([]);
   const [middleLikeList, setMiddleLikeList] = useState([]);
   const [tempMiddleList, setTempMiddleList] = useState([]);
+  const [middleItem, setMiddleItem] = useState([]);
 
   // 기본 함수 설정
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ const UserHate = () => {
 
   // axios 통신 (대분류 가져오기)
   useEffect(() => {
-    axios.get('http://192.168.31.26:8081/member/taste')
+    axios.get('http://172.30.1.11:8081/member/taste')
       .then(response => {
         setDataAxios(true);
         setLikeList(response.data.data)
@@ -35,7 +36,7 @@ const UserHate = () => {
 
   // 중분류 뽑아오는 함수
   const middleItemHandler = (item) => {
-    axios.get(`http://192.168.31.26:8081/member/taste?category_large=${item}`)
+    axios.get(`http://172.30.1.11:8081/member/taste?category_large=${item}`)
       .then(response => {
         setMiddleDataAxios(true);
         setMiddleLikeList(response.data.data);
@@ -46,15 +47,17 @@ const UserHate = () => {
   }
 
   // 중분류 선택 시, 5개 여부 파악 및 리스트에 추가
-  const middleListCheck = (categoryId) => {
+  const middleListCheck = (categoryId, middle) => {
     if (!tempMiddleList.includes(categoryId)) {
       if (tempMiddleList.length < 5) {
         setTempMiddleList((prevList) => [...prevList, categoryId])
+        setMiddleItem((prevItem) => [...prevItem, middle])
       } else {
         setModalOpen(true);
       }
     } else {
       setTempMiddleList((prevList) => prevList.filter(item => item !== categoryId))
+      setMiddleItem((prevItem) => prevItem.filter(item => item !== middle))
     }
   };
 
@@ -66,6 +69,7 @@ const UserHate = () => {
   const selectedFinish = () => {
     const changedLikes = {
       dislikes: tempMiddleList,
+      hate: middleItem,
     }
     dispatch(authActions.updateUserLike(changedLikes))
     navigate('/userlikehate');
@@ -95,7 +99,7 @@ const UserHate = () => {
         {middleDataAxios ? (
           <ul>
             {middleLikeList.map(middleItem => (
-              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId)}>{middleItem.middle}</button>
+              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}>{middleItem.middle}</button>
             ))}
           </ul>
         ) : (<p>중분류가 없습니다.</p>)}
