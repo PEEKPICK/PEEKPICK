@@ -1,0 +1,16 @@
+
+.checkpick{
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  height: 7vh;
+  background-color: gray;
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 50%;
+  .img{
+    width: 10%;
+  }
+}

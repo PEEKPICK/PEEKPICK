@@ -5,7 +5,7 @@ const Profile = (props) => {
   const [emoji,setEmoji] = useState("");
   const [emojiId,setEmojiId] = useState("");
   const changeImg=()=>{
-  axios.get("http://192.168.31.26:8081/member/emoji")
+  axios.get("http://172.30.1.11:8081/member/emoji")
   .then((response)=>{
     console.log(response)
     setEmoji(response.data.data.imageUrl)
@@ -44,9 +44,11 @@ const ImgChangePut = () => {
       </div>
       {/* 다시 뽑기 한번이상 클릭시 선택완료 버튼 색상 on */}
       {/* 클릭시 props로 이모지 마이페이지로 전달 */}
-      <div onClick={ImgChangePut}>
+      <Link to="/mypage">
+      <div onClick={ImgChangePut} >
         <h4>선택 완료</h4>
       </div>
+      </Link>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-// import ChartAlert from './ChatAlert';
+import ChartAlert from './ChatAlert';
 import { Link } from 'react-router-dom';
 import classes from './NavigationBar.module.css';
 const NavigationBar = () => {
@@ -26,7 +26,7 @@ const NavigationBar = () => {
     <div className={classes.basic}>
       <div>
         {/* 알림 올경우 생성되는 알림창 components */}
-        {/* <ChartAlert></ChartAlert> */}
+        <ChartAlert></ChartAlert>
       </div>
 
       {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
