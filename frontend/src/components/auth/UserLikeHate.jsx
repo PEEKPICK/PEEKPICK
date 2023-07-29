@@ -18,6 +18,7 @@ const UserLikeHate = () => {
   // 함수 생성
   const navigate = useNavigate();
 
+  // 함수 정의
   const moveToUserLike = () => {
     navigate('/userlike')
   }
@@ -41,13 +42,13 @@ const UserLikeHate = () => {
       dislikes: userInfo.dislikes,
     }
   
-  customAxios.post('/member/signup', dataToSend)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
+    customAxios.post('/member/signup', dataToSend)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(error => {
+        console.log(error)
+      })
 
     navigate('/welcome')
   }
