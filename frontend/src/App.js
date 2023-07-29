@@ -52,6 +52,13 @@ function App() {
             <>
               <Route path="/oauth2/redirect" element={<Redirect />}/>
               <Route path="/" element={<Login />} />
+              <Route path="/userinfo" element={<UserInfo />} />
+              <Route path="/userprofile" element={<UserProfile />} />
+              <Route path="/usernickname" element={<UserNickname />} />
+              <Route path="/userlike" element={<UserLike />} />
+              <Route path="/UserLikeHate" element={<UserLikeHate />} />
+              <Route path="/userhate" element={<UserHate />} />
+              <Route path="/welcome" element={<Welcome />} />
             </>
           )}
           {isAuthenticated && (
@@ -67,14 +74,6 @@ function App() {
                 <Route path="hateedit" element={<HateEdit />} />
               </Route>
               {/* 준형 */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/userinfo" element={<UserInfo />} />
-              <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/usernickname" element={<UserNickname />} />
-              <Route path="/userlike" element={<UserLike />} />
-              <Route path="/UserLikeHate" element={<UserLikeHate />} />
-              <Route path="/userhate" element={<UserHate />} />
-              <Route path="/welcome" element={<Welcome />} />
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>

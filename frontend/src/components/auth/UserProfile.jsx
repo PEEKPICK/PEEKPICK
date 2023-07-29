@@ -1,13 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserProfile.module.css';
 import common from './style/Common.module.css';
 
 const UserProfile = () => {
+  const userInfo = useSelector(state => state.auth)
+
   // 상태관리
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
   const [emojiId, setEmojiId] = useState('1');
@@ -18,7 +20,7 @@ const UserProfile = () => {
 
   // 이모지 다시 뽑기를 위한 버튼
   const randomGacha = () => {
-    axios.get('http://192.168.31.26:8081/member/emoji')
+    axios.get('http://172.30.1.11:8081/member/emoji')
       .then(response => {
         setEmojiId(response.data.data.emojiId);
         setRandomEmoji(response.data.data.animatedImageUrl);
@@ -31,6 +33,7 @@ const UserProfile = () => {
   // 다음으로 이동
   const moveToUserNickname = () => {
     dispatch(authActions.updateProfile({emojiId: emojiId}));
+    console.log(userInfo)
     navigate('/usernickname')
   };
 

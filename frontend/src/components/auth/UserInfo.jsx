@@ -69,6 +69,7 @@ const UserInfo = () => {
       gender: gender,
     }
     dispatch(authActions.updateUserInfo(changedUserData));
+    console.log(userInfo)
     navigate('/userprofile')
   };
 

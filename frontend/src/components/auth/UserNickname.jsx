@@ -21,8 +21,9 @@ const UserNickname = () => {
 
   //함수 정의
   const randomPrefix = () => {
-    axios.get('http://192.168.31.26:8081/member/prefix')
+    axios.get('http://172.30.1.11:8081/member/prefix')
       .then(response => {
+        console.log(response.data.data)
         setPrefix(response.data.data.prefixId);
         setContent(response.data.data.content);
       })
