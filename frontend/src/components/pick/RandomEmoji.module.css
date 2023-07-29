@@ -1,0 +1,10 @@
+.emojiArea {
+  border: 1px solid black;
+  margin-top: 30%;
+  height: 40%;
+}
+
+.emojiButton {
+  background: none;
+  color: white;
+}
