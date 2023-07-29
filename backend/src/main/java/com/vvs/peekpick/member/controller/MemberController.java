@@ -32,6 +32,7 @@ public class MemberController {
      */
     @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto) {
+        log.info("OK!");
         Avatar result = memberService.signup(signUpDto);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, result);
     }

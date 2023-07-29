@@ -64,16 +64,13 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
             String accessToken = jwtTokenProvider.createAccessToken(member.get());
             String refreshToken = jwtTokenProvider.createRefreshToken();
 
-            // accessToken 은 헤더
-            response.setHeader("Authorization", accessToken);
-
             // refreshToken 은 쿠키
             Cookie cookie = getCookie(refreshToken);
             response.addCookie(cookie);
 
-            redirectUrl = "http://localhost:3000/";
+            // accessToken 은 파라미터에 임시, 맘에 안든다
+            redirectUrl = "http://localhost:3000/oauth2/redirect?token=" + accessToken;
         }
-        log.info("url={}", redirectUrl);
         // 신규 회원이면 회원정보 return
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }

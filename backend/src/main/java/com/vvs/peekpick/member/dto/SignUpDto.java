@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class SignUpDto {
+    private Long id;
     private String email;
     private String name;
     private String gender;

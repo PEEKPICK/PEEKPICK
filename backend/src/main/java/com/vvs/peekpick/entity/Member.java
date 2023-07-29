@@ -1,5 +1,6 @@
 package com.vvs.peekpick.entity;
 
+import com.vvs.peekpick.member.dto.SignUpDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,6 +28,14 @@ public class Member {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "achievement_id")
     private Achievement achievement;
+
+    public void updateMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {
+        this.avatar = avatar;
+        this.achievement = achievement;
+        this.gender = signUpDto.getGender();
+        this.phone = signUpDto.getPhone();
+        this.birthday = signUpDto.getBirthday();
+    }
 
     @Override
     public String toString() {

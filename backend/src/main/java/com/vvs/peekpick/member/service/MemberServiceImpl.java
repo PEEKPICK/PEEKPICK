@@ -40,11 +40,14 @@ public class MemberServiceImpl implements MemberService {
     public Avatar signup(SignUpDto signUpDto) {
         Avatar avatar = createAvatar(signUpDto);
         Achievement achievement = createAchievement();
-        Member member = createMember(signUpDto, avatar, achievement);
+
+        Member findMember = memberRepository.findById(signUpDto.getId()).orElseThrow();
+
+        findMember.updateMember(signUpDto, avatar, achievement);
+        log.info("findMember={}", findMember);
         addTastes(signUpDto, avatar);
 
         // 회원가입 완료 시 로그인 처리를 위해 avatar return
-
         return avatar;
     }
 
