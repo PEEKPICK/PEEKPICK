@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { customAxios } from '../../api/customAxios';
 
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -41,7 +41,7 @@ const UserLikeHate = () => {
       dislikes: userInfo.dislikes,
     }
   
-  axios.post('http://172.30.1.11:8081/member/signup', dataToSend)
+  customAxios.post('/member/signup', dataToSend)
     .then(response => {
       console.log(response)
     })

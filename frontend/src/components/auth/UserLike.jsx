@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { customAxios } from '../../api/customAxios';
+
 import Modal from './Modal';
 
 import { useState, useEffect } from 'react';
@@ -26,7 +27,7 @@ const UserLike = () => {
 
   // axios 통신 (대분류 가져오기)
   useEffect(() => {
-    axios.get('http://172.30.1.11:8081/member/taste')
+    customAxios.get('/member/taste')
       .then(response => {
         setDataAxios(true);
         setLikeList(response.data.data)
@@ -38,7 +39,7 @@ const UserLike = () => {
 
   // 중분류 뽑아오는 함수
   const middleItemHandler = (item) => {
-    axios.get(`http://172.30.1.11:8081/member/taste?category_large=${item}`)
+    customAxios.get(`/member/taste?category_large=${item}`)
       .then(response => {
         setMiddleDataAxios(true);
         setMiddleLikeList(response.data.data);

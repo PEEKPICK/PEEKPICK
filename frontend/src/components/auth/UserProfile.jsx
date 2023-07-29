@@ -1,4 +1,5 @@
-import axios from 'axios';
+import { customAxios } from '../../api/customAxios';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +21,7 @@ const UserProfile = () => {
 
   // 이모지 다시 뽑기를 위한 버튼
   const randomGacha = () => {
-    axios.get('http://172.30.1.11:8081/member/emoji')
+    customAxios.get('/member/emoji')
       .then(response => {
         setEmojiId(response.data.data.emojiId);
         setRandomEmoji(response.data.data.animatedImageUrl);

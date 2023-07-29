@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { customAxios } from '../../api/customAxios';
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
@@ -21,7 +21,7 @@ const UserNickname = () => {
 
   //함수 정의
   const randomPrefix = () => {
-    axios.get('http://172.30.1.11:8081/member/prefix')
+    customAxios.get('/member/prefix')
       .then(response => {
         console.log(response.data.data)
         setPrefix(response.data.data.prefixId);

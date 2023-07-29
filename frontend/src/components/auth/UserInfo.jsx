@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { customAxios } from '../../api/customAxios';
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -26,11 +26,9 @@ const UserInfo = () => {
     // 쿼리 파라미터에서 유저 id 가져오기
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get("id");
-    // axsio 통신 url
-    const userAPI = `http://172.30.1.11:8081/member/signup/info?id=${value}`;
 
     // axios 통신
-    axios.get(userAPI)
+    customAxios.get(`/member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
         console.log(userData)
