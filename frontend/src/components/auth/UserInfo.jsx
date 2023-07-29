@@ -29,7 +29,7 @@ const UserInfo = () => {
     // axsio 통신 url
     const userAPI = `http://172.30.1.11:8081/member/signup/info?id=${value}`;
 
-    // axsio 통신
+    // axios 통신
     axios.get(userAPI)
       .then(response => {
         const userData = response.data.data;
