@@ -26,6 +26,11 @@ import AlreadyLogin from "./components/AlreadyLogin";
 
 function App() {
   const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
+  // const checkTokenInLocalStorage = () => {
+  //   const token = localStorage.getItem("jwtToken");
+  //   return token !== null;
+  // };
+  // const isAuthenticated = checkTokenInLocalStorage();
 
   return (
     <div>
