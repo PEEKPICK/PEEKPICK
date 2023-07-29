@@ -2,9 +2,33 @@
   border: 1px solid black;
   margin-top: 30%;
   height: 40%;
+  display: flex;
+  position: relative;
 }
 
 .emojiButton {
   background: none;
   color: white;
+}
+
+.modalMain {
+  border: solid black;
+  background-color: beige;
+  width: 70%;
+  height: 70%;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* 그 외 모달에 필요한 스타일들을 추가할 수 있습니다. */
+}
+
+.emojiButton:enabled {
+  /* 버튼의 기본 스타일 */
+  padding: 8px;
+  border: none;
+  background-color: #e0e0e0;
+  color: #000;
+  cursor: pointer;
+  border: 1px solid black;
 }

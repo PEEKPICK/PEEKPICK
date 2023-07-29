@@ -1,13 +1,16 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import classes from "./RandomEmoji.module.css";
-import emojiModal from "./emojiModal";
+import Modal from "react-modal";
+
 function RandomEmoji({ EmojiData }) {
-  //이모지 모달 창 상태
+  const [isModalOpen, setModalIsOpen] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState(null); // 선택된 이모지 정보를 저장
+
   if (EmojiData === null) {
     return <div>텅...!!!</div>;
   }
 
-  const gridSize = 7; // 가로와 세로에 10칸씩 총 100칸
+  const gridSize = 7;
   const cellSize = `${100 / gridSize}%`;
 
   const getRandomIndexes = (max, count) => {
@@ -18,22 +21,53 @@ function RandomEmoji({ EmojiData }) {
 
   const randomIndexes = getRandomIndexes(gridSize * gridSize, 10);
 
+  const handleEmojiButtonClick = (emoji) => {
+    setSelectedEmoji(emoji); // 선택된 이모지 정보를 상태에 저장
+    setModalIsOpen(true);
+  };
+
   return (
     <div
       className={classes.emojiArea}
       style={{ display: "grid", gridTemplateColumns: `repeat(${gridSize}, ${cellSize})` }}
     >
-      {/* 100칸으로 분할된 div 안에 랜덤한 5개 데이터 배치 */}
-      {Array.from({ length: gridSize * gridSize }).map((_, index) => (
-        <button key={index} className={classes.emojiButton}>
-          {/* 랜덤한 5개의 셀에만 limitedData.id 배치 */}
-          {randomIndexes.includes(index) ? EmojiData[Math.floor(Math.random() * EmojiData.length)].id : null}
-        </button>
-      ))}
+      {Array.from({ length: gridSize * gridSize }).map((_, index) => {
+        const randomEmoji = randomIndexes.includes(index)
+          ? EmojiData[Math.floor(Math.random() * EmojiData.length)]
+          : null;
+
+        return (
+          <button
+            key={index}
+            className={classes.emojiButton}
+            onClick={() => handleEmojiButtonClick(randomEmoji)}
+            disabled={!randomEmoji} // 비어있는 이모지의 경우 버튼을 비활성화
+          >
+            {randomEmoji && randomEmoji.id}
+          </button>
+        );
+      })}
+      <Modal
+        className={classes.modalMain}
+        isOpen={isModalOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        shouldCloseOnOverlayClick={true}
+        shouldCloseOnEsc={true}
+      >
+        <div>
+          <button onClick={() => setModalIsOpen(false)}>X</button>
+          {selectedEmoji && (
+            <>
+              <div>아이디: {selectedEmoji.id}</div>
+              <div>내용: {selectedEmoji.body}</div>
+            </>
+          )}
+        </div>
+      </Modal>
     </div>
   );
 }
-// Fisher-Yates (Knuth) Shufflem
+
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -41,4 +75,7 @@ const shuffleArray = (array) => {
   }
   return array;
 };
+
 export default RandomEmoji;
+
+Modal.setAppElement("#root");
