@@ -42,15 +42,6 @@ const UserInfo = () => {
           birthday: userData.birthday,
           gender: userData.gender,
         }));
-
-        dispatch(authActions.updateProfile({
-          emojiId: userData.emojiId
-        }));
-
-        dispatch(authActions.updateUserNickname({
-          prefixId: userData.prefixId,
-          nickname: userData.nickname,
-        }));
       })
       .catch(error => {
         console.log(error);
