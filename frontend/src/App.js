@@ -1,4 +1,5 @@
 import "./App.css";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // router import
@@ -11,6 +12,7 @@ import UserLike from "./components/auth/UserLike";
 import UserHate from "./components/auth/UserHate";
 import Welcome from "./components/auth/Welcome";
 import UserLikeHate from "./components/auth/UserLikeHate";
+import Redirect from './components/auth/Redirect';
 // 용범
 import MyPage from "./components/mypages/MyPage";
 import Profile from "./components/mypages/Profile";
@@ -25,12 +27,21 @@ import Layout from "./components/Layout";
 import AlreadyLogin from "./components/AlreadyLogin";
 
 function App() {
-  const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
-  // const checkTokenInLocalStorage = () => {
-  //   const token = localStorage.getItem("jwtToken");
-  //   return token !== null;
-  // };
-  // const isAuthenticated = checkTokenInLocalStorage();
+  // const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
+
+  // 2023.07. 29 - 김준형 토큰 작업
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkTokenInLocalStorage = () => {
+      const token = localStorage.getItem("jwtToken");
+      return token !== null;
+    };
+
+    setIsAuthenticated(checkTokenInLocalStorage());
+  }, [])
+  
+  
 
   return (
     <div>
@@ -39,7 +50,7 @@ function App() {
         <>
           {!isAuthenticated && (
             <>
-              <Route path="/*" element={<Login />} />
+              <Route path="/" element={<Login />} />
             </>
           )}
           {isAuthenticated && (
@@ -63,6 +74,7 @@ function App() {
               <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
+              <Route path="/oauth2/redirect" element={<Redirect />}/>
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>

@@ -27,15 +27,17 @@ const UserInfo = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const value = urlParams.get("id");
     // axsio 통신 url
-    const userAPI = `http://192.168.31.26:8081/member/signup/info?id=${value}`;
+    const userAPI = `http://172.30.1.11:8081/member/signup/info?id=${value}`;
 
     // axsio 통신
     axios.get(userAPI)
       .then(response => {
         const userData = response.data.data;
+        console.log(userData)
 
         // store에 dispatch
         dispatch(authActions.updateUserInfo({
+          id: value,
           name: userData.name,
           email: userData.email,
           phone: userData.phone,
@@ -53,7 +55,7 @@ const UserInfo = () => {
         }));
       })
       .catch(error => {
-        console.log('에러 내용 : ', error);
+        console.log(error);
       })
   }, [dispatch])
 
