@@ -166,6 +166,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         peekDto.setFinishTime(peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME)); //휘발 시간 추가 반영
         hashOps.put(PEEK_REDIS, peekId.toString(), peekDto);
 
+        // PeekDto의 finishTime으로 TTL 재설정
+        Duration ttl = Duration.between(LocalDateTime.now(), peekDto.getFinishTime());
+        peekTemplate.expire(peekId.toString(), ttl);
+        locationTemplate.expire(peekId.toString(), ttl);
+
         return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
     }
 }
