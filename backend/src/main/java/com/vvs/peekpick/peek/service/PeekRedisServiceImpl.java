@@ -13,6 +13,7 @@ import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import com.vvs.peekpick.response.ResponseStatus;
 import javax.annotation.PostConstruct;
@@ -31,9 +32,13 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     // Redis에 Peek 객체별 위치를 저장할 Key
     private final String PEEK_LOCATION_REDIS = "PeekLocation";
 
+    private final String PEEK_ID_KEY = "PEEK_ID";
+    private ValueOperations<String, Object> valueOps;
+
     // Peek 가져올 갯수
     private final int MAX_PEEK = 10;
     private final Random random = new Random();
+
     //좋아요, 싫어요 시 적용되는 시간 (분)
     private final int PEEK_REACTION_TIME = 5;
 
@@ -43,14 +48,19 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     private final RedisTemplate<String, Object> locationTemplate;
     private HashOperations<String, Object, PeekDto> hashOps;
     private GeoOperations<String, Object> geoOps;
-    //private Long peekId;
-
 
 
     @PostConstruct
     public void init() {
         geoOps = locationTemplate.opsForGeo();
         hashOps = peekTemplate.opsForHash();
+        valueOps = peekTemplate.opsForValue();
+    }
+
+
+    @Override
+    public Long generateId() {
+        return valueOps.increment(PEEK_ID_KEY);
     }
 
     /**
@@ -78,7 +88,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                 allPeeks.remove(randomIndex); // avoid duplicates
             }
         }
-        return responseService.successDataResponse(ResponseStatus.Loading_Peek_LIST_SUCCESS, randomPeeks);
+        return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
     }
 
 
@@ -102,7 +112,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     @Override
     public DataResponse getPeek(Long peekId) {
         PeekDto peekDto = hashOps.get(PEEK_REDIS, peekId.toString());
-        return responseService.successDataResponse(ResponseStatus.Loading_Peek_SUCCESS, peekDto);
+        return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, peekDto);
     }
 
     /**

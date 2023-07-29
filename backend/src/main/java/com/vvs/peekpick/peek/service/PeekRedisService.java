@@ -10,6 +10,7 @@ import org.springframework.data.geo.Point;
 import java.util.List;
 
 public interface PeekRedisService {
+    public Long generateId(); // ID를 생성하고 증가시키는 메소드
     public DataResponse<List> findNearPeek(SearchPeekDto searchPeekDto); //내 주변 Peek 찾기 & Peek 로딩 시
     public CommonResponse addPeek(PeekLocationDto peekLocationDto, PeekDto peekDto); //Peek 작성
     public DataResponse getPeek(Long peekId); //id로 Peek 찾기
