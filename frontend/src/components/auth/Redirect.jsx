@@ -1,17 +1,18 @@
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import UserProfile from "./UserProfile";
 
 const Redirect = () => {
-  const params = useParams();
-
   useEffect(() => {
-    localStorage.clear();
-    localStorage.setItem("jwtToken", params.token);
-    window.location.replace("/")
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const token = urlSearchParams.get("token");
+
+    if (token !== null) {
+      localStorage.clear();
+      localStorage.setItem("jwtToken", token);
+      window.location.replace("/");
+    }
   }, []);
 
   return <></>;
-}
+};
 
 export default Redirect;

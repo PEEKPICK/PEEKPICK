@@ -50,6 +50,7 @@ function App() {
         <>
           {!isAuthenticated && (
             <>
+              <Route path="/oauth2/redirect" element={<Redirect />}/>
               <Route path="/" element={<Login />} />
             </>
           )}
@@ -74,7 +75,6 @@ function App() {
               <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
-              <Route path="/oauth2/redirect" element={<Redirect />}/>
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>
