@@ -1,17 +1,15 @@
 package com.vvs.peekpick.entity;
 
-
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Taste {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long tasteId;

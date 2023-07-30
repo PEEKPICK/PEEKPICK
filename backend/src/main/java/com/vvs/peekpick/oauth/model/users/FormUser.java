@@ -17,6 +17,10 @@ public class FormUser implements ProviderUser {
     private String username;
     private String password;
     private String email;
+    private String gender;
+    private String phoneNumber;
+    private String birthyear;
+    private String birthday;
     private String provider;
     private List<? extends GrantedAuthority> authorities;
 
@@ -41,17 +45,27 @@ public class FormUser implements ProviderUser {
     }
 
     @Override
+    public String getBirthYear() {
+        return null;
+    }
+
+    @Override
     public String getBirthDay() {
         return null;
     }
 
     @Override
-    public String getPicture() {
+    public String getProvider() {
         return null;
     }
 
     @Override
-    public String getProvider() {
+    public String getPhoneNumber() {
+        return null;
+    }
+
+    @Override
+    public String getGender() {
         return null;
     }
 
