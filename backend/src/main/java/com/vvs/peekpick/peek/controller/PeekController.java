@@ -42,7 +42,7 @@ public class PeekController {
 
     @PostMapping("/write")
     public ResponseEntity<CommonResponse> addPeek(@RequestBody RequestPeekDto requestPeekDto) {
-        return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto.getPeekLocationDto(), requestPeekDto.getPeekDto()));
+        return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto));
     }
 
     @PostMapping("/{peekId}")

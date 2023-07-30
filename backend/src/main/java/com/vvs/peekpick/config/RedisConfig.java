@@ -1,5 +1,8 @@
 package com.vvs.peekpick.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +49,9 @@ public class RedisConfig {
             redisTemplate.setKeySerializer(new StringRedisSerializer());
             redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
             return redisTemplate;
-        } 
+        }
+
+
+
 
 }

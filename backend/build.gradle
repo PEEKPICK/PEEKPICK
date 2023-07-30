@@ -34,6 +34,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'org.testcontainers:testcontainers:1.16.0'
 
 	// 23.07.24 화면 나오기전 타임리프로 대체
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
