@@ -9,9 +9,18 @@
   font-weight: 600;
 }
 
+.linetag {
+  display: flex;
+  justify-content: center;
+  
+}
+
 .line {
-  border: 2px solid lightgray;
+  position: relative;
+  border: 4px solid lightgray;
+  border-radius: 10px;
   width: 80%;
+  z-index: 1;
 }
 
 .largelist {

@@ -70,7 +70,9 @@ const UserLikeHate = () => {
           또, 무엇을 싫어하시나요?
         </p>
       </div>
-      <div className={common.line}></div>
+      <div className={common.linetag}>
+        <div className={common.line}></div>
+      </div>
       <div>
         <h3>좋아하는 것</h3>
         <div>

@@ -47,7 +47,11 @@ const UserProfile = () => {
         <p>개성넘치는 프로필을 뽑아보세요.</p>
         <p>숨겨진 프로필이 있다는 소문이...</p>
       </div>
-      <div className={common.line}></div>
+      <div>
+      <div className={common.linetag}>
+        <div className={common.line}></div>
+      </div>
+      </div>
       <div>
         <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
