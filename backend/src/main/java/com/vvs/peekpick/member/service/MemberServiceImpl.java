@@ -95,8 +95,7 @@ public class MemberServiceImpl implements MemberService {
 
     // 아바타 정보 조회
     public AvatarDto getAvatarInfo(Long avatarId) {
-        Avatar avatar = avatarRepository.findById(avatarId)
-                .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+        Avatar avatar = findByAvatarId(avatarId);
 
         return avatar.toAvatarDto();
     }
@@ -104,8 +103,7 @@ public class MemberServiceImpl implements MemberService {
     // 아바타 정보 수정
     @Override
     public void updateAvatarInfo(Long avatarId, Map<String, String> param) {
-        Avatar avatar = avatarRepository.findById(avatarId)
-                                        .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+        Avatar avatar = findByAvatarId(avatarId);
 
         Long prefixId = Long.valueOf(param.get("prefixId"));
         String nickname = param.get("nickname");
@@ -115,6 +113,18 @@ public class MemberServiceImpl implements MemberService {
                                         .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION_SAMPLE));
 
         avatar.updateAvatarInfo(prefix, nickname, bio);
+    }
+
+
+    // 아바타 이모지 수정
+    @Override
+    public void updateAvatarEmoji(Long avatarId, Long emojiId) {
+        Avatar avatar = findByAvatarId(avatarId);
+
+        Emoji emoji = emojiRepository.findById(emojiId)
+                                     .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION_SAMPLE));
+
+        avatar.updateEmoji(emoji);
     }
 
     // 23.07.31 회원 생성 Form Login 대비용
@@ -179,5 +189,12 @@ public class MemberServiceImpl implements MemberService {
                 .build();
 
         tasteRepository.save(taste);
+    }
+
+    // avatarId로 아바타 조회
+    private Avatar findByAvatarId(Long avatarId) {
+        Avatar avatar = avatarRepository.findById(avatarId)
+                                        .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+        return avatar;
     }
 }

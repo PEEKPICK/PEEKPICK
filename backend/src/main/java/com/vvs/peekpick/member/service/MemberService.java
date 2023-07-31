@@ -25,4 +25,6 @@ public interface MemberService {
     AvatarDto getAvatarInfo(Long avatarId);
 
     void updateAvatarInfo(Long avatarId, Map<String, String> param);
+
+    void updateAvatarEmoji(Long avatarId, Long emojiId);
 }

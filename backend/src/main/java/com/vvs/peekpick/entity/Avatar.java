@@ -41,6 +41,10 @@ public class Avatar {
         this.bio = bio;
     }
 
+    public void updateEmoji(Emoji emoji) {
+        this.emoji = emoji;
+    }
+
     // 취향 태그를 좋아요, 싫어요 분리
     public AvatarDto toAvatarDto() {
         List<String> likes = new ArrayList<>();
@@ -65,4 +69,5 @@ public class Avatar {
                 .disLikes(disLikes)
                 .build();
     }
+
 }

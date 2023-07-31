@@ -69,7 +69,8 @@ public class MemberController {
      * @return
      */
     @PutMapping("/info")
-    public CommonResponse updateAvatarInfo(Authentication authentication, @RequestBody Map<String, String> param) {
+    public CommonResponse updateAvatarInfo(Authentication authentication,
+                                           @RequestBody Map<String, String> param) {
         Long avatarId = Long.parseLong(authentication.getName());
         memberService.updateAvatarInfo(avatarId, param);
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
@@ -83,6 +84,15 @@ public class MemberController {
     public DataResponse RandomEmoji() {
         Emoji result = memberService.RandomEmoji();
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
+
+    @PutMapping("/info/emoji")
+    public CommonResponse updateAvatarEmoji(Authentication authentication,
+                                            @RequestBody Map<String, Long> param) {
+        Long avatarId = Long.valueOf(authentication.getName());
+        memberService.updateAvatarEmoji(avatarId, param.get("emojiId"));
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
 
     /**
