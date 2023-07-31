@@ -1,6 +1,8 @@
 // useNavigate는 다른 js파일로 이동할 때 사용
 import { useNavigate } from 'react-router-dom';
 
+import common from './style/Common.module.css';
+
 const Welcome = () => {
   const navigate = useNavigate();
 
@@ -18,7 +20,7 @@ const Welcome = () => {
         <img src="img/confetti.gif" alt='confetti' />
       </div>
       <div>
-        <button onClick={startapp}>시작하기</button>
+        <button onClick={startapp} className={common.next}>시작하기</button>
       </div>
     </div>
   );
