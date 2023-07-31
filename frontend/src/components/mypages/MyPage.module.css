@@ -1,22 +1,37 @@
-.basic{
-    display: flex;
-    background-color: #7D00FF;
+.basic {
     justify-content: center;
     align-items: center;
     height: 20%;
-    }
-.mypage{
-    margin-left: 10%;
-    padding-left: 20%;
-    padding-right: 20%;
 }
-.settings{
-    width: 10%;
+
+.basic::before {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 15vh;
+    background-color: rgba(125, 0, 255, 0.65);
 }
-.backgroundcolor{
+
+.settings {
+    position: absolute;
+    width: 7%;
+    right: 10%;
+}
+
+.backgroundcolor {
     background-color: white;
 }
-.profileDiv{
+
+.mypage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+}
+
+.profileDiv {
     position: relative;
     justify-content: center;
     display: flex;
@@ -24,46 +39,65 @@
     height: 10vh;
 
 }
-.profileDiv::before{
-    position: absolute;
-    content:"";
-    top: 0;
-    left : 0;
-    width: 100%;
-    height: 50%;
-    background-color: #7D00FF;
-}
-.profileDiv::after{
-    position: absolute;
-    background-color: white;
-    top: 50%;
-    left: 50%;
-}
-.profileImg{
+
+.profileImg {
     max-width: 110%;
     max-height: 110%;
     z-index: 10;
+    background-color: white;
+    border-radius: 50%;
 }
-.NickNameEdit{
+
+.NickNameEdit {
     display: flex;
     justify-content: center;
     height: 10vh;
     text-align: center;
     align-items: center;
-    .h1{
-        padding:5%
+
+    .h1 {
+        padding: 3%
     }
 }
-.pencil{
-    width: 5%;
+
+.pencil {
+    width: 4%;
     max-height: 30%;
+    background-color: gray;
+    padding: 1% 2% 1% 2%;
+    border-radius: 1.5vh;
 }
 
-.MypageLikeHate{
+.MypageLikeHate {
     display: flex;
+    align-content: center;
+    align-items: center;
 }
-.customercenter{
-    width: 100%;
-    height: 12vh;
+.test {
+    border: px solid black;
+
+}
+.editbtn {
+    background-color: rgba(125, 0, 255);
+    color: white;
+    margin-left: 2vh;
+    border-radius: 1vh;
 }
 
+
+.customercenter {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+}
+.customercenterImg{
+    width:90%;
+}
+
+.oneline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

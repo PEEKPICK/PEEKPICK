@@ -8,7 +8,10 @@ const NickNameEdit = forwardRef((props,ref) => {
   const [prefixId,setPrefixId] = useState('hi');
   const [nickname,setNickname] = useState('');
   const [oneline,setOneline] = useState('');
-
+  if(oneline.length >=20){
+    alert("한 줄 소개에는 20단어 이상이 허용되지 않습니다.")
+    setOneline("");
+  }
   useEffect(()=>{
     document.addEventListener('mousedown', handleClickOutside);
     return()=>{
@@ -55,12 +58,13 @@ const NickNameEdit = forwardRef((props,ref) => {
   return (
     <div ref={wrapperRef} className={classes.hi}>
       {/* 모달창 */}
-      <div>
+      <div className={classes.top}>
         <h4>닉네임 변경</h4>
         {/* 클릭시 마이페이지 이동 */}
         <img src="img/cancel.png" alt="" onClick={NickNameEditDisplay}/>
       </div>
-      <div>
+      <hr />
+      <div className={classes.middle}>
         <h4>타이틀</h4>
         {/* 형용사 버튼클릭시 input 안에 들어옴 변경 금지
                 input 말고 div로 디자인 해야할지도? */}
