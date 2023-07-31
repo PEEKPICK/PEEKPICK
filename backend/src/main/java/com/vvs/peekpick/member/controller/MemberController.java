@@ -101,6 +101,12 @@ public class MemberController {
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
 
+    /**
+     * 좋아요 태그 업데이트
+     * @param authentication
+     * @param param
+     * @return
+     */
     @PutMapping("/info/like")
     public CommonResponse updateAvatarLikes(Authentication authentication,
                                           @RequestBody Map<String, List<Long>> param) {

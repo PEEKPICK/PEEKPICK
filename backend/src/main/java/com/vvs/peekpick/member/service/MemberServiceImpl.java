@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -127,14 +128,51 @@ public class MemberServiceImpl implements MemberService {
         avatar.updateEmoji(emoji);
     }
 
-    // TODO
     // 아바타 likes 태그 수정
     @Override
     public void updateAvatarLikes(Long avatarId, List<Long> likes) {
         Avatar avatar = findByAvatarId(avatarId);
+        updateTaste(avatar, "L", likes);
+    }
 
-        // avatar가 갖고있는 likes를 전부 삭제
+    private void updateTaste(Avatar avatar, String type, List<Long> categoryIds) {
 
+        // 기존 Tastes 가져오기
+        List<Taste> tastesList = avatar.getTasteList().stream()
+                                       .filter(taste -> type.equals(taste.getType()))
+                                       .collect(Collectors.toList());
+
+        // 업데이트 Tastes
+        List<Category> newTastes = categoryIds.stream()
+                                              .map(categoryId -> categoryRepository.findById(categoryId)
+                                              .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_CATEGORY)))
+                                              .collect(Collectors.toList());
+
+        // 기존 Tastes 삭제
+        tastesList.forEach(taste -> {
+            if (!newTastes.contains(taste.getCategory())) {
+                tasteRepository.delete(taste);
+            }
+        });
+
+        // 새로운 Tastes 추가
+        for (Category category : newTastes) {
+            boolean found = false;
+            for (Taste taste : tastesList) {
+                if (taste.getCategory().equals(category)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                Taste taste = Taste.builder()
+                        .avatar(avatar)
+                        .category(category)
+                        .type(type)
+                        .build();
+                tasteRepository.save(taste);
+            }
+        }
     }
 
     // 23.07.31 회원 생성 Form Login 대비용
