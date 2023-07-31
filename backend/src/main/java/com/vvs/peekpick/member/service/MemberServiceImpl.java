@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -98,6 +99,22 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
 
         return avatar.toAvatarDto();
+    }
+
+    // 아바타 정보 수정
+    @Override
+    public void updateAvatarInfo(Long avatarId, Map<String, String> param) {
+        Avatar avatar = avatarRepository.findById(avatarId)
+                                        .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+
+        Long prefixId = Long.valueOf(param.get("prefixId"));
+        String nickname = param.get("nickname");
+        String bio = param.get("bio");
+
+        Prefix prefix = prefixRepository.findById(prefixId)
+                                        .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION_SAMPLE));
+
+        avatar.updateAvatarInfo(prefix, nickname, bio);
     }
 
     // 23.07.31 회원 생성 Form Login 대비용

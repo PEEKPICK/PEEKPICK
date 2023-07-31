@@ -20,6 +20,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -59,6 +60,19 @@ public class MemberController {
         Long avatarId = Long.parseLong(authentication.getName());
         AvatarDto result = memberService.getAvatarInfo(avatarId);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
+
+    /**
+     * 회원 아바타 수정
+     * @param authentication
+     * @param param
+     * @return
+     */
+    @PutMapping("/info")
+    public CommonResponse updateAvatarInfo(Authentication authentication, @RequestBody Map<String, String> param) {
+        Long avatarId = Long.parseLong(authentication.getName());
+        memberService.updateAvatarInfo(avatarId, param);
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
 
     /**

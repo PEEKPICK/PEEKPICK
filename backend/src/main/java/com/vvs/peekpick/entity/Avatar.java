@@ -35,6 +35,13 @@ public class Avatar {
     @OneToMany(mappedBy = "avatar")
     private List<Taste> tasteList;
 
+    public void updateAvatarInfo(Prefix prefix, String nickname, String bio) {
+        this.prefix = prefix;
+        this.nickname = nickname;
+        this.bio = bio;
+    }
+
+    // 취향 태그를 좋아요, 싫어요 분리
     public AvatarDto toAvatarDto() {
         List<String> likes = new ArrayList<>();
         List<String> disLikes = new ArrayList<>();

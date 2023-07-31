@@ -6,6 +6,7 @@ import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface MemberService {
@@ -22,4 +23,6 @@ public interface MemberService {
     List<Category> detailCategoryList(String categoryLarge);
 
     AvatarDto getAvatarInfo(Long avatarId);
+
+    void updateAvatarInfo(Long avatarId, Map<String, String> param);
 }
