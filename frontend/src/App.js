@@ -50,8 +50,9 @@ function App() {
         <>
           {!isAuthenticated && (
             <>
-              <Route path="/oauth2/redirect" element={<Redirect />}/>
+              {/* 준형 */}
               <Route path="/" element={<Login />} />
+              <Route path="/oauth2/redirect" element={<Redirect />}/>
               <Route path="/userinfo" element={<UserInfo />} />
               <Route path="/userprofile" element={<UserProfile />} />
               <Route path="/usernickname" element={<UserNickname />} />
@@ -73,7 +74,6 @@ function App() {
                 <Route path="likeedit" element={<LikeEdit />} />
                 <Route path="hateedit" element={<HateEdit />} />
               </Route>
-              {/* 준형 */}
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>
