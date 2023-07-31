@@ -1,0 +1,13 @@
+.headerMain {
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 10%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}

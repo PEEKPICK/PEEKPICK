@@ -1,9 +1,11 @@
 import classes from "./Picker.module.css";
-
+import Header from "./Header";
+import Finder from "./Finder";
 function Picker() {
   return (
     <div className={classes.pickerMain}>
-      <h1>Picker</h1>
+      <Header></Header>
+      <Finder></Finder>
     </div>
   );
 }

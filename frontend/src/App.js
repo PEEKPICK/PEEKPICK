@@ -23,8 +23,8 @@ import HateEdit from "./components/mypages/HateEdit";
 import Picker from "./components/pick/Picker";
 import Picky from "./components/pick/Picky";
 // 기타공용
-import Layout from "./components/Layout";
-import AlreadyLogin from "./components/AlreadyLogin";
+import Layout from "./components/common/Layout";
+import AlreadyLogin from "./components/common/AlreadyLogin";
 
 function App() {
   // const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
