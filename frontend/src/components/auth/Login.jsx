@@ -8,6 +8,7 @@ const Login = () => {
   return (
     <div className={classes.container}>
       <div className={classes.buttons}>
+        {/* 이미지로 변경 예정 */}
         <button onClick={() => loginHandler('kakao')}>카카오 로그인</button>
         <button onClick={() => loginHandler('naver')}>네이버 로그인</button>
         <button onClick={() => loginHandler('google')}>구글 로그인</button>

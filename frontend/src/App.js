@@ -1,5 +1,5 @@
 import "./App.css";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // router import
@@ -27,19 +27,19 @@ import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
 
 function App() {
-  const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
+  // const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
 
   // 2023.07. 29 - 김준형 토큰 작업
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // useEffect(() => {
-  //   const checkTokenInLocalStorage = () => {
-  //     const token = localStorage.getItem("jwtToken");
-  //     return token !== null;
-  //   };
+  useEffect(() => {
+    const checkTokenInLocalStorage = () => {
+      const token = localStorage.getItem("jwtToken");
+      return token !== null;
+    };
 
-  //   setIsAuthenticated(checkTokenInLocalStorage());
-  // }, [])
+    setIsAuthenticated(checkTokenInLocalStorage());
+  }, [])
 
   return (
     <div>

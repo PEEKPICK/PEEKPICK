@@ -2,15 +2,13 @@ import { customAxios } from '../../api/customAxios';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserProfile.module.css';
 import common from './style/Common.module.css';
 
 const UserProfile = () => {
-  const userInfo = useSelector(state => state.auth)
-
   // 상태관리
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
   const [emojiId, setEmojiId] = useState('1');
@@ -33,8 +31,10 @@ const UserProfile = () => {
 
   // 다음으로 이동
   const moveToUserNickname = () => {
-    dispatch(authActions.updateProfile({emojiId: emojiId}));
-    console.log(userInfo)
+    const changedEmojiId = {
+      emojiId: emojiId
+    }
+    dispatch(authActions.updateProfile(changedEmojiId));
     navigate('/usernickname')
   };
 
@@ -47,7 +47,11 @@ const UserProfile = () => {
         <p>개성넘치는 프로필을 뽑아보세요.</p>
         <p>숨겨진 프로필이 있다는 소문이...</p>
       </div>
-      <div className={common.line}></div>
+      <div>
+      <div className={common.linetag}>
+        <div className={common.line}></div>
+      </div>
+      </div>
       <div>
         <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
