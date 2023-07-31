@@ -23,7 +23,6 @@ const UserNickname = () => {
   const randomPrefix = () => {
     customAxios.get('/member/prefix')
       .then(response => {
-        console.log(response.data.data)
         setPrefix(response.data.data.prefixId);
         setContent(response.data.data.content);
       })
@@ -50,7 +49,9 @@ const UserNickname = () => {
         <p>자신을 나타낼 수 있는 정보는</p>
         <p>최대한 삼가해주세요!</p>
       </div>
-      <div className={common.line}></div>
+      <div className={common.linetag}>
+        <div className={common.line}></div>
+      </div>
       <div>
         <h3>타이틀</h3>
         <div className={classes.titleWrap}>

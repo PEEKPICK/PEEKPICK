@@ -9,9 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
 
-const UserLike = () => {
-  // UserLikeHate에서 사용할 like hate 처리하기
-  
+const UserLike = () => {  
   // 상태관리
   // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
   const [dataAxios, setDataAxios] = useState(false);
@@ -34,6 +32,7 @@ const UserLike = () => {
   useEffect(() => {
     customAxios.get('/member/taste')
       .then(response => {
+        console.log(response.data)
         setDataAxios(true);
         setLikeList(response.data.data)
       })
@@ -46,6 +45,7 @@ const UserLike = () => {
   const middleItemHandler = (item) => {
     customAxios.get(`/member/taste?category_large=${item}`)
       .then(response => {
+        console.log(response.data)
         setMiddleDataAxios(true);
         setMiddleLikeList(response.data.data);
       })
@@ -96,18 +96,18 @@ const UserLike = () => {
       <div className={common.line}></div>
       <div>
         {dataAxios ? (
-          <ul>
+          <ul className={common.largelist}>
             {likeList.map(item => (
-              <button key={item} onClick={() => middleItemHandler(item)}>{item}</button>
+              <button key={item} onClick={() => middleItemHandler(item)} className={common.taste}>{item}</button>
             ))}
           </ul>
         ) : (<p>대분류가 없습니다.</p>)}
       </div>
       <div>
         {middleDataAxios ? (
-          <ul>
+          <ul className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}>{middleItem.middle}</button>
+              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
             ))}
           </ul>
         ) : (<p>중분류가 없습니다.</p>)}

@@ -31,17 +31,19 @@ const UserInfo = () => {
     customAxios.get(`/member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
-        console.log(userData)
 
         // store에 dispatch
         dispatch(authActions.updateUserInfo({
-          id: value,
+          memberId: value,
           name: userData.name,
           email: userData.email,
           phone: userData.phone,
           birthday: userData.birthday,
           gender: userData.gender,
         }));
+
+        setPhone(userData.phone);
+        setBirthday(userData.birthday);
       })
       .catch(error => {
         console.log(error);
@@ -51,6 +53,7 @@ const UserInfo = () => {
   // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
   const moveToUserProfile = () => {
     const changedUserData = {
+      memberId: userInfo.memberId,
       name: userInfo.name,
       email: userInfo.email,
       phone: phone,
@@ -58,7 +61,6 @@ const UserInfo = () => {
       gender: gender,
     }
     dispatch(authActions.updateUserInfo(changedUserData));
-    console.log(userInfo)
     navigate('/userprofile')
   };
 
@@ -81,9 +83,9 @@ const UserInfo = () => {
   const birthdayIsValid = () => {
     if (userInfo.birthday) {
       return (
-        <div>
+        <>
           {userInfo.birthday}
-        </div>
+        </>
       );
     } else {
       return (
@@ -94,24 +96,24 @@ const UserInfo = () => {
 
   return (
     <div>
-      <div>
+      <div className={classes.signup}>
         <h1>회원가입</h1>
       </div>
-      <div>
+      <div className={classes.signup}>
         <p>회원 정보를 확인해주세요</p>
       </div>
       <div>
         <form className={classes.form}>
-          <div>
+          <div className={classes.box}>
             {userInfo.name}
           </div>
-          <div>
+          <div className={classes.box}>
             {userInfo.email}
           </div>
-          <div>
+          <div className={classes.box}>
             {phoneIsValid()}
           </div>
-          <div>
+          <div className={classes.box}>
             {birthdayIsValid()}
           </div>
           <div className={classes.switch}>

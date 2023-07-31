@@ -29,27 +29,32 @@ const UserLikeHate = () => {
 
   const moveToWelcome = () => {
     const dataToSend = {
-      id: userInfo.id,
-      name: userInfo.name,
+      memberId: userInfo.memberId,
       email: userInfo.email,
+      name: userInfo.name,
+      gender: userInfo.gender,
       phone: userInfo.phone,
       birthday: userInfo.birthday,
-      gender: userInfo.gender,
       emojiId: userInfo.emojiId,
       prefixId: userInfo.prefixId,
       nickname: userInfo.nickname,
       likes: userInfo.likes,
-      dislikes: userInfo.dislikes,
+      disLikes: userInfo.disLikes,
     }
   
     customAxios.post('/member/signup', dataToSend)
       .then(response => {
+        if (response.data.code === "201") {
+          const accessToken = response.data.data;
+          localStorage.setItem('jwtToken', accessToken);
+        } else {
+          console.log(response)
+        }
         console.log(response)
       })
       .catch(error => {
         console.log(error)
       })
-
     navigate('/welcome')
   }
 
@@ -65,7 +70,9 @@ const UserLikeHate = () => {
           또, 무엇을 싫어하시나요?
         </p>
       </div>
-      <div className={common.line}></div>
+      <div className={common.linetag}>
+        <div className={common.line}></div>
+      </div>
       <div>
         <h3>좋아하는 것</h3>
         <div>

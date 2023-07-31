@@ -1,11 +1,24 @@
 // useNavigate는 다른 js파일로 이동할 때 사용
-import { useNavigate } from 'react-router-dom';
+import { customAxios } from '../../api/customAxios';
+
+import common from './style/Common.module.css';
 
 const Welcome = () => {
-  const navigate = useNavigate();
-
+  // 헤더에 토큰 넣어서 백엔드에 요청
   const startapp = () => {
-    navigate('/');
+    const token = localStorage.getItem('jwtToken');
+
+    customAxios.get("/member/info", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(error => {
+        console.log(error);
+      })
   };
 
   return (
@@ -18,7 +31,7 @@ const Welcome = () => {
         <img src="img/confetti.gif" alt='confetti' />
       </div>
       <div>
-        <button onClick={startapp}>시작하기</button>
+        <button onClick={startapp} className={common.next}>시작하기</button>
       </div>
     </div>
   );
