@@ -96,10 +96,10 @@ const UserInfo = () => {
 
   return (
     <div>
-      <div>
+      <div className={classes.signup}>
         <h1>회원가입</h1>
       </div>
-      <div>
+      <div className={classes.signup}>
         <p>회원 정보를 확인해주세요</p>
       </div>
       <div>
