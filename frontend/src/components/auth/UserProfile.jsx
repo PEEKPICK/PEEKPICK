@@ -49,8 +49,8 @@ const UserProfile = () => {
       </div>
       <div>
       <div className={common.linetag}>
-        <div className={common.line1}></div>
-        <div className={common.line2}></div>
+        <div className={classes.line1}></div>
+        <div className={classes.line2}></div>
       </div>
       </div>
       <div>
