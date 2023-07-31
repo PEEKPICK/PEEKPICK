@@ -39,7 +39,7 @@ const UserLikeHate = () => {
       prefixId: userInfo.prefixId,
       nickname: userInfo.nickname,
       likes: userInfo.likes,
-      disLikes: userInfo.dislikes,
+      disLikes: userInfo.disLikes,
     }
   
     customAxios.post('/member/signup', dataToSend)
