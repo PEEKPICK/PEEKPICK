@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -18,26 +15,35 @@ import java.time.LocalDateTime;
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor
-//@RedisHash(value = "Peek")
+@NoArgsConstructor //, ObjectMapper 사용 위해 (ObjectMapper는 먼저 생성 후 필드 설정함)
 public class PeekDto {
-
-    //@Id
     private Long peekId;
     private Long memberId;
     private String content;
     private String imageUrl;
     private int likeCount;
     private int disLikeCount;
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime writeTime; //작성 시간
+    private LocalDateTime writeTime;
 
-
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime finishTime; //지워지는 시간
+    private LocalDateTime finishTime;
 
-    public void setPeekId(Long peekId) {
+    @Override
+    public String toString() {
+        return "PeekDto{" +
+                "peekId=" + peekId +
+                ", memberId=" + memberId +
+                ", content='" + content + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", likeCount=" + likeCount +
+                ", disLikeCount=" + disLikeCount +
+                ", writeTime=" + writeTime +
+                ", finishTime=" + finishTime +
+                '}';
     }
 }

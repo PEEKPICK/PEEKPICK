@@ -1,7 +1,5 @@
 package com.vvs.peekpick.peek.controller;
 
-import com.vvs.peekpick.peek.dto.PeekDto;
-import com.vvs.peekpick.peek.dto.PeekLocationDto;
 import com.vvs.peekpick.peek.dto.RequestPeekDto;
 import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
@@ -9,11 +7,9 @@ import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.geo.Point;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 @Slf4j
