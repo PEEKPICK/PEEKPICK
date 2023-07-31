@@ -36,7 +36,9 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     private final String PEEK_LOCATION_REDIS = "Peek_Location:"; //(key) Peek_Location:peek의 id / (value) Peek의 값
     private final String PEEK_ID_KEY = "Peek_Id"; //PeekDto의 id 관리
     private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_REACTION_TIME = 5; // 좋아요/싫어요 시 증가되는 시간
+
+    private final int PEEK_ORIGIN_TIME = 30; // PEEK 기본 지속 시간
+    private final int PEEK_REACTION_TIME = 5; // 좋아요, 싫어요 시 증가되는 시간
 
     private final ResponseService responseService;
     private final RedisTemplate<String, Object> peekTemplate;
@@ -59,7 +61,6 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     @Override
     public CommonResponse addPeek(RequestPeekDto requestPeekDto) {
         Long peekId = generateId();
-        int minutes = 1;
         PeekDto peekDto = PeekDto.builder()
                 .peekId(peekId)
                 .memberId(requestPeekDto.getMemberId())
@@ -68,13 +69,12 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                 .likeCount(0)
                 .disLikeCount(0)
                 .writeTime(LocalDateTime.now())
-                .finishTime(LocalDateTime.now().plusMinutes(minutes))
+                .finishTime(LocalDateTime.now().plusMinutes(PEEK_ORIGIN_TIME))
                 .build();
 
-
         geoOps.add(PEEK_LOCATION_REDIS+ peekId, new Point(requestPeekDto.getLongitude(), requestPeekDto.getLatitude()), peekId.toString());
-        locationTemplate.expire(PEEK_LOCATION_REDIS+peekId, Duration.ofMinutes(minutes));
-        peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekDto, Duration.ofMinutes(minutes));
+        locationTemplate.expire(PEEK_LOCATION_REDIS+peekId, Duration.ofMinutes(PEEK_ORIGIN_TIME));
+        peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekDto, Duration.ofMinutes(PEEK_ORIGIN_TIME));
         return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
     }
 
@@ -85,12 +85,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         if (obj instanceof LinkedHashMap) {
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
-
             PeekDto peekDto = mapper.convertValue(obj, PeekDto.class);
             System.out.println(peekDto);
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, peekDto);
         } else {
-            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, null); //실패 시 반환 값 추가 필요
+            return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
     }
 
@@ -118,10 +117,9 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .build();
 
             valueOps.set(PEEK_REDIS + peekId, updatedPeekDto);
-
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } else {
-            return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS); //실패 시 반환 값 추가 필요
+            return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
         }
     }
 
