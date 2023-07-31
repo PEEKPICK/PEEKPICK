@@ -8,5 +8,26 @@
 }
 
 .line {
-  border: 1px solid black;
+  border: 2px solid lightgray;
+  width: 80%;
+}
+
+.largelist {
+  margin-top: 3vh;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.middlelist {
+  padding: 0;
+  text-align: center;
+}
+
+.taste {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  background-color: white;
+  color: lightgray;
+  margin: 0px 2px 2px 2px;
 }

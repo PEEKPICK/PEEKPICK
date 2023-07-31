@@ -96,18 +96,18 @@ const UserLike = () => {
       <div className={common.line}></div>
       <div>
         {dataAxios ? (
-          <ul>
+          <ul className={common.largelist}>
             {likeList.map(item => (
-              <button key={item} onClick={() => middleItemHandler(item)}>{item}</button>
+              <button key={item} onClick={() => middleItemHandler(item)} className={common.taste}>{item}</button>
             ))}
           </ul>
         ) : (<p>대분류가 없습니다.</p>)}
       </div>
       <div>
         {middleDataAxios ? (
-          <ul>
+          <ul className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}>{middleItem.middle}</button>
+              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
             ))}
           </ul>
         ) : (<p>중분류가 없습니다.</p>)}
