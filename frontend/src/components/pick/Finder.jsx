@@ -1,14 +1,10 @@
-import React, { useState, useEffect } from "react";
-import classes from "./Finder.module.css";
-import Modal from "react-modal";
+import React, { useEffect, useState } from "react";
+// import classes from "./Finder.module.css";
+// import Modal from "react-modal";
 import { customAxios } from "../../api/customAxios";
 
 function Finder() {
-  console.log("렌더링");
-  //이모지를 새롭게 랜더링
-  const [emoji, setEmoji] = useState(null);
-  //이모지 랜더링중인지 검사하기위한 상태값
-  const [loading, setLoading] = useState(true);
+  console.log("최초 렌더링");
 
   useEffect(() => {
     console.log("wo렌더링");
@@ -18,105 +14,23 @@ function Finder() {
   const emojiCall = () => {
     customAxios
       .get("/posts")
-      .then((response) => response.data)
-      .then((jsonEmoji) => {
-        setEmoji(jsonEmoji.posts);
-        setLoading(false);
+      .then((response) => {
+        const data = response.data.data;
+
+        // avatarId들을 추출하여 콘솔에 출력
+        const avatarIds = data.map((post) => post.avatarId);
+        console.log("avatarId들:", avatarIds);
       })
       .catch((error) => {
-        console.error("Error fetching Emoji:", error);
-        setLoading(false);
+        console.error("API 요청 실패:", error);
       });
   };
 
-  //랜덤으로 이모지를 섞는 알고리즘
-  const shuffleArray = (array) => {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  };
-
-  const [isModalOpen, setModalIsOpen] = useState(false);
-  const [selectedEmoji, setSelectedEmoji] = useState(null); // 선택된 이모지 정보를 저장
-
-  if (emoji === null) {
-    return <div>텅...!!!</div>;
-  }
-
-  const gridSize = 7;
-  const cellSize = `${100 / gridSize}%`;
-
-  const getRandomIndexes = (max, count) => {
-    const indexes = Array.from({ length: max }, (_, i) => i);
-    const shuffledIndexes = shuffleArray(indexes);
-    return shuffledIndexes.slice(0, count);
-  };
-
-  const randomIndexes = getRandomIndexes(gridSize * gridSize, 10);
-
-  const handleEmojiButtonClick = (emoji) => {
-    setSelectedEmoji(emoji); // 선택된 이모지 정보를 상태에 저장
-    setModalIsOpen(true);
-  };
-
-  // 모달 닫기 콜백을 최적화를 위해 useCallback으로 감싸기
-  const closeModal = () => {
-    setSelectedEmoji(null); // 선택된 이모지 정보 초기화
-    setModalIsOpen(false); // 모달 닫기
-  };
-
-  function renderButtons() {
-    return Array.from({ length: gridSize * gridSize }).map((_, index) => {
-      const randomEmoji = randomIndexes.includes(index) ? emoji[Math.floor(Math.random() * emoji.length)] : null;
-
-      return (
-        <button
-          key={index}
-          className={classes.emojiButton}
-          onClick={() => handleEmojiButtonClick(randomEmoji)}
-          disabled={!randomEmoji} // 비어있는 이모지의 경우 버튼을 비활성화
-        >
-          {randomEmoji && randomEmoji.id}
-        </button>
-      );
-    });
-  }
-
   return (
     <>
-      <div className={classes.finderMain}>
-        <button className={classes.button} onClick={emojiCall}>
-          {loading ? <img src="/img/reloadBlue.png" alt="새로고침" /> : <img src="/img/bad.png" alt="새로고침" />}
-          {loading ? "로딩 중" : "새로고침"}
-        </button>
-      </div>
-      <div
-        className={classes.emojiArea}
-        style={{ display: "grid", gridTemplateColumns: `repeat(${gridSize}, ${cellSize})` }}
-      >
-        {renderButtons()}
-      </div>
-      <Modal
-        className={classes.modalMain}
-        isOpen={isModalOpen}
-        onRequestClose={closeModal} // 모달 닫기 콜백 사용
-        shouldCloseOnOverlayClick={true}
-        shouldCloseOnEsc={true}
-      >
-        <div>
-          <button onClick={closeModal}>X</button>
-          {selectedEmoji && (
-            <>
-              <div>아이디: {selectedEmoji.id}</div>
-              <div>내용: {selectedEmoji.body}</div>
-            </>
-          )}
-        </div>
-      </Modal>
+      <div>aa</div>
     </>
   );
 }
+
 export default Finder;
-Modal.setAppElement("#root");

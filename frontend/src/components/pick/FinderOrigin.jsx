@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import classes from "./Finder.module.css";
 import Modal from "react-modal";
 import { customAxios } from "../../api/customAxios";
@@ -6,7 +6,7 @@ import { customAxios } from "../../api/customAxios";
 function Finder() {
   console.log("렌더링");
   //이모지를 새롭게 랜더링
-  const [emoji, setEmoji] = useState(null);
+  const [emoji, setEmoji] = useState([]);
   //이모지 랜더링중인지 검사하기위한 상태값
   const [loading, setLoading] = useState(true);
 
@@ -41,10 +41,6 @@ function Finder() {
   const [isModalOpen, setModalIsOpen] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState(null); // 선택된 이모지 정보를 저장
 
-  if (emoji === null) {
-    return <div>텅...!!!</div>;
-  }
-
   const gridSize = 7;
   const cellSize = `${100 / gridSize}%`;
 
@@ -53,8 +49,6 @@ function Finder() {
     const shuffledIndexes = shuffleArray(indexes);
     return shuffledIndexes.slice(0, count);
   };
-
-  const randomIndexes = getRandomIndexes(gridSize * gridSize, 10);
 
   const handleEmojiButtonClick = (emoji) => {
     setSelectedEmoji(emoji); // 선택된 이모지 정보를 상태에 저장
@@ -66,6 +60,9 @@ function Finder() {
     setSelectedEmoji(null); // 선택된 이모지 정보 초기화
     setModalIsOpen(false); // 모달 닫기
   };
+  const randomIndexes = useMemo(() => getRandomIndexes(gridSize * gridSize, 10), []);
+
+  const randomEmoji = useMemo(() => emoji[Math.floor(Math.random() * emoji.length)], [emoji]);
 
   function renderButtons() {
     return Array.from({ length: gridSize * gridSize }).map((_, index) => {
@@ -75,13 +72,21 @@ function Finder() {
         <button
           key={index}
           className={classes.emojiButton}
-          onClick={() => handleEmojiButtonClick(randomEmoji)}
+          onClick={() => {
+            if (randomIndexes.includes(index)) {
+              handleEmojiButtonClick(randomEmoji);
+            }
+          }}
           disabled={!randomEmoji} // 비어있는 이모지의 경우 버튼을 비활성화
         >
-          {randomEmoji && randomEmoji.id}
+          {randomIndexes.includes(index) ? randomEmoji.id : null}
         </button>
       );
     });
+  }
+
+  if (emoji === null) {
+    return <div>텅...!!!</div>;
   }
 
   return (
