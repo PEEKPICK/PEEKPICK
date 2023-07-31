@@ -55,8 +55,8 @@ const UserNickname = () => {
         <div className={classes.line1}></div>
         <div className={classes.line2}></div>
       </div>
-      <div>
-        <div className={common.signup}>
+      <div className={classes.temp}>
+        <div style={{width:'100%'}} className={common.signup}>
           <h3>타이틀</h3>
         </div>
         <div className={classes.prefixWrap}>

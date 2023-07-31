@@ -1,3 +1,9 @@
+.temp {
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+}
+
 .prefixWrap {
   display: flex;
   justify-content: center;
@@ -19,6 +25,7 @@
 
 
 .prefix {
+  text-align: left;
   width: 80%;
   height: 4.5vh;
   border: 1px solid lightgray;
