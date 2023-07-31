@@ -41,6 +41,9 @@ const UserInfo = () => {
           birthday: userData.birthday,
           gender: userData.gender,
         }));
+
+        setPhone(userData.phone);
+        setBirthday(userData.birthday);
       })
       .catch(error => {
         console.log(error);
