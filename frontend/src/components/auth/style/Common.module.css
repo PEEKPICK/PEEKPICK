@@ -35,3 +35,19 @@
   color: lightgray;
   margin: 0px 2px 2px 2px;
 }
+
+.signup{
+  display: flex;
+  justify-content: center;
+}
+
+.signup h1 {
+  margin-top: 7vh;
+  margin-bottom: 1vh;
+  width: 80%;
+}
+
+.signup p {
+  width: 80%;
+  margin-bottom: 0;
+}

@@ -69,18 +69,3 @@
 .switch label:last-of-type {
 	border-radius: 5px;
 }
-.signup{
-  display: flex;
-  justify-content: center;
-}
-
-.signup h1 {
-  margin-top: 7vh;
-  margin-bottom: 1vh;
-  width: 80%;
-}
-
-.signup p {
-  width: 80%;
-  margin-bottom: 0;
-}

@@ -40,12 +40,14 @@ const UserProfile = () => {
 
   return (
     <div>
-      <div>
+      <div className={common.signup}>
         <h1>프로필 PICK</h1>
       </div>
-      <div>
-        <p>개성넘치는 프로필을 뽑아보세요.</p>
-        <p>숨겨진 프로필이 있다는 소문이...</p>
+      <div className={common.signup}>
+        <p>개성넘치는 프로필을 뽑아보세요
+          <br />
+          숨겨진 프로필이 있다는 소문이...
+        </p>
       </div>
       <div>
       <div className={common.linetag}>
