@@ -61,33 +61,38 @@ public class MemberServiceImpl implements MemberService {
         return new Token(accessToken, refreshToken);
     }
 
+    // 이모지 뽑기
     public Emoji RandomEmoji() {
         return emojiRepository.getRandomEmoji().orElseThrow();
     }
 
+    // 수식어 뽑기
     public Prefix RandomPrefix() {
         return prefixRepository.getRandomEmoji().orElseThrow();
     }
 
+    // 월드 뽑기 (이게 왜 있지?)
     public List<World> RandomWorld() {
         return worldRepository.findAll();
     }
 
+    // 회원 정보 조회
+    // 가회원 처리용
     public Member getMemberInfo(Long memberId) {
         return memberRepository.findById(memberId).orElseThrow();
     }
 
-    @Override
+    // 취향 태그 대분류 조회
     public List<String> categoryList() {
         return categoryRepository.findLarge();
     }
 
-    @Override
+    // 취향 태그 상세 조회
     public List<Category> detailCategoryList(String categoryLarge) {
         return categoryRepository.findByLarge(categoryLarge);
     }
 
-    @Override
+    // 아바타 정보 조회
     public AvatarDto getAvatarInfo(Long avatarId) {
         Avatar avatar = avatarRepository.findById(avatarId)
                 .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
@@ -95,6 +100,7 @@ public class MemberServiceImpl implements MemberService {
         return avatar.toAvatarDto();
     }
 
+    // 23.07.31 회원 생성 Form Login 대비용
     private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {
         Member member = Member.builder()
                 .email(signUpDto.getEmail())
@@ -109,6 +115,7 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.save(member);
     }
 
+    // 업적 생성
     private Achievement createAchievement() {
         Achievement achievement = Achievement.builder()
                 .chatCount(0)
@@ -120,6 +127,7 @@ public class MemberServiceImpl implements MemberService {
         return achievementRepository.save(achievement);
     }
 
+    // 아바타 생성
     private Avatar createAvatar(SignUpDto signUpDto) {
         Avatar avatar = Avatar.builder()
                               .emoji(emojiRepository.findById(signUpDto.getEmojiId()).orElseThrow())
@@ -131,18 +139,18 @@ public class MemberServiceImpl implements MemberService {
         return avatarRepository.save(avatar);
     }
 
+    // 취향 태그 추가
     private void addTastes(SignUpDto signUpDto, Avatar avatar) {
-        log.info("likes={}", signUpDto.getLikes());
         for (int categoryId : signUpDto.getLikes()) {
             addTaste(categoryId, avatar, "L");
         }
 
-        log.info("likes={}", signUpDto.getDisLikes());
         for (int categoryId : signUpDto.getDisLikes()) {
             addTaste(categoryId, avatar, "D");
         }
     }
 
+    // 취향 태그 매핑
     private void addTaste(int categoryId, Avatar avatar, String type) {
         Category category = categoryRepository.findById((long) categoryId)
                                               .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_CATEGORY));

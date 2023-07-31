@@ -38,7 +38,6 @@ public class MemberController {
      */
     @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
-        log.info("OK!");
         Token token = memberService.signup(signUpDto);
 
         Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
@@ -50,7 +49,11 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
     }
 
-    // 회원 아바타 정보 조회
+    /**
+     * 회원 아바타 조회
+     * @param authentication
+     * @return
+     */
     @GetMapping("/info")
     public DataResponse avatarInfo(Authentication authentication) {
         Long avatarId = Long.parseLong(authentication.getName());
@@ -58,24 +61,42 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    /**
+     * 이모지 뽑기
+     * @return
+     */
     @GetMapping("/emoji")
     public DataResponse RandomEmoji() {
         Emoji result = memberService.RandomEmoji();
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    /**
+     * 수식어 뽑기
+     * @return
+     */
     @GetMapping("/prefix")
     public DataResponse RandomPrefix() {
         Prefix result = memberService.RandomPrefix();
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    /**
+     * 월드 뽑기
+     * @return
+     */
+    // 23.07.31 존재 이유를 모름
     @GetMapping("/world")
     public DataResponse RandomWorld() {
         List<World> result = memberService.RandomWorld();
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    /**
+     * 취향 태그 대분류 조회
+     * @param categoryLarge
+     * @return
+     */
     @GetMapping("/taste")
     public DataResponse TasteList(@RequestParam(value = "category_large", required = false) String categoryLarge) {
         List<?> result;
@@ -89,6 +110,11 @@ public class MemberController {
 
     }
 
+    /**
+     * 가회원 정보 조회
+     * @param memberId
+     * @return
+     */
     @GetMapping("/signup/info")
     public DataResponse MemberInfo(@RequestParam("id") Long memberId) {
         Member member = memberService.getMemberInfo(memberId);
@@ -100,7 +126,6 @@ public class MemberController {
         result.setGender(member.getGender());
         result.setBirthday(member.getBirthday());
 
-        log.info("member = {}", member);
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 }
