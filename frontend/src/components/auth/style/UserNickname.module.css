@@ -36,3 +36,7 @@
   border-radius:0 10px 10px 0;
   background-color: lightgray;
 }
+
+.nextButton {
+  margin-top: 15vh;
+}

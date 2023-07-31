@@ -42,19 +42,23 @@ const UserNickname = () => {
 
   return (
     <div>
-      <div>
+      <div className={common.signup}>
         <h1>닉네임 PICK</h1>
       </div>
-      <div>
-        <p>자신을 나타낼 수 있는 정보는</p>
-        <p>최대한 삼가해주세요!</p>
+      <div className={common.signup}>
+        <p>자신을 나타낼 수 있는 정보는
+          <br />
+          최대한 삼가해주세요!
+        </p>
       </div>
       <div className={common.linetag}>
         <div className={classes.line1}></div>
         <div className={classes.line2}></div>
       </div>
       <div>
-        <h3>타이틀</h3>
+        <div className={common.signup}>
+          <h3>타이틀</h3>
+        </div>
         <div className={classes.titleWrap}>
           <div className={classes.prefix}>
             {content}
@@ -65,11 +69,13 @@ const UserNickname = () => {
         </div>
       </div>
       <div>
-        <h3>닉네임</h3>
+        <div className={common.signup}>
+          <h3>닉네임</h3>
+        </div>
         <input type="text" onChange={e => setNickname(e.target.value)}/>
       </div>
-      <div>
-        <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
+      <div className={common.signup}>
+        <button onClick={moveToUserLikeHate} className={`${common.next} ${classes.nextButton}`}>다음으로</button>
       </div>
     </div>
   );

@@ -47,6 +47,12 @@
   width: 80%;
 }
 
+.signup h3 {
+  width: 80%;
+  margin-top: 5vh;
+  margin-bottom: 1vh;
+}
+
 .signup p {
   width: 80%;
   margin-bottom: 1vh;
