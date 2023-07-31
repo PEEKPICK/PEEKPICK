@@ -24,9 +24,13 @@
   display: flex;
   overflow: hidden;
   align-items: center;
-  height: 5vh;
+  /* height: 5vh; */
+  background-color: #EDEEEF;
+  border: 1px solid #EDEEEF;
+  border-radius: 5px;
   margin-top: 7vh;
   width: 80%;
+  padding: 5px;
 }
 
 .switch input {
@@ -41,14 +45,13 @@
 .switch label {
   width: 100%;
   background-color: #EDEEEF;
-	color: rgba(0, 0, 0, 0.6);
+	color: black;
 	font-size: 14px;
+  font-weight: 600;
 	line-height: 1;
 	text-align: center;
 	padding: 8px 16px;
-	margin-right: -1px;
-	border: 1px solid rgba(0, 0, 0, 0.2);
-	box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
+	/* box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1); */
 	transition: all 0.1s ease-in-out;
 }
 
@@ -58,13 +61,14 @@
 
 .switch input:checked + label {
 	background-color: #7d00ff;
-	box-shadow: none;
+  color: white;
+	/* box-shadow: none; */
 }
 
 .switch label:first-of-type {
-	border-radius: 4px 0 0 4px;
+	border-radius: 5px;
 }
 
 .switch label:last-of-type {
-	border-radius: 0 4px 4px 0;
+	border-radius: 5px;
 }
