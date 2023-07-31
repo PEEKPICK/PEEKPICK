@@ -36,11 +36,14 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 	// 23.07.24 화면 나오기전 타임리프로 대체
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+//	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 
 	// 23.07.24 Spring Data Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+	// 23.07.28 JWT 의존성 주입
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 tasks.named('test') {

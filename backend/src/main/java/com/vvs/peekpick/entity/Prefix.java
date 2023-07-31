@@ -15,7 +15,7 @@ import javax.persistence.Id;
 public class Prefix {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long prefixId;
 
     private String content;

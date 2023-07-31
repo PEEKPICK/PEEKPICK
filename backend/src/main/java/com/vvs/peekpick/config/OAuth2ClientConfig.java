@@ -1,5 +1,6 @@
 package com.vvs.peekpick.config;
 
+import com.vvs.peekpick.global.filter.JwtAuthenticationFilter;
 import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
 import com.vvs.peekpick.oauth.service.CustomOidcUserService;
@@ -8,8 +9,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -21,6 +24,7 @@ public class OAuth2ClientConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOidcUserService customOidcUserService;
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/static/js/**", "/static/images/**", "/static/css/**","/static/scss/**");
@@ -34,15 +38,19 @@ public class OAuth2ClientConfig {
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 방식 사용 X
+                .and()
                 .csrf().disable()
-                .authorizeRequests((requests) -> requests
-                .antMatchers("/api/user")
-                .access("hasAnyRole('SCOPE_profile','SCOPE_email')")
-                .antMatchers("/api/oidc")
-                .access("hasRole('SCOPE_openid')")
-                .antMatchers("/", "/member/signup", "/login")
-                .permitAll()
-                .anyRequest().permitAll());
+                .formLogin().disable()
+                .httpBasic().disable();
+        http
+                .authorizeRequests()
+                .antMatchers("/member/signup", "/member/login", "/member/emoji",
+                        "/member/prefix", "/member/world", "/member/taste", "/member/signup/info").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
                 .oauth2Login(oauth2 -> oauth2
