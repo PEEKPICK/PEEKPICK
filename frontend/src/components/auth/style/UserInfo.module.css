@@ -6,8 +6,18 @@
 
 .form input {
   width: 80%;
+  border: 0;
+}
+
+.box {
+  width: 80%;
   height: 5vh;
   margin-top: 7vh;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .switch {

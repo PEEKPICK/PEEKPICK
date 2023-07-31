@@ -83,9 +83,9 @@ const UserInfo = () => {
   const birthdayIsValid = () => {
     if (userInfo.birthday) {
       return (
-        <div>
+        <>
           {userInfo.birthday}
-        </div>
+        </>
       );
     } else {
       return (
@@ -104,16 +104,16 @@ const UserInfo = () => {
       </div>
       <div>
         <form className={classes.form}>
-          <div>
+          <div className={classes.box}>
             {userInfo.name}
           </div>
-          <div>
+          <div className={classes.box}>
             {userInfo.email}
           </div>
-          <div>
+          <div className={classes.box}>
             {phoneIsValid()}
           </div>
-          <div>
+          <div className={classes.box}>
             {birthdayIsValid()}
           </div>
           <div className={classes.switch}>

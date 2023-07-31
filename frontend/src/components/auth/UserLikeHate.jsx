@@ -44,12 +44,17 @@ const UserLikeHate = () => {
   
     customAxios.post('/member/signup', dataToSend)
       .then(response => {
+        if (response.data.code === "201") {
+          const accessToken = response.data.data;
+          localStorage.setItem('jwtToken', accessToken);
+        } else {
+          console.log(response)
+        }
         console.log(response)
       })
       .catch(error => {
         console.log(error)
       })
-
     navigate('/welcome')
   }
 
