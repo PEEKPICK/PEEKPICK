@@ -61,3 +61,10 @@
 .signup img {
   margin-top: 10vh;
 }
+
+.signup input {
+  width: 80%;
+  height: 4.5vh;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}

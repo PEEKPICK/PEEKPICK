@@ -1,4 +1,4 @@
-.titleWrap {
+.prefixWrap {
   display: flex;
   justify-content: center;
   width: 80%;
@@ -9,7 +9,7 @@
   border-radius: 5px;
   background-color: #7d00ff;
   width: 60px;
-  height: 40px;
+  height: 4.5vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,7 +20,7 @@
 
 .prefix {
   width: 80%;
-  height: 40px;
+  height: 4.5vh;
   border: 1px solid lightgray;
   border-radius: 5px;
 }

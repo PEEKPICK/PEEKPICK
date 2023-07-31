@@ -59,7 +59,7 @@ const UserNickname = () => {
         <div className={common.signup}>
           <h3>타이틀</h3>
         </div>
-        <div className={classes.titleWrap}>
+        <div className={classes.prefixWrap}>
           <div className={classes.prefix}>
             {content}
           </div>
@@ -72,7 +72,9 @@ const UserNickname = () => {
         <div className={common.signup}>
           <h3>닉네임</h3>
         </div>
-        <input type="text" onChange={e => setNickname(e.target.value)}/>
+        <div className={common.signup}>
+          <input type="text" onChange={e => setNickname(e.target.value)}/>
+        </div>
       </div>
       <div className={common.signup}>
         <button onClick={moveToUserLikeHate} className={`${common.next} ${classes.nextButton}`}>다음으로</button>
