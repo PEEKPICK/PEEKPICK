@@ -87,6 +87,14 @@ public class MemberServiceImpl implements MemberService {
         return categoryRepository.findByLarge(categoryLarge);
     }
 
+    @Override
+    public AvatarDto getAvatarInfo(Long avatarId) {
+        Avatar avatar = avatarRepository.findById(avatarId)
+                .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+
+        return avatar.toAvatarDto();
+    }
+
     private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {
         Member member = Member.builder()
                 .email(signUpDto.getEmail())

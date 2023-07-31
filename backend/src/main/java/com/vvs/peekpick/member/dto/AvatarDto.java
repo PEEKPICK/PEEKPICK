@@ -1,9 +1,6 @@
 package com.vvs.peekpick.member.dto;
 
-import com.vvs.peekpick.entity.Emoji;
-import com.vvs.peekpick.entity.Prefix;
-import com.vvs.peekpick.entity.Taste;
-import com.vvs.peekpick.entity.World;
+import com.vvs.peekpick.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,22 +22,7 @@ public class AvatarDto {
     private Prefix prefix;
     private World world;
 
-    private List<Taste> likes;
-    private List<Taste> disLikes;
-
-    public AvatarDto create(long avatarId, String nickname, String bio, Emoji emoji,
-                            Prefix prefix, World world, List<Taste> likes, List<Taste> disLikes) {
-
-        return AvatarDto.builder()
-                .avatarId(avatarId)
-                .nickname(nickname)
-                .bio(bio)
-                .emoji(emoji)
-                .prefix(prefix)
-                .world(world)
-                .likes(likes)
-                .disLikes(disLikes)
-                .build();
-    }
+    private List<String> likes;
+    private List<String> disLikes;
 }
 

@@ -3,6 +3,7 @@ package com.vvs.peekpick.member.controller;
 
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.global.auth.Token;
+import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.dto.TempSignUpDto;
 import com.vvs.peekpick.member.service.MemberService;
@@ -12,6 +13,7 @@ import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -48,9 +50,12 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
     }
 
+    // 회원 아바타 정보 조회
     @GetMapping("/info")
-    public DataResponse memberInfo() {
-        return null;
+    public DataResponse avatarInfo(Authentication authentication) {
+        Long avatarId = Long.parseLong(authentication.getName());
+        AvatarDto result = memberService.getAvatarInfo(avatarId);
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
     @GetMapping("/emoji")
