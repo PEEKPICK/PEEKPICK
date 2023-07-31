@@ -1,5 +1,7 @@
 package com.vvs.peekpick.picker.service;
 
+import com.vvs.peekpick.picker.dto.ChatRequestDto;
+import com.vvs.peekpick.picker.dto.ChatResponseDto;
 import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
 import com.vvs.peekpick.picker.dto.SearchPickerDto;
 import com.vvs.peekpick.response.CommonResponse;
@@ -16,7 +18,9 @@ public interface PickerService {
 
     CommonResponse disconnectSession(ConnectingPickerDto picker);
 
-    CommonResponse chatRequestSend(Long targetId, Object event);
+    CommonResponse chatRequestSend(Long targetId, ChatRequestDto chatRequestDto);
 
     SseEmitter connectSseSession(Long memberId);
+
+    CommonResponse chatResponseReceive(ChatResponseDto chatResponseDto);
 }

@@ -1,5 +1,8 @@
 package com.vvs.peekpick.picker.controller;
 
+import com.vvs.peekpick.entity.Chat;
+import com.vvs.peekpick.picker.dto.ChatRequestDto;
+import com.vvs.peekpick.picker.dto.ChatResponseDto;
 import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
 import com.vvs.peekpick.picker.dto.SearchPickerDto;
 import com.vvs.peekpick.picker.service.PickerService;
@@ -17,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/picker")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class PickerController {
 
     private final PickerService pickerServiceImpl;
@@ -62,9 +66,17 @@ public class PickerController {
      * @return CommonResponse
      */
     @PostMapping("chat-request/{targetId}")
-    public CommonResponse chatRequestSend(@PathVariable Long targetId){
+    public CommonResponse chatRequestSend(@PathVariable Long targetId, @RequestBody ChatRequestDto chatRequestDto){
         // TODO JWT Token 으로부터 Sender Id 획득 전환 예정 
-        return pickerServiceImpl.chatRequestSend(targetId, "Sender Id");
+        return pickerServiceImpl.chatRequestSend(targetId, chatRequestDto);
     }
 
+    /**
+     * 채팅 요청 수락 또는 거절
+     * @Return CommonResponse
+     */
+    @PostMapping("chat-response")
+    public CommonResponse chatResponseReceive(@RequestBody ChatResponseDto chatResponseDto){
+        return pickerServiceImpl.chatResponseReceive(chatResponseDto);
+    }
 }

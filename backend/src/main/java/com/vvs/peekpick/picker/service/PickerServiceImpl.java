@@ -2,6 +2,8 @@ package com.vvs.peekpick.picker.service;
 
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.picker.dto.ChatRequestDto;
+import com.vvs.peekpick.picker.dto.ChatResponseDto;
 import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
 import com.vvs.peekpick.picker.dto.SearchPickerDto;
 import com.vvs.peekpick.picker.repository.PickerJpaRepository;
@@ -16,12 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;
+import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -33,6 +37,8 @@ public class PickerServiceImpl implements PickerService {
     // Redis에 저장될 Key
     private final String CONNECT_SESSION = "session";
     private final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
+    private final String REQUEST_REJECTED = "채팅이 거절되었습니다.";
+    private final String REQUEST_ACCEPTED = "채팅이 수락되었습니다.";
 
     // 주변 최대 Picker 수
     private final int MAX_PICKER_COUNT = 15;
@@ -46,6 +52,7 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * 현재 사용자의 위치와 ID를 세션에 등록
+     *
      * @param picker - 세션에 등록될 Picker의 정보
      * @return CommonResponse
      */
@@ -62,6 +69,7 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * SSE 푸시 알림을 위해 Emitter 등록
+     *
      * @param memberId - SSE Emitter를 구분할 회원 Id
      * @return SSE Emitter - Server Sent Event 룰 수신하는 Emitter
      */
@@ -74,7 +82,8 @@ public class PickerServiceImpl implements PickerService {
     }
 
     /**
-     *  백그라운드로 나가거나, 웹 종료시 세션에서 제거
+     * 백그라운드로 나가거나, 웹 종료시 세션에서 제거
+     *
      * @param picker - 세션에서 제거될 Picker 의 정보
      * @return CommonResponse - 정상 상태코드와 메세지
      */
@@ -87,18 +96,57 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * 채팅 요청 전송
-     * @param targetId - SSE를 받는 대상 ID
-     * @param event - 전송할 Event 내용
+     *
+     * @param targetId       - SSE를 받는 대상 ID
+     * @param chatRequestDto - 보낸 사람의 ID와 요청 시간
      * @return CommonResponse - 정상 상태코드와 메세지
      */
     @Override
-    public CommonResponse chatRequestSend(Long targetId, Object event) {
-        sendToClient(targetId, event);
+    public CommonResponse chatRequestSend(Long targetId, ChatRequestDto chatRequestDto) {
+        // TODO memberId 에 송신자 id 추가 필요
+        // 요청 시간 만료 판별을 위한 현재 서버시간 적용
+        chatRequestDto.setRequestTime(LocalDateTime.now());
+        sendToClient(targetId, chatRequestDto);
         return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_SUCCESS);
     }
 
     /**
+     * 채팅 요청에 대한 응답으로 수락하여도 시간을 비교하여 만료 처리
+     *
+     * @param chatResponseDto - 요청에 응답한 회원의 ID
+     * @return CommonResponse
+     */
+    @Override
+    public CommonResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
+        // 거절
+        if ("N".equals(chatResponseDto.getResponse())) {
+            sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED);
+            return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_REJECTED);
+        }
+        // 수락
+        else {
+            // 요청 시간이 만료되기 이전
+            if (chatResponseDto.getRequestTime().plusSeconds(15).isAfter(LocalDateTime.now())) {
+                GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
+                Point point = geoOperations.position(CONNECT_SESSION, String.valueOf(chatResponseDto.getRequestSenderId())).get(0);
+                if (point == null) { // 상대가 접속중이지 않을 때
+                    throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
+                }else { // 상대가 접속중일 때
+                    // TODO 채팅방 세션 개설
+                    sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_ACCEPTED);
+                    return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED);
+                }
+            }
+            // 요청 시간이 만료된 이후
+            else {
+                return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_TIMEOUT);
+            }
+        }
+    }
+
+    /**
      * 거리순으로 Picker 조회
+     *
      * @param picker - 현재 위치, Id, 반경이 포함된 Picker 정보
      * @return DataResponse<List>
      */
@@ -132,6 +180,7 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * Server Push를 위한 SSE Emitter 생성 및 등록
+     *
      * @param memberId - SSE Emitter로 등록할 회원 아이디
      * @return SseEmitter - 생성한 Sse Emitter
      */
@@ -147,8 +196,9 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * target에게 Server Sent Event 전송
+     *
      * @param targetId - SSE를 받는 대상 ID
-     * @param data - Event 내용
+     * @param data     - Event 내용
      */
     private void sendToClient(Long targetId, Object data) {
         SseEmitter emitter = sseEmitterRepository.get(targetId).orElseThrow(
@@ -161,7 +211,7 @@ public class PickerServiceImpl implements PickerService {
             sseEmitterRepository.remove(targetId);
             emitter.completeWithError(e);
         }
-
     }
 
 }
+
