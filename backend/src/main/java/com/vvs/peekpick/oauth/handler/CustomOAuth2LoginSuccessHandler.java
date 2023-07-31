@@ -35,6 +35,9 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException{
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
+
+        log.info("principalUser=}{}", principalUser);
+
         ProviderUser providerUser = principalUser.getProviderUser();
 
         // 이름 + provider로 조회
@@ -84,8 +87,8 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     }
 
     private static String getBirthday(ProviderUser providerUser) {
+        if (providerUser.getBirthDay() == null || providerUser.getBirthYear() == null) return null;
         String result = providerUser.getBirthYear() + "-" + providerUser.getBirthDay();
-        if ("-".equals(result)) return null;
         return result;
     }
 }

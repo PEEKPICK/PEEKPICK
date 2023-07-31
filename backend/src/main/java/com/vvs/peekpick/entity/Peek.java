@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Peek {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long peekId;
 
     private Long memberId;

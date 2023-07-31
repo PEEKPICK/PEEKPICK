@@ -27,8 +27,9 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expireDate = new Date(now.getTime() + ACCESS_TOKEN_VALIDATE_TIME);
 
+        // 아바타 ID, Provider로 검증
         Map<String, Object> payloads = new HashMap<>();
-        payloads.put("id", Long.toString(member.getMemberId()));
+        payloads.put("avatarId", Long.toString(member.getAvatar().getAvatarId()));
         payloads.put("provider", member.getProvider());
 
         return Jwts.builder()
@@ -73,13 +74,13 @@ public class JwtTokenProvider {
         }
     }
 
-    //토큰에서 id값 가져오기.
-    public Long getUserIdFromToken(String token) {
+    // Token To AvatarID
+    public Long getAvatarIdFromToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
 
-        return Long.parseLong((String)claims.get("id"));
+        return Long.parseLong((String)claims.get("avatarId"));
     }
 }

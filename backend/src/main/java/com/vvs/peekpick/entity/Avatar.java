@@ -13,12 +13,11 @@ import java.util.List;
 public class Avatar {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long avatarId;
 
     private String nickname;
     private String bio;
-
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "emoji_id")
     private Emoji emoji;

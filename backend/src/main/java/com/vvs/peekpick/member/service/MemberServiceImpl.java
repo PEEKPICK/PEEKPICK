@@ -1,6 +1,10 @@
 package com.vvs.peekpick.member.service;
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.exception.CustomException;
+import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.global.auth.JwtTokenProvider;
+import com.vvs.peekpick.global.auth.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.repository.*;
@@ -28,6 +32,7 @@ public class MemberServiceImpl implements MemberService {
     private final CategoryRepository categoryRepository;
     private final AchievementRepository achievementRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
     /**
      * 회원가입
      * @param signUpDto
@@ -37,18 +42,23 @@ public class MemberServiceImpl implements MemberService {
      * 3. 회원 생성
      * 4. 취향 태그 등록
      */
-    public Avatar signup(SignUpDto signUpDto) {
+    public Token signup(SignUpDto signUpDto) {
         Avatar avatar = createAvatar(signUpDto);
         Achievement achievement = createAchievement();
 
-        Member findMember = memberRepository.findById(signUpDto.getId()).orElseThrow();
+        Member findMember = memberRepository.findById(signUpDto.getMemberId())
+                                                               .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_USER));
 
         findMember.updateMember(signUpDto, avatar, achievement);
-        log.info("findMember={}", findMember);
+
         addTastes(signUpDto, avatar);
 
-        // 회원가입 완료 시 로그인 처리를 위해 avatar return
-        return avatar;
+        // 회원가입 성공
+        // Token 반환
+        String accessToken = jwtTokenProvider.createAccessToken(findMember);
+        String refreshToken = jwtTokenProvider.createRefreshToken();
+
+        return new Token(accessToken, refreshToken);
     }
 
     public Emoji RandomEmoji() {
@@ -86,7 +96,6 @@ public class MemberServiceImpl implements MemberService {
                 .birthday(signUpDto.getBirthday())
                 .avatar(avatar)
                 .achievement(achievement)
-                .provider(signUpDto.getProvider())
                 .build();
 
         return memberRepository.save(member);
@@ -105,27 +114,31 @@ public class MemberServiceImpl implements MemberService {
 
     private Avatar createAvatar(SignUpDto signUpDto) {
         Avatar avatar = Avatar.builder()
-                .emoji(emojiRepository.findById(signUpDto.getEmojiId()).orElseThrow())
-                .prefix(prefixRepository.findById(signUpDto.getPrefixId()).orElseThrow())
-                .world(worldRepository.findById(1).orElseThrow())
-                .nickname(signUpDto.getNickname())
-                .bio("").build();
+                              .emoji(emojiRepository.findById(signUpDto.getEmojiId()).orElseThrow())
+                              .prefix(prefixRepository.findById(signUpDto.getPrefixId()).orElseThrow())
+                              .world(worldRepository.findById(1).orElseThrow())
+                              .nickname(signUpDto.getNickname())
+                              .bio("").build();
 
         return avatarRepository.save(avatar);
     }
 
     private void addTastes(SignUpDto signUpDto, Avatar avatar) {
+        log.info("likes={}", signUpDto.getLikes());
         for (int categoryId : signUpDto.getLikes()) {
             addTaste(categoryId, avatar, "L");
         }
 
+        log.info("likes={}", signUpDto.getDisLikes());
         for (int categoryId : signUpDto.getDisLikes()) {
             addTaste(categoryId, avatar, "D");
         }
     }
 
     private void addTaste(int categoryId, Avatar avatar, String type) {
-        Category category = categoryRepository.findById((long) categoryId).orElseThrow();
+        Category category = categoryRepository.findById((long) categoryId)
+                                              .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_CATEGORY));
+
         Taste taste = Taste.builder()
                 .avatar(avatar)
                 .category(category)

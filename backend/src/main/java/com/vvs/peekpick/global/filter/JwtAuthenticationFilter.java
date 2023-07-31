@@ -36,9 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String accessToken = getAccessToken(request);
-            // AccessToken이 존재하고, 만료시간이 남아있다면
+
+            // AccessToken이 존재하고, 유효하다면
             if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
-                Long memberId = jwtTokenProvider.getUserIdFromToken(accessToken);
+                Long memberId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
 
                 // memberId만 넘겨준다.
                 UsernamePasswordAuthenticationToken authentication =

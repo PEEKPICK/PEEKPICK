@@ -2,9 +2,11 @@ package com.vvs.peekpick.member.controller;
 
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.global.auth.Token;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.dto.TempSignUpDto;
 import com.vvs.peekpick.member.service.MemberService;
+import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
@@ -12,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,10 +35,17 @@ public class MemberController {
      * 이 요청은 신규회원임이 보장된다.
      */
     @PostMapping("/signup")
-    public DataResponse signup(@RequestBody SignUpDto signUpDto) {
+    public DataResponse signup(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
         log.info("OK!");
-        Avatar result = memberService.signup(signUpDto);
-        return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, result);
+        Token token = memberService.signup(signUpDto);
+
+        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(3600 * 24 * 365); // 1년
+        response.addCookie(cookie);
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
     }
 
     @GetMapping("/info")
