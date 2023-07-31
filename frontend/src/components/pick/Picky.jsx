@@ -1,6 +1,8 @@
+import classes from "./Picky.module.css";
+
 function Picky() {
   return (
-    <div>
+    <div className={classes.pickyMain}>
       <h1>Picky</h1>
     </div>
   );

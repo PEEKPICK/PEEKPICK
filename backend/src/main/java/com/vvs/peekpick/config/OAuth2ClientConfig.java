@@ -1,23 +1,26 @@
 package com.vvs.peekpick.config;
 
+import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
 import com.vvs.peekpick.oauth.service.CustomOidcUserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class OAuth2ClientConfig {
 
-    @Autowired
-    private CustomOAuth2UserService customOAuth2UserService;
-    @Autowired
-    private CustomOidcUserService customOidcUserService;
-
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomOidcUserService customOidcUserService;
+    private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring().antMatchers("/static/js/**", "/static/images/**", "/static/css/**","/static/scss/**");
@@ -25,32 +28,47 @@ public class OAuth2ClientConfig {
 
     @Bean
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests((requests) -> requests
+
+        // 23.07.25 CSRF 비활성화
+        // Form 로그인 처리 X
+        http
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
+                .csrf().disable()
+                .authorizeRequests((requests) -> requests
                 .antMatchers("/api/user")
                 .access("hasAnyRole('SCOPE_profile','SCOPE_email')")
-//                .access("hasAuthority('SCOPE_profile')")
                 .antMatchers("/api/oidc")
                 .access("hasRole('SCOPE_openid')")
-                //.access("hasAuthority('SCOPE_openid')")
-                .antMatchers("/")
+                .antMatchers("/", "/member/signup", "/login")
                 .permitAll()
-                .anyRequest().authenticated());
-        http.formLogin().loginPage("/login").loginProcessingUrl("/loginProc").defaultSuccessUrl("/").permitAll();
-//        http.oauth2Login(oauth2 -> oauth2.userInfoEndpoint(
-//                userInfoEndpointConfig -> userInfoEndpointConfig
-//                        .userService(customOAuth2UserService)
-//                        .oidcUserService(customOidcUserService)));
-////        http.logout().logoutSuccessUrl("/");
-//        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+                .anyRequest().permitAll());
+
+        http
+                .oauth2Login(oauth2 -> oauth2
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService) // 네이버
+                                .oidcUserService(customOidcUserService) // 구글, 카카오
+                                .and()
+                                .successHandler(customOAuth2LoginSuccessHandler))); // 인증 성공
+//                        .failureHandler(customOAuth2LoginFailureHandler)); // 인증 실패 (미구현)
+
+        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 
         return http.build();
    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
 
-   /*@Bean // hasAuthority 일경우 정의하지 않는다
-    public GrantedAuthoritiesMapper grantedAuthoritiesMapper(){
-       SimpleAuthorityMapper simpleAuthorityMapper = new SimpleAuthorityMapper();
-       simpleAuthorityMapper.setPrefix("ROLE_");
-       return simpleAuthorityMapper;
-   }*/
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
 
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.setAllowCredentials(false);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
 }

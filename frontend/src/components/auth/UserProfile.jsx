@@ -1,24 +1,40 @@
+import { customAxios } from '../../api/customAxios';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { authActions } from '../../store/authSlice';
 import classes from './style/UserProfile.module.css';
+import common from './style/Common.module.css';
 
 const UserProfile = () => {
+  const userInfo = useSelector(state => state.auth)
+
+  // 상태관리
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
+  const [emojiId, setEmojiId] = useState('1');
+
+  // redux, router, redux선택 처리
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // 이모지 다시 뽑기를 위한 버튼
   const randomGacha = () => {
-    var emoji = ['https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png',
-                'https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Biting+Lip.png',
-                'https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Cat+with+Tears+of+Joy.png']
-    var random_index = Math.floor(Math.random() * emoji.length);
-    var selectedEmoji = emoji[random_index]
-    setRandomEmoji(selectedEmoji);
+    customAxios.get('/member/emoji')
+      .then(response => {
+        setEmojiId(response.data.data.emojiId);
+        setRandomEmoji(response.data.data.animatedImageUrl);
+      })
+      .catch(error => {
+        console.log(error)
+      })
   };
 
   // 다음으로 이동
   const moveToUserNickname = () => {
+    dispatch(authActions.updateProfile({emojiId: emojiId}));
+    console.log(userInfo)
     navigate('/usernickname')
   };
 
@@ -31,15 +47,15 @@ const UserProfile = () => {
         <p>개성넘치는 프로필을 뽑아보세요.</p>
         <p>숨겨진 프로필이 있다는 소문이...</p>
       </div>
-      <div className={classes.line}></div>
+      <div className={common.line}></div>
       <div>
-        <img src={randomEmoji} alt="dummy_emoji" />
+        <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
       <div>
         <button onClick={randomGacha}>다시뽑기</button>
       </div>
       <div>
-        <button onClick={moveToUserNickname}>다음으로</button>
+        <button onClick={moveToUserNickname} className={common.next}>다음으로</button>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import "./App.css";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // router import
@@ -11,6 +12,7 @@ import UserLike from "./components/auth/UserLike";
 import UserHate from "./components/auth/UserHate";
 import Welcome from "./components/auth/Welcome";
 import UserLikeHate from "./components/auth/UserLikeHate";
+import Redirect from './components/auth/Redirect';
 // 용범
 import MyPage from "./components/mypages/MyPage";
 import Announcement from "./components/mypages/Announcement";
@@ -21,12 +23,26 @@ import Profile from "./components/mypages/Profile";
 import Picker from "./components/pick/Picker";
 import Picky from "./components/pick/Picky";
 // 기타공용
-import Layout from "./components/Layout";
-import AlreadyLogin from "./components/AlreadyLogin";
+import Layout from "./components/common/Layout";
+import AlreadyLogin from "./components/common/AlreadyLogin";
 
 
 function App() {
-  const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
+  // const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
+
+  // 2023.07. 29 - 김준형 토큰 작업
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const checkTokenInLocalStorage = () => {
+      const token = localStorage.getItem("jwtToken");
+      return token !== null;
+    };
+
+    setIsAuthenticated(checkTokenInLocalStorage());
+  }, [])
+  
+  
 
   return (
     <div>
@@ -35,7 +51,16 @@ function App() {
         <>
           {!isAuthenticated && (
             <>
-              <Route path="/*" element={<Login />} />
+              {/* 준형 */}
+              <Route path="/" element={<Login />} />
+              <Route path="/oauth2/redirect" element={<Redirect />}/>
+              <Route path="/userinfo" element={<UserInfo />} />
+              <Route path="/userprofile" element={<UserProfile />} />
+              <Route path="/usernickname" element={<UserNickname />} />
+              <Route path="/userlike" element={<UserLike />} />
+              <Route path="/UserLikeHate" element={<UserLikeHate />} />
+              <Route path="/userhate" element={<UserHate />} />
+              <Route path="/welcome" element={<Welcome />} />
             </>
           )}
           {isAuthenticated && (
@@ -50,15 +75,6 @@ function App() {
                 <Route path="likeedit" element={<LikeEdit />} />
                 <Route path="hateedit" element={<HateEdit />} />
               </Route>
-              {/* 준형 */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/userinfo" element={<UserInfo />} />
-              <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/usernickname" element={<UserNickname />} />
-              <Route path="/userlike" element={<UserLike />} />
-              <Route path="/UserLikeHate" element={<UserLikeHate />} />
-              <Route path="/userhate" element={<UserHate />} />
-              <Route path="/welcome" element={<Welcome />} />
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>

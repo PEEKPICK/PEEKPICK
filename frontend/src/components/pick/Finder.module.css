@@ -1,0 +1,16 @@
+.finderMain {
+  margin-top: 5%;
+  display: flex;
+  justify-content: space-between;
+  justify-content: center;
+}
+
+.button {
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 1rem;
+  color: #7d00ff;
+  background-color: white; /* 흰색 배경색 */
+  padding: 5px 20px; /* 버튼 내부 여백 */
+  cursor: pointer;
+}

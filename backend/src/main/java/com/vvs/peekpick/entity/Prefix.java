@@ -13,6 +13,7 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Prefix {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long prefixId;
