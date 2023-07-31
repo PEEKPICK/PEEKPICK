@@ -1,20 +1,14 @@
 import { customAxios } from '../../api/customAxios';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { authActions } from '../../store/authSlice';
 import classes from './style/UserProfile.module.css';
 import common from './style/Common.module.css';
 
 const UserProfile = () => {
-  const userInfo = useSelector(state => state.auth)
-  // test
-  useEffect(() => {
-    console.log(userInfo)
-  }, [userInfo])
-
   // 상태관리
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
   const [emojiId, setEmojiId] = useState('1');
@@ -27,7 +21,6 @@ const UserProfile = () => {
   const randomGacha = () => {
     customAxios.get('/member/emoji')
       .then(response => {
-        console.log(response.data.data)
         setEmojiId(response.data.data.emojiId);
         setRandomEmoji(response.data.data.animatedImageUrl);
       })
@@ -42,7 +35,6 @@ const UserProfile = () => {
       emojiId: emojiId
     }
     dispatch(authActions.updateProfile(changedEmojiId));
-    console.log(userInfo)
     navigate('/usernickname')
   };
 

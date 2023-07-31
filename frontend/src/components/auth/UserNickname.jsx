@@ -23,7 +23,6 @@ const UserNickname = () => {
   const randomPrefix = () => {
     customAxios.get('/member/prefix')
       .then(response => {
-        console.log(response.data.data)
         setPrefix(response.data.data.prefixId);
         setContent(response.data.data.content);
       })

@@ -31,7 +31,6 @@ const UserInfo = () => {
     customAxios.get(`/member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
-        console.log(userData)
 
         // store에 dispatch
         dispatch(authActions.updateUserInfo({
@@ -59,7 +58,6 @@ const UserInfo = () => {
       gender: gender,
     }
     dispatch(authActions.updateUserInfo(changedUserData));
-    console.log(userInfo)
     navigate('/userprofile')
   };
 
