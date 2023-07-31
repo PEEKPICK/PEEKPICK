@@ -1,8 +1,26 @@
-.line {
-  border: 1px solid black;
+.titleWrap {
+  display: flex;
+  justify-content: center;
+  width: 80%;
 }
 
 .reload {
-  border: 1px solid #7d00ff;
+  border: 0;
+  border-radius: 5px;
   background-color: #7d00ff;
+  width: 60px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5%;
+}
+
+
+.prefix {
+  width: 80%;
+  height: 40px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
 }

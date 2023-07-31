@@ -1,3 +1,6 @@
-.line {
-  border: 1px solid black;
+.addButton {
+  background-color: #7d00ff;
+  color: white;
+  border: 0;
+  border-radius: 5px;
 }

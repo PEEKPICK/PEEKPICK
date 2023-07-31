@@ -1,11 +1,43 @@
+import { customAxios } from '../../api/customAxios';
+
+import { useState } from 'react';
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
+import { authActions } from '../../store/authSlice';
 import classes from './style/UserNickname.module.css';
+import common from './style/Common.module.css';
 
 const UserNickname = () => {
+  // 상태관리
+  const [prefix, setPrefix] = useState('37');
+  const [content, setContent] = useState('아빠같은');
+  const [nickname, setNickname] = useState('');
+
+  // redux, router 처리
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+
+  //함수 정의
+  const randomPrefix = () => {
+    customAxios.get('/member/prefix')
+      .then(response => {
+        console.log(response.data.data)
+        setPrefix(response.data.data.prefixId);
+        setContent(response.data.data.content);
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  };
 
   const moveToUserLikeHate = () => {
+    const changedNickname = {
+      prefixId: prefix,
+      nickname: nickname,
+    }
+    dispatch(authActions.updateUserNickname(changedNickname));
     navigate('/userlikehate')
   }
 
@@ -15,22 +47,27 @@ const UserNickname = () => {
         <h1>닉네임 PICK</h1>
       </div>
       <div>
-        <p>자신을 나타낼 수 있는 정보는 최대한 삼가해주세요!</p>
+        <p>자신을 나타낼 수 있는 정보는</p>
+        <p>최대한 삼가해주세요!</p>
       </div>
-      <div className={classes.line}></div>
+      <div className={common.line}></div>
       <div>
-        <h3>타이들</h3>
-        <div>
-          <input type="text" />
-          <img src="img/reloadWhite.png" alt="reload" className={classes.reload} />
+        <h3>타이틀</h3>
+        <div className={classes.titleWrap}>
+          <div className={classes.prefix}>
+            {content}
+          </div>
+          <div className={classes.reload}>
+            <img src="img/reloadWhite.png" alt="reload" onClick={randomPrefix} />
+          </div>
         </div>
       </div>
       <div>
         <h3>닉네임</h3>
-        <input type="text" />
+        <input type="text" onChange={e => setNickname(e.target.value)}/>
       </div>
       <div>
-        <button onClick={moveToUserLikeHate}>다음으로</button>
+        <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
       </div>
     </div>
   );

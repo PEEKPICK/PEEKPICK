@@ -1,0 +1,12 @@
+.next {
+  background-color: #7d00ff;
+  color: white;
+  width: 80%;
+  height: 40px;
+  border-radius: 5px;
+  border: 0;
+}
+
+.line {
+  border: 1px solid black;
+}
