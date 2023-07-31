@@ -3,10 +3,8 @@ package com.vvs.peekpick.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.vvs.peekpick.peek.dto.PeekDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +13,6 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Getter
@@ -24,6 +20,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 @Configuration
 public class RedisConfig {
+//    @Autowired
+//    private PeekRedisServiceImpl peekRedisService;
 
     @Value("${spring.redis.host}")
     private String host;
@@ -40,13 +38,13 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<?, ?> redisTemplate() {
+    public RedisTemplate<?, ?> peekRedisTemplate() {
         RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         return redisTemplate;
     }
     @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> peekRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         ObjectMapper om = new ObjectMapper();
         om.registerModule(new JavaTimeModule());
@@ -57,5 +55,40 @@ public class RedisConfig {
         template.afterPropertiesSet();
         return template;
     }
+    @Bean
+    public RedisTemplate<String, Object> locationRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        return redisTemplate;
+    }
+
+
+//    // MessageListenerAdapter : 메시지를 받아 처리하는 콜백 메서드를 제공
+//    @Bean
+//    RedisMessageListenerContainer redisContainer() {
+//        final RedisMessageListenerContainer container = new RedisMessageListenerContainer(); //RedisMessageListenerContainer : 메시지를 수신하여 리스너에 전달
+//        container.setConnectionFactory(redisConnectionFactory());
+//        container.addMessageListener(listenerAdapter(), new PatternTopic("__keyevent@*__:expired"));
+//        return container;
+//    }
+//
+//    @Bean
+//    MessageListenerAdapter listenerAdapter() {
+//        return new MessageListenerAdapter(new MessageSubscriber());
+//    }
+//    private final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
+//    //MessageSubscriber는 onMessage 메서드를 통해 메시지를 수신하며, 메시지는 만료된 키의 이름입니다. 키가 "Peek"로 시작하면 키의 ID를 추출하고 해당 ID의 peek를 삭제합니다.
+//    class MessageSubscriber implements MessageListener {
+//        @Override
+//        public void onMessage(final Message message, final byte[] pattern) {
+//            String expiredKey = message.toString();
+//            if (expiredKey.startsWith(PEEK_REDIS)) {
+//                Long peekId = Long.valueOf(expiredKey.split(":")[1]);
+//                peekRedisService.deleteLocation(peekId);
+//            }
+//        }
+//    }
 
 }

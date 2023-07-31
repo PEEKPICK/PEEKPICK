@@ -13,4 +13,12 @@ public class SearchPeekDto {
     @Id
     private Point point; //경도, 위도
     private double distance;
+
+    @Override
+    public String toString() {
+        return "SearchPeekDto{" +
+                "point=" + point +
+                ", distance=" + distance +
+                '}';
+    }
 }
