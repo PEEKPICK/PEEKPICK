@@ -36,8 +36,6 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException{
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
 
-        log.info("principalUser=}{}", principalUser);
-
         ProviderUser providerUser = principalUser.getProviderUser();
 
         // 이름 + provider로 조회
@@ -58,8 +56,6 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 
             Member signupMember = memberRepository.save(newMember);
             redirectUrl += "?id=" + signupMember.getMemberId();
-
-            log.info("signupMember={}", signupMember);
         }
         // 회원이라면 Token 발급 & 리다이렉트
         else {

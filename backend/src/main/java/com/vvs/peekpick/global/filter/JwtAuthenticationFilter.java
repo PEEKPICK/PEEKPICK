@@ -39,11 +39,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             // AccessToken이 존재하고, 유효하다면
             if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
-                Long memberId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
+                Long avatarId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
 
-                // memberId만 넘겨준다.
+                // avatarId만 넘겨준다.
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(memberId, null, null);
+                        new UsernamePasswordAuthenticationToken(avatarId, null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
