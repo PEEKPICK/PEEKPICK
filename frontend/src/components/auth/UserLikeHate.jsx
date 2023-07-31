@@ -29,17 +29,17 @@ const UserLikeHate = () => {
 
   const moveToWelcome = () => {
     const dataToSend = {
-      memberid: userInfo.memberid,
-      name: userInfo.name,
+      memberId: userInfo.memberId,
       email: userInfo.email,
+      name: userInfo.name,
+      gender: userInfo.gender,
       phone: userInfo.phone,
       birthday: userInfo.birthday,
-      gender: userInfo.gender,
       emojiId: userInfo.emojiId,
       prefixId: userInfo.prefixId,
       nickname: userInfo.nickname,
       likes: userInfo.likes,
-      dislikes: userInfo.dislikes,
+      disLikes: userInfo.dislikes,
     }
   
     customAxios.post('/member/signup', dataToSend)

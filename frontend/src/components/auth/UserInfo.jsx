@@ -34,7 +34,7 @@ const UserInfo = () => {
 
         // store에 dispatch
         dispatch(authActions.updateUserInfo({
-          memberid: value,
+          memberId: value,
           name: userData.name,
           email: userData.email,
           phone: userData.phone,
@@ -50,7 +50,7 @@ const UserInfo = () => {
   // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
   const moveToUserProfile = () => {
     const changedUserData = {
-      memberid: userInfo.memberid,
+      memberId: userInfo.memberId,
       name: userInfo.name,
       email: userInfo.email,
       phone: phone,

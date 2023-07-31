@@ -76,7 +76,7 @@ const UserHate = () => {
 
   const selectedFinish = () => {
     const changedLikes = {
-      dislikes: tempMiddleList,
+      disLikes: tempMiddleList,
       hate: middleItem,
     }
     dispatch(authActions.updateUserHate(changedLikes))
