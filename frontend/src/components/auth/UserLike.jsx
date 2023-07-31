@@ -9,9 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
 
-const UserLike = () => {
-  // UserLikeHate에서 사용할 like hate 처리하기
-  
+const UserLike = () => {  
   // 상태관리
   // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
   const [dataAxios, setDataAxios] = useState(false);
