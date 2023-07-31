@@ -127,6 +127,16 @@ public class MemberServiceImpl implements MemberService {
         avatar.updateEmoji(emoji);
     }
 
+    // TODO
+    // 아바타 likes 태그 수정
+    @Override
+    public void updateAvatarLikes(Long avatarId, List<Long> likes) {
+        Avatar avatar = findByAvatarId(avatarId);
+
+        // avatar가 갖고있는 likes를 전부 삭제
+
+    }
+
     // 23.07.31 회원 생성 Form Login 대비용
     private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {
         Member member = Member.builder()

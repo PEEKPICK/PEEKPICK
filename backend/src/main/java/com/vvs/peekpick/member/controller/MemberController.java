@@ -86,11 +86,26 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    /**
+     * 이모지 수정하기
+     * @param authentication
+     * @param param
+     * @return
+     */
     @PutMapping("/info/emoji")
     public CommonResponse updateAvatarEmoji(Authentication authentication,
                                             @RequestBody Map<String, Long> param) {
         Long avatarId = Long.valueOf(authentication.getName());
         memberService.updateAvatarEmoji(avatarId, param.get("emojiId"));
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
+    }
+
+    @PutMapping("/info/like")
+    public CommonResponse updateAvatarLikes(Authentication authentication,
+                                          @RequestBody Map<String, List<Long>> param) {
+        Long avatarId = Long.valueOf(authentication.getName());
+        memberService.updateAvatarLikes(avatarId, param.get("likes"));
 
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
