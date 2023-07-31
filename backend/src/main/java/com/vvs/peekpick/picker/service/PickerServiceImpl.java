@@ -2,6 +2,8 @@ package com.vvs.peekpick.picker.service;
 
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.member.dto.AvatarDto;
+import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.picker.dto.ChatRequestDto;
 import com.vvs.peekpick.picker.dto.ChatResponseDto;
 import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
@@ -26,7 +28,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -49,6 +53,7 @@ public class PickerServiceImpl implements PickerService {
     private final PickerRedisRepository pickerRedisRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final SseEmitterRepository sseEmitterRepository;
+    private final MemberServiceImpl memberService;
 
     /**
      * 현재 사용자의 위치와 ID를 세션에 등록
@@ -148,7 +153,7 @@ public class PickerServiceImpl implements PickerService {
      * 거리순으로 Picker 조회
      *
      * @param picker - 현재 위치, Id, 반경이 포함된 Picker 정보
-     * @return DataResponse<List>
+     * @return DataResponse<List> - 조회된 Picker 의 이모지, 닉네임, 한줄소개, 취향 정보
      */
     @Override
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
@@ -175,7 +180,12 @@ public class PickerServiceImpl implements PickerService {
                 pickerList.add(value.getContent().getName());
             }
         }
-        return responseService.successDataResponse(ResponseStatus.CONNECTION_LIST_SEARCH_SUCCESS, pickerList);
+
+        List<AvatarDto> avatarDtoList = new ArrayList<>();
+        // 획득한 Id를 통해 이모지, 닉네임, 한줄소개, 호불호 반환
+        pickerList.forEach(value -> avatarDtoList.add(memberService.getAvatarInfo(Long.parseLong(value))));
+
+        return responseService.successDataResponse(ResponseStatus.CONNECTION_LIST_SEARCH_SUCCESS, avatarDtoList);
     }
 
     /**
