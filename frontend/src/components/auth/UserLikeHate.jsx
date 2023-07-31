@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import common from './style/Common.module.css';
-import classes from './style/UserLikeHate.module.css';
+import classes from './style/UserLikeOrHate.module.css';
 
 const UserLikeHate = () => {
   // 페이지 렌더링 시
@@ -71,7 +71,8 @@ const UserLikeHate = () => {
         </p>
       </div>
       <div className={common.linetag}>
-        <div className={common.line}></div>
+        <div className={classes.line1}></div>
+        <div className={classes.line2}></div>
       </div>
       <div>
         <h3>좋아하는 것</h3>

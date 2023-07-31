@@ -24,3 +24,15 @@
   border: 1px solid lightgray;
   border-radius: 5px;
 }
+
+.line1 {
+  width: 60%;
+  border-radius: 10px 0 0 10px;
+  background-color: #7d00ff;
+}
+
+.line2 {
+  width: 40%;
+  border-radius:0 10px 10px 0;
+  background-color: lightgray;
+}

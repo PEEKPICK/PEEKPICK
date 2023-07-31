@@ -50,7 +50,8 @@ const UserNickname = () => {
         <p>최대한 삼가해주세요!</p>
       </div>
       <div className={common.linetag}>
-        <div className={common.line}></div>
+        <div className={classes.line1}></div>
+        <div className={classes.line2}></div>
       </div>
       <div>
         <h3>타이틀</h3>
