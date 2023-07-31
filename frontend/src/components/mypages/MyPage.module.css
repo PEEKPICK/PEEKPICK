@@ -1,10 +1,10 @@
 .basic{
     display: flex;
-    background-color: blueviolet;
+    background-color: #7D00FF;
     justify-content: center;
     align-items: center;
-    height: 10vh;
-}
+    height: 20%;
+    }
 .mypage{
     margin-left: 10%;
     padding-left: 20%;
@@ -17,14 +17,31 @@
     background-color: white;
 }
 .profileDiv{
+    position: relative;
     justify-content: center;
     display: flex;
     align-items: center;
     height: 10vh;
 }
+.profileDiv::before{
+    position: absolute;
+    content:"";
+    top: 0;
+    left : 0;
+    width: 100%;
+    height: 50%;
+    background-color: #7D00FF;
+}
+.profileDiv::after{
+    position: absolute;
+    background-color: white;
+    top: 50%;
+    left: 50%;
+}
 .profileImg{
     max-width: 110%;
     max-height: 110%;
+    z-index: 10;
 }
 .NickNameEdit{
     display: flex;
