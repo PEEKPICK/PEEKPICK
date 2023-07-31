@@ -1,8 +1,22 @@
 .finderMain {
+  border: 1px slateblue solid;
   margin-top: 5%;
   display: flex;
   justify-content: space-between;
   justify-content: center;
+}
+
+.modalMain {
+  border: 2px solid violet;
+  background-color: bisque;
+}
+
+.emojiArea {
+  border: 1px solid black;
+  margin-top: 27%;
+  height: 40%;
+  display: flex;
+  position: relative;
 }
 
 .button {

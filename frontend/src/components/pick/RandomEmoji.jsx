@@ -77,5 +77,4 @@ const shuffleArray = (array) => {
 };
 
 export default RandomEmoji;
-
 Modal.setAppElement("#root");
