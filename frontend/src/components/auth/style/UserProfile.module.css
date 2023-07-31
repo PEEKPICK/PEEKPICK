@@ -10,5 +10,11 @@
 }
 
 .randomButton {
-  
+  background: linear-gradient(to right, #8F00FF, #654CFF);
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  width: 9vh;
+  height: 3.5vh;
+  margin-top: 3vh;
 }
