@@ -49,5 +49,9 @@
 
 .signup p {
   width: 80%;
-  margin-bottom: 0;
+  margin-bottom: 1vh;
+}
+
+.signup img {
+  margin-top: 10vh;
 }
