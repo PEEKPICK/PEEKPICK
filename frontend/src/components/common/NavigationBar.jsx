@@ -32,13 +32,13 @@ const NavigationBar = () => {
       {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
       <nav className={classes.navi}>
         {picky ? <Link to="picky" className={classes.self}>
-          <div onClick={pickyClick}>
+          <div onClick={pickyClick} >
             {/* <img src="img/heartBlack.png" alt="" /> */}
             <img src="img/heartWhite.png" alt="" />
             <p>이슈</p>
           </div>
         </Link> :
-          <Link to="picky" className={classes.self}>
+          <Link to="picky" className={classes.selfs}>
             <div onClick={pickyClick}>
               <img src="img/heartBlack.png" alt="" />
               {/* <img src="img/heartWhite.png" alt="" /> */}
@@ -52,7 +52,7 @@ const NavigationBar = () => {
             <p>사람</p>
           </div>
         </Link> :
-          <Link to={""} className={classes.self}>
+          <Link to={""} className={classes.selfs}>
             <div onClick={pickerClick}>
               <img src="img/finderBlack.png" alt="" />
               {/* <img src="img/finderWhite.png" alt="" /> */}
@@ -66,7 +66,7 @@ const NavigationBar = () => {
             <p>프로필</p>
           </div>
         </Link> :
-        <Link to={"mypage"} className={classes.self}>
+        <Link to={"mypage"} className={classes.selfs}>
         <div onClick={mypageClick}>
           <img src="img/mypageBlack.png" alt="" />
           {/* <img src="img/mypageWhite.png" alt="" /> */}
