@@ -1,6 +1,9 @@
 import React from 'react';
 
 const LikeAndHate = () => {
+  // 리덕스와 백에 있는 거 array 형식으로 저장한다음 for 문을 이용해 div 만들기
+  // axios put 요청 추가
+  
   return (
     <div>
       <h3>좋아하는 것</h3>

@@ -30,4 +30,17 @@
     top: 10px;
     cursor: pointer;
   }
+  
+}
+
+.hi{
+  position: absolute;
+  top: 20%;
+  left: 70%;
+  transform: translate(-40%, -40%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 30%;
+  text-align: center;
 }
