@@ -59,7 +59,7 @@ const UserLikeHate = () => {
   }
 
   return (
-    <div>
+    <div className={common.container}>
       <div>
         <h1>취향 PICK</h1>
       </div>
