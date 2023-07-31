@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
-    id: '',
+    memberid: '',
     name: '',
     email: '',
     phone: '',
@@ -21,7 +21,7 @@ const authSlice = createSlice({
     // 리듀서를 회원가입 페이지 마다 작성해서 처리.
     updateUserInfo (state, action) {
       const newItem = action.payload;
-      state.id = newItem.id
+      state.memberid = newItem.memberid
       state.name = newItem.name;
       state.email = newItem.email;
       state.phone = newItem.phone;

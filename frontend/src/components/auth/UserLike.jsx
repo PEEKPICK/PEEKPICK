@@ -34,6 +34,7 @@ const UserLike = () => {
   useEffect(() => {
     customAxios.get('/member/taste')
       .then(response => {
+        console.log(response.data)
         setDataAxios(true);
         setLikeList(response.data.data)
       })
@@ -46,6 +47,7 @@ const UserLike = () => {
   const middleItemHandler = (item) => {
     customAxios.get(`/member/taste?category_large=${item}`)
       .then(response => {
+        console.log(response.data)
         setMiddleDataAxios(true);
         setMiddleLikeList(response.data.data);
       })

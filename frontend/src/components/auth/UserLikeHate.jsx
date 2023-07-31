@@ -29,7 +29,7 @@ const UserLikeHate = () => {
 
   const moveToWelcome = () => {
     const dataToSend = {
-      id: userInfo.id,
+      memberid: userInfo.memberid,
       name: userInfo.name,
       email: userInfo.email,
       phone: userInfo.phone,
