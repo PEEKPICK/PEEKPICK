@@ -26,6 +26,7 @@
   align-items: center;
   height: 5vh;
   margin-top: 7vh;
+  width: 80%;
 }
 
 .switch input {
@@ -38,7 +39,8 @@
 }
 
 .switch label {
-  background-color: lightgray;
+  width: 100%;
+  background-color: #EDEEEF;
 	color: rgba(0, 0, 0, 0.6);
 	font-size: 14px;
 	line-height: 1;
