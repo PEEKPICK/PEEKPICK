@@ -1,5 +1,5 @@
 import React from "react";
-// import classes from './NavigationBar.module.css';
+import classes from './NavigationBar.module.css';
 const ChatAlert = () => {
   const chat = false;
   return (
