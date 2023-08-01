@@ -93,7 +93,7 @@ const UserLike = () => {
           <p>(최대 5개 선택 가능)</p>
         </div>
       </div>
-      <div className={common.line}></div>
+      <div className={common.defaultLine}></div>
       <div>
         {dataAxios ? (
           <ul className={common.largelist}>
@@ -110,7 +110,7 @@ const UserLike = () => {
               <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
             ))}
           </ul>
-        ) : (<p>중분류가 없습니다.</p>)}
+        ) : (<p>대분류를 선택해주세요.</p>)}
       </div>
       <div>
         {modalOpen && <Modal onClose={closeModal} />}

@@ -27,6 +27,10 @@
   width: 100%;
 }
 
+.defaultLine {
+  border: 1px solid #7d00ff;
+}
+
 .largelist {
   margin-top: 3vh;
   padding: 0;

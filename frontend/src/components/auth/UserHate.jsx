@@ -93,24 +93,24 @@ const UserHate = () => {
           <p>(최대 5개 선택 가능)</p>
         </div>
       </div>
-      <div className={common.line}></div>
+      <div className={common.defaultLine}></div>
       <div>
         {dataAxios ? (
-          <ul>
+          <ul className={common.largelist}>
             {likeList.map(item => (
-              <button key={item} onClick={() => middleItemHandler(item)}>{item}</button>
+              <button key={item} onClick={() => middleItemHandler(item)} className={common.taste}>{item}</button>
             ))}
           </ul>
         ) : (<p>대분류가 없습니다.</p>)}
       </div>
       <div>
         {middleDataAxios ? (
-          <ul>
+          <ul className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}>{middleItem.middle}</button>
+              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
             ))}
           </ul>
-        ) : (<p>중분류가 없습니다.</p>)}
+        ) : (<p>대분류를 선택해주세요.</p>)}
       </div>
       <div>
         {modalOpen && <Modal onClose={closeModal} />}
