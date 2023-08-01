@@ -20,7 +20,9 @@ const UserInfo = () => {
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // 자동하이픈을 위한 useRef함수
   const phoneRef = useRef();
+  const birthRef = useRef();
 
   // axios 통신으로 유저 정보 불러오기
   useEffect(() => {
@@ -106,11 +108,38 @@ const UserInfo = () => {
           type="tel"
           name="user-phone"
           ref={phoneRef}
-          placeholder="전화번호(Ex. 010-1234-5678)"
+          placeholder="전화번호(ex. 010-1234-5678)"
           onChange={autoHypenPhone}
         />
       );
     }
+  };
+
+  // 생년월일 자동 하이픈 생성 함수
+  const autoHypenBirth = (e) => {
+    const value = birthRef.current.value.replace(/\D+/g, "");
+    const birthLength = 8;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i<birthLength; i++) {
+      switch(i) {
+        case 4:
+          result += "-";
+          break;
+        case 6:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    birthRef.current.value = result;
+    setBirthday(e.target.value)
   };
 
   // 생일이 있으면 있는거 보여주고, 없으면 input 보여줌
@@ -123,7 +152,13 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="birth" placeholder="생년월일(Ex. 1998-06-28)" onChange={e => setBirthday(e.target.value)} />
+        <input
+          type="text"
+          name="birth"
+          ref={birthRef}
+          placeholder="생년월일(ex. 1998-06-28)"
+          onChange={autoHypenBirth}
+        />
       );
     }
   };
