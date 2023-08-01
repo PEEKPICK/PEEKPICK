@@ -28,7 +28,7 @@ const UserInfo = () => {
     const value = urlParams.get("id");
 
     // axios 통신
-    customAxios.get(`/member/signup/info?id=${value}`)
+    customAxios.get(`/ member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
 
@@ -64,6 +64,11 @@ const UserInfo = () => {
     navigate('/userprofile')
   };
 
+  // 휴대폰 번호 자동 하이픈 생성 함수
+  const autoHypenPhone = (str) => {
+    str = str.replace(/[^0-9]/g, "");
+  }
+
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
     if (userInfo.phone) {
@@ -74,7 +79,13 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="phone" placeholder="전화번호(Ex. 010-1234-5678)" onChange={e => setPhone(e.target.value)} />
+        <input
+          type="text"
+          placeholder="전화번호(Ex. 010-1234-5678)"
+          required
+          maxLength="13"
+          onChange={e => setPhone(e.target.value)}
+        />
       );
     }
   };

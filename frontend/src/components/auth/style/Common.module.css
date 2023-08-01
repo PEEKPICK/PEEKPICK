@@ -13,11 +13,6 @@
   margin-top: 3vh;
 }
 
-.container img {
-  margin-top: 5vh;
-  width: 100%;
-}
-
 .center {
   display: flex;
   flex-direction: column;
