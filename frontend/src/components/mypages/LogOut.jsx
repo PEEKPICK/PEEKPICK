@@ -30,9 +30,9 @@ const LogOut = forwardRef((props, ref) => {
   };
 
   return (
-    <div className={classes.hi} ref={wrapperRef}>
+    <div className={classes.logout} ref={wrapperRef}>
       {/* 모달창 */}
-      <div>
+      <div className={classes.logouttop}>
         <h3>CAUTION</h3>
         {/* x 버튼 click 시 로그아웃 화면 종료 */}
         <img src="img/cancel.png" alt="" onClick={LogOutDisplay} />
@@ -42,12 +42,12 @@ const LogOut = forwardRef((props, ref) => {
         <h4>로그아웃 하시겠습니까?</h4>
 
         {/* 클릭시 로그아웃 화면 종료 */}
-        <div className={classes.hate} onClick={LogOutDisplay}>
+        <div  onClick={LogOutDisplay}>
           <h4>싫어!</h4>
         </div>
         {/* 클릭시 로그아웃 */}
         <Link to="/login">
-          <div className={classes.like} onClick={Logout}>
+          <div onClick={Logout}>
             <h4>좋아!</h4>
           </div>
         </Link>

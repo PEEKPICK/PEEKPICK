@@ -1,19 +1,28 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import classes from './NickNameEdit.module.css';
 import { customAxios } from '../../api/customAxios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/authSlice';
 const NickNameEdit = forwardRef((props, ref) => {
   let wrapperRef = useRef();
   // 리덕스에 있는 자료 미리 넣어놓기
-  const [prefix, setPrefix] = useState('hi');
-  const [prefixId, setPrefixId] = useState('hi');
+  const userInfo = useSelector(state => state.auth);
+  const [prefix, setPrefix] = useState("");
+  const [prefixId, setPrefixId] = useState('');
   const [nickname, setNickname] = useState('');
-  const [oneLine, setoneLine] = useState('');
+  const [bio, setbio] = useState('');
+
+  // 로그인 자료
+  const jwtToken = localStorage.getItem('jwtToken');
+  const headers = {
+    Authorization : `Bearer ${jwtToken}`
+  }
+
+  // 리덕스
   const dispatch = useDispatch();
-  if (oneLine.length >= 20) {
+  if (bio.length >= 20) {
     alert("한 줄 소개에는 20단어 이상이 허용되지 않습니다.")
-    setoneLine("");
+    setbio("");
   }
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -29,11 +38,9 @@ const NickNameEdit = forwardRef((props, ref) => {
 
   const handleNicknameChange = (e) => {
     setNickname(e.target.value);
-    console.log(nickname)
   }
-  const handleoneLine = (e) => {
-    setoneLine(e.target.value);
-    console.log(oneLine);
+  const handlebio = (e) => {
+    setbio(e.target.value);
   }
   const NickNameEditDisplay = () => {
     props.setNicknameView(false);
@@ -47,14 +54,24 @@ const NickNameEdit = forwardRef((props, ref) => {
         setPrefixId(response.data.data.prefixId)
       })
   }
-  const profile = {
-    "prefixId": prefixId,
-  }
-  console.log(profile)
+
+
   const changeProfile = () => {
     // 리덕스 코드 집어넣기
-    customAxios.put("/member/info", { profile })
+    const profile = {
+      "prefixId": prefixId,
+      "nickname": nickname,
+      "bio" : bio,
+    }
+    customAxios.put("/member/info", profile, {headers})
       .then((response) => {
+        dispatch(authActions.updateUserNickname(profile))
+        dispatch(authActions.updateUserNickname({prefix:prefix}))
+        // window.location.reload('/mypage');
+        props.setNicknameView(false);
+        props.propPrefix(prefix);
+        props.propBio(bio);
+        props.propNickname(nickname);
       })
   }
   return (
@@ -71,7 +88,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         {/* 형용사 버튼클릭시 input 안에 들어옴 변경 금지
                 input 말고 div로 디자인 해야할지도? */}
         <div className={classes.titleinline}>
-        <input type="text" value={prefix} readOnly />
+        <input type="text" value={prefix} placeholder={userInfo.prefix} readOnly />
         {/* 클릭시 형용사 랜덤으로 백에서 뽑아오기 */}
         <img src="img/reloadWhite.png" alt="타이틀 바꾸기 버튼" onClick={titleChange} />
         </div>
@@ -80,18 +97,19 @@ const NickNameEdit = forwardRef((props, ref) => {
         <h4>닉네임</h4>
         {/* 입력 받은 정보 props로 전달해야하기 때문에 이 부분 공부 */}
         <div className={classes.nickname}>
-        <input type="text" value={nickname} onChange={handleNicknameChange} />
+        <input type="text" value={nickname} placeholder={userInfo.nickname} onChange={handleNicknameChange} />
         </div>
       </div>
       <div>
         <h4>한 줄 소개</h4>
         {/* 이 부분도 닉네임과 타이틀 동일하게 잘 전달해야함! */}
-        <div className={classes.oneline}>
+        <div className={classes.bio}>
 
-        <input type="text" value={oneLine} onChange={handleoneLine} />
+        <input type="text" value={bio}  placeholder={userInfo.bio} onChange={handlebio} />
         </div>
       </div>
       {/* 클릭시 props로 마이페이지에 값 전달 */}
+      
       <div onClick={changeProfile} className={classes.savebtn}>
         <span>저장</span>
       </div>

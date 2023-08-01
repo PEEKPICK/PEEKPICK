@@ -27,7 +27,6 @@ const Profile = (props) => {
         setEmojiId(response.data.data.emojiId)
         setEmojiUrl(response.data.data.imageUrl)
         setEmojiCheck(true)
-
       })
   }
 

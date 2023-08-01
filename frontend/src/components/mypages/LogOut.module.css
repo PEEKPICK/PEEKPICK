@@ -1,25 +1,25 @@
-.hi{
+.logout{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -60%);
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  border: 1px solid black;
+  border: 1px solid;
+  border-color:gray;
   width: 70%;
-  height: 40%;
-  text-align: center;
-}
-.hate{
-  position:absolute;
-  top:70%;
-  left:20%;
+  height: 35%;
+  z-index: 1015;
 }
 
-.like{
+.logouttop{
+  display: flex;
+  align-items: center;
+}
+
+.logout img{
   position: absolute;
-  top:70%;
-  right: 20%;
-  color: black;
+  right: 5%;
+  top:5%;
 }
