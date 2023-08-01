@@ -65,8 +65,11 @@
 }
 
 .items {
+  font-size: large;
   border: 1px solid #7d00ff;
   border-radius: 3px;
-  background-color: white;
-  color: #7d00ff;
+  background-color: #7d00ff;
+  color: white;
+  margin-right: 2vh;
+  padding: 0.5%;
 }

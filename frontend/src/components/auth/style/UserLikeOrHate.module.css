@@ -16,6 +16,7 @@
 
 .buttonWrap {
   display: flex;
+  margin-bottom: 2vh;
 }
 
 .buttonWrap button {
