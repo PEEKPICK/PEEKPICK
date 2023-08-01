@@ -1,9 +1,4 @@
-.EmojiBtn {
-  width: 15%;
-}
-
 .ParentreloadBtn {
-  border: 1px solid black;
   display: flex;
   justify-content: center;
 }
@@ -23,7 +18,32 @@
 }
 
 .emojiArea {
-  border: 1px black solid;
-  margin-top: 8rem;
-  height: 21rem;
+  border: 1px solid black;
+  margin-top: 9rem;
+  height: 18rem;
+  position: relative; /* 추가: EmojiArea 내부에서의 상대적인 위치를 사용하기 위해 position을 설정 */
+}
+
+.EmojiBtn {
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  position: absolute; /* 추가: 이모지 버튼들을 EmojiArea 내부에서의 절대 위치로 설정 */
+}
+
+.EmojiImg {
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+/* 이미지 위에 마우스를 올렸을 때 크기 변화 적용 */
+.EmojiImg:hover {
+  transform: scale(2); /* 1.2배 크기로 확대 */
+}
+
+/* 마우스가 이미지 위에서 나갔을 때 원래 크기로 돌아가기 */
+.EmojiImg:not(:hover) {
+  transform: scale(1); /* 원래 크기로 설정 */
 }

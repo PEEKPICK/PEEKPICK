@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { locationActions } from "../../store/locationSlice";
 
-const useLocationEffect = () => {
+const GeoLocation = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,4 +31,4 @@ const useLocationEffect = () => {
     }
   }, [dispatch]);
 };
-export default useLocationEffect;
+export default GeoLocation;

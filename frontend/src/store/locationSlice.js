@@ -10,14 +10,37 @@ const locationSlice = createSlice({
       y: null,
     },
     distance: null,
+
+    avatarId: null,
+    bio: null,
+    disLikes: [],
+    emoji: {
+      emojiId: null,
+      rate: "",
+      imageUrl: "",
+      animatedImageUrl: "",
+    },
+    likes: [],
+    nickname: "",
+    prefix: { prefixId: null, content: "" },
+    world: "",
   },
   reducers: {
     updateLoc: (state, action) => {
-      const userPoint = action.payload;
-      state.memberId = userPoint.memberId;
-      state.point.x = userPoint.point.x;
-      state.point.y = userPoint.point.y;
-      state.distance = userPoint.distance;
+      const userInfo = action.payload;
+      state.memberId = userInfo.memberId;
+      state.point.x = userInfo.point.x;
+      state.point.y = userInfo.point.y;
+      state.distance = userInfo.distance;
+
+      state.avatarId = userInfo.avatarId;
+      state.bio = userInfo.bio;
+      state.disLikes = userInfo.disLikes;
+      state.emoji = userInfo.emoji;
+      state.likes = userInfo.likes;
+      state.nickname = userInfo.nickname;
+      state.prefix = userInfo.prefix;
+      state.world = userInfo.world;
     },
   },
 });
