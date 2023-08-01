@@ -89,11 +89,16 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         }
     }
 
+
     @Override
     public DataResponse getPeek(String memberId, Long peekId) {
         try{
             PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
             setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
+
+            boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
+            boolean isDisLiked = setOps.isMember("member:" + memberId + ":disLiked", String.valueOf(peekId));
+
             ResponsePeekDetailDto responsePeekDetailDto = ResponsePeekDetailDto.builder()
                     .peekId(peekDto.getPeekId())
                     .memberId(peekDto.getMemberId())
@@ -102,8 +107,8 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .likeCount(peekDto.getLikeCount())
                     .disLikeCount(peekDto.getDisLikeCount())
                     .finishTime(peekDto.getFinishTime())
-                    .liked(peekDto.isLiked())
-                    .disLiked(peekDto.isDisLiked())
+                    .liked(isLiked) //사용자가 눌렀는지
+                    .disLiked(isDisLiked) //사용자가 눌렀는지
                     .build();
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, responsePeekDetailDto);
         }
@@ -126,11 +131,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse addReaction(Long peekId, Long memberId, boolean like, boolean add) {
+    public CommonResponse addReaction(Long peekId, String memberId, boolean like, boolean add) {
         int count = add ? 1 : -1;
         try {
             PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
-            LocalDateTime updatedFinishTime = add ? peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME) : peekDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME);
+            LocalDateTime updatedFinishTime = add ? peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME) : peekDto.getFinishTime();
             boolean special = peekDto.isSpecial();
 
             if (Duration.between(peekDto.getWriteTime(), updatedFinishTime).toHours() >= 24) {
@@ -138,10 +143,6 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                 special = true;
             }
 
-            // 좋아요 눌렀을 때 레디스 추가
-            // 다시 좋아요 삭제 눌렀을 때 레디스에서도 삭제
-            // 싫어요 눌렀을 떄 레디스 추가
-            // 다시 싫어요 눌렀을 때 레디스에서도 삭제
             PeekDto updatedPeekDto = peekDto.toBuilder()
                     .likeCount(like ? peekDto.getLikeCount() + count : peekDto.getLikeCount())
                     .disLikeCount(!like ? peekDto.getDisLikeCount() + count : peekDto.getDisLikeCount())
@@ -150,6 +151,18 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .build();
 
             valueOps.set(PEEK_REDIS + peekId, updatedPeekDto);
+
+            // 좋아요 눌렀을 때 레디스 추가 / 다시 좋아요 삭제 눌렀을 때 레디스에서도 삭제
+            // 싫어요 눌렀을 떄 레디스 추가 / 다시 싫어요 눌렀을 때 레디스에서도 삭제
+            if(like) {
+                if(add) setOps.add("member:" + memberId + ":liked", String.valueOf(peekId));
+                else setOps.remove("member:" + memberId + ":liked", String.valueOf(peekId));
+            }
+            else {
+                if(add) setOps.add("member:" + memberId + ":disLiked", String.valueOf(peekId));
+                else setOps.remove("member:" + memberId + ":disLiked", String.valueOf(peekId));
+            }
+
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         }
         catch (Exception e) {

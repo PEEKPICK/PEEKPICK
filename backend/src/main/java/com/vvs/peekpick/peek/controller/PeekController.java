@@ -46,8 +46,8 @@ public class PeekController {
     }
 
     @PostMapping("/{peekId}")
-    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {
-        Long memberId = Long.parseLong(reaction.get("memberId").toString());
+    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {//@AuthenticationPrincipal Principal principal
+        String memberId = "testMemberId";//principal.getName();
         boolean like = Boolean.parseBoolean(reaction.get("like").toString());
         boolean add = Boolean.parseBoolean(reaction.get("add").toString());
         return ResponseEntity.ok(peekRedisService.addReaction(peekId, memberId, like, add));
