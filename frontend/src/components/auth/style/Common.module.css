@@ -63,3 +63,10 @@
   position: absolute;
   bottom: 10vh;
 }
+
+.items {
+  border: 1px solid #7d00ff;
+  border-radius: 3px;
+  background-color: white;
+  color: #7d00ff;
+}

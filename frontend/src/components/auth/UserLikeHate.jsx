@@ -84,8 +84,8 @@ const UserLikeHate = () => {
           </div>
         </div>
         <div>
-            {userInfo.like}
-          </div>
+          {userInfo.like}
+        </div>
         <div className={`${classes.buttonWrap} ${classes.hate}`}>
           <div>
             <h3>싫어하는 것</h3>

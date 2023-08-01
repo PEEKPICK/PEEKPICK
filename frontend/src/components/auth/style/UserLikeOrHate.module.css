@@ -24,6 +24,9 @@
   border: 1px solid #7d00ff;
   border-radius: 3px;
   color: white;
+  font-size: x-small;
+  height: 2vh;
+  width: 4vh;
 }
 
 .hate {
