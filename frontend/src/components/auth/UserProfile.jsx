@@ -55,10 +55,10 @@ const UserProfile = () => {
         <div className={classes.line2}></div>
       </div>
       </div>
-      <div>
+      <div className={common.center}>
         <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
-      <div>
+      <div className={common.center}>
         <button onClick={randomGacha} className={classes.randomButton}>다시뽑기</button>
       </div>
       <div>
