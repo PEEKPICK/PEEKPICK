@@ -84,7 +84,7 @@ const UserLike = () => {
   };
 
   return (
-    <div>
+    <div className={common.container}>
       <div>
         <div>
           <h1>좋아해요</h1>

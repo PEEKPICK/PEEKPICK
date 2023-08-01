@@ -39,11 +39,11 @@ const UserProfile = () => {
   };
 
   return (
-    <div>
-      <div className={common.signup}>
+    <div className={common.container}>
+      <div>
         <h1>프로필 PICK</h1>
       </div>
-      <div className={common.signup}>
+      <div>
         <p>개성넘치는 프로필을 뽑아보세요
           <br />
           숨겨진 프로필이 있다는 소문이...
@@ -55,13 +55,13 @@ const UserProfile = () => {
         <div className={classes.line2}></div>
       </div>
       </div>
-      <div className={common.signup}>
+      <div>
         <img src={randomEmoji} alt="dummy_emoji" className={classes.myImage} />
       </div>
-      <div className={common.signup}>
+      <div>
         <button onClick={randomGacha} className={classes.randomButton}>다시뽑기</button>
       </div>
-      <div className={common.signup}>
+      <div>
         <button onClick={moveToUserNickname} className={`${common.next} ${classes.nextButton}`}>다음으로</button>
       </div>
     </div>
