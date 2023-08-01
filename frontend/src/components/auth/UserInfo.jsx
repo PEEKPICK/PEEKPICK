@@ -168,8 +168,8 @@ const UserInfo = () => {
       <div>
         <h1>회원가입</h1>
       </div>
-      <div>
-        <p>회원 정보를 확인해주세요</p>
+      <div className={classes.span}>
+        <span>회원 정보를 확인해주세요</span>
       </div>
       <div>
         <form className={classes.form}>

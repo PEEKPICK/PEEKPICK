@@ -8,6 +8,11 @@
   border: 0;
 }
 
+.span {
+  margin-top: 2vh;
+  margin-bottom: -2vh;
+}
+
 .box {
   width: 100%;
   height: 5vh;
