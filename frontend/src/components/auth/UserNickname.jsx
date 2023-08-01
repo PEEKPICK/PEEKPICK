@@ -55,25 +55,27 @@ const UserNickname = () => {
         <div className={classes.line1}></div>
         <div className={classes.line2}></div>
       </div>
-      <div>
+      <div className={classes.allWrap}>
         <div>
-          <h3>타이틀</h3>
-        </div>
-        <div className={classes.prefixWrap}>
-          <div className={classes.prefix}>
-            {content}
+          <div>
+            <h3>타이틀</h3>
           </div>
-          <div className={classes.reload}>
-            <img src="img/reloadWhite.png" alt="reload" onClick={randomPrefix} />
+          <div className={classes.prefixWrap}>
+            <div className={classes.prefix}>
+              {content}
+            </div>
+            <div className={classes.reload}>
+              <img src="img/reloadWhite.png" alt="reload" onClick={randomPrefix} />
+            </div>
           </div>
         </div>
-      </div>
-      <div>
         <div>
-          <h3>닉네임</h3>
-        </div>
-        <div>
-          <input type="text" onChange={e => setNickname(e.target.value)}/>
+          <div>
+            <h3>닉네임</h3>
+          </div>
+          <div>
+            <input type="text" onChange={e => setNickname(e.target.value)}/>
+          </div>
         </div>
       </div>
       <div>

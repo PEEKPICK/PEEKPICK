@@ -10,10 +10,15 @@
   background-color: lightgray;
 }
 
+.allWrap {
+  margin-top: 7vh;
+}
+
 .prefixWrap {
   display: flex;
   justify-content: center;
-  width: 80%;
+  margin-top: 1vh;
+  margin-bottom: 5vh;
 }
 
 .prefix {
@@ -22,6 +27,9 @@
   height: 4.5vh;
   border: 1px solid lightgray;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .reload {
