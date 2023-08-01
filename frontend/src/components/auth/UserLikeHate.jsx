@@ -75,24 +75,28 @@ const UserLikeHate = () => {
         <div className={classes.line2}></div>
       </div>
       <div className={classes.likehateWrap}>
-        <div>
-          <h3>좋아하는 것</h3>
+        <div className={classes.buttonWrap}>
           <div>
-            {userInfo.like}
+            <h3>좋아하는 것</h3>
           </div>
           <div>
             <button onClick={moveToUserLike}>+추가</button>
           </div>
         </div>
         <div>
-          <h3>싫어하는 것</h3>
+            {userInfo.like}
+          </div>
+        <div className={`${classes.buttonWrap} ${classes.hate}`}>
           <div>
-            {userInfo.hate}
+            <h3>싫어하는 것</h3>
           </div>
           <div>
             <button onClick={moveToUserHate}>+추가</button>
           </div>
         </div>
+        <div>
+            {userInfo.hate}
+          </div>
       </div>
       <div>
         <button onClick={moveToWelcome} className={common.next}>다음으로</button>

@@ -13,3 +13,19 @@
 .likehateWrap {
   margin-top: 3vh;
 }
+
+.buttonWrap {
+  display: flex;
+}
+
+.buttonWrap button {
+  margin-left: 1vh;
+  background-color: #7d00ff;
+  border: 1px solid #7d00ff;
+  border-radius: 3px;
+  color: white;
+}
+
+.hate {
+  margin-top: 15vh;
+}
