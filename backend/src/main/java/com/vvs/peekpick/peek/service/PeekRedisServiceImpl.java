@@ -42,6 +42,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     private final int PEEK_REACTION_TIME = 5; // 좋아요, 싫어요 시 증가되는 시간
 
     private final ResponseService responseService;
+
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
     @Qualifier("locationRedisTemplate")
@@ -84,18 +85,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     @Override
     public DataResponse getPeek(Long peekId) {
         Object obj = peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
-        System.out.println(obj.getClass().getName());
-        System.out.println(geoOps.position(PEEK_LOCATION_REDIS, peekId.toString()));
         return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, obj);
-//        if (obj instanceof LinkedHashMap) {
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.registerModule(new JavaTimeModule());
-//            PeekDto peekDto = mapper.convertValue(obj, PeekDto.class);
-//            System.out.println(peekDto);
-//            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, peekDto);
-//        } else {
-//            return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
-//        }
     }
 
     @Override
@@ -117,38 +107,19 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
         valueOps.set(PEEK_REDIS + peekId, updatedPeekDto);
         return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
-//        if (obj instanceof LinkedHashMap) {
-//            ObjectMapper mapper = new ObjectMapper();
-//            mapper.registerModule(new JavaTimeModule());
-//
-//            PeekDto peekDto = mapper.convertValue(obj, PeekDto.class);
-//            PeekDto updatedPeekDto = peekDto.toBuilder()
-//                    .likeCount(like ? peekDto.getLikeCount() + count : peekDto.getLikeCount())
-//                    .disLikeCount(!like ? peekDto.getDisLikeCount() + count : peekDto.getDisLikeCount())
-//                    .finishTime(add ? peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME) : peekDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME))
-//                    .build();
-//
-//            valueOps.set(PEEK_REDIS + peekId, updatedPeekDto);
-//            return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
-//        } else {
-//            return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
-//        }
     }
 
 
     @Override
     public DataResponse findNearPeek(SearchPeekDto searchPeekDto) {
-        System.out.println(searchPeekDto);
         Circle circle = new Circle(searchPeekDto.getPoint(), new Distance(searchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
         GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
-        System.out.println(nearPeekLocation);
+
         List<PeekDto> allPeeks = new ArrayList<>();
         for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
             String peekId = peekLocation.getContent().getName().toString();
             allPeeks.add((PeekDto) valueOps.get(PEEK_REDIS + peekId));
         }
-
-        System.out.println(allPeeks);
 
         List<PeekDto> randomPeeks;
         if(allPeeks.size() <= MAX_PEEK){
