@@ -19,8 +19,8 @@ public class Report {
     private Long memberId;
     private Long victimId;
 
-    @Column(length = 1)
-    private String reportType;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private ReportCategory reportType;
 
     @Column(length = 1)
     private String dataType;
