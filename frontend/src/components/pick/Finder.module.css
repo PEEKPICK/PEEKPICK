@@ -1,30 +1,29 @@
-.finderMain {
-  border: 1px slateblue solid;
-  margin-top: 5%;
+.EmojiBtn {
+  width: 15%;
+}
+
+.ParentreloadBtn {
+  border: 1px solid black;
   display: flex;
-  justify-content: space-between;
   justify-content: center;
 }
 
-.modalMain {
-  border: 2px solid violet;
-  background-color: bisque;
+.reloadBtn {
+  display: flex;
+  border-radius: 1rem;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.4rem;
+  width: 10rem;
+  height: 3rem;
+}
+
+.reloadBtn img {
+  margin-right: 0.5rem; /* 이미지 오른쪽과 텍스트 사이 간격 조정 */
 }
 
 .emojiArea {
-  border: 1px solid black;
-  margin-top: 27%;
-  height: 40%;
-  display: flex;
-  position: relative;
-}
-
-.button {
-  font-size: 1.3rem;
-  border: none;
-  border-radius: 1rem;
-  color: #7d00ff;
-  background-color: white; /* 흰색 배경색 */
-  padding: 5px 20px; /* 버튼 내부 여백 */
-  cursor: pointer;
+  border: 1px black solid;
+  margin-top: 8rem;
+  height: 21rem;
 }

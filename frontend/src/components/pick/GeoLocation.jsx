@@ -1,15 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { locationActions } from "../../store/locationSlice";
 
-const LocationComponent = () => {
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
+const useLocationEffect = () => {
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    console.log("위치 가져오기");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
+          // 위치값을 Redux store에 저장합니다.
+          dispatch(
+            locationActions.updateLoc({
+              memberId: 5,
+              point: {
+                x: position.coords.longitude,
+                y: position.coords.latitude,
+              },
+              distance: 10000,
+            })
+          );
         },
         (error) => {
           console.error(error);
@@ -18,15 +29,6 @@ const LocationComponent = () => {
     } else {
       console.error("Geolocation is not supported by this browser.");
     }
-  }, []);
-
-  return (
-    <div>
-      Latitude: {latitude}
-      <br />
-      Longitude: {longitude}
-    </div>
-  );
+  }, [dispatch]);
 };
-
-export default LocationComponent;
+export default useLocationEffect;

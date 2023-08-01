@@ -1,34 +1,55 @@
-import React, { useEffect } from "react";
-// import classes from "./Finder.module.css";
-// import Modal from "react-modal";
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import GeoLocation from "./GeoLocation";
 import { customAxios } from "../../api/customAxios";
-import Geolocation from "./GeoLocation";
+import classes from "./Finder.module.css";
+const Finder = () => {
+  // Redux store에서 위치값 가져오기
+  const getMemberId = useSelector((state) => state.geo.memberId);
+  const getPoint = useSelector((state) => state.geo.point);
+  const getDistance = useSelector((state) => state.geo.distance);
 
-function Finder() {
+  //이모지를 새롭게 랜더링
+  const [imageUrls, setImageUrls] = useState([]);
+
+  // GeoLocation 호출하여 위치 가져와서 객체에 담기
+
+  GeoLocation();
+
   useEffect(() => {
-    console.log("wo렌더링");
-    emojiCall();
-  }, []);
+    if (getMemberId !== null && getPoint !== null && getDistance !== null) {
+      const requestBody = {
+        memberId: getMemberId,
+        point: getPoint,
+        distance: getDistance,
+      };
+      emojiCall(requestBody);
+    }
+  }, [getMemberId, getPoint, getDistance]);
 
-  const emojiCall = () => {
-    customAxios
-      .get("/posts")
-      .then((response) => {
-        const data = response.data.data.data;
-        const code = response.data.data.code;
-        console.log("data:", data);
-        console.log("code:", code);
-      })
-      .catch((error) => {
-        console.error("API 요청 실패:", error);
-      });
+  const emojiCall = (requestBody) => {
+    customAxios.post("/picker", requestBody).then((response) => {
+      console.log(response.data);
+      const imageUrlArray = response.data.data.data.map((item) => item.emoji);
+      setImageUrls(imageUrlArray);
+      console.log("이모지 배열", imageUrlArray);
+    });
   };
-
   return (
-    <div>
-      <Geolocation />
-    </div>
+    <>
+      <div className={classes.ParentreloadBtn}>
+        <button className={classes.reloadBtn} onClick={() => emojiCall()}>
+          <img src="./img/reloadBlue.png" alt="새로고침" />
+          새로고침
+        </button>
+      </div>
+      <div className={classes.emojiArea}>
+        {imageUrls.map((current, index) => (
+          <img key={index} src={current.animatedImageUrl} alt={current.emojiId} className={classes.EmojiBtn} />
+        ))}
+      </div>
+    </>
   );
-}
+};
 
 export default Finder;
