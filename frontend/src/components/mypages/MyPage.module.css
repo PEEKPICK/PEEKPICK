@@ -13,6 +13,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(125, 0, 225, 0.25);
+    height: 10vh;
 }
 
 .settingimg {

@@ -48,6 +48,7 @@ const NickNameEdit = forwardRef((props,ref) => {
     "userId" : prefixId,
     "bio" : oneline,
   }
+  console.log(profile)
   const changeProfile=()=>{
     // 리덕스 코드 집어넣기
     axios.put("",{profile})

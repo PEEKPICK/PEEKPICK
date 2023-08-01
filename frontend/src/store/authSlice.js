@@ -12,6 +12,8 @@ const authSlice = createSlice({
     emojiId: '',
     prefixId: '',
     nickname: '',
+    emojiUrl:'',
+    emojiMoveUrl:'',
     likes: [],
     disLikes: [],
     like: [],
@@ -31,6 +33,11 @@ const authSlice = createSlice({
     updateProfile (state, action) {
       const newItem = action.payload;
       state.emojiId = newItem.emojiId;
+    },
+    updateMyPageProfile (state, action) {
+      const newItem = action.payload;
+      state.emojiUrl = newItem.emojiUrl;
+      state.emojiMoveUrl = newItem.emojiMoveUrl;
     },
     updateUserNickname (state, action) {
       const newItem = action.payload;
