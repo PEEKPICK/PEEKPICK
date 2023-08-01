@@ -1,42 +1,64 @@
-import React,{useState} from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { customAxios } from '../../api/customAxios';
+import { useDispatch,useSelector } from 'react-redux';
+import { authActions } from '../../store/authSlice';
 const Profile = (props) => {
-  const [emoji,setEmoji] = useState("");
-  const [emojiId,setEmojiId] = useState("");
-  const changeImg=()=>{
-  axios.get("http://172.30.1.11:8081/member/emoji")
-  .then((response)=>{
-    console.log(response)
-    setEmoji(response.data.data.imageUrl)
-    setEmojiId(response.data.data.emojiId)
-  })
-}
-const emojiIdSave = {
-  emojiId : {emojiId}
-}
-const ImgChangePut = () => {
-  axios.put("", {emojiIdSave})
-  .then((request) => {
-    console.log(request)
-  })
-  .catch((request)=>{
-    console.log(request)
-  })
-}
+  const dispatch = useDispatch();
+  const userInfo = useSelector(state => state.auth);
+  const [emojiId, setEmojiId] = useState("");
+  const [emojiUrl, setEmojiUrl] = useState(userInfo.emojiUrl);
+  const [emojiCheck, setEmojiCheck] = useState(false);
+  const changeImg = () => {
+    customAxios.get("/member/emoji")
+      .then((response) => {
+        console.log(response)
+        setEmojiId(response.data.data.emojiId)
+        setEmojiUrl(response.data.data.imageUrl)
+        setEmojiCheck(true)
+
+      })
+  }
+  const jwtToken = localStorage.getItem('jwtToken');
+
+  const headers = {
+    Authorization: `Bearer ${jwtToken}`,
+  }
+  const ImgChangePut = () => {
+    customAxios.put("/member/info/emoji", { emojiId }, { headers })
+      .then((response) => {
+        // 콘솔
+        console.log(emojiUrl)
+        console.log(response)
+        // 리덕스에 정보 저장을 위한 데이터 생성
+        const sendToMyPageData = {
+          emojiUrl: emojiUrl,
+        }
+        const sendToProfile = {
+          emojiId: emojiId,
+        }
+        // 리덕스의 action을 통해 데이터 변경
+        dispatch(authActions.updateMyPageProfile(sendToMyPageData))
+        dispatch(authActions.updateProfile(sendToProfile))
+      })
+      .catch((response) => {
+        console.log(response)
+      })
+  }
+
   return (
     <div>
       <div>
         <h1>프로필 변경</h1>
         {/* 클릭시 마이페이지로 이동하는 x 버튼 */}
-      <Link to={"/mypage"}>
-        <img src="img/cancel.png" alt="" />
-      </Link>
+        <Link to={"/mypage"}>
+          <img src="img/cancel.png" alt="" />
+        </Link>
       </div>
       <hr />
       <div>
         {/* 백에서 전달하는 이모지 */}
-        <img src={emoji} alt="" />
+        {emojiCheck? <img src={emojiUrl} alt=""/> : <img src={userInfo.emojiUrl} alt="" /> }
         {/* 클릭시 백에서 이모지 전달 버튼 */}
         <div onClick={changeImg}>
           <h4>다시 뽑기</h4>
@@ -45,9 +67,9 @@ const ImgChangePut = () => {
       {/* 다시 뽑기 한번이상 클릭시 선택완료 버튼 색상 on */}
       {/* 클릭시 props로 이모지 마이페이지로 전달 */}
       <Link to="/mypage">
-      <div onClick={ImgChangePut} >
-        <h4>선택 완료</h4>
-      </div>
+        <div onClick={ImgChangePut} >
+          <h4>선택 완료</h4>
+        </div>
       </Link>
     </div>
   );

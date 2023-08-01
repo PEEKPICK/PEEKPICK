@@ -6,13 +6,28 @@ import LogOut from './LogOut';
 import SignOut from './SignOut';
 import PickAndLike from './PickAndLike';
 import NickNameEdit from './NickNameEdit';
+import { customAxios } from '../../api/customAxios';
+import { useDispatch } from 'react-redux';
+import { authActions } from '../../store/authSlice';
 const MyPage = () => {
+  // 상태관리
   const [visible, setVisible] = useState(false);
   const [logoutView, setLogoutView] = useState(false);
   const [signoutView, setSignoutView] = useState(false);
   const [nicknameView, setNicknameView] = useState(false);
   const [ModalOutSide, setModalOutSide] = useState(false);
+  const [useremoji,setUseremoji] = useState("");
 
+  // 정보 확인
+  const dispatch = useDispatch();
+  const [emojiUrl, setEmojiUrl] = useState("");
+  // 토큰 처리
+  const jwtToken = localStorage.getItem('jwtToken');
+  const headers = {
+    Authorization : `Bearer ${jwtToken}`
+  }
+
+  // 페이지 렌더링 시 작동
   useEffect(() => {
     if (visible) {
       setModalOutSide(true);
@@ -28,13 +43,27 @@ const MyPage = () => {
 
   }, [visible, logoutView, signoutView, nicknameView]);
 
+  // 함수 정의
   const onSettings = () => {
     setVisible(!visible);
   }
   const onNicknameEdit = () => {
-    console.log('hi')
     setNicknameView(!nicknameView);
   }
+
+  // api통신
+  customAxios.get("/member/info",{headers})
+  .then((response) => {
+    setEmojiUrl(response.data.data.emoji.imageUrl)
+    setUseremoji(`${response.data.data.emoji.imageUrl}`)
+  })
+  .then(() =>{
+    const sendToMyPageData = {
+      emojiUrl: emojiUrl,
+    }
+    dispatch(authActions.updateMyPageProfile(sendToMyPageData))
+  })
+
   return (
     <div className={classes.mypage}>
       {logoutView && <LogOut setLogoutView={setLogoutView} />}
@@ -52,10 +81,10 @@ const MyPage = () => {
         <div className={classes.profileimg}>
           {/* 프로필 사진 클릭시 components // props로 이미지 가져오기 생각중 */}
           {ModalOutSide ?
-            <img src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grinning%2BCat_p.png" alt="" />
+            <img src={useremoji} alt="" />
             :
             <Link to="/profile">
-              <img src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grinning%2BCat_p.png" alt="" />
+              <img src={useremoji} alt="" />
             </Link>}
         </div>
       </div>

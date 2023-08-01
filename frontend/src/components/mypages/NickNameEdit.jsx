@@ -37,7 +37,7 @@ const NickNameEdit = forwardRef((props,ref) => {
   }
   
   const titleChange=()=>{
-    axios.get("http://172.30.1.11:8081/member/prefix")
+    axios.get("http://192.168.31.26/member/prefix")
     .then((response)=>{
       console.log(response)
       setPrefix(response.data.data.content)
