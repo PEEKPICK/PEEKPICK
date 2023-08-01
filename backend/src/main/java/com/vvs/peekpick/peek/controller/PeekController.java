@@ -8,8 +8,10 @@ import com.vvs.peekpick.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Slf4j
@@ -21,14 +23,16 @@ public class PeekController {
     private final PeekRedisService peekRedisService;
 
     @PostMapping
-    public ResponseEntity<DataResponse> findNearPeek(@RequestBody SearchPeekDto searchPeekDto) {
-        return ResponseEntity.ok(peekRedisService.findNearPeek(searchPeekDto));
+    public ResponseEntity<DataResponse> findNearPeek(@RequestBody SearchPeekDto searchPeekDto) {  //@AuthenticationPrincipal Principal principal
+        String memberId = "testMemberId";//principal.getName();
+        return ResponseEntity.ok(peekRedisService.findNearPeek(memberId, searchPeekDto));
     }
 
 
     @GetMapping("/{peekId}")
-    public ResponseEntity<DataResponse> findPeekById(@PathVariable Long peekId) {
-        return ResponseEntity.ok(peekRedisService.getPeek(peekId));
+    public ResponseEntity<DataResponse> getPeek(@PathVariable Long peekId) { //@AuthenticationPrincipal Principal principal
+        String memberId = "testMemberId";//principal.getName();
+        return ResponseEntity.ok(peekRedisService.getPeek(memberId, peekId));
     }
 
     @DeleteMapping("/{peekId}")
@@ -43,9 +47,10 @@ public class PeekController {
 
     @PostMapping("/{peekId}")
     public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {
+        Long memberId = Long.parseLong(reaction.get("memberId").toString());
         boolean like = Boolean.parseBoolean(reaction.get("like").toString());
         boolean add = Boolean.parseBoolean(reaction.get("add").toString());
-        return ResponseEntity.ok(peekRedisService.addReaction(peekId, like, add));
+        return ResponseEntity.ok(peekRedisService.addReaction(peekId, memberId, like, add));
     }
 
 }

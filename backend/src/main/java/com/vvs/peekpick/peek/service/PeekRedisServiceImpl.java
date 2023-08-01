@@ -3,9 +3,7 @@ package com.vvs.peekpick.peek.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.vvs.peekpick.peek.dto.PeekDto;
-import com.vvs.peekpick.peek.dto.RequestPeekDto;
-import com.vvs.peekpick.peek.dto.SearchPeekDto;
+import com.vvs.peekpick.peek.dto.*;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
@@ -18,6 +16,7 @@ import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
@@ -49,12 +48,14 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     private final RedisTemplate<String, Object> locationTemplate;
     private GeoOperations<String, Object> geoOps;
     private ValueOperations<String, Object> valueOps;
+    private SetOperations<String, Object> setOps;
     private final Random random = new Random();
 
     @PostConstruct
     public void init() {
         geoOps = locationTemplate.opsForGeo();
         valueOps = peekTemplate.opsForValue();
+        setOps = peekTemplate.opsForSet();
     }
 
     @Override
@@ -76,6 +77,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .writeTime(LocalDateTime.now())
                     .finishTime(LocalDateTime.now().plusMinutes(PEEK_ORIGIN_TIME))
                     .special(false)
+                    .viewed(false)
                     .build();
             geoOps.add(PEEK_LOCATION_REDIS, new Point(requestPeekDto.getLongitude(), requestPeekDto.getLatitude()), peekId.toString());
             locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(PEEK_ORIGIN_TIME));
@@ -88,15 +90,27 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public DataResponse getPeek(Long peekId) {
+    public DataResponse getPeek(String memberId, Long peekId) {
         try{
-            Object obj = peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
-            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, obj);
+            PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+            setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
+            ResponsePeekDetailDto responsePeekDetailDto = ResponsePeekDetailDto.builder()
+                    .peekId(peekDto.getPeekId())
+                    .memberId(peekDto.getMemberId())
+                    .content(peekDto.getContent())
+                    .imageUrl(peekDto.getImageUrl())
+                    .likeCount(peekDto.getLikeCount())
+                    .disLikeCount(peekDto.getDisLikeCount())
+                    .finishTime(peekDto.getFinishTime())
+                    .liked(peekDto.isLiked())
+                    .disLiked(peekDto.isDisLiked())
+                    .build();
+            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, responsePeekDetailDto);
         }
         catch (Exception e) {
+            e.printStackTrace();
             return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
-
     }
 
     @Override
@@ -112,7 +126,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse addReaction(Long peekId, boolean like, boolean add) {
+    public CommonResponse addReaction(Long peekId, Long memberId, boolean like, boolean add) {
         int count = add ? 1 : -1;
         try {
             PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
@@ -124,6 +138,10 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                 special = true;
             }
 
+            // 좋아요 눌렀을 때 레디스 추가
+            // 다시 좋아요 삭제 눌렀을 때 레디스에서도 삭제
+            // 싫어요 눌렀을 떄 레디스 추가
+            // 다시 싫어요 눌렀을 때 레디스에서도 삭제
             PeekDto updatedPeekDto = peekDto.toBuilder()
                     .likeCount(like ? peekDto.getLikeCount() + count : peekDto.getLikeCount())
                     .disLikeCount(!like ? peekDto.getDisLikeCount() + count : peekDto.getDisLikeCount())
@@ -140,19 +158,27 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public DataResponse findNearPeek(SearchPeekDto searchPeekDto) {
+    public DataResponse findNearPeek(String memberId, SearchPeekDto searchPeekDto) {
         try {
             Circle circle = new Circle(searchPeekDto.getPoint(), new Distance(searchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
             GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
 
-            List<PeekDto> allPeeks = new ArrayList<>();
+            List<ResponsePeekListDto> allPeeks = new ArrayList<>();
             for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
                 String peekId = peekLocation.getContent().getName().toString();
-                allPeeks.add((PeekDto) valueOps.get(PEEK_REDIS + peekId));
+                PeekDto peekDto = (PeekDto) valueOps.get(PEEK_REDIS + peekId);
+                boolean isViewed = setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
+
+                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                        .peekId(peekDto.getPeekId())
+                        .special(peekDto.isSpecial())
+                        .viewed(peekDto.isViewed())
+                        .build();
+                allPeeks.add(responsePeekListDto);
             }
 
 
-            List<PeekDto> randomPeeks;
+            List<ResponsePeekListDto> randomPeeks;
             if(allPeeks.size() <= MAX_PEEK){
                 randomPeeks = allPeeks;
             } else {

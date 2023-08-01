@@ -34,4 +34,8 @@ public class PeekDto {
     private LocalDateTime finishTime;
 
     private boolean special;
+    private boolean viewed;
+    private boolean liked;
+    private boolean disLiked;
+
 }
