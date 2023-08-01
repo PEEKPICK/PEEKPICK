@@ -95,11 +95,11 @@ const UserInfo = () => {
   };
 
   return (
-    <div>
-      <div className={common.signup}>
+    <div className={common.container}>
+      <div>
         <h1>회원가입</h1>
       </div>
-      <div className={common.signup}>
+      <div>
         <p>회원 정보를 확인해주세요</p>
       </div>
       <div>
