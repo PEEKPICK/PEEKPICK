@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String accessToken = getAccessToken(request);
-
+            
             // AccessToken이 존재하고, 유효하다면
             if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
                 Long avatarId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
@@ -64,7 +64,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             log.info("커스텀 예외");
             request.setAttribute(TOKEN_EXCEPTION_KEY, CUSTOM_EXCEPTION);
         } catch (Exception e) {
-            log.info("올바르지 않은 토큰입니다.");
+            log.info("올바르지 않은 토큰입니다.={}", request.getRequestURL());
             request.setAttribute(TOKEN_EXCEPTION_KEY, TOKEN_INVALID);
         }
         // 다음 필터
@@ -74,6 +74,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static String getAccessToken(HttpServletRequest request) {
         String accessToken = request.getHeader("Authorization");
         accessToken = accessToken.replace("Bearer ", "");
+
         return accessToken;
     }
 }

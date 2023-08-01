@@ -17,6 +17,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * SecurityConfig
+ */
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class OAuth2ClientConfig {
@@ -25,10 +28,6 @@ public class OAuth2ClientConfig {
     private final CustomOidcUserService customOidcUserService;
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/static/js/**", "/static/images/**", "/static/css/**","/static/scss/**");
-    }
 
     @Bean
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
@@ -44,9 +43,10 @@ public class OAuth2ClientConfig {
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable();
+
         http
                 .authorizeRequests()
-                .antMatchers("/member/signup", "/member/login", "/member/emoji",
+                .antMatchers("/login","/member/signup", "/member/login", "/member/emoji",
                         "/member/prefix", "/member/world", "/member/taste", "/member/signup/info").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -61,7 +61,7 @@ public class OAuth2ClientConfig {
                                 .successHandler(customOAuth2LoginSuccessHandler))); // 인증 성공
 //                        .failureHandler(customOAuth2LoginFailureHandler)); // 인증 실패 (미구현)
 
-        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+//        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 
         return http.build();
    }

@@ -62,6 +62,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 log.info("NO Avatar");
                 redirectUrl += "?id=" + findMember.getMemberId();
             }
+
             // 회원 상태 = Token 발급 및 로그인 처리
             else {
                 log.info("가입 회원");
