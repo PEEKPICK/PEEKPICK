@@ -50,8 +50,9 @@ const UserNickname = () => {
 
   return (
     <div className={common.container}>
-      <div>
-        <h1>닉네임 PICK</h1>
+      <div className={common.title}>
+        <h1>닉네임</h1>
+        <h1 className={common.pointColor}>PICK</h1>
       </div>
       <div>
         <p>자신을 나타낼 수 있는 정보는

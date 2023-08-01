@@ -60,9 +60,9 @@ const UserLikeHate = () => {
 
   return (
     <div className={common.container}>
-      <div style={{display:'flex'}}>
+      <div className={common.title}>
         <h1>취향</h1>
-        <h1 style={{color:'purple'}}>PICK</h1>
+        <h1 className={common.pointColor}>PICK</h1>
       </div>
       <div>
         <p>

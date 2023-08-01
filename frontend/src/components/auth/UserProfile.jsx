@@ -40,8 +40,9 @@ const UserProfile = () => {
 
   return (
     <div className={common.container}>
-      <div>
-        <h1>프로필 PICK</h1>
+      <div className={common.title}>
+        <h1>프로필</h1>
+        <h1 className={common.pointColor}>PICK</h1>
       </div>
       <div>
         <p>개성넘치는 프로필을 뽑아보세요

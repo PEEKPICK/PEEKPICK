@@ -5,6 +5,18 @@
   margin: 0 auto;
 }
 
+.title {
+  display: flex;
+}
+
+.title h1 {
+  margin-right: 3%;
+}
+
+.pointColor {
+  color: #7d00ff;
+}
+
 .container h1 {
   margin-top: 7vh;
 }
