@@ -70,11 +70,11 @@ const UserNickname = () => {
           </div>
         </div>
         <div>
-          <div>
+          <div className={classes.nickname}>
             <h3>닉네임</h3>
           </div>
           <div>
-            <input type="text" onChange={e => setNickname(e.target.value)}/>
+            <input type="text" onChange={e => setNickname(e.target.value)}  className={classes.nicknameInput}/>
           </div>
         </div>
       </div>

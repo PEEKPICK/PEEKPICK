@@ -11,7 +11,7 @@
 }
 
 .allWrap {
-  margin-top: 7vh;
+  margin-top: 10vh;
 }
 
 .prefixWrap {
@@ -30,6 +30,17 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.nickname {
+  margin-bottom: 1vh;
+}
+
+.nicknameInput {
+  height: 4.5vh;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  width: 100%;
 }
 
 .reload {
