@@ -19,7 +19,7 @@ const UserNickname = () => {
   const dispatch = useDispatch();
 
 
-  //함수 정의
+  //함수 정의 (랜덤 수식어 뽑기)
   const randomPrefix = () => {
     customAxios.get('/member/prefix')
       .then(response => {
@@ -31,6 +31,7 @@ const UserNickname = () => {
       })
   };
 
+  // 유저 취향 PICK 페이지 이동
   const moveToUserLikeHate = () => {
     const changedNickname = {
       prefixId: prefix,
@@ -38,6 +39,13 @@ const UserNickname = () => {
     }
     dispatch(authActions.updateUserNickname(changedNickname));
     navigate('/userlikehate')
+  }
+
+  // 닉네임 6글자 제한 함수
+  const maxLengthHandler = (e, max) => {
+    if (e.target.value.length > max) {
+      e.target.value = e.target.value.substr(0, max);
+    }
   }
 
   return (
@@ -74,7 +82,15 @@ const UserNickname = () => {
             <h3>닉네임</h3>
           </div>
           <div>
-            <input type="text" onChange={e => setNickname(e.target.value)}  className={classes.nicknameInput}/>
+            <input
+              type="text"
+              placeholder="최대 6글자까지 가능합니다."
+              maxLength="6"
+              onInput={e => maxLengthHandler(e, 6)}
+              onChange={e => setNickname(e.target.value)}
+              className={classes.nicknameInput}
+              required
+            />
           </div>
         </div>
       </div>
