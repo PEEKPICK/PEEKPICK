@@ -1,6 +1,6 @@
 import { customAxios } from '../../api/customAxios';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -20,6 +20,7 @@ const UserInfo = () => {
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const phoneRef = useRef();
 
   // axios 통신으로 유저 정보 불러오기
   useEffect(() => {
@@ -65,9 +66,31 @@ const UserInfo = () => {
   };
 
   // 휴대폰 번호 자동 하이픈 생성 함수
-  const autoHypenPhone = (str) => {
-    str = str.replace(/[^0-9]/g, "");
-  }
+  const autoHypenPhone = (e) => {
+    const value = phoneRef.current.value.replace(/\D+/g, "");
+    const phoneLength = 11;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i<phoneLength; i++) {
+      switch(i) {
+        case 3:
+          result += "-";
+          break;
+        case 7:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    phoneRef.current.value = result;
+    setPhone(e.target.value)
+  };
 
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
@@ -80,11 +103,11 @@ const UserInfo = () => {
     } else {
       return (
         <input
-          type="text"
+          type="tel"
+          name="user-phone"
+          ref={phoneRef}
           placeholder="전화번호(Ex. 010-1234-5678)"
-          required
-          maxLength="13"
-          onChange={e => setPhone(e.target.value)}
+          onChange={autoHypenPhone}
         />
       );
     }
