@@ -21,11 +21,11 @@ const UserLike = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // likeList, middleLikeList는 대분류, 중분류 표시
   const [likeList, setLikeList] = useState([]);
-  const [middleLikeList, setMiddleLikeList] = useState([]);
+  const [middleLikeList, setMiddleLikeList] = useState(userInfo.like);
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
-  const [tempMiddleList, setTempMiddleList] = useState([]);
+  const [tempMiddleList, setTempMiddleList] = useState(userInfo.likes);
   // middleItem - UserLikeHate에 표시할 중분류 이름
-  const [middleItem, setMiddleItem] = useState([userInfo.like]);
+  const [middleItem, setMiddleItem] = useState(userInfo.like);
 
   // 기본 함수 설정
   const navigate = useNavigate();
@@ -104,7 +104,7 @@ const UserLike = () => {
               <button key={item} onClick={() => middleItemHandler(item)} className={common.taste}>{item}</button>
             ))}
           </ul>
-        ) : (<p>대분류가 없습니다.</p>)}
+        ) : (<p>에러가 발생했습니다.</p>)}
       </div>
       <div>
         {middleDataAxios ? (
@@ -113,7 +113,7 @@ const UserLike = () => {
               <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
             ))}
           </ul>
-        ) : (<p>대분류를 선택해주세요.</p>)}
+        ) : (<p>에러가 발생했습니다.</p>)}
       </div>
       <div>
         {modalOpen && <Modal onClose={closeModal} />}
