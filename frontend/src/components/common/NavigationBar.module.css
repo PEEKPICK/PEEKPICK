@@ -1,0 +1,49 @@
+.container {
+    position: fixed;
+    bottom: 5%;
+    width: 80%;
+    left: 10%;
+    height: auto;
+    
+}
+
+.navibar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: center;
+    background-color: white;
+    border-radius: 5vh;
+    border: 1px solid;
+    border-color: rgba(125, 0, 225);
+    height: auto;
+    
+}
+
+.navibar div {
+    text-align: center;
+    justify-content: center;
+    padding: 5%;
+    margin: 5%;
+    text-decoration: none;
+    border-radius: 5vh;
+}
+
+.navibar div img{
+    max-width: 100%;
+    height: auto;
+}
+
+.navibar a{
+    text-decoration: none;
+}
+
+.on{
+    background-color: rgba(125,0,225);
+    color: white;
+}
+
+.alert{
+    height: 100%;
+    display: flex;
+    border: 1px solid black;
+}

@@ -7,13 +7,11 @@ const ChatAlert = () => {
     // 동민이형이 만드는 채팅창으로 연결이 되어야함!
     <div className={classes.alert}>
       {/* 빨간 불 */}
-      {chat&& <div className={classes.alertIn}>
       <img src="img/infoRed.png" alt="" /> 
       <h4>즐거운 아메리카노</h4>
       {/* 맨오른쪽 열기창 */}
       <img src="img/up.png" alt="" />
       <img src="" alt="" />
-      </div>}
     </div>
   );
 };
