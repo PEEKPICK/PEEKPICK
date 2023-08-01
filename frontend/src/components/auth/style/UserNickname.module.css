@@ -1,13 +1,27 @@
-.temp {
-  display: flex; 
-  flex-direction: column;
-  align-items: center;
+.line1 {
+  width: 60%;
+  border-radius: 10px 0 0 10px;
+  background-color: #7d00ff;
+}
+
+.line2 {
+  width: 40%;
+  border-radius:0 10px 10px 0;
+  background-color: lightgray;
 }
 
 .prefixWrap {
   display: flex;
   justify-content: center;
   width: 80%;
+}
+
+.prefix {
+  text-align: left;
+  width: 80%;
+  height: 4.5vh;
+  border: 1px solid lightgray;
+  border-radius: 5px;
 }
 
 .reload {
@@ -21,29 +35,4 @@
   align-items: center;
   justify-content: center;
   margin-left: 5%;
-}
-
-
-.prefix {
-  text-align: left;
-  width: 80%;
-  height: 4.5vh;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-}
-
-.line1 {
-  width: 60%;
-  border-radius: 10px 0 0 10px;
-  background-color: #7d00ff;
-}
-
-.line2 {
-  width: 40%;
-  border-radius:0 10px 10px 0;
-  background-color: lightgray;
-}
-
-.nextButton {
-  margin-top: 15vh;
 }
