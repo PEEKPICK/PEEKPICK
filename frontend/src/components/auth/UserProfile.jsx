@@ -62,7 +62,7 @@ const UserProfile = () => {
         <button onClick={randomGacha} className={classes.randomButton}>다시뽑기</button>
       </div>
       <div>
-        <button onClick={moveToUserNickname} className={`${common.next} ${classes.nextButton}`}>다음으로</button>
+        <button onClick={moveToUserNickname} className={common.next}>다음으로</button>
       </div>
     </div>
   );
