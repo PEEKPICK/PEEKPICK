@@ -74,7 +74,7 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="phone" defaultValue="전화번호" onChange={e => setPhone(e.target.value)} />
+        <input type="text" name="phone" placeholder="전화번호(Ex. 010-1234-5678)" onChange={e => setPhone(e.target.value)} />
       );
     }
   };
@@ -89,7 +89,7 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="birth" defaultValue="생년월일" onChange={e => setBirthday(e.target.value)} />
+        <input type="text" name="birth" placeholder="생년월일(1998-06-28)" onChange={e => setBirthday(e.target.value)} />
       );
     }
   };
