@@ -33,17 +33,5 @@ public class PeekDto {
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime finishTime;
 
-    @Override
-    public String toString() {
-        return "PeekDto{" +
-                "peekId=" + peekId +
-                ", memberId=" + memberId +
-                ", content='" + content + '\'' +
-                ", imageUrl='" + imageUrl + '\'' +
-                ", likeCount=" + likeCount +
-                ", disLikeCount=" + disLikeCount +
-                ", writeTime=" + writeTime +
-                ", finishTime=" + finishTime +
-                '}';
-    }
+    private boolean special;
 }
