@@ -60,8 +60,9 @@ const UserLikeHate = () => {
 
   return (
     <div className={common.container}>
-      <div>
-        <h1>취향 PICK</h1>
+      <div style={{display:'flex'}}>
+        <h1>취향</h1>
+        <h1 style={{color:'purple'}}>PICK</h1>
       </div>
       <div>
         <p>
@@ -87,11 +88,9 @@ const UserLikeHate = () => {
           <></>
         ) : (
           <div>
-            <ul>
-              {userInfo.like.map(item => (
-                <span className={common.items}>{item}</span>
-              ))}
-            </ul>
+            {userInfo.like.map(item => (
+              <span className={common.items}>{item} x</span>
+            ))}
           </div>
         )}
         

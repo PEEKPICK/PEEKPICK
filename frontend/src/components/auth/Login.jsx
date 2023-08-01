@@ -20,7 +20,11 @@ const Login = () => {
 
     customAxios.post(`/member/login?id=test${id}`, dummy)
       .then(response => {
-        console.log(response)
+        if (response.data.code === 200) {
+          const token = response.data.data
+          localStorage.setItem("jwtToken", token);
+          window.location.replace("/")
+        }
       })
       .catch(error => {
         console.log(error)

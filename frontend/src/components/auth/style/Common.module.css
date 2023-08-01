@@ -65,11 +65,10 @@
 }
 
 .items {
-  font-size: large;
-  border: 1px solid #7d00ff;
-  border-radius: 3px;
+  font-size: medium;
+  border: 5px solid #7d00ff;
+  border-radius: 10px;
   background-color: #7d00ff;
   color: white;
   margin-right: 2vh;
-  padding: 0.5%;
 }
