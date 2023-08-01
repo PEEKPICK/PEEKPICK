@@ -22,10 +22,13 @@ const Welcome = () => {
   };
 
   return (
-    <div>
+    <div className={common.container}>
       <h1>환영합니다!</h1>
       <div>
-        <p>타인과 당신의 취향에 대해 부담없이 이야기를 나눌 수 있어요!</p>
+        <p>타인과 당신의 취향에 대해
+          <br />
+          부담없이 이야기를 나눌 수 있어요!
+        </p>
       </div>
       <div>
         <img src="img/confetti.gif" alt='confetti' />
