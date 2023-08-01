@@ -89,7 +89,7 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="birth" placeholder="생년월일(1998-06-28)" onChange={e => setBirthday(e.target.value)} />
+        <input type="text" name="birth" placeholder="생년월일(Ex. 1998-06-28)" onChange={e => setBirthday(e.target.value)} />
       );
     }
   };
