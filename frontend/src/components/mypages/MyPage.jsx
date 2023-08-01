@@ -52,17 +52,17 @@ const MyPage = () => {
   }
 
   // api통신
-  customAxios.get("/member/info",{headers})
-  .then((response) => {
-    setEmojiUrl(response.data.data.emoji.imageUrl)
-    setUseremoji(`${response.data.data.emoji.imageUrl}`)
-  })
-  .then(() =>{
-    const sendToMyPageData = {
-      emojiUrl: emojiUrl,
-    }
-    dispatch(authActions.updateMyPageProfile(sendToMyPageData))
-  })
+  // customAxios.get("/member/info",{headers})
+  // .then((response) => {
+  //   setEmojiUrl(response.data.data.emoji.imageUrl)
+  //   setUseremoji(`${response.data.data.emoji.imageUrl}`)
+  // })
+  // .then(() =>{
+  //   const sendToMyPageData = {
+  //     emojiUrl: emojiUrl,
+  //   }
+  //   dispatch(authActions.updateMyPageProfile(sendToMyPageData))
+  // })
 
   return (
     <div className={classes.mypage}>

@@ -1,26 +1,95 @@
-.hi{
+.nicknameedit{
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -70%);
+  transform: translate(-50%, -60%);
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   border: 3px solid;
   border-color: rgba(125, 0, 255, 1);
-  width: 70%;
-  height: 50%;
-  text-align: center;
+  width: 80%;
+  height: 40%;
   z-index: 1015;
 }
 
-.top{
-  display: grid;
-  grid-template-columns: 9fr 1fr;
+.nicknameedittop{
+  display: flex;
   align-items: center;
-  justify-items: start;
-}
-.top h4{
-  margin: 0%;
 }
 
+.nicknameedittop img{
+  position: absolute;
+  right: 5%;
+  top: 5%;
+}
+/* 타이틀 */
+
+.title{
+  margin-top: 5%;
+}
+.titleinline{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10%;
+  margin-left: 1%;
+}
+
+.titleinline input{
+  height: 3.5vh;
+  border-radius: 0.8vh;
+  border: 1px solid gray;
+  width: 25vh;
+}
+.titleinline img{
+  background-color: rgba(125, 0, 255, 1);
+  margin-left: 10%;
+  padding: 0.8vh 2vh 0.8vh 2vh;
+  border-radius: 1.5vh;
+}
+
+/* 닉네임 */
+
+.nickname{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10%;
+  margin-left: 1%;
+}
+
+.nickname input{
+  height: 3.5vh;
+  border-radius: 0.8vh;
+  border: 1px solid gray;
+  width: 25vh;
+}
+
+/* 한줄 소개 */
+
+.oneline{
+  display: flex;
+  align-items: center;
+  margin-bottom: 10%;
+  margin-left: 1%;
+}
+
+.oneline input{
+  height: 3.5vh;
+  border-radius: 0.8vh;
+  border: 1px solid gray;
+  width: 34vh;
+}
+
+.savebtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.savebtn span{
+  width: 10%;
+  background-color: rgba(125, 0, 255, 1);
+  padding: 0.5vh 1.5vh 0.5vh 1.5vh;
+  border-radius: 5vh;
+  color: white;
+}
