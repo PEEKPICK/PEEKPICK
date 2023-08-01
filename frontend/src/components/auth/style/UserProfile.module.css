@@ -10,6 +10,10 @@
   background-color: lightgray;
 }
 
+.emoji {
+  margin-top: 10vh;
+}
+
 .randomButton {
   background: linear-gradient(to right, #8F00FF, #654CFF);
   border: 0;
@@ -21,5 +25,5 @@
 }
 
 .nextButton {
-  margin-top: 15vh;
+  margin-top: 17.5vh;
 }
