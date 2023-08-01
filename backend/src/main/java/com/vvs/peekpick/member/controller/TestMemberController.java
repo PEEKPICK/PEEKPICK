@@ -58,9 +58,6 @@ public class TestMemberController {
         cookie.setMaxAge(60 * 60 * 24 * 7);
         response.addCookie(cookie);
 
-        log.info("accessToken={}", accessToken);
-        log.info("refreshToken={}", refreshToken);
-
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, accessToken);
     }
 }
