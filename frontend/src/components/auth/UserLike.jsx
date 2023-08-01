@@ -3,13 +3,16 @@ import { customAxios } from '../../api/customAxios';
 import Modal from './Modal';
 
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
 
-const UserLike = () => {  
+const UserLike = () => {
+  // 중분류 정보 가져오기
+  const userInfo = useSelector(state => state.auth);
+
   // 상태관리
   // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
   const [dataAxios, setDataAxios] = useState(false);
@@ -22,7 +25,7 @@ const UserLike = () => {
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
   const [tempMiddleList, setTempMiddleList] = useState([]);
   // middleItem - UserLikeHate에 표시할 중분류 이름
-  const [middleItem, setMiddleItem] = useState([]);
+  const [middleItem, setMiddleItem] = useState([userInfo.like]);
 
   // 기본 함수 설정
   const navigate = useNavigate();
