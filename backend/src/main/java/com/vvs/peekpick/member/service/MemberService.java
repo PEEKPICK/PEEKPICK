@@ -11,6 +11,7 @@ import java.util.Map;
 
 public interface MemberService {
     Token signup(SignUpDto signUpDto);
+    Member createMember(SignUpDto signUpDto);
     Emoji RandomEmoji();
     Prefix RandomPrefix();
 

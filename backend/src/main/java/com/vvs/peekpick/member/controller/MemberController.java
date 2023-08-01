@@ -31,6 +31,7 @@ public class MemberController {
     private final MemberService memberService;
     private final ResponseService responseService;
 
+
     /**
      * 회원가입 처리
      * @param signUpDto

@@ -176,16 +176,22 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 23.07.31 회원 생성 Form Login 대비용
-    private Member createMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {
+    public Member createMember(SignUpDto signUpDto) {
+        Avatar avatar = createAvatar(signUpDto);
+        Achievement achievement = createAchievement();
+
         Member member = Member.builder()
                 .email(signUpDto.getEmail())
                 .name(signUpDto.getName())
                 .phone(signUpDto.getPhone())
                 .gender(signUpDto.getGender())
                 .birthday(signUpDto.getBirthday())
+                .provider("none")
                 .avatar(avatar)
                 .achievement(achievement)
                 .build();
+
+        addTastes(signUpDto, avatar);
 
         return memberRepository.save(member);
     }

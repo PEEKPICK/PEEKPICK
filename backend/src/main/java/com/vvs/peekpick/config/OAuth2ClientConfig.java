@@ -46,7 +46,7 @@ public class OAuth2ClientConfig {
 
         http
                 .authorizeRequests()
-                .antMatchers("/login","/member/signup", "/member/login", "/member/emoji",
+                .antMatchers("/login","/member/test", "/member/signup", "/member/login", "/member/emoji",
                         "/member/prefix", "/member/world", "/member/taste", "/member/signup/info").permitAll()
                 .anyRequest().authenticated()
                 .and()
