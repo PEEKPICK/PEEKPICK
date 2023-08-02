@@ -8,25 +8,25 @@ import common from './style/Common.module.css';
 import classes from './style/UserLikeOrHate.module.css';
 
 const UserLikeHate = () => {
-  // 페이지 렌더링 시
+  //함수 정의 및 사용자 정보 불러오기
   const userInfo = useSelector(state => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(userInfo)
   }, [userInfo]);
 
-  // 함수 생성
-  const navigate = useNavigate();
-
-  // 함수 정의
+  // 좋아하는 것으로 이동
   const moveToUserLike = () => {
     navigate('/userlike')
-  }
+  };
 
+  // 싫어하는 것으로 이동
   const moveToUserHate = () => {
     navigate('/userhate')
-  }
+  };
 
+  // 백엔드로 정보 넘기고, welcome으로 이동
   const moveToWelcome = () => {
     const dataToSend = {
       memberId: userInfo.memberId,
@@ -56,7 +56,7 @@ const UserLikeHate = () => {
         console.log(error)
       })
     navigate('/welcome')
-  }
+  };
 
   return (
     <div className={common.container}>
@@ -88,8 +88,13 @@ const UserLikeHate = () => {
           <></>
         ) : (
           <div>
-            {userInfo.like.map((item, index) => (
-              <span key={index} className={common.items}>{item} <img src="img/cancel.png" alt="cancel" /></span>
+            {userInfo.like?.map((item, index) => (
+              <span
+                key={index}
+                className={common.items}
+              >
+                {item}
+              </span>
             ))}
           </div>
         )}
