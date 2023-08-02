@@ -4,10 +4,7 @@ import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
-import com.vvs.peekpick.picker.dto.ChatRequestDto;
-import com.vvs.peekpick.picker.dto.ChatResponseDto;
-import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
-import com.vvs.peekpick.picker.dto.SearchPickerDto;
+import com.vvs.peekpick.picker.dto.*;
 import com.vvs.peekpick.picker.repository.PickerJpaRepository;
 import com.vvs.peekpick.picker.repository.PickerRedisRepository;
 import com.vvs.peekpick.picker.repository.SseEmitterRepository;
@@ -54,6 +51,7 @@ public class PickerServiceImpl implements PickerService {
     private final RedisTemplate<String, String> redisTemplate;
     private final SseEmitterRepository sseEmitterRepository;
     private final MemberServiceImpl memberService;
+    private final ChatService chatService;
 
     /**
      * 현재 사용자의 위치와 ID를 세션에 등록
@@ -117,6 +115,8 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * 채팅 요청에 대한 응답으로 수락하여도 시간을 비교하여 만료 처리
+     * TODO 채팅방 생성 및 사용자에게 RoomID 전송 필요
+     * TODO DataResponse로 변경 필요
      *
      * @param chatResponseDto - 요청에 응답한 회원의 ID
      * @return CommonResponse
@@ -136,8 +136,14 @@ public class PickerServiceImpl implements PickerService {
                 Point point = geoOperations.position(CONNECT_SESSION, String.valueOf(chatResponseDto.getRequestSenderId())).get(0);
                 if (point == null) { // 상대가 접속중이지 않을 때
                     throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
-                }else { // 상대가 접속중일 때
-                    // TODO 채팅방 세션 개설
+                } else { // 상대가 접속중일 때
+                    String roomId = chatService.createChatRoom();
+
+                    // 요청자 
+                    ChatNotificationDto senderNotification = ChatNotificationDto.builder()
+                            .opponent(chatResponseDto.getRequestSenderId())
+                            .roomId(roomId)
+                            .build();
                     sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_ACCEPTED);
                     return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED);
                 }

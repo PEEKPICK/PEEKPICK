@@ -1,10 +1,10 @@
 package com.vvs.peekpick.picker.controller;
 
-import com.vvs.peekpick.entity.Chat;
 import com.vvs.peekpick.picker.dto.ChatRequestDto;
 import com.vvs.peekpick.picker.dto.ChatResponseDto;
 import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
 import com.vvs.peekpick.picker.dto.SearchPickerDto;
+import com.vvs.peekpick.picker.service.ChatService;
 import com.vvs.peekpick.picker.service.PickerService;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
@@ -24,6 +24,7 @@ import java.util.List;
 public class PickerController {
 
     private final PickerService pickerServiceImpl;
+    private final ChatService chatServiceImpl;
 
     /**
      * 접속시 세션에 내 위치정보 저장
@@ -78,5 +79,16 @@ public class PickerController {
     @PostMapping("chat-response")
     public CommonResponse chatResponseReceive(@RequestBody ChatResponseDto chatResponseDto){
         return pickerServiceImpl.chatResponseReceive(chatResponseDto);
+    }
+
+    /**
+     * 채팅방 나가기
+     *
+     * @param roomId - 나간 채팅방 ID
+     * @return CommonResponse
+     */
+    @PostMapping("chat-end")
+    public CommonResponse exitChatRoom(@RequestBody String roomId) {
+        return chatServiceImpl.exitChatRoom(roomId);
     }
 }
