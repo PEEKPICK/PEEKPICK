@@ -23,6 +23,7 @@ const LogOut = forwardRef((props, ref) => {
 
   const LogOutDisplay = () => {
     props.setLogoutView(false);
+    localStorage.removeItem('jwtToken');
   };
 
   const Logout = () => {
