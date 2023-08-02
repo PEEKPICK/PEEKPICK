@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
+import classes from './style/UserLike.module.css';
 
 const UserLike = () => {
   // 중분류 정보 가져오기
@@ -25,7 +26,7 @@ const UserLike = () => {
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
   const [tempMiddleList, setTempMiddleList] = useState(userInfo.likes);
   // middleItem - UserLikeHate에 표시할 중분류 이름
-  const [middleItem, setMiddleItem] = useState(userInfo.like);
+  const [middleItem, setMiddleItem] = useState('음악');
 
   // 기본 함수 설정
   const navigate = useNavigate();
@@ -99,27 +100,43 @@ const UserLike = () => {
       <div className={common.defaultLine}></div>
       <div>
         {dataAxios ? (
-          <ul className={common.largelist}>
+          <div className={common.largelist}>
             {likeList.map(item => (
-              <button key={item} onClick={() => middleItemHandler(item)} className={common.taste}>{item}</button>
+              <button
+                key={item}
+                onClick={() => middleItemHandler(item)}
+                className={common.taste}
+              >
+                {item}
+              </button>
             ))}
-          </ul>
+          </div>
         ) : (<p>에러가 발생했습니다.</p>)}
       </div>
-      <div>
+      <div className={classes.middle}>
         {middleDataAxios ? (
-          <ul className={common.middlelist}>
+          <div className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
+              <button 
+                key={middleItem.categoryId}
+                onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
+                className={common.taste}
+              >
+                {middleItem.middle}
+              </button>
             ))}
-          </ul>
-        ) : (<p>에러가 발생했습니다.</p>)}
+          </div>
+        ) : (
+          <div className={classes.error}>
+            <span>대분류를 선택해주세요!</span>
+          </div>
+        )}
       </div>
       <div>
         {modalOpen && <Modal onClose={closeModal} />}
       </div>
       <div>
-        <button onClick={selectedFinish}>선택완료</button>
+        <button onClick={selectedFinish} className={common.next}>선택완료</button>
       </div>
     </div>
   );

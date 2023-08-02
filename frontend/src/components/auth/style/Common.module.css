@@ -56,8 +56,12 @@
 }
 
 .taste {
+  display: inline-block;
+  width: 12vh;
+  height: 3vh;
+  white-space: nowrap;
   border: 1px solid lightgray;
-  border-radius: 5px;
+  border-radius: 10px;
   background-color: white;
   color: lightgray;
   margin: 0px 2px 2px 2px;
