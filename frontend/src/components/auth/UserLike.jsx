@@ -106,7 +106,7 @@ const UserLike = () => {
         {dataAxios ? (
           <div className={common.largelist}>
             {likeList.map((item, index) => (
-              <div key={index}>
+              <div key={index} className={classes.radioWrap}>
                 <input
                   type="radio"
                   name="selectedItem"

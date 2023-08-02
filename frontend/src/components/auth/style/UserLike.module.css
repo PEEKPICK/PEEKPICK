@@ -11,13 +11,24 @@
   justify-content: center;
 }
 
+.radioWrap {
+  width: 100%;
+  display: flex;
+  margin: 0 0.5vh 0 0.5vh;
+}
+
 .radio {
   display: none;
 }
 
-.radio > label {
+label {
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  font-size: small;
   border: 1px solid lightgray;
-  border-radius: 5px;
+  border-radius: 10px;
+  color: lightgray;
 }
 
 input[type=radio]:checked + label {
