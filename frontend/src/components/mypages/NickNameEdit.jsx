@@ -82,8 +82,8 @@ const NickNameEdit = forwardRef((props, ref) => {
         {/* 클릭시 마이페이지 이동 */}
         <img src="img/cancel.png" alt="" onClick={NickNameEditDisplay} />
       </div>
-      <hr />
-      <div className={classes.title}>
+      <hr className={classes.nicknamehr}/>
+      <div>
         <h4>타이틀</h4>
         {/* 형용사 버튼클릭시 input 안에 들어옴 변경 금지
                 input 말고 div로 디자인 해야할지도? */}
