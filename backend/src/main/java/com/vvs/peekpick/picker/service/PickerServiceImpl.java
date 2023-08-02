@@ -122,11 +122,11 @@ public class PickerServiceImpl implements PickerService {
      * @return CommonResponse
      */
     @Override
-    public CommonResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
+    public DataResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
         // 거절
         if ("N".equals(chatResponseDto.getResponse())) {
             sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED);
-            return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_REJECTED);
+            return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_REJECTED, null);
         }
         // 수락
         else {
@@ -139,18 +139,24 @@ public class PickerServiceImpl implements PickerService {
                 } else { // 상대가 접속중일 때
                     String roomId = chatService.createChatRoom();
 
-                    // 요청자 
+                    // 요청자 + 채팅방 정보 ( 응답자에게 전송 )
                     ChatNotificationDto senderNotification = ChatNotificationDto.builder()
                             .opponent(chatResponseDto.getRequestSenderId())
                             .roomId(roomId)
                             .build();
-                    sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_ACCEPTED);
-                    return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED);
+
+                    // 응답자 + 채팅방 정보 ( 요청자에게 전송 )
+                    ChatNotificationDto receiverNotification = ChatNotificationDto.builder()
+                            .opponent(chatResponseDto.getRequestReceiverId())
+                            .roomId(roomId)
+                            .build();
+                    sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification);
+                    return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED, senderNotification);
                 }
             }
             // 요청 시간이 만료된 이후
             else {
-                return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_TIMEOUT);
+                return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_TIMEOUT, null);
             }
         }
     }

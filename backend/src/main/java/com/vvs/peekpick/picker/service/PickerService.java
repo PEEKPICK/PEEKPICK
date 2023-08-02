@@ -22,5 +22,5 @@ public interface PickerService {
 
     SseEmitter connectSseSession(Long memberId);
 
-    CommonResponse chatResponseReceive(ChatResponseDto chatResponseDto);
+    DataResponse<?> chatResponseReceive(ChatResponseDto chatResponseDto);
 }

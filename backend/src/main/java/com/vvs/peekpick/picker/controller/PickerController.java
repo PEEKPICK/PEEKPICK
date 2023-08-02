@@ -77,7 +77,7 @@ public class PickerController {
      * @Return CommonResponse
      */
     @PostMapping("chat-response")
-    public CommonResponse chatResponseReceive(@RequestBody ChatResponseDto chatResponseDto){
+    public DataResponse<?> chatResponseReceive(@RequestBody ChatResponseDto chatResponseDto){
         return pickerServiceImpl.chatResponseReceive(chatResponseDto);
     }
 
