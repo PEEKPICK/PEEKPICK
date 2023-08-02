@@ -1,0 +1,11 @@
+.modalMain {
+  border: 1px solid black;
+  background-color: bisque;
+  margin: 10rem 2rem 0 2rem;
+  padding: 1rem;
+  border-radius: 1rem 1rem 3rem 3rem;
+}
+
+.profileImg {
+  width: 4rem;
+}
