@@ -101,6 +101,7 @@ const UserLike = () => {
       <div>
         {dataAxios ? (
           <div className={common.largelist}>
+            {/* 변경부분: 버튼 -> 라디오버튼 */}
             {likeList.map(item => (
               <button
                 key={item}
