@@ -24,6 +24,6 @@ public class ChatController {
     public void messageHandling(ChatMessageDto messageDto) {
         ChannelTopic topic = chatService.getTopic(messageDto.getRoomId());
         chatPublisher.publish(topic, messageDto);
+        chatService.appendLog(messageDto);
     }
-
 }

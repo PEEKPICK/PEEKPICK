@@ -3,6 +3,7 @@ package com.vvs.peekpick.picker.service;
 import com.vvs.peekpick.entity.Chat;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.picker.dto.ChatMessageDto;
 import com.vvs.peekpick.picker.repository.ChatJpaRepository;
 import com.vvs.peekpick.picker.repository.ChatRepository;
 import com.vvs.peekpick.response.CommonResponse;
@@ -69,5 +70,14 @@ public class ChatServiceImpl implements ChatService {
         // Log 저장
         chatJpaRepository.save(chat);
         return responseService.successCommonResponse(ResponseStatus.CHATROOM_EXIT_SUCCESS);
+    }
+
+    /**
+     * 레디스에 임시 채팅 로그 저장 ( 채팅 종료시 한번에 RDB 에 옮기기 위함 )
+     * @param messageDto - 메시지
+     */
+    @Override
+    public void appendLog(ChatMessageDto messageDto) {
+        chatRepository.chatLogAppend(messageDto.toString(), messageDto.getRoomId());
     }
 }
