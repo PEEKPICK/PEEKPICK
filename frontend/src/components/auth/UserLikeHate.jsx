@@ -87,14 +87,14 @@ const UserLikeHate = () => {
         {userInfo.like.length === 0 ? (
           <></>
         ) : (
-          <div>
-            {userInfo.like?.map((item, index) => (
-              <span
+          <div className={common.itemWrap}>
+            {userInfo.like.map((item, index) => (
+              <div
                 key={index}
                 className={common.items}
               >
                 {item}
-              </span>
+              </div>
             ))}
           </div>
         )}
