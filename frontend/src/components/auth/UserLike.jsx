@@ -26,7 +26,7 @@ const UserLike = () => {
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
   const [tempMiddleList, setTempMiddleList] = useState(userInfo.likes);
   // middleItem - UserLikeHate에 표시할 중분류 이름
-  const [middleItem, setMiddleItem] = useState('음악');
+  const [middleItem, setMiddleItem] = useState(userInfo.like);
 
   // 기본 함수 설정
   const navigate = useNavigate();
