@@ -71,7 +71,7 @@ public class OAuth2ClientConfig {
                                 .failureHandler(customOAuth2LoginFailureHandler)) // 인증 실패
                                 .permitAll());
 
-        // 23.08.02 간단하게 처리 구현, 완성도를 위해 디테일한 명세 필요
+        // 23.08.02 간단하게 구현, 완성도를 위해 디테일한 명세 필요
         http
                 .exceptionHandling()
                 .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증 실패
