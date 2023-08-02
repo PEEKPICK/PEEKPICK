@@ -82,9 +82,14 @@
 
 .items {
   font-size: medium;
-  border: 5px solid #7d00ff;
+  border: 1px solid #7d00ff;
   border-radius: 10px;
-  background-color: #7d00ff;
-  color: white;
+  /* background-color: #7d00ff; */
+  color: #7d00ff;
   margin-right: 2vh;
+}
+
+.items img {
+  width: 1vh;
+  height: 1vh;
 }

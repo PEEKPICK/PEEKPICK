@@ -89,7 +89,7 @@ const UserLikeHate = () => {
         ) : (
           <div>
             {userInfo.like.map((item, index) => (
-              <span key={index} className={common.items}>{item} x</span>
+              <span key={index} className={common.items}>{item} <img src="img/cancel.png" alt="cancel" /></span>
             ))}
           </div>
         )}
