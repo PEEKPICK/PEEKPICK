@@ -38,7 +38,6 @@ const UserLike = () => {
   useEffect(() => {
     customAxios.get('/member/taste')
       .then(response => {
-        console.log(response.data)
         setDataAxios(true);
         setLikeList(response.data.data)
       })
@@ -53,17 +52,17 @@ const UserLike = () => {
 
     customAxios.get(`/member/taste?category_large=${item}`)
       .then(response => {
-        console.log(response.data)
         setMiddleDataAxios(true);
         setMiddleLikeList(response.data.data);
       })
-      .catch(error=> {
+      .catch(error => {
         console.log(error);
       })
   };
 
   // 중분류 선택 시, 5개 여부 파악 및 리스트에 추가
   const middleListCheck = (categoryId, middle) => {
+    console.log(categoryId, middle)
     if (!tempMiddleList.includes(categoryId)) {
       if (tempMiddleList.length < 5) {
         setTempMiddleList((prevList) => [...prevList, categoryId])
@@ -110,13 +109,13 @@ const UserLike = () => {
                 <input
                   type="radio"
                   name="selectedItem"
-                  id={index}
+                  id={`radio_${index}_${middleItem.categoryId}`}
                   value={item}
                   checked={selectedLargeItem === item}
                   className={classes.radio}
                   onChange={() => selectLargeItemHandler(item)}
                 />
-                <label htmlFor={index}>
+                <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
                   {item}
                 </label>
               </div>
@@ -128,13 +127,19 @@ const UserLike = () => {
         {middleDataAxios ? (
           <div className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button 
-                key={middleItem.categoryId}
-                onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
-                className={common.taste}
-              >
-                {middleItem.middle}
-              </button>
+              <div key={middleItem.categoryId}>
+                <input
+                  type="checkbox"
+                  id={middleItem.categoryId}
+                  value={middleItem.categoryId}
+                  checked={tempMiddleList.includes(middleItem.categoryId)}
+                  onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
+                  className={classes.checkbox}
+                />
+                <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
+                  {middleItem.middle}
+                </label>
+              </div>
             ))}
           </div>
         ) : (

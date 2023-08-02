@@ -36,3 +36,16 @@ input[type=radio]:checked + label {
   border-radius: 10px;
   color: #7d00ff;
 }
+
+.checkbox {
+  display: none;
+}
+
+.checkboxLabel {
+  
+}
+
+input[type=checkbox]:checked + .checkboxLabel {
+  border: 1px solid #7d00ff;
+  color: #7d00ff;
+}
