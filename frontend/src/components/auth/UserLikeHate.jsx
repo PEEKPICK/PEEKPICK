@@ -107,9 +107,20 @@ const UserLikeHate = () => {
             <button onClick={moveToUserHate}>+추가</button>
           </div>
         </div>
-        <div>
-            {userInfo.hate}
+        {userInfo.hate.length === 0 ? (
+          <></>
+        ) : (
+          <div className={common.itemWrap}>
+            {userInfo.hate.map((item, index) => (
+              <div
+                key={index}
+                className={common.items}
+              >
+                {item}
+              </div>
+            ))}
           </div>
+        )}
       </div>
       <div>
         <button onClick={moveToWelcome} className={common.next}>다음으로</button>

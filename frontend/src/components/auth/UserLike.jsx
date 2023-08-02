@@ -111,7 +111,7 @@ const UserLike = () => {
               </button>
             ))}
           </div>
-        ) : (<p>에러가 발생했습니다.</p>)}
+        ) : (<span>에러가 발생했습니다.</span>)}
       </div>
       <div className={classes.middle}>
         {middleDataAxios ? (
@@ -136,7 +136,10 @@ const UserLike = () => {
         {modalOpen && <Modal onClose={closeModal} />}
       </div>
       <div>
-        <button onClick={selectedFinish} className={common.next}>선택완료</button>
+        <button
+          onClick={selectedFinish}
+          className={common.next}
+        >선택완료</button>
       </div>
     </div>
   );

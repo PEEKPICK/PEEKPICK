@@ -3,13 +3,17 @@ import { customAxios } from '../../api/customAxios';
 import Modal from './Modal';
 
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
+import classes from './style/UserHate.module.css';
 
 const UserHate = () => {
+  // 중분류 정보 가져오기
+  const userInfo = useSelector(state => state.auth);
+
   // 상태관리
   // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
   const [dataAxios, setDataAxios] = useState(false);
@@ -18,11 +22,11 @@ const UserHate = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // likeList, middleLikeList는 대분류, 중분류 표시
   const [likeList, setLikeList] = useState([]);
-  const [middleLikeList, setMiddleLikeList] = useState([]);
+  const [middleLikeList, setMiddleLikeList] = useState(userInfo.hate);
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
-  const [tempMiddleList, setTempMiddleList] = useState([]);
+  const [tempMiddleList, setTempMiddleList] = useState(userInfo.disLikes);
   // middleItem - UserLikeHate에 표시할 중분류 이름
-  const [middleItem, setMiddleItem] = useState([]);
+  const [middleItem, setMiddleItem] = useState(userInfo.hate);
 
   // 기본 함수 설정
   const navigate = useNavigate();
@@ -75,11 +79,11 @@ const UserHate = () => {
   };
 
   const selectedFinish = () => {
-    const changedLikes = {
+    const changedHates = {
       disLikes: tempMiddleList,
       hate: middleItem,
     }
-    dispatch(authActions.updateUserHate(changedLikes))
+    dispatch(authActions.updateUserHate(changedHates))
     navigate('/userlikehate');
   };
 
@@ -87,7 +91,7 @@ const UserHate = () => {
     <div className={common.container}>
       <div>
         <div>
-          <h1>좋아해요</h1>
+          <h1>싫어해요</h1>
         </div>
         <div>
           <p>(최대 5개 선택 가능)</p>
@@ -96,27 +100,46 @@ const UserHate = () => {
       <div className={common.defaultLine}></div>
       <div>
         {dataAxios ? (
-          <ul className={common.largelist}>
+          <div className={common.largelist}>
             {likeList.map(item => (
-              <button key={item} onClick={() => middleItemHandler(item)} className={common.taste}>{item}</button>
+              <button
+                key={item}
+                onClick={() => middleItemHandler(item)}
+                className={common.taste}
+              >
+                {item}
+              </button>
             ))}
-          </ul>
-        ) : (<p>대분류가 없습니다.</p>)}
+          </div>
+        ) : (<span>에러가 발생했습니다.</span>)}
       </div>
-      <div>
+      <div className={classes.middle}>
         {middleDataAxios ? (
-          <ul className={common.middlelist}>
+          <div className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button key={middleItem.categoryId} onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)} className={common.taste}>{middleItem.middle}</button>
+              <button
+                key={middleItem.categoryId}
+                onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
+                className={common.taste}
+              >
+                {middleItem.middle}
+              </button>
             ))}
-          </ul>
-        ) : (<p>대분류를 선택해주세요.</p>)}
+          </div>
+        ) : (
+          <div className={classes.error}>
+            <span>대분류를 선택해주세요!</span>
+          </div>
+        )}
       </div>
       <div>
         {modalOpen && <Modal onClose={closeModal} />}
       </div>
       <div>
-        <button onClick={selectedFinish}>선택완료</button>
+        <button
+          onClick={selectedFinish}
+          className={common.next}
+        >선택완료</button>
       </div>
     </div>
   );
