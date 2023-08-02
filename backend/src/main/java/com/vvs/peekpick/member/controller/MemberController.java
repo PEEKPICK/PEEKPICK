@@ -2,7 +2,7 @@ package com.vvs.peekpick.member.controller;
 
 
 import com.vvs.peekpick.entity.*;
-import com.vvs.peekpick.global.auth.Token;
+import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.dto.TempSignUpDto;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -165,12 +164,13 @@ public class MemberController {
     public DataResponse MemberInfo(@RequestParam("id") Long memberId) {
         Member member = memberService.getMemberInfo(memberId);
 
-        TempSignUpDto result = new TempSignUpDto();
-        result.setName(member.getName());
-        result.setEmail(member.getEmail());
-        result.setPhone(member.getPhone());
-        result.setGender(member.getGender());
-        result.setBirthday(member.getBirthday());
+        TempSignUpDto result = TempSignUpDto.builder()
+                                            .name(member.getName())
+                                            .email(member.getEmail())
+                                            .phone(member.getPhone())
+                                            .gender(member.getGender())
+                                            .birthday(member.getBirthday())
+                                            .build();
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }

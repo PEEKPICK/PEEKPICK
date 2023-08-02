@@ -1,6 +1,9 @@
 package com.vvs.peekpick.config;
 
+import com.vvs.peekpick.global.auth.exception.CustomAccessDeniedHandler;
+import com.vvs.peekpick.global.auth.exception.CustomAuthenticationEntryPoint;
 import com.vvs.peekpick.global.filter.JwtAuthenticationFilter;
+import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginFailureHandler;
 import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
 import com.vvs.peekpick.oauth.service.CustomOidcUserService;
@@ -26,7 +29,12 @@ public class OAuth2ClientConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOidcUserService customOidcUserService;
+
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
+    private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
@@ -52,19 +60,26 @@ public class OAuth2ClientConfig {
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        //OAuth 관련 설정
         http
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService) // 네이버
                                 .oidcUserService(customOidcUserService) // 구글, 카카오
                                 .and()
-                                .successHandler(customOAuth2LoginSuccessHandler))); // 인증 성공
-//                        .failureHandler(customOAuth2LoginFailureHandler)); // 인증 실패 (미구현)
+                                .successHandler(customOAuth2LoginSuccessHandler) // 인증 성공
+                                .failureHandler(customOAuth2LoginFailureHandler)) // 인증 실패
+                                .permitAll());
 
-//        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+        // 23.08.02 간단하게 처리 구현, 완성도를 위해 디테일한 명세 필요
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증 실패
+                .accessDeniedHandler(customAccessDeniedHandler); // 인가 실패
 
         return http.build();
-   }
+    }
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 

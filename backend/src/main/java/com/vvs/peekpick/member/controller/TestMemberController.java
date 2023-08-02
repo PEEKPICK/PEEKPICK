@@ -3,7 +3,7 @@ package com.vvs.peekpick.member.controller;
 import com.vvs.peekpick.entity.Member;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
-import com.vvs.peekpick.global.auth.JwtTokenProvider;
+import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.repository.MemberRepository;
 import com.vvs.peekpick.member.service.MemberService;

@@ -1,4 +1,4 @@
-package com.vvs.peekpick.global.auth;
+package com.vvs.peekpick.global.auth.util;
 
 import com.vvs.peekpick.entity.Member;
 import com.vvs.peekpick.oauth.model.PrincipalUser;

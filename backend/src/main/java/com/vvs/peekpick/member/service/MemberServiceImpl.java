@@ -3,8 +3,8 @@ package com.vvs.peekpick.member.service;
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
-import com.vvs.peekpick.global.auth.JwtTokenProvider;
-import com.vvs.peekpick.global.auth.Token;
+import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
+import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.repository.*;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -33,8 +32,10 @@ public class MemberServiceImpl implements MemberService {
     private final TasteRepository tasteRepository;
     private final CategoryRepository categoryRepository;
     private final AchievementRepository achievementRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
+
     /**
      * 회원가입
      * @param signUpDto
@@ -56,12 +57,15 @@ public class MemberServiceImpl implements MemberService {
         addTastes(signUpDto, avatar);
 
         // 회원가입 성공
-        // Token 반환
         String accessToken = jwtTokenProvider.createAccessToken(findMember);
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
+        // RefreshToken DB 저장
+        saveRefreshToken(avatar, refreshToken);
+
         return new Token(accessToken, refreshToken);
     }
+
 
     // 이모지 뽑기
     public Emoji RandomEmoji() {
@@ -250,5 +254,13 @@ public class MemberServiceImpl implements MemberService {
         Avatar avatar = avatarRepository.findById(avatarId)
                                         .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
         return avatar;
+    }
+
+    // RefreshToken 저장
+    private void saveRefreshToken(Avatar avatar, String refreshToken) {
+        RefreshToken token = RefreshToken.builder()
+                                         .avatar(avatar)
+                                         .token(refreshToken).build();
+        refreshTokenRepository.save(token);
     }
 }

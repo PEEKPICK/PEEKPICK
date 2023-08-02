@@ -1,7 +1,7 @@
 package com.vvs.peekpick.member.service;
 
 import com.vvs.peekpick.entity.*;
-import com.vvs.peekpick.global.auth.Token;
+import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 

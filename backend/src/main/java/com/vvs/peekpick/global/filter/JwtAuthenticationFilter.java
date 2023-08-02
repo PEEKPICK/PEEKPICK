@@ -1,7 +1,7 @@
 package com.vvs.peekpick.global.filter;
 
 import com.vvs.peekpick.exception.CustomException;
-import com.vvs.peekpick.global.auth.JwtTokenProvider;
+import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
