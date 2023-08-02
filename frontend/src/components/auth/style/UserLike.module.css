@@ -10,3 +10,18 @@
   display: flex;
   justify-content: center;
 }
+
+.radio {
+  display: none;
+}
+
+.radio > label {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}
+
+input[type=radio]:checked + label {
+  border: 1px solid #7d00ff;
+  border-radius: 10px;
+  color: #7d00ff;
+}
