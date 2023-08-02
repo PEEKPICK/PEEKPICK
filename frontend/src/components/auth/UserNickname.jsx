@@ -85,7 +85,7 @@ const UserNickname = () => {
           <div>
             <input
               type="text"
-              placeholder="최대 6글자까지 가능합니다."
+              placeholder="최대 6글자까지 입력이 가능합니다."
               maxLength="6"
               onInput={e => maxLengthHandler(e, 6)}
               onChange={e => setNickname(e.target.value)}
