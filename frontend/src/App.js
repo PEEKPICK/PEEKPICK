@@ -67,11 +67,11 @@ function App() {
                 <Route path="picky" element={<Picky />} />
                 {/* 용범  */}
                 <Route path="mypage" element={<MyPage />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="announcement" element={<Announcement />} />
-                <Route path="likeedit" element={<LikeEdit />} />
-                <Route path="hateedit" element={<HateEdit />} />
               </Route>
+                <Route path="profile" element={<Profile />} />
+                <Route path="/announcement" element={<Announcement />} />
+                <Route path="/likeedit" element={<LikeEdit />} />
+                <Route path="/hateedit" element={<HateEdit />} />
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>

@@ -35,16 +35,22 @@
     display: flex;
     justify-content: center;
     width: 20%;
+    background-color: white;
+    border-radius: 5vh;
+    padding: 1vh;
 }
 
 .profileimg a {
     display: flex;
     justify-content: center;
     width: 20%;
+    background-color: white;
+    border-radius: 5vh;
 }
 
 .profileimg a img {
     width: 100%;
+    padding: 1vh;
 }
 
 /* 닉네임하고 편집 버튼 */
@@ -59,7 +65,12 @@
     position: relative;
     left: 10px;
     width: 2.5%;
+    background-color: #E2E2E2;
+    padding: 1% 2% 1% 2%;
+    border-radius: 1vh;
 }
+
+
 
 /* 한줄 소개 */
 
@@ -67,6 +78,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 5%;
 }
 
 /* 호불호 */
@@ -74,11 +86,30 @@
 .likehate {
     display: flex;
     margin-bottom: 2%;
+    align-items: center;
+    margin-left: 5%;
 }
 
-.likehate button {
+.likehate a button{
     /* margin 하면 빈공간에도 클릭이 된다 이거 내일 해보자 */
-    margin-left: 10px;
+    color: white;
+    background-color: rgba(125, 0, 225);
+    width: 100%;
+    border:0;
+    padding:0.4vh 0.6vh 0.4vh 0.6vh;
+    border-radius: 0.3vh;
+}
+
+.likehate button{
+    color: white;
+    background-color: rgba(125, 0, 225);
+    border:0;
+    padding:0.4vh 0.6vh 0.4vh 0.6vh;
+    border-radius: 0.3vh;
+}
+
+.likehate span{
+    margin-right: 3%;
 }
 
 /* 고객센터 이미지 */
@@ -87,8 +118,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 5%;
 }
 
 .customercenterimg img {
-    width: 80%;
+    width: 90%;
+}
+
+hr{ 
+    width: 90%;
+    margin-left:5%;
+    border: 1px solid;
+    border-color: rgba(125, 0, 225);
 }

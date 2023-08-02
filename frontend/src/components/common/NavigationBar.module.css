@@ -1,10 +1,9 @@
 .container {
     position: fixed;
     bottom: 5%;
-    width: 80%;
-    left: 10%;
+    width: 90%;
+    left: 5%;
     height: auto;
-    
 }
 
 .navibar {
@@ -16,6 +15,7 @@
     border: 1px solid;
     border-color: rgba(125, 0, 225);
     height: auto;
+    width: 100%;
     
 }
 
@@ -26,6 +26,7 @@
     margin: 5%;
     text-decoration: none;
     border-radius: 5vh;
+
 }
 
 .navibar div img{
@@ -43,7 +44,29 @@
 }
 
 .alert{
-    height: 100%;
-    display: flex;
-    border: 1px solid black;
+    position: fixed;
+    display: grid;
+    grid-template-columns: 1fr 7fr 1fr;
+    padding: 4% 0% 9% 0%;
+    bottom: 10%;
+    width: 90%;
+    justify-items: center;
+    border: 1px solid ;
+    border-bottom: none;
+    border-color: rgba(125, 0, 225, 1);
+    border-top-left-radius: 3vh;
+    border-top-right-radius: 3vh;
+    z-index: -1;
+    background-color: white;
 }
+
+
+.alert img{
+    width: 50%;
+}
+
+.alert span{
+    justify-self: start;
+    align-self: center;
+}
+
