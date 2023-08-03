@@ -40,10 +40,14 @@ const SignOut = forwardRef((props, ref) => {
         {/* x 버튼 click 시 회원 탈퇴 화면 종료 */}
         <img src="img/cancel.png" alt="" onClick={SignOutDisplay} />
       </div>
-      <hr />
+      <hr className={classes.hr}/>
       <div className={classes.explanation}>
         <span>
           회원 탈퇴 어쩌구 저쩌구 모든 정보가 삭제 어쩌구
+          너는 지금뭐해 자니 밖이야 뜬금 없는 문자를 돌려 보지만
+          어떻게 해볼까란 뜻은 아니야
+          시기 다른 래퍼들의 반대편을 바라보던 래퍼들의 배포 그건
+          백프로 개뻥 뭐든 개빨아 마치 텐프로 됐어 보인 각본 짜인 대봉
         </span>
       </div>
 

@@ -38,7 +38,7 @@ const LogOut = forwardRef((props, ref) => {
         {/* x 버튼 click 시 로그아웃 화면 종료 */}
         <img src="img/cancel.png" alt="" onClick={LogOutDisplay} />
       </div>
-      <hr />
+      <hr className={classes.hr} />
       <div className={classes.explanation}>
         <span>로그아웃 하시겠습니까?</span>
       </div>

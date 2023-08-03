@@ -125,7 +125,7 @@ const MyPage = () => {
         <PickAndLike />
         {/* pick 한 횟수, 좋아요 버튼 -> components 자리 */}
       </div>
-      <hr />
+      <hr className={classes.hr} />
       <img src="" alt="" />
       <div className={classes.likehate}>
         <span>좋아하는 것</span>
@@ -152,7 +152,7 @@ const MyPage = () => {
       <div>
         {/* 여기는 본인이 선택한 취향 componenets */}
       </div>
-      <hr />
+      <hr className={classes.hr} />
 
       {/* 고객센터 */}
       <div className={classes.customercenterimg}>

@@ -61,7 +61,7 @@ const Profile = (props) => {
           <img src="img/cancel.png" alt="" />
         </Link>
       </div>
-      <hr />
+      <hr className={classes.hr}/>
       <div className={classes.emoji}>
         {/* 백에서 전달하는 이모지 */}
         {emojiCheck ? <img src={emojiUrl} alt="" /> : <img src={userInfo.emojiUrl} alt="" />}

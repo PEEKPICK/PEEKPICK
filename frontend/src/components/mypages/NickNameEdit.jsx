@@ -82,7 +82,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         {/* 클릭시 마이페이지 이동 */}
         <img src="img/cancel.png" alt="" onClick={NickNameEditDisplay} />
       </div>
-      <hr className={classes.nicknamehr}/>
+      <hr className={classes.hr}/>
       <div>
         <h4>타이틀</h4>
         {/* 형용사 버튼클릭시 input 안에 들어옴 변경 금지
