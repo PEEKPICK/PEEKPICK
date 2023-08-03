@@ -1,6 +1,6 @@
 import { customAxios } from '../../api/customAxios';
 
-import LoginModal from './LoginModal';
+import InfoModal from './InfoModal';
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -268,7 +268,7 @@ const UserInfo = () => {
           <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
         </form>
       </div>
-      {showModal && <LoginModal onClose={closeModal} />}
+      {showModal && <InfoModal onClose={closeModal} />}
     </div>
   );
 }
