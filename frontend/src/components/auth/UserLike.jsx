@@ -112,7 +112,7 @@ const UserLike = () => {
                   id={`radio_${index}_${middleItem.categoryId}`}
                   value={item}
                   checked={selectedLargeItem === item}
-                  className={classes.radio}
+                  className={`${classes.radio} ${classes.customRadio}`}
                   onChange={() => selectLargeItemHandler(item)}
                 />
                 <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
@@ -134,7 +134,7 @@ const UserLike = () => {
                   value={middleItem.categoryId}
                   checked={tempMiddleList.includes(middleItem.categoryId)}
                   onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
-                  className={classes.checkbox}
+                  className={`${classes.checkbox} ${classes.customCheckbox}`}
                 />
                 <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
                   {middleItem.middle}

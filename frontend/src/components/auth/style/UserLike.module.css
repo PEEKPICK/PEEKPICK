@@ -31,7 +31,7 @@ label {
   color: lightgray;
 }
 
-input[type=radio]:checked + label {
+input.customRadio:checked + label {
   border: 1px solid #7d00ff;
   border-radius: 10px;
   color: #7d00ff;
@@ -45,7 +45,7 @@ input[type=radio]:checked + label {
   
 }
 
-input[type=checkbox]:checked + .checkboxLabel {
+input.customCheckbox:checked + .checkboxLabel {
   border: 1px solid #7d00ff;
   color: #7d00ff;
 }
