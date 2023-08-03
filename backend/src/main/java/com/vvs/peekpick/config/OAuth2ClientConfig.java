@@ -8,13 +8,12 @@ import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
 import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
 import com.vvs.peekpick.oauth.service.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -37,9 +36,11 @@ public class OAuth2ClientConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    @Value("${auth.ignored-urls}")
+    private String[] ignoredUrls;
+
     @Bean
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
-
         // 23.07.25 CSRF 비활성화
         // Form 로그인 처리 X
         http
@@ -54,8 +55,7 @@ public class OAuth2ClientConfig {
 
         http
                 .authorizeRequests()
-                .antMatchers("/login","/member/test", "/member/signup", "/member/login", "/member/emoji",
-                        "/member/prefix", "/member/world", "/member/taste", "/member/signup/info").permitAll()
+                .antMatchers(ignoredUrls).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -87,6 +87,7 @@ public class OAuth2ClientConfig {
 
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedOriginPattern("*");
         corsConfiguration.setAllowCredentials(false);
 
