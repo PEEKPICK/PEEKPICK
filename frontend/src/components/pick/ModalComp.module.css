@@ -1,0 +1,112 @@
+/* 메인 모달 */
+.modalMain {
+  background-color: white;
+  margin: 9rem 1.7rem;
+  padding: 0.5rem;
+  border-radius: 1.3rem 1.3rem 3.1rem 3.1rem;
+  height: 27rem;
+  width: 20rem;
+  box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
+  font-size: 0.875rem;
+}
+/* 프로필이미지 */
+.profileImg {
+  border: 0.12rem solid black;
+  border-radius: 3.125rem;
+  margin-top: 0.3rem;
+  width: 4rem;
+  height: 4rem;
+}
+
+/* 모달 상단 */
+.modalHead {
+  padding: 0 0.5rem;
+  display: flex;
+}
+.modalHeadText {
+  width: 100%;
+  margin-left: 1rem;
+  margin-top: 0.8rem;
+}
+.nickname {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: 1rem;
+}
+.intro {
+  font-size: 0.75rem;
+  width: 12.3125rem;
+  height: 2.875rem;
+  margin-top: 0.625rem;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  padding-left: 0.4rem;
+  background-color: rgba(125, 0, 255, 0.1);
+}
+/* 모달 중간선  */
+.divider {
+  margin: 0.5rem 1rem;
+  height: 0.06rem;
+  background-color: #7d00ff;
+}
+/* 모달 메인 */
+.modalBody {
+  position: relative;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.75rem;
+  height: 13rem;
+}
+.modalBody > div {
+  height: 5.5rem;
+}
+.like {
+  border-radius: 1rem;
+  background-color: #7d00ff;
+  color: #ffffff;
+  width: 3rem;
+  text-align: center;
+  height: 1.7rem;
+  line-height: 1.9rem;
+}
+.disLike {
+  margin-top: 0.5rem;
+  border-radius: 1rem;
+  background-color: #7d00ff;
+  color: #ffffff;
+  width: 3rem;
+  text-align: center;
+  height: 1.7rem;
+  line-height: 1.9rem;
+}
+
+.like + p {
+  margin-top: 1.5rem;
+}
+
+.disLike + p {
+  margin-top: 1.5rem;
+}
+.likeInfo {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  border: 0.0625rem solid #7d00ff;
+  margin-right: 0.5rem;
+}
+/* 모달 하단  */
+
+.pick {
+  font-size: 1.0625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13.9375rem;
+  height: 3.125rem;
+  border-radius: 1.5rem;
+  background-color: #7d00ff;
+  color: #ffffff;
+  margin-left: 3rem;
+  margin-top: 1rem;
+}
