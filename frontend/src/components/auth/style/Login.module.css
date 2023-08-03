@@ -27,7 +27,12 @@
 }
 
 .buttons button {
-  border: 1px solid black;
-  display:flex;
-  margin-bottom: 6vh;
+  width: 50%;
+  height: 4vh;
+  border: 0;
+  border-radius: 15px;
+  margin-bottom: 3vh;
+  background-color: rgba(125, 0, 255, 0.75);
+  color: white;
+  font-weight: 600;
 }
