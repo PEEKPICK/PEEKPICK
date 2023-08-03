@@ -1,8 +1,5 @@
 package com.vvs.peekpick.peek.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vvs.peekpick.peek.dto.*;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
@@ -10,7 +7,6 @@ import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -18,13 +14,11 @@ import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -44,7 +38,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
-    @Qualifier("locationRedisTemplate")
+    @Qualifier("redisTemplate")
     private final RedisTemplate<String, Object> locationTemplate;
     private GeoOperations<String, Object> geoOps;
     private ValueOperations<String, Object> valueOps;
