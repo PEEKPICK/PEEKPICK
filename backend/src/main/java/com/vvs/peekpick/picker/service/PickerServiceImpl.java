@@ -2,10 +2,9 @@ package com.vvs.peekpick.picker.service;
 
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
-import com.vvs.peekpick.picker.dto.ChatRequestDto;
-import com.vvs.peekpick.picker.dto.ChatResponseDto;
-import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
-import com.vvs.peekpick.picker.dto.SearchPickerDto;
+import com.vvs.peekpick.member.dto.AvatarDto;
+import com.vvs.peekpick.member.service.MemberServiceImpl;
+import com.vvs.peekpick.picker.dto.*;
 import com.vvs.peekpick.picker.repository.PickerJpaRepository;
 import com.vvs.peekpick.picker.repository.PickerRedisRepository;
 import com.vvs.peekpick.picker.repository.SseEmitterRepository;
@@ -26,7 +25,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -49,6 +50,8 @@ public class PickerServiceImpl implements PickerService {
     private final PickerRedisRepository pickerRedisRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final SseEmitterRepository sseEmitterRepository;
+    private final MemberServiceImpl memberService;
+    private final ChatService chatService;
 
     /**
      * 현재 사용자의 위치와 ID를 세션에 등록
@@ -112,16 +115,18 @@ public class PickerServiceImpl implements PickerService {
 
     /**
      * 채팅 요청에 대한 응답으로 수락하여도 시간을 비교하여 만료 처리
+     * TODO 채팅방 생성 및 사용자에게 RoomID 전송 필요
+     * TODO DataResponse로 변경 필요
      *
      * @param chatResponseDto - 요청에 응답한 회원의 ID
      * @return CommonResponse
      */
     @Override
-    public CommonResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
+    public DataResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
         // 거절
         if ("N".equals(chatResponseDto.getResponse())) {
             sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED);
-            return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_REJECTED);
+            return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_REJECTED, null);
         }
         // 수락
         else {
@@ -131,15 +136,27 @@ public class PickerServiceImpl implements PickerService {
                 Point point = geoOperations.position(CONNECT_SESSION, String.valueOf(chatResponseDto.getRequestSenderId())).get(0);
                 if (point == null) { // 상대가 접속중이지 않을 때
                     throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
-                }else { // 상대가 접속중일 때
-                    // TODO 채팅방 세션 개설
-                    sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_ACCEPTED);
-                    return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED);
+                } else { // 상대가 접속중일 때
+                    String roomId = chatService.createChatRoom();
+
+                    // 요청자 + 채팅방 정보 ( 응답자에게 전송 )
+                    ChatNotificationDto senderNotification = ChatNotificationDto.builder()
+                            .opponent(chatResponseDto.getRequestSenderId())
+                            .roomId(roomId)
+                            .build();
+
+                    // 응답자 + 채팅방 정보 ( 요청자에게 전송 )
+                    ChatNotificationDto receiverNotification = ChatNotificationDto.builder()
+                            .opponent(chatResponseDto.getRequestReceiverId())
+                            .roomId(roomId)
+                            .build();
+                    sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification);
+                    return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED, senderNotification);
                 }
             }
             // 요청 시간이 만료된 이후
             else {
-                return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_TIMEOUT);
+                return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_TIMEOUT, null);
             }
         }
     }
@@ -148,7 +165,7 @@ public class PickerServiceImpl implements PickerService {
      * 거리순으로 Picker 조회
      *
      * @param picker - 현재 위치, Id, 반경이 포함된 Picker 정보
-     * @return DataResponse<List>
+     * @return DataResponse<List> - 조회된 Picker 의 이모지, 닉네임, 한줄소개, 취향 정보
      */
     @Override
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
@@ -175,7 +192,12 @@ public class PickerServiceImpl implements PickerService {
                 pickerList.add(value.getContent().getName());
             }
         }
-        return responseService.successDataResponse(ResponseStatus.CONNECTION_LIST_SEARCH_SUCCESS, pickerList);
+
+        List<AvatarDto> avatarDtoList = new ArrayList<>();
+        // 획득한 Id를 통해 이모지, 닉네임, 한줄소개, 호불호 반환
+        pickerList.forEach(value -> avatarDtoList.add(memberService.getAvatarInfo(Long.parseLong(value))));
+
+        return responseService.successDataResponse(ResponseStatus.CONNECTION_LIST_SEARCH_SUCCESS, avatarDtoList);
     }
 
     /**
