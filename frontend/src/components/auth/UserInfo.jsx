@@ -77,7 +77,6 @@ const UserInfo = () => {
           name="username"
           placeholder="이름 (ex. 홍길동)"
           onChange={changeUsernameHandler}
-          required
         />
       );
     }
@@ -103,7 +102,6 @@ const UserInfo = () => {
           name="useremail"
           placeholder="이메일 (ex. example@example.com)"
           onChange={changeEmailHandler}
-          required
         />
       );
     }
@@ -152,7 +150,6 @@ const UserInfo = () => {
           ref={phoneRef}
           placeholder="전화번호 (ex. 010-1234-5678)"
           onChange={autoHypenPhone}
-          required
         />
       );
     }
@@ -201,7 +198,6 @@ const UserInfo = () => {
           ref={birthRef}
           placeholder="생년월일 (ex. 1998-06-28)"
           onChange={autoHypenBirth}
-          required
         />
       );
     }
