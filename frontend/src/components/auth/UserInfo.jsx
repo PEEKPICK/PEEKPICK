@@ -13,6 +13,8 @@ const UserInfo = () => {
   const userInfo = useSelector(state => state.auth);
 
   // 상태관리
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [gender, setGender] = useState('M')
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
@@ -20,6 +22,7 @@ const UserInfo = () => {
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   // 자동하이픈을 위한 useRef함수
   const phoneRef = useRef();
   const birthRef = useRef();
@@ -53,19 +56,58 @@ const UserInfo = () => {
       })
   }, [dispatch])
 
-  // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
-  const moveToUserProfile = () => {
-    const changedUserData = {
-      memberId: userInfo.memberId,
-      name: userInfo.name,
-      email: userInfo.email,
-      phone: phone,
-      birthday: birthday,
-      gender: gender,
-    }
-    dispatch(authActions.updateUserInfo(changedUserData));
-    navigate('/userprofile')
+  // 이름 상태관리
+  const changeUsernameHandler = (e) => {
+    setUsername(e.target.value)
   };
+
+  // 이름이 있다면 이름을 표시하고 없다면 input창
+  const nameIsValid = () => {
+    if (userInfo.name) {
+      setUsername(userInfo.name)
+      return (
+        <div>
+          {userInfo.name}
+        </div>
+      );
+    } else {
+      return (
+        <input
+          type="text"
+          name="username"
+          placeholder="이름 (ex. 홍길동)"
+          onChange={changeUsernameHandler}
+          required
+        />
+      );
+    }
+  };
+
+  // 이메일 상태관리
+  const changeEmailHandler = (e) => {
+    setEmail(e.target.value)
+  };
+
+  // 이메일이 있다면 이메일을 표시하고 없다면 input창
+  const emailIsValid = () => {
+    if (userInfo.email) {
+      return (
+        <div>
+          {userInfo.email}
+        </div>
+      );
+    } else {
+      return (
+        <input
+          type="text"
+          name="useremail"
+          placeholder="이메일 (ex. example@example.com)"
+          onChange={changeEmailHandler}
+          required
+        />
+      );
+    }
+  }
 
   // 휴대폰 번호 자동 하이픈 생성 함수
   const autoHypenPhone = (e) => {
@@ -108,7 +150,7 @@ const UserInfo = () => {
           type="tel"
           name="user-phone"
           ref={phoneRef}
-          placeholder="전화번호(ex. 010-1234-5678)"
+          placeholder="전화번호 (ex. 010-1234-5678)"
           onChange={autoHypenPhone}
           required
         />
@@ -157,12 +199,26 @@ const UserInfo = () => {
           type="text"
           name="birth"
           ref={birthRef}
-          placeholder="생년월일(ex. 1998-06-28)"
+          placeholder="생년월일 (ex. 1998-06-28)"
           onChange={autoHypenBirth}
           required
         />
       );
     }
+  };
+
+  // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
+  const moveToUserProfile = () => {
+    const changedUserData = {
+      memberId: userInfo.memberId,
+      name: username,
+      email: email,
+      phone: phone,
+      birthday: birthday,
+      gender: gender,
+    }
+    dispatch(authActions.updateUserInfo(changedUserData));
+    navigate('/userprofile')
   };
 
   return (
@@ -176,10 +232,10 @@ const UserInfo = () => {
       <div>
         <form className={classes.form}>
           <div className={classes.box}>
-            {userInfo.name}
+            {nameIsValid()}
           </div>
           <div className={classes.box}>
-            {userInfo.email}
+            {emailIsValid()}
           </div>
           <div className={classes.box}>
             {phoneIsValid()}
