@@ -18,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,24 @@ public class MemberController {
         CookieUtil.createCookie(response, token.getAccessToken());
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
+    }
+
+    /**
+     * 로그아웃
+     * @param authentication
+     * @return
+     * RefreshToken 삭제 처리
+     */
+    @PostMapping("/logout")
+    public CommonResponse logout(HttpServletRequest request, HttpServletResponse response,
+                                 Authentication authentication) {
+        Long avatarId = Long.parseLong(authentication.getName());
+
+        // 선 삭제 처리 후 쿠키 정리
+        memberService.logout(avatarId);
+        CookieUtil.deleteCookie(request, response, "refreshToken");
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
 
     /**

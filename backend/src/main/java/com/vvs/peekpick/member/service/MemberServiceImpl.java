@@ -3,6 +3,7 @@ package com.vvs.peekpick.member.service;
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
@@ -131,6 +132,14 @@ public class MemberServiceImpl implements MemberService {
         updateTaste(avatar, "L", likes);
     }
 
+    // 로그아웃
+    @Override
+    public void logout(Long avatarId) {
+        refreshTokenRepository.deleteByAvatarId(avatarId);
+    }
+
+    // 취향 태그 수정
+    // 기존 태그 삭제 후 신규 태그 추가
     private void updateTaste(Avatar avatar, String type, List<Long> categoryIds) {
 
         // 기존 Tastes 가져오기
