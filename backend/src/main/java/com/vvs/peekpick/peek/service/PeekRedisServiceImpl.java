@@ -131,12 +131,24 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse addReaction(Long peekId, String memberId, boolean like, boolean add) {
-        int count = add ? 1 : -1;
+    public CommonResponse addReaction(Long peekId, String memberId, boolean like) {
         try {
             PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
-            LocalDateTime updatedFinishTime = add ? peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME) : peekDto.getFinishTime();
+            LocalDateTime updatedFinishTime = peekDto.getFinishTime();
             boolean special = peekDto.isSpecial();
+            int count = 0;
+
+            String key = like ? "member:" + memberId + ":liked" : "member:" + memberId + ":disLiked";
+
+            if (setOps.isMember(key, String.valueOf(peekId))) {
+                setOps.remove(key, String.valueOf(peekId));
+                updatedFinishTime = peekDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME);
+                count = -1;
+            } else {
+                setOps.add(key, String.valueOf(peekId));
+                updatedFinishTime = peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
+                count = 1;
+            }
 
             if (Duration.between(peekDto.getWriteTime(), updatedFinishTime).toHours() >= 24) {
                 updatedFinishTime = peekDto.getWriteTime().plusHours(24);
@@ -152,23 +164,12 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
             valueOps.set(PEEK_REDIS + peekId, updatedPeekDto);
 
-            // 좋아요 눌렀을 때 레디스 추가 / 다시 좋아요 삭제 눌렀을 때 레디스에서도 삭제
-            // 싫어요 눌렀을 떄 레디스 추가 / 다시 싫어요 눌렀을 때 레디스에서도 삭제
-            if(like) {
-                if(add) setOps.add("member:" + memberId + ":liked", String.valueOf(peekId));
-                else setOps.remove("member:" + memberId + ":liked", String.valueOf(peekId));
-            }
-            else {
-                if(add) setOps.add("member:" + memberId + ":disLiked", String.valueOf(peekId));
-                else setOps.remove("member:" + memberId + ":disLiked", String.valueOf(peekId));
-            }
-
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
         }
     }
+
 
     @Override
     public DataResponse findNearPeek(String memberId, SearchPeekDto searchPeekDto) {

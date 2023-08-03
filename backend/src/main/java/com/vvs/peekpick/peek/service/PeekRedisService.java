@@ -15,5 +15,5 @@ public interface PeekRedisService {
     public CommonResponse addPeek(RequestPeekDto requestPeekDto); //Peek 작성
     public DataResponse getPeek(String memberId, Long peekId); //id로 Peek 찾기
     public CommonResponse deletePeek(Long peekId); //Peek 삭제
-    public CommonResponse addReaction(Long peekId, String memberId, boolean like, boolean add); //Peek 반응 추가
+    public CommonResponse addReaction(Long peekId, String memberId, boolean like); //Peek 반응 추가
 }
