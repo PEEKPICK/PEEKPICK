@@ -5,6 +5,7 @@
   display: flex;
   justify-content: space-between;
   animation: 0.2s ease-in-out loadEffect1;
+  z-index: 1;
 }
 
 @keyframes loadEffect1 {
@@ -29,4 +30,10 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
+}
+.distance {
+  border: 1px solid black;
+  width: 90%;
+  height: 30%;
+  margin: 20% 5%;
 }

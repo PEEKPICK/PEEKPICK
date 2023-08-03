@@ -48,8 +48,8 @@ const EmojiLocation = ({ nearByUser }) => {
           </button>
         ))}
       </div>
-      <ModalComp />
       {/* 모달 */}
+      <ModalComp />
     </>
   );
 };

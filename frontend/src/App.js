@@ -2,7 +2,7 @@ import "./App.css";
 // import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 // router import
 // 준형
@@ -27,7 +27,7 @@ import Picky from "./components/pick/Picky";
 // 기타공용
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 
 function App() {
   const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
@@ -45,31 +45,31 @@ function App() {
   // }, []);
   //유져 정보 채팅용
 
-  const getMemberId = useSelector((state) => state.geo.memberId);
-  const getPointX = useSelector((state) => state.geo.point.x);
-  const getPointY = useSelector((state) => state.geo.point.y);
+  // const getMemberId = useSelector((state) => state.geo.memberId);
+  // const getPointX = useSelector((state) => state.geo.point.x);
+  // const getPointY = useSelector((state) => state.geo.point.y);
 
-  let eventSource = null;
-  useEffect(() => {
-    if (getMemberId !== null && getPointX !== null && getPointY !== null) {
-      // const requestBody = {
-      //   memberId: getMemberId,
-      //   point: {
-      //     x: getPointX,
-      //     y: getPointY,
-      //   },
-      // };
-      eventSource = new EventSource(`http://192.168.31.27:8081/picker/sse/14`, {
-        headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwiYXZhdGFySWQiOiIxNiIsInByb3ZpZGVyIjoibm9uZSIsImV4cCI6MTY5MTEzODI1NywiaWF0IjoxNjkxMDUxODU3fQ.LxvrptoKP1zov91wGhI0k2r-57lkTb25NLAjCqSlCnA4HsrvemMwENon9TraljYJX3EL6SzkpkpDOicEcYILyA`,
-        },
-      });
+  // let eventSource = null;
+  // useEffect(() => {
+  //   if (getMemberId !== null && getPointX !== null && getPointY !== null) {
+  //     // const requestBody = {
+  //     //   memberId: getMemberId,
+  //     //   point: {
+  //     //     x: getPointX,
+  //     //     y: getPointY,
+  //     //   },
+  //     // };
+  //     eventSource = new EventSource(`http://192.168.31.27:8081/picker/sse/14`, {
+  //       headers: {
+  //         Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwiYXZhdGFySWQiOiIxNiIsInByb3ZpZGVyIjoibm9uZSIsImV4cCI6MTY5MTEzODI1NywiaWF0IjoxNjkxMDUxODU3fQ.LxvrptoKP1zov91wGhI0k2r-57lkTb25NLAjCqSlCnA4HsrvemMwENon9TraljYJX3EL6SzkpkpDOicEcYILyA`,
+  //       },
+  //     });
 
-      eventSource.onmessage = (event) => {
-        console.log("result", event.data);
-      };
-    }
-  }, [getMemberId, getPointX, getPointY, eventSource]);
+  //     eventSource.onmessage = (event) => {
+  //       console.log("result", event.data);
+  //     };
+  //   }
+  // }, [getMemberId, getPointX, getPointY, eventSource]);
 
   return (
     <div>

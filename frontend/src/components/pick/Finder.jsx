@@ -21,8 +21,8 @@ const Finder = () => {
   const emojiCall = (requestBody) => {
     customAxios.post("/picker", requestBody).then((response) => {
       console.log("넘어온 데이터: ", response);
-      const userArrayOrigin = response.data.data;
-      // const userArrayOrigin = response.data.data.data;
+      // const userArrayOrigin = response.data.data;
+      const userArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기
       const maxEmojisToShow = 8;
       //정보 저장
