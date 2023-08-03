@@ -3,6 +3,7 @@ package com.vvs.peekpick.picker.service;
 import com.vvs.peekpick.picker.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class ChatPublisher {
+    @Qualifier("redisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
 
     /**

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vvs.peekpick.picker.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,7 +16,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChatSubscriber implements MessageListener {
     private final ObjectMapper objectMapper;
-    private final RedisTemplate redisTemplate;
+    @Qualifier("redisTemplate")
+    private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
 
 
