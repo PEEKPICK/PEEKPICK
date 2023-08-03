@@ -1,8 +1,6 @@
 package com.vvs.peekpick.global.auth.util;
 
 import com.vvs.peekpick.entity.Member;
-import com.vvs.peekpick.oauth.model.PrincipalUser;
-import com.vvs.peekpick.oauth.model.ProviderUser;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

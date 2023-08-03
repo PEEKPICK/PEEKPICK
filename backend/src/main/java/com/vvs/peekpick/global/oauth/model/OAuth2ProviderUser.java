@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.model;
+package com.vvs.peekpick.global.oauth.model;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

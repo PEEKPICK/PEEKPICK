@@ -1,13 +1,12 @@
-package com.vvs.peekpick.oauth.service;
+package com.vvs.peekpick.global.oauth.service;
 
+import com.vvs.peekpick.global.oauth.common.converters.ProviderUserConverter;
+import com.vvs.peekpick.global.oauth.common.converters.ProviderUserRequest;
+import com.vvs.peekpick.global.oauth.model.PrincipalUser;
+import com.vvs.peekpick.global.oauth.model.ProviderUser;
 import com.vvs.peekpick.member.repository.MemberRepository;
 import com.vvs.peekpick.member.service.MemberService;
-import com.vvs.peekpick.oauth.common.converters.ProviderUserConverter;
-import com.vvs.peekpick.oauth.common.converters.ProviderUserRequest;
-import com.vvs.peekpick.oauth.model.PrincipalUser;
-import com.vvs.peekpick.oauth.model.ProviderUser;
 import com.vvs.peekpick.response.ResponseService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;

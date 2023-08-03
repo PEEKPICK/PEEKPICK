@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.common.converters;
+package com.vvs.peekpick.global.oauth.common.converters;
 
 import com.vvs.peekpick.member.dto.User;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;

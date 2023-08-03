@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.common.authority;
+package com.vvs.peekpick.global.oauth.common.authority;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

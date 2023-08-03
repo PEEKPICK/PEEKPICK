@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.common.enums;
+package com.vvs.peekpick.global.oauth.common.enums;
 
 // SocialType 정리, 확장성 고려 enum
 public class OAuth2Config {

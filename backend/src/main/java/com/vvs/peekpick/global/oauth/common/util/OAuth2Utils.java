@@ -1,8 +1,8 @@
-package com.vvs.peekpick.oauth.common.util;
+package com.vvs.peekpick.global.oauth.common.util;
 
-import com.vvs.peekpick.oauth.common.enums.OAuth2Config;
-import com.vvs.peekpick.oauth.model.Attributes;
-import com.vvs.peekpick.oauth.model.PrincipalUser;
+import com.vvs.peekpick.global.oauth.model.Attributes;
+import com.vvs.peekpick.global.oauth.model.PrincipalUser;
+import com.vvs.peekpick.global.oauth.common.enums.OAuth2Config;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;

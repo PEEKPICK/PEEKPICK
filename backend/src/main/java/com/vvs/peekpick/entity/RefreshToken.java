@@ -19,8 +19,4 @@ public class RefreshToken {
     private Avatar avatar;
 
     private String token;
-
-    public void updateToken(String token) {
-        this.token = token;
-    }
 }

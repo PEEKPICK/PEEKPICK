@@ -31,7 +31,6 @@ public class MemberController {
     private final MemberService memberService;
     private final ResponseService responseService;
 
-
     /**
      * 회원가입 처리
      * @param signUpDto
@@ -41,7 +40,7 @@ public class MemberController {
     @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
         Token token = memberService.signup(signUpDto);
-        CookieUtil.createCookie(response, token.getRefreshToken());
+        CookieUtil.createCookie(response, token.getAccessToken());
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
     }

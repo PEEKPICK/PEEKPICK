@@ -1,4 +1,4 @@
-package com.vvs.peekpick.oauth.handler;
+package com.vvs.peekpick.global.oauth.handler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

@@ -48,8 +48,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // AccessToken 유효성 검사
             if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
 
-                // TODO 23.08.03 테스트 예정
-
                 // AccessToken에서 기존 값 꺼내기
                 Long avatarId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
 
@@ -82,19 +80,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 다음 필터
         filterChain.doFilter(request, response);
-    }
-
-    private static String getRefreshToken(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if ("refreshToken".equals(cookie.getName())) {
-                    return cookie.getValue();
-                }
-            }
-        }
-
-        return null;
     }
 
     private static String getAccessToken(HttpServletRequest request) {

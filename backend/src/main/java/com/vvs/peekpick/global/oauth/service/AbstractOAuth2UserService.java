@@ -1,24 +1,15 @@
-package com.vvs.peekpick.oauth.service;
+package com.vvs.peekpick.global.oauth.service;
 
-import com.vvs.peekpick.entity.Member;
+import com.vvs.peekpick.global.oauth.common.converters.ProviderUserConverter;
+import com.vvs.peekpick.global.oauth.common.converters.ProviderUserRequest;
+import com.vvs.peekpick.global.oauth.model.ProviderUser;
 import com.vvs.peekpick.member.repository.MemberRepository;
 import com.vvs.peekpick.member.service.MemberService;
-import com.vvs.peekpick.oauth.common.converters.ProviderUserConverter;
-import com.vvs.peekpick.oauth.common.converters.ProviderUserRequest;
-import com.vvs.peekpick.oauth.model.ProviderUser;
-import com.vvs.peekpick.member.dto.User;
-import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
-import com.vvs.peekpick.response.ResponseStatus;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Slf4j
 @Getter

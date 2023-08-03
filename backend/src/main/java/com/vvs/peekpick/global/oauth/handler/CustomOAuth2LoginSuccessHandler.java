@@ -1,10 +1,10 @@
-package com.vvs.peekpick.oauth.handler;
+package com.vvs.peekpick.global.oauth.handler;
 
 import com.vvs.peekpick.entity.Member;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
+import com.vvs.peekpick.global.oauth.model.PrincipalUser;
+import com.vvs.peekpick.global.oauth.model.ProviderUser;
 import com.vvs.peekpick.member.repository.MemberRepository;
-import com.vvs.peekpick.oauth.model.PrincipalUser;
-import com.vvs.peekpick.oauth.model.ProviderUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
