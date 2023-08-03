@@ -1,5 +1,5 @@
 import Modal from "react-modal";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, useEffect } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
 
@@ -7,7 +7,6 @@ const ModalComp = () => {
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
   const dispatch = useDispatch();
-
   console.log("선택이모지", isSelectedEmoji);
 
   const handleCloseModal = () => {
