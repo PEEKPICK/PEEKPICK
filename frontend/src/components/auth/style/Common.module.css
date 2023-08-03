@@ -48,11 +48,16 @@
   padding: 0;
   display: flex;
   justify-content: center;
+  align-items: center;
+  height: auto;
 }
 
 .middlelist {
   padding: 0;
   width: 12vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-column-gap:1vh;
   /* text-align: center; */
 }
 

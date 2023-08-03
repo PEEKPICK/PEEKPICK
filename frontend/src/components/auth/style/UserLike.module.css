@@ -4,11 +4,16 @@
   padding: 5%;
   margin-top: 2vh;
   margin-bottom: 2vh;
+
 }
 
 .error {
   display: flex;
   justify-content: center;
+}
+
+.radio {
+  display: none;
 }
 
 .radioWrap {
@@ -17,17 +22,17 @@
   margin: 0 0.5vh 0 0.5vh;
 }
 
-.radio {
-  display: none;
-}
-
 label {
+  display: flex;
   width: 100%;
+  height: 2vh;
   color: lightgray;
-  font-size: small;
-  text-align: center;
+  font-size: 5px;
+  justify-content: center;
+  align-items: center;
   border: 1px solid lightgray;
   border-radius: 10px;
+  white-space: nowrap;
 }
 
 input.customRadio:checked + label {
@@ -44,8 +49,9 @@ input.customRadio:checked + label {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 12vh;
+  width: 10vh;
   height: 3vh;
+  margin: 0.5vh 0 0.5vh 0;
 }
 
 input.customCheckbox:checked + .checkboxLabel {

@@ -81,6 +81,7 @@ const UserLike = () => {
     setModalOpen(false);
   };
 
+  // 좋아요한 리스트 저장 후, 취향PICK창으로 이동
   const selectedFinish = () => {
     const changedLikes = {
       likes: tempMiddleList,
