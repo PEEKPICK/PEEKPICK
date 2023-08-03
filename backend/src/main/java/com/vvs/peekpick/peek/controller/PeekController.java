@@ -1,15 +1,18 @@
 package com.vvs.peekpick.peek.controller;
 
-import com.vvs.peekpick.peek.dto.PeekDto;
-import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.RequestPeekDto;
+import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.geo.Point;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -20,13 +23,16 @@ public class PeekController {
     private final PeekRedisService peekRedisService;
 
     @PostMapping
-    public ResponseEntity<CommonResponse> addPeek(@RequestBody PeekLocationDto peekLocationDto, @RequestBody PeekDto peekDto) {
-        return ResponseEntity.ok(peekRedisService.addPeek(peekLocationDto, peekDto));
+    public ResponseEntity<DataResponse> findNearPeek(@RequestBody SearchPeekDto searchPeekDto) {  //@AuthenticationPrincipal Principal principal
+        String memberId = "testMemberId";//principal.getName();
+        return ResponseEntity.ok(peekRedisService.findNearPeek(memberId, searchPeekDto));
     }
 
+
     @GetMapping("/{peekId}")
-    public ResponseEntity<DataResponse> findPeekById(@PathVariable Long peekId) {
-        return ResponseEntity.ok(peekRedisService.getPeek(peekId));
+    public ResponseEntity<DataResponse> getPeek(@PathVariable Long peekId) { //@AuthenticationPrincipal Principal principal
+        String memberId = "testMemberId";//principal.getName();
+        return ResponseEntity.ok(peekRedisService.getPeek(memberId, peekId));
     }
 
     @DeleteMapping("/{peekId}")
@@ -34,13 +40,16 @@ public class PeekController {
         return ResponseEntity.ok(peekRedisService.deletePeek(peekId));
     }
 
-    @GetMapping("/near")
-    public ResponseEntity<DataResponse> findNearPeek(@RequestBody Point point, @RequestParam double radius) {
-        return ResponseEntity.ok(peekRedisService.findNearPeek(point, radius));
+    @PostMapping("/write")
+    public ResponseEntity<CommonResponse> addPeek(@RequestBody RequestPeekDto requestPeekDto) {
+        return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto));
     }
 
-    @PostMapping("/{peekId}/reaction")
-    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestParam boolean like, @RequestParam int count) {
-        return ResponseEntity.ok(peekRedisService.addReaction(peekId, like, count));
+    @PostMapping("/{peekId}")
+    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {//@AuthenticationPrincipal Principal principal
+        String memberId = "testMemberId";//principal.getName();
+        boolean like = Boolean.parseBoolean(reaction.get("like").toString());
+        return ResponseEntity.ok(peekRedisService.addReaction(peekId, memberId, like));
     }
+
 }

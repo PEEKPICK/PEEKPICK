@@ -21,11 +21,12 @@ public enum ResponseStatus {
     RESPONSE_CREATE("201", "SUCCESS"),
     
     /* PEEK */
-    Loading_Peek_LIST_SUCCESS("2000", "PEEK 리스트 로딩 완료"),
-    Loading_Peek_SUCCESS("2001", "PEEK 로딩 완료"),
+    LOADING_PEEK_LIST_SUCCESS("2000", "PEEK 리스트 로딩 완료"),
+    LOADING_PEEK_SUCCESS("2001", "PEEK 로딩 완료"),
     ADD_SUCCESS("2002", "PEEK 추가 완료"),
     DELETE_SUCCESS("2003", "PEEK 삭제 완료"),
-    ADD_REACTION_SUCCESS("2004", "PEEK 삭제 완료");
+    ADD_REACTION_SUCCESS("2004", "PEEK 반응 추가 완료"),
+    PEEK_FAILURE("9000", "Fail");
 
     private final String code;
     private final String message;
