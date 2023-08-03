@@ -1,6 +1,6 @@
 import { customAxios } from '../../api/customAxios';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -20,6 +20,9 @@ const UserInfo = () => {
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  // 자동하이픈을 위한 useRef함수
+  const phoneRef = useRef();
+  const birthRef = useRef();
 
   // axios 통신으로 유저 정보 불러오기
   useEffect(() => {
@@ -28,7 +31,7 @@ const UserInfo = () => {
     const value = urlParams.get("id");
 
     // axios 통신
-    customAxios.get(`/member/signup/info?id=${value}`)
+    customAxios.get(`/ member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
 
@@ -64,6 +67,33 @@ const UserInfo = () => {
     navigate('/userprofile')
   };
 
+  // 휴대폰 번호 자동 하이픈 생성 함수
+  const autoHypenPhone = (e) => {
+    const value = phoneRef.current.value.replace(/\D+/g, "");
+    const phoneLength = 11;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i<phoneLength; i++) {
+      switch(i) {
+        case 3:
+          result += "-";
+          break;
+        case 7:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    phoneRef.current.value = result;
+    setPhone(e.target.value)
+  };
+
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
     if (userInfo.phone) {
@@ -74,9 +104,43 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="phone" defaultValue="전화번호" onChange={e => setPhone(e.target.value)} />
+        <input
+          type="tel"
+          name="user-phone"
+          ref={phoneRef}
+          placeholder="전화번호(ex. 010-1234-5678)"
+          onChange={autoHypenPhone}
+          required
+        />
       );
     }
+  };
+
+  // 생년월일 자동 하이픈 생성 함수
+  const autoHypenBirth = (e) => {
+    const value = birthRef.current.value.replace(/\D+/g, "");
+    const birthLength = 8;
+
+    let result;
+    result = "";
+
+    for (let i=0; i<value.length && i<birthLength; i++) {
+      switch(i) {
+        case 4:
+          result += "-";
+          break;
+        case 6:
+          result += "-";
+          break;
+        default:
+          break;
+      }
+
+      result += value[i];
+    }
+
+    birthRef.current.value = result;
+    setBirthday(e.target.value)
   };
 
   // 생일이 있으면 있는거 보여주고, 없으면 input 보여줌
@@ -89,18 +153,25 @@ const UserInfo = () => {
       );
     } else {
       return (
-        <input type="text" name="birth" defaultValue="생년월일" onChange={e => setBirthday(e.target.value)} />
+        <input
+          type="text"
+          name="birth"
+          ref={birthRef}
+          placeholder="생년월일(ex. 1998-06-28)"
+          onChange={autoHypenBirth}
+          required
+        />
       );
     }
   };
 
   return (
-    <div>
-      <div className={classes.signup}>
+    <div className={common.container}>
+      <div>
         <h1>회원가입</h1>
       </div>
-      <div className={classes.signup}>
-        <p>회원 정보를 확인해주세요</p>
+      <div className={classes.span}>
+        <span>회원 정보를 확인해주세요</span>
       </div>
       <div>
         <form className={classes.form}>

@@ -5,28 +5,28 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import common from './style/Common.module.css';
-import classes from './style/UserLikeHate.module.css';
+import classes from './style/UserLikeOrHate.module.css';
 
 const UserLikeHate = () => {
-  // 페이지 렌더링 시
+  //함수 정의 및 사용자 정보 불러오기
   const userInfo = useSelector(state => state.auth);
+  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(userInfo)
   }, [userInfo]);
 
-  // 함수 생성
-  const navigate = useNavigate();
-
-  // 함수 정의
+  // 좋아하는 것으로 이동
   const moveToUserLike = () => {
     navigate('/userlike')
-  }
+  };
 
+  // 싫어하는 것으로 이동
   const moveToUserHate = () => {
     navigate('/userhate')
-  }
+  };
 
+  // 백엔드로 정보 넘기고, welcome으로 이동
   const moveToWelcome = () => {
     const dataToSend = {
       memberId: userInfo.memberId,
@@ -56,12 +56,13 @@ const UserLikeHate = () => {
         console.log(error)
       })
     navigate('/welcome')
-  }
+  };
 
   return (
-    <div>
-      <div>
-        <h1>취향 PICK</h1>
+    <div className={common.container}>
+      <div className={common.title}>
+        <h1>취향</h1>
+        <h1 className={common.pointColor}>PICK</h1>
       </div>
       <div>
         <p>
@@ -71,21 +72,55 @@ const UserLikeHate = () => {
         </p>
       </div>
       <div className={common.linetag}>
-        <div className={common.line}></div>
+        <div className={classes.line1}></div>
+        <div className={classes.line2}></div>
       </div>
-      <div>
-        <h3>좋아하는 것</h3>
-        <div>
-          {userInfo.like}
+      <div className={classes.likehateWrap}>
+        <div className={classes.buttonWrap}>
+          <div>
+            <h3>좋아하는 것</h3>
+          </div>
+          <div>
+            <button onClick={moveToUserLike}>+추가</button>
+          </div>
         </div>
-        <button onClick={moveToUserLike} className={classes.addButton}>+추가</button>
-      </div>
-      <div>
-        <h3>싫어하는 것</h3>
-        <div>
-          {userInfo.hate}
+        {userInfo.like.length === 0 ? (
+          <></>
+        ) : (
+          <div className={common.itemWrap}>
+            {userInfo.like.map((item, index) => (
+              <div
+                key={index}
+                className={common.items}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
+        
+        <div className={`${classes.buttonWrap} ${classes.hate}`}>
+          <div>
+            <h3>싫어하는 것</h3>
+          </div>
+          <div>
+            <button onClick={moveToUserHate}>+추가</button>
+          </div>
         </div>
-        <button onClick={moveToUserHate} className={classes.addButton}>+추가</button>
+        {userInfo.hate.length === 0 ? (
+          <></>
+        ) : (
+          <div className={common.itemWrap}>
+            {userInfo.hate.map((item, index) => (
+              <div
+                key={index}
+                className={common.items}
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div>
         <button onClick={moveToWelcome} className={common.next}>다음으로</button>
