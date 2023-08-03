@@ -43,7 +43,7 @@ const Login = () => {
       <div className={classes.buttons}>
         {/* 이미지로 변경 예정 */}
         {/* 테스트 버튼 */}
-        <input type="text" onChange={e => setTester(e.target.value)} />
+        <input type="text" placeholder='숫자를 입력하세요' onChange={e => setTester(e.target.value)} />
         <button onClick={() => test(tester)}>테스트 버튼</button>
         <button onClick={() => testSignUp()}>테스트 회원가입</button>
         {/* 테스트 버튼 */}
