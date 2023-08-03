@@ -1,5 +1,7 @@
 import { customAxios } from '../../api/customAxios';
 
+import LoginModal from './LoginModal';
+
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -18,6 +20,7 @@ const UserInfo = () => {
   const [gender, setGender] = useState('M')
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   // redux, router 설정
   const navigate = useNavigate();
@@ -206,18 +209,32 @@ const UserInfo = () => {
     }
   };
 
+  // 모달검사 함수
+  const isAnyFieldEmpty = () => {
+    return !(username && email && phone && birthday);
+  };
+
+  // 모달종료 함수
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
   // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
   const moveToUserProfile = () => {
-    const changedUserData = {
-      memberId: userInfo.memberId,
-      name: username,
-      email: email,
-      phone: phone,
-      birthday: birthday,
-      gender: gender,
+    if (isAnyFieldEmpty()) {
+      setShowModal(true);
+    } else {
+      const changedUserData = {
+        memberId: userInfo.memberId,
+        name: username,
+        email: email,
+        phone: phone,
+        birthday: birthday,
+        gender: gender,
+      }
+      dispatch(authActions.updateUserInfo(changedUserData));
+      navigate('/userprofile')
     }
-    dispatch(authActions.updateUserInfo(changedUserData));
-    navigate('/userprofile')
   };
 
   return (
@@ -251,6 +268,7 @@ const UserInfo = () => {
           <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
         </form>
       </div>
+      {showModal && <LoginModal onClose={closeModal} />}
     </div>
   );
 }
