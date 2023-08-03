@@ -23,12 +23,11 @@
 
 label {
   width: 100%;
-  text-align: center;
-  white-space: nowrap;
+  color: lightgray;
   font-size: small;
+  text-align: center;
   border: 1px solid lightgray;
   border-radius: 10px;
-  color: lightgray;
 }
 
 input.customRadio:checked + label {
@@ -42,7 +41,11 @@ input.customRadio:checked + label {
 }
 
 .checkboxLabel {
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 12vh;
+  height: 3vh;
 }
 
 input.customCheckbox:checked + .checkboxLabel {
