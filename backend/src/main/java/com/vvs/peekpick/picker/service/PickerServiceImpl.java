@@ -14,6 +14,7 @@ import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.GeoResult;
 import org.springframework.data.geo.GeoResults;

@@ -4,6 +4,7 @@ import com.vvs.peekpick.picker.service.ChatPublisher;
 import com.vvs.peekpick.picker.service.ChatSubscriber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -29,6 +30,7 @@ public class ChatRepository {
     private final ChatSubscriber chatSubscriber;
     private final ChatPublisher chatPublisher;
 
+    @Qualifier("chatRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
     private ListOperations<String, Object> opsListChat;
     private Map<String, ChannelTopic> topics;

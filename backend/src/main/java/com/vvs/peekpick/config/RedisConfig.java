@@ -21,8 +21,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @EnableRedisRepositories
 @Configuration
 public class RedisConfig {
-//    @Autowired
-//    private PeekRedisServiceImpl peekRedisService;
 
     @Value("${spring.redis.host}")
     private String host;
@@ -38,14 +36,14 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, port);
     }
 
-    @Bean
-    public RedisTemplate<String, Object> chatRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-            RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-            redisTemplate.setConnectionFactory(redisConnectionFactory);
-            redisTemplate.setKeySerializer(new StringRedisSerializer());
-            redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-            return redisTemplate;
-    }
+//    @Bean
+//    public RedisTemplate<String, Object> chatRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+//            RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+//            redisTemplate.setConnectionFactory(redisConnectionFactory);
+//            redisTemplate.setKeySerializer(new StringRedisSerializer());
+//            redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+//            return redisTemplate;
+//    }
 
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory){
@@ -73,7 +71,7 @@ public class RedisConfig {
         return template;
     }
     @Bean
-    public RedisTemplate<String, Object> locationRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
