@@ -39,6 +39,7 @@ const Login = () => {
 
   return (
     <div className={classes.container}>
+      <img src="img/eyes.png" alt="eyes" className={classes.eyes} />
       <div className={classes.buttons}>
         {/* 이미지로 변경 예정 */}
         {/* 테스트 버튼 */}
@@ -46,9 +47,9 @@ const Login = () => {
         <button onClick={() => test(tester)}>테스트 버튼</button>
         <button onClick={() => testSignUp()}>테스트 회원가입</button>
         {/* 테스트 버튼 */}
-        <button onClick={() => loginHandler('kakao')}>카카오 로그인</button>
-        <button onClick={() => loginHandler('naver')}>네이버 로그인</button>
-        <button onClick={() => loginHandler('google')}>구글 로그인</button>
+        <img src="img/kakao_login.png" alt="kakao" onClick={() => loginHandler('kakao')} />
+        <img src="img/naver_login.png" alt="naver" onClick={() => loginHandler('naver')} />
+        <img src="img/google_login.png" alt="google" onClick={() => loginHandler('google')} />
       </div>
     </div>
   );
