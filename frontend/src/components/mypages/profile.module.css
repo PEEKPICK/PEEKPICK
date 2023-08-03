@@ -1,0 +1,64 @@
+.profile{
+  width: 80%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.profiletop{
+  display: flex;
+  margin: 10% 0 10% 0;
+  padding: 20% 0 0 0;
+}
+
+.profiletop img{
+  position: absolute;
+  right: 5%;
+  top: 5%;
+}
+
+.emoji{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 30%;
+}
+
+.return{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 25% 35% 0% 35%;
+  padding: 3%;
+  color: white;
+  border-radius: 1vh;
+  border: 1px solid;
+  background-color: rgba(125,0,225);
+  box-shadow: 0 0 10px 5px rgba(125, 0, 225, 0.2);
+}
+
+.completeon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25%;
+  text-decoration: none;
+  background-color: rgba(125,0,225);
+  padding: 6% 0% 6% 0%;
+  border-radius: 1vh;
+  color: white;
+  text-decoration: none;
+}
+
+.complete{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25%;
+  text-decoration: none;
+  background-color:gray;
+  padding: 6% 0% 6% 0%;
+  border-radius: 1vh;
+  color: white;
+  text-decoration: none;
+}

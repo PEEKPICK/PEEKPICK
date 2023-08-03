@@ -6,6 +6,7 @@ import geoLocation from "./locationSlice";
 import modalSlice from "./modalSlice";
 import findUserSlice from "./findUserSlice";
 
+
 const store = configureStore({
   reducer: { auth: authSlice, geo: geoLocation, modal: modalSlice, findUser: findUserSlice },
 });

@@ -11,10 +11,14 @@ const authSlice = createSlice({
     gender: '',
     emojiId: '',
     prefixId: '',
+    prefix:'',
     nickname: '',
+    bio:'',
+    emojiUrl:'',
+    emojiMoveUrl:'',
     likes: [],
     disLikes: [],
-    like: [],
+    like: [], 
     hate: [],
   },
   reducers: {
@@ -32,10 +36,17 @@ const authSlice = createSlice({
       const newItem = action.payload;
       state.emojiId = newItem.emojiId;
     },
+    updateMyPageProfile (state, action) {
+      const newItem = action.payload;
+      state.emojiUrl = newItem.emojiUrl;
+      state.emojiMoveUrl = newItem.emojiMoveUrl;
+    },
     updateUserNickname (state, action) {
       const newItem = action.payload;
       state.prefixId = newItem.prefixId;
+      state.prefix = newItem.prefix;
       state.nickname = newItem.nickname;
+      state.bio=newItem.bio;
     },
     updateUserLike (state, action) {
       const newItem = action.payload;

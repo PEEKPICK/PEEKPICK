@@ -23,6 +23,7 @@ const LogOut = forwardRef((props, ref) => {
 
   const LogOutDisplay = () => {
     props.setLogoutView(false);
+    localStorage.removeItem('jwtToken');
   };
 
   const Logout = () => {
@@ -30,25 +31,26 @@ const LogOut = forwardRef((props, ref) => {
   };
 
   return (
-    <div className={classes.hi} ref={wrapperRef}>
+    <div className={classes.logout} ref={wrapperRef}>
       {/* 모달창 */}
-      <div>
-        <h3>CAUTION</h3>
+      <div className={classes.logouttop}>
+        <span>CAUTION</span>
         {/* x 버튼 click 시 로그아웃 화면 종료 */}
         <img src="img/cancel.png" alt="" onClick={LogOutDisplay} />
       </div>
       <hr />
-      <div>
-        <h4>로그아웃 하시겠습니까?</h4>
-
+      <div className={classes.explanation}>
+        <span>로그아웃 하시겠습니까?</span>
+      </div>
+      <div className={classes.btndiv}>
         {/* 클릭시 로그아웃 화면 종료 */}
-        <div className={classes.hate} onClick={LogOutDisplay}>
-          <h4>싫어!</h4>
+        <div onClick={LogOutDisplay} className={classes.hate}>
+          <span>싫어!</span>
         </div>
         {/* 클릭시 로그아웃 */}
         <Link to="/login">
-          <div className={classes.like} onClick={Logout}>
-            <h4>좋아!</h4>
+          <div onClick={Logout} className={classes.like}>
+            <span>좋아!</span>
           </div>
         </Link>
       </div>

@@ -2,11 +2,13 @@
   display: flex;
   justify-content: center;
   text-align: center;
-  height: 7vh;
+  height: 5vh;
   background-color: rgba(125, 0,225, 0.25);
-  width: 89%;
-  margin-left: 5%;
+  width: 85%;
+  margin-left: 7.5%;
   border-radius: 3vh;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
 
