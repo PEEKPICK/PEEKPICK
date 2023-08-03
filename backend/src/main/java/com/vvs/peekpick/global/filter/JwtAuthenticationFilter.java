@@ -52,29 +52,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 // AccessToken에서 기존 값 꺼내기
                 Long avatarId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
-                String provider = jwtTokenProvider.getProviderFromToken(accessToken);
 
-                // AccessToken expired 검사
-                if (jwtTokenProvider.isExpired(accessToken)) {
-                    log.info("OK");
-                    // 만료 시 RefreshToken 체크
-                    String refreshToken = getRefreshToken(request);
-                    RefreshToken savedToken = refreshTokenRepository.findByAvatarId(avatarId).orElseThrow();
-
-                    // RefreshToken 일치해야 재발급
-//                    if (refreshToken != null && savedToken.equals(refreshToken)) {
-//                        jwtTokenProvider.RefreshToAccessToken(avatarId, provider);
-//                    } else {
-//                        throw new CustomException(ExceptionStatus.NOT_MATCH_TOKEN);
-//                    }
-                }
                 // avatarId만 넘겨준다.
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(avatarId, null, null);
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-
             }
         }  catch (MalformedJwtException e) {
             log.info("유효하지 않은 토큰입니다.");

@@ -105,23 +105,4 @@ public class JwtTokenProvider {
 
         return (String)claims.get("provider");
     }
-
-    // 23.08.02 마음에 안든다 createAccessToken 과 합쳐아 한다.
-    public String RefreshToAccessToken(Long avatarId, String provider) {
-        Date now = new Date();
-        Date expireDate = new Date(now.getTime() + ACCESS_TOKEN_VALIDATE_TIME);
-
-        // 아바타 ID, Provider로 검증
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("avatarId", Long.toString(avatarId));
-        payloads.put("provider", provider);
-
-        return Jwts.builder()
-                .setClaims(payloads)
-                .setSubject("auth")
-                .setIssuedAt(now)
-                .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY.getBytes())
-                .compact();
-    }
 }
