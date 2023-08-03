@@ -10,12 +10,14 @@ import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
@@ -40,7 +42,6 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public String createChatRoom() {
         String roomId = chatRepository.createChatRoom();
-
         Chat chatLog = Chat.builder()
                 .roomId(roomId)
                 .build();

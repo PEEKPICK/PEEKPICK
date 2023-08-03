@@ -28,7 +28,7 @@ public class ChatSubscriber implements MessageListener {
         try {
             String publishedMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
             ChatMessageDto messageDto = objectMapper.readValue(publishedMessage, ChatMessageDto.class);
-            messagingTemplate.convertAndSend("/sub/chat/room"+messageDto.getRoomId(), messageDto);
+            messagingTemplate.convertAndSend("/sub/chat/room/"+messageDto.getRoomId(), messageDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
