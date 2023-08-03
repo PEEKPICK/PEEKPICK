@@ -1,14 +1,13 @@
 import Modal from "react-modal";
-import { useSelector, useDispatch, useEffect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
 
 const ModalComp = () => {
+  //유져 정보 모달용
+  const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
-  const dispatch = useDispatch();
-  console.log("선택이모지", isSelectedEmoji);
-
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
   };
@@ -24,7 +23,11 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img src={isSelectedEmoji.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
+            <img
+              src={isSelectedEmoji.emoji.animatedImageUrl}
+              alt="프로필"
+              className={classes.profileImg}
+            />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
@@ -58,7 +61,7 @@ const ModalComp = () => {
               </p>
             </div>
           </div>
-          <div className={classes.pick}>PICK</div>
+          <button className={classes.pick}>PICK</button>
         </Modal>
       )}
     </>
