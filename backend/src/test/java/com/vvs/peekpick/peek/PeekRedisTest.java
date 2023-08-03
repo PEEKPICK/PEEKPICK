@@ -2,6 +2,7 @@ package com.vvs.peekpick.peek;
 
 import com.vvs.peekpick.peek.dto.PeekDto;
 import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,9 +13,12 @@ import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,7 +76,6 @@ public class PeekRedisTest {
 //        assertNull(peekRedisService.getPeek(peekLocationDto.getPeekId()).getData());
 //        assertNull(peekRedisService.getPeek(peekDto.getPeekId()).getData());
 //    }
-//
 //    @Test
 //    public void testFindNearPeek() {
 //        List<Long> ids = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L);
@@ -82,11 +85,12 @@ public class PeekRedisTest {
 //        );
 //        for(int i = 0; i < ids.size(); i++) {
 //            PeekLocationDto locationDto = new PeekLocationDto(ids.get(i), points.get(i));
-//            PeekDto peekDto = new PeekDto(ids.get(i), ids.get(i), "content", "imageUrl", 0, 0, LocalDateTime.now());
+//            PeekDto peekDto = new PeekDto(ids.get(i), ids.get(i), "content", "imageUrl", 0, 0, LocalDateTime.now(), LocalDateTime.now());
 //            peekRedisService.addPeek(locationDto, peekDto);
 //        }
 //
-//        List<PeekDto> nearPeeks = peekRedisService.findNearPeek(new Point(127, 37), 100).getData();
+//        List<PeekDto> nearPeeks = peekRedisService.findNearPeek(new SearchPeekDto(new Point(127, 37), 100)).getData();
+//        System.out.println(nearPeeks);
 //        List<Long> nearPeekIds = Arrays.asList(1L, 2L, 3L);
 //        for(PeekDto peekDto : nearPeeks) {
 //            assertTrue(nearPeekIds.contains(peekDto.getPeekId()));
