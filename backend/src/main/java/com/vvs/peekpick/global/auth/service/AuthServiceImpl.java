@@ -24,21 +24,24 @@ public class AuthServiceImpl implements AuthService {
     private final AvatarRepository avatarRepository;
     private final MemberRepository memberRepository;
 
-
     @Override
     public String createAccessToken(String accessToken, String refreshToken) {
         accessToken = accessToken.replace("Bearer ", "");
         Long avatarId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
 
+        log.info("accessToken={}", accessToken);
+
         RefreshToken saveRefreshToken = refreshTokenRepository.findByAvatarId(avatarId)
                                                               .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
         String stdToken = saveRefreshToken.getToken();
 
+        log.info("Token1={}", stdToken);
+        log.info("Token2={}", refreshToken);
         // refreshToken 값이 존재하고, DB와 값이 일치하지 않으면
         if (refreshToken.equals("") || !refreshToken.equals(stdToken)) {
             throw new CustomException(ExceptionStatus.NOT_MATCH_TOKEN);
         }
-
+        log.info("OKOKOK");
         Member member = memberRepository.findByAvatarId(avatarId)
                                         .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_USER));
 

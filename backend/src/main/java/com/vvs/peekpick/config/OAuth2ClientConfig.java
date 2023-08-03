@@ -80,6 +80,7 @@ public class OAuth2ClientConfig {
         return http.build();
     }
 
+    // CORS 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -87,9 +88,9 @@ public class OAuth2ClientConfig {
 
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedOrigin("*");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
         corsConfiguration.addAllowedOriginPattern("*");
-        corsConfiguration.setAllowCredentials(false);
+        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

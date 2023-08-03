@@ -3,6 +3,7 @@ package com.vvs.peekpick.member.controller;
 
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.global.auth.dto.Token;
+import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.dto.TempSignUpDto;
@@ -40,12 +41,7 @@ public class MemberController {
     @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
         Token token = memberService.signup(signUpDto);
-
-        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(3600 * 24 * 365); // 1년
-        response.addCookie(cookie);
+        CookieUtil.createCookie(response, token.getRefreshToken());
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
     }

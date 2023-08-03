@@ -42,7 +42,7 @@ public class AuthController {
                 refreshToken = cookie.getValue();
             }
         }
-
+        log.info("refreshToken={}", refreshToken);
         String newToken = authService.createAccessToken(accessToken, refreshToken);
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, newToken);

@@ -4,6 +4,7 @@ import com.vvs.peekpick.entity.Member;
 import com.vvs.peekpick.entity.RefreshToken;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.repository.MemberRepository;
@@ -35,6 +36,7 @@ public class TestMemberController {
     private final JwtTokenProvider jwtTokenProvider;
 
     // TODO 23.08.01 OAuth 뚫리기 전 테스트 계정
+
     // 테스트 계정 생성
     @PostMapping("/member/test")
     public CommonResponse testSignup(@RequestBody SignUpDto signUpDto) {
@@ -44,7 +46,6 @@ public class TestMemberController {
     }
 
     // 테스트 계정 로그인
-    // 로직이 별로여도 용서해주세요
     @PostMapping("/member/login")
     public DataResponse testLogin(@RequestParam String id, HttpServletResponse response) throws IOException {
 
@@ -70,11 +71,7 @@ public class TestMemberController {
             refreshTokenRepository.save(newToken);
         }
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(60 * 60 * 24 * 365); // 1년
-        response.addCookie(cookie);
+        CookieUtil.createCookie(response, refreshToken);
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, accessToken);
     }
