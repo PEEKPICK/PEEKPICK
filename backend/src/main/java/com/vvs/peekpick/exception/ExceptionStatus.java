@@ -19,7 +19,9 @@ public enum ExceptionStatus {
     NOT_FOUND_AVATAR("400", "존재하지 않는 아바타입니다"),
 
     /* 채팅 */
-    CHAT_ROOM_DOES_NOT_EXIST("-5000", "채팅방이 존재하지 않습니다.");
+    CHAT_ROOM_DOES_NOT_EXIST("-5000", "채팅방이 존재하지 않습니다."),
+
+    NOT_MATCH_TOKEN("401", "유효하지 않은 토큰입니다.");
 
     private final String code;
     private final String message;

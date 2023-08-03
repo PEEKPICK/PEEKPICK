@@ -1,8 +1,7 @@
 package com.vvs.peekpick.oauth.handler;
 
 import com.vvs.peekpick.entity.Member;
-import com.vvs.peekpick.global.auth.JwtTokenProvider;
-import com.vvs.peekpick.member.dto.SignUpDto;
+import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.member.repository.MemberRepository;
 import com.vvs.peekpick.oauth.model.PrincipalUser;
 import com.vvs.peekpick.oauth.model.ProviderUser;
@@ -35,7 +34,6 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException{
         PrincipalUser principalUser = (PrincipalUser) authentication.getPrincipal();
-
         ProviderUser providerUser = principalUser.getProviderUser();
 
         // 이름 + provider로 조회
@@ -56,19 +54,28 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 
             Member signupMember = memberRepository.save(newMember);
             redirectUrl += "?id=" + signupMember.getMemberId();
-        }
-        // 회원이라면 Token 발급 & 리다이렉트
-        else {
-            log.info("이미 있는 회원");
-            String accessToken = jwtTokenProvider.createAccessToken(member.get());
-            String refreshToken = jwtTokenProvider.createRefreshToken();
+        } else {
+            Member findMember = member.get();
 
-            // refreshToken 은 쿠키
-            Cookie cookie = getCookie(refreshToken);
-            response.addCookie(cookie);
+            // 가회원 상태 = 회원가입 리다이렉션
+            if(findMember.getAvatar() == null) {
+                log.info("NO Avatar");
+                redirectUrl += "userinfo?id=" + findMember.getMemberId();
+            }
 
-            // accessToken 은 파라미터에 임시, 맘에 안든다
-            redirectUrl = "http://localhost:3000/oauth2/redirect?token=" + accessToken;
+            // 회원 상태 = Token 발급 및 로그인 처리
+            else {
+                log.info("가입 회원");
+                String accessToken = jwtTokenProvider.createAccessToken(member.get());
+                String refreshToken = jwtTokenProvider.createRefreshToken();
+
+                // refreshToken 은 쿠키
+                Cookie cookie = getCookie(refreshToken);
+                response.addCookie(cookie);
+
+                // accessToken 은 파라미터에 임시, 맘에 안든다
+                redirectUrl = "http://localhost:3000/oauth2/redirect?token=" + accessToken;
+            }
         }
         // 신규 회원이면 회원정보 return
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);

@@ -1,4 +1,4 @@
-package com.vvs.peekpick.global.auth;
+package com.vvs.peekpick.global.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
