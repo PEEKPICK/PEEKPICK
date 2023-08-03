@@ -39,12 +39,12 @@ const UserLike = () => {
     customAxios.get('/member/taste')
       .then(response => {
         setDataAxios(true);
-        setLikeList(response.data.data)
+        setLikeList(response.data.data);
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
       })
-  }, [])
+  }, []);
 
   // 대분류 선택 시 중분류 가져오기
   const selectLargeItemHandler = (item) => {

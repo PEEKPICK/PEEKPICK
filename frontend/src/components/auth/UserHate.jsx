@@ -27,6 +27,8 @@ const UserHate = () => {
   const [tempMiddleList, setTempMiddleList] = useState(userInfo.disLikes);
   // middleItem - UserLikeHate에 표시할 중분류 이름
   const [middleItem, setMiddleItem] = useState(userInfo.hate);
+  // 대분류 라디오 버튼 설정을 위한 상태관리
+  const [selectedLargeItem, setSelectedLargeItem] = useState(null);
 
   // 기본 함수 설정
   const navigate = useNavigate();
@@ -36,30 +38,31 @@ const UserHate = () => {
   useEffect(() => {
     customAxios.get('/member/taste')
       .then(response => {
-        console.log(response.data)
         setDataAxios(true);
-        setLikeList(response.data.data)
+        setLikeList(response.data.data);
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
       })
-  }, [])
+  }, []);
 
-  // 중분류 뽑아오는 함수
-  const middleItemHandler = (item) => {
+  // 대분류 선택 시 중분류 가져오기
+  const selectLargeItemHandler = (item) => {
+    setSelectedLargeItem(item);
+
     customAxios.get(`/member/taste?category_large=${item}`)
       .then(response => {
-        console.log(response.data)
         setMiddleDataAxios(true);
         setMiddleLikeList(response.data.data);
       })
-      .catch(error=> {
+      .catch(error => {
         console.log(error);
       })
-  }
+  };
 
   // 중분류 선택 시, 5개 여부 파악 및 리스트에 추가
   const middleListCheck = (categoryId, middle) => {
+    console.log(categoryId, middle)
     if (!tempMiddleList.includes(categoryId)) {
       if (tempMiddleList.length < 5) {
         setTempMiddleList((prevList) => [...prevList, categoryId])
@@ -78,6 +81,7 @@ const UserHate = () => {
     setModalOpen(false);
   };
 
+  // 좋아요한 리스트 저장 후, 취향PICK창으로 이동
   const selectedFinish = () => {
     const changedHates = {
       disLikes: tempMiddleList,
@@ -101,14 +105,21 @@ const UserHate = () => {
       <div>
         {dataAxios ? (
           <div className={common.largelist}>
-            {likeList.map(item => (
-              <button
-                key={item}
-                onClick={() => middleItemHandler(item)}
-                className={common.taste}
-              >
-                {item}
-              </button>
+            {likeList.map((item, index) => (
+              <div key={index} className={classes.radioWrap}>
+                <input
+                  type="radio"
+                  name="selectedItem"
+                  id={`radio_${index}_${middleItem.categoryId}`}
+                  value={item}
+                  checked={selectedLargeItem === item}
+                  className={`${classes.radio} ${classes.customRadio}`}
+                  onChange={() => selectLargeItemHandler(item)}
+                />
+                <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
+                  {item}
+                </label>
+              </div>
             ))}
           </div>
         ) : (<span>에러가 발생했습니다.</span>)}
@@ -117,13 +128,19 @@ const UserHate = () => {
         {middleDataAxios ? (
           <div className={common.middlelist}>
             {middleLikeList.map(middleItem => (
-              <button
-                key={middleItem.categoryId}
-                onClick={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
-                className={common.taste}
-              >
-                {middleItem.middle}
-              </button>
+              <div key={middleItem.categoryId}>
+                <input
+                  type="checkbox"
+                  id={middleItem.categoryId}
+                  value={middleItem.categoryId}
+                  checked={tempMiddleList.includes(middleItem.categoryId)}
+                  onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
+                  className={`${classes.checkbox} ${classes.customCheckbox}`}
+                />
+                <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
+                  {middleItem.middle}
+                </label>
+              </div>
             ))}
           </div>
         ) : (
