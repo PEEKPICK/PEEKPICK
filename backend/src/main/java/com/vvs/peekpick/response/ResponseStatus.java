@@ -23,7 +23,11 @@ public enum ResponseStatus {
     ADD_SUCCESS("2002", "PEEK 추가 완료"),
     DELETE_SUCCESS("2003", "PEEK 삭제 완료"),
     ADD_REACTION_SUCCESS("2004", "PEEK 반응 추가 완료"),
-    PEEK_FAILURE("9000", "Fail");
+    PEEK_FAILURE("9000", "Fail"),
+
+    /* Report */
+    GET_CATEGORY_SUCCESS("9000", "신고 카테고리 조회 완료"),
+    REGISTER_REPORT_SUCCESS("9001", "신고 등록 완료");
 
     private final String code;
     private final String message;

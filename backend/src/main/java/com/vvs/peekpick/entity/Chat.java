@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Chat {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long chatRoomId;

@@ -1,16 +1,18 @@
 package com.vvs.peekpick.peek.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.vvs.peekpick.entity.Member;
+import com.vvs.peekpick.entity.Peek;
+import com.vvs.peekpick.entity.Report;
+import com.vvs.peekpick.entity.ReportCategory;
 import com.vvs.peekpick.peek.dto.*;
+import com.vvs.peekpick.report.dto.RequestReportDto;
+import com.vvs.peekpick.report.service.ReportService;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -18,13 +20,11 @@ import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -34,13 +34,9 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
     private final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
     private final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
-    private final String PEEK_ID_KEY = "Peek_Id"; //PeekDto의 id 관리
     private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-
     private final int PEEK_ORIGIN_TIME = 30; // PEEK 기본 지속 시간
     private final int PEEK_REACTION_TIME = 5; // 좋아요, 싫어요 시 증가되는 시간
-
-    private final ResponseService responseService;
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
@@ -51,6 +47,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     private SetOperations<String, Object> setOps;
     private final Random random = new Random();
 
+    private final ResponseService responseService;
+    private final PeekMemberService peekMemberService;
+    private final PeekService peekService;
+    private final ReportService reportService;
+
     @PostConstruct
     public void init() {
         geoOps = locationTemplate.opsForGeo();
@@ -59,19 +60,27 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public Long generateId() {
-        return valueOps.increment(PEEK_ID_KEY);
-    }
-
-    @Override
-    public CommonResponse addPeek(RequestPeekDto requestPeekDto) {
+    public CommonResponse addPeek(RequestPeekDto requestPeekDto, String imageUrl) {
         try {
-            Long peekId = generateId();
-            PeekDto peekDto = PeekDto.builder()
-                    .peekId(peekId)
-                    .memberId(requestPeekDto.getMemberId())
+            //RDB에 저장하기 위한 Peek 객체
+            Peek peek = Peek.builder()
+                    .member(peekMemberService.findMember(requestPeekDto.getMemberId()))
                     .content(requestPeekDto.getContent())
-                    .imageUrl(requestPeekDto.getImageUrl())
+                    .disLikeCount(0)
+                    .likeCount(0)
+                    .imageUrl(imageUrl)
+                    .writeTime(LocalDateTime.now())
+                    .build();
+
+            //RDB에 Peek 저장 후 id 값 받아옴
+            Long peekId = peekService.savePeek(peek);
+
+            //redis에 저장하기 위한 Peek 객체 생성
+            PeekRedisDto peekRedisDto = PeekRedisDto.builder()
+                    .peekId(peekId)
+                    .memberId(requestPeekDto.getMemberId()) //작성자
+                    .content(requestPeekDto.getContent())
+                    .imageUrl(imageUrl)
                     .likeCount(0)
                     .disLikeCount(0)
                     .writeTime(LocalDateTime.now())
@@ -79,9 +88,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .special(false)
                     .viewed(false)
                     .build();
+            //redis에 Peek Location 값 저장 & ttl 설정
             geoOps.add(PEEK_LOCATION_REDIS, new Point(requestPeekDto.getLongitude(), requestPeekDto.getLatitude()), peekId.toString());
             locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(PEEK_ORIGIN_TIME));
-            peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekDto, Duration.ofMinutes(PEEK_ORIGIN_TIME));
+            //redis에 Peek 저장 & ttl 설정
+            peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(PEEK_ORIGIN_TIME));
             return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
         }
         catch (Exception e) {
@@ -91,24 +102,29 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
 
     @Override
-    public DataResponse getPeek(String memberId, Long peekId) {
+    public DataResponse getPeek(Long memberId, Long peekId) {
         try{
-            PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+            // Redis에서 Peek 가져오기
+            PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+
+            // 현재 사용자가 해당 Peek을 본 것으로 처리
             setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
 
+            // 현재 사용자의 해당 Peek의 좋아요 / 싫어요 여부 판별
             boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
             boolean isDisLiked = setOps.isMember("member:" + memberId + ":disLiked", String.valueOf(peekId));
 
+            // 응답해줄 Peek 객체
             ResponsePeekDetailDto responsePeekDetailDto = ResponsePeekDetailDto.builder()
-                    .peekId(peekDto.getPeekId())
-                    .memberId(peekDto.getMemberId())
-                    .content(peekDto.getContent())
-                    .imageUrl(peekDto.getImageUrl())
-                    .likeCount(peekDto.getLikeCount())
-                    .disLikeCount(peekDto.getDisLikeCount())
-                    .finishTime(peekDto.getFinishTime())
-                    .liked(isLiked) //사용자가 눌렀는지
-                    .disLiked(isDisLiked) //사용자가 눌렀는지
+                    .peekId(peekRedisDto.getPeekId())
+                    .memberId(peekRedisDto.getMemberId())
+                    .content(peekRedisDto.getContent())
+                    .imageUrl(peekRedisDto.getImageUrl())
+                    .likeCount(peekRedisDto.getLikeCount())
+                    .disLikeCount(peekRedisDto.getDisLikeCount())
+                    .finishTime(peekRedisDto.getFinishTime())
+                    .liked(isLiked)
+                    .disLiked(isDisLiked)
                     .build();
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, responsePeekDetailDto);
         }
@@ -121,6 +137,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     @Override
     public CommonResponse deletePeek(Long peekId) {
         try {
+            // redis에서 Peek Location, Peek 둘 다 삭제
             geoOps.remove(PEEK_LOCATION_REDIS, peekId.toString());
             peekTemplate.delete(PEEK_REDIS + peekId);
             return responseService.successCommonResponse(ResponseStatus.DELETE_SUCCESS);
@@ -131,38 +148,45 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse addReaction(Long peekId, String memberId, boolean like) {
+    public CommonResponse addReaction(Long peekId, Long memberId, boolean like) {
         try {
-            PeekDto peekDto = (PeekDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
-            LocalDateTime updatedFinishTime = peekDto.getFinishTime();
-            boolean special = peekDto.isSpecial();
-            int count = 0;
+            // Redis에서 Peek 가져오기
+            PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+            LocalDateTime updatedFinishTime = peekRedisDto.getFinishTime(); //해당 Peek의 종료 시간
+            boolean special = peekRedisDto.isSpecial(); //Hot Peek 여부
 
-            String key = like ? "member:" + memberId + ":liked" : "member:" + memberId + ":disLiked";
+            String react = like ? "member:" + memberId + ":liked" : "member:" + memberId + ":disLiked";
+            int likeCnt = peekRedisDto.getLikeCount();
+            int disLikeCnt = peekRedisDto.getDisLikeCount();
 
-            if (setOps.isMember(key, String.valueOf(peekId))) {
-                setOps.remove(key, String.valueOf(peekId));
-                updatedFinishTime = peekDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME);
-                count = -1;
-            } else {
-                setOps.add(key, String.valueOf(peekId));
-                updatedFinishTime = peekDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
-                count = 1;
+            //사용가 해당 Peek의 react를 On -> Off
+            if (setOps.isMember(react, String.valueOf(peekId))) {
+                setOps.remove(react, String.valueOf(peekId));
+                if(like) likeCnt--;
+                else disLikeCnt--;
+            }
+            //사용가 해당 Peek의 react를 Off -> On
+            else {
+                setOps.add(react, String.valueOf(peekId));
+                updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
+                if(like) likeCnt++;
+                else disLikeCnt++;
             }
 
-            if (Duration.between(peekDto.getWriteTime(), updatedFinishTime).toHours() >= 24) {
-                updatedFinishTime = peekDto.getWriteTime().plusHours(24);
+            // Peek 지속시간을 24시간으로 제한, 24시간 설정된 Peek은 Hot Peek으로
+            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= 24) {
+                updatedFinishTime = peekRedisDto.getWriteTime().plusHours(24);
                 special = true;
             }
 
-            PeekDto updatedPeekDto = peekDto.toBuilder()
-                    .likeCount(like ? peekDto.getLikeCount() + count : peekDto.getLikeCount())
-                    .disLikeCount(!like ? peekDto.getDisLikeCount() + count : peekDto.getDisLikeCount())
+            //Redis에 Peek Update
+            PeekRedisDto updatedPeekRedisDto = peekRedisDto.toBuilder()
+                    .likeCount(likeCnt)
+                    .disLikeCount(disLikeCnt)
                     .finishTime(updatedFinishTime)
                     .special(special)
                     .build();
-
-            valueOps.set(PEEK_REDIS + peekId, updatedPeekDto);
+            valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto);
 
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } catch (Exception e) {
@@ -170,28 +194,30 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         }
     }
 
-
     @Override
-    public DataResponse findNearPeek(String memberId, SearchPeekDto searchPeekDto) {
+    public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
         try {
-            Circle circle = new Circle(searchPeekDto.getPoint(), new Distance(searchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
+            // 반경 m로 원 생성
+            Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
+            // 해당 원 안에 위치하는 PeekLocation 값들
             GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
 
+            // 모든 값 가져온 뒤
             List<ResponsePeekListDto> allPeeks = new ArrayList<>();
             for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
                 String peekId = peekLocation.getContent().getName().toString();
-                PeekDto peekDto = (PeekDto) valueOps.get(PEEK_REDIS + peekId);
+                PeekRedisDto peekRedisDto = (PeekRedisDto) valueOps.get(PEEK_REDIS + peekId);
                 boolean isViewed = setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
-
                 ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                        .peekId(peekDto.getPeekId())
-                        .special(peekDto.isSpecial())
-                        .viewed(peekDto.isViewed())
+                        .peekId(peekRedisDto.getPeekId())
+                        .special(peekRedisDto.isSpecial())
+                        .viewed(peekRedisDto.isViewed())
                         .build();
                 allPeeks.add(responsePeekListDto);
             }
 
 
+            // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
             List<ResponsePeekListDto> randomPeeks;
             if(allPeeks.size() <= MAX_PEEK){
                 randomPeeks = allPeeks;
@@ -203,11 +229,50 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     allPeeks.remove(randomIndex);
                 }
             }
-
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
             return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
     }
+
+    @Override
+    public CommonResponse registerReport(Long memberId, Long peekId, RequestReportDto requestReportDto) {
+
+        PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+
+        // memberId를 사용하여 Member 엔티티를 조회 (신고자)
+        Member member = peekMemberService.findMember(memberId);
+        // memberId를 사용하여 Member 엔티티를 조회 (피신고자)
+        Member victim = peekMemberService.findMember(peekRedisDto.getMemberId());
+
+        ReportCategory reportCategory = reportService.findReportCategory(requestReportDto.getReportCategoryId());
+
+        Peek peek = Peek.builder()
+                .member(victim) //신고 당한 사람
+                .content(peekRedisDto.getContent())
+                .disLikeCount(peekRedisDto.getDisLikeCount())
+                .likeCount(peekRedisDto.getLikeCount())
+                .imageUrl(peekRedisDto.getImageUrl())
+                .writeTime(peekRedisDto.getWriteTime())
+                .build();
+
+        //peek에 저장 (이미 저장되어 있고 ttl expire 되기 전 update 로직 구현 필요)
+        //peekService.savePeek(peek);
+        Report report = Report.builder()
+                .member(member)
+                .victim(victim)
+                .reportCategory(reportCategory)
+                .contetnType("P")
+                .reportContentId(peekRedisDto.getPeekId().toString())
+                .reportContent(requestReportDto.getReportContent())
+                .reportTime(LocalDateTime.now())
+                .build();
+
+        //repor에 추가
+        reportService.saveReport(report);
+        return responseService.successCommonResponse(ResponseStatus.REGISTER_REPORT_SUCCESS);
+    }
+
+
 }

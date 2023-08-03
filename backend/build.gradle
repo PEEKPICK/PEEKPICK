@@ -45,6 +45,10 @@ dependencies {
 	// 23.07.24 Spring Data Redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
+
+	//s3 파일 업로드 위해
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
 }
 
 tasks.named('test') {
