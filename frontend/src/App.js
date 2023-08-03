@@ -1,7 +1,6 @@
 import "./App.css";
 // import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-
 // import { useSelector } from "react-redux";
 
 // router import
@@ -43,8 +42,6 @@ function App() {
 
   //   setIsAuthenticated(checkTokenInLocalStorage());
   // }, []);
-  //유져 정보 채팅용
-
   // const getMemberId = useSelector((state) => state.geo.memberId);
   // const getPointX = useSelector((state) => state.geo.point.x);
   // const getPointY = useSelector((state) => state.geo.point.y);
