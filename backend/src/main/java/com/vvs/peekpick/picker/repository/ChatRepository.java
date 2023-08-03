@@ -30,7 +30,7 @@ public class ChatRepository {
     private final ChatSubscriber chatSubscriber;
     private final ChatPublisher chatPublisher;
 
-    @Qualifier("chatRedisTemplate")
+    @Qualifier("redisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
     private ListOperations<String, Object> opsListChat;
     private Map<String, ChannelTopic> topics;
