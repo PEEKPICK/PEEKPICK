@@ -1,10 +1,12 @@
+import classes from './style/Modal.module.css';
+
 // 5개 초과 모달
 const Modal = ({ onClose }) => {
   return (
-    <div>
-      <button onClick={onClose}>X</button>
+    <div className={classes.container}>
+      <img src="img/cancel.png" alt="cancel" onClick={onClose} />
       <div>
-        <h2>최대 5개 선택이 가능합니다.</h2>
+        <span>최대 5개 선택이 가능합니다.</span>
       </div>
     </div>
   );
