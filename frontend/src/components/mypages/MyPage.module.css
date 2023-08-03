@@ -37,20 +37,22 @@
     width: 20%;
     background-color: white;
     border-radius: 5vh;
-    padding: 1vh;
 }
 
 .profileimg a {
+    /* display: flex;
+    justify-content: center;
+    width: 20%;
+    background-color: white;
+    border-radius: 5vh; */
+}
+
+.profileimg a img {
     display: flex;
     justify-content: center;
     width: 20%;
     background-color: white;
     border-radius: 5vh;
-}
-
-.profileimg a img {
-    width: 100%;
-    padding: 1vh;
 }
 
 /* 닉네임하고 편집 버튼 */

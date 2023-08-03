@@ -9,6 +9,7 @@ import NickNameEdit from './NickNameEdit';
 import { customAxios } from '../../api/customAxios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/authSlice';
+import LikeAndHate from './LikeAndHate';
 const MyPage = () => {
   // 상태관리
   const [visible, setVisible] = useState(false);
@@ -18,6 +19,7 @@ const MyPage = () => {
   const [ModalOutSide, setModalOutSide] = useState(false);
   const [useremoji, setUseremoji] = useState("");
   const userInfo = useSelector(state => state.auth);
+
   // 정보 확인
   const dispatch = useDispatch();
   const [emojiUrl, setEmojiUrl] = useState("");
@@ -44,7 +46,6 @@ const MyPage = () => {
     } else {
       setModalOutSide(false);
     }
-
   }, [visible, logoutView, signoutView, nicknameView]);
 
   // 함수 정의
@@ -137,33 +138,9 @@ const MyPage = () => {
         <PickAndLike />
         {/* pick 한 횟수, 좋아요 버튼 -> components 자리 */}
       </div>
+      
       <hr className={classes.hr} />
-      <img src="" alt="" />
-      <div className={classes.likehate}>
-        <span>좋아하는 것</span>
-        {/* 좋아요 수정 components */}
-        {ModalOutSide ?
-          <button>수정</button> :
-          <Link to={"/likeedit"}>
-            <button>수정</button>
-          </Link>}
-      </div >
-      <div>
-        {/* 여기는 본인이 선택한 취향 components */}
-      </div>
-
-      <div className={classes.likehate}>
-        <span>싫어하는 것</span>
-        {/* 싫어요 수정 components */}
-        {ModalOutSide ?
-          <button >수정</button> :
-          <Link to={"/hateedit"}>
-            <button >수정</button>
-          </Link>}
-      </div>
-      <div>
-        {/* 여기는 본인이 선택한 취향 componenets */}
-      </div>
+        <LikeAndHate ModalOutSide={ModalOutSide}/> 
       <hr className={classes.hr} />
 
       {/* 고객센터 */}
