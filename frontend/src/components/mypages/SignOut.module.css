@@ -38,12 +38,17 @@
   display: flex;
   font-size: 70%;
   justify-content: center;
+  margin-top: 8%;
+  align-items: center;
 }
 
+.agree span{
+  margin-left: 2.5%;
+}
 
 .btnbasic{
   background-color: gray;
-  margin-top: 10%;
+  margin-top: 8%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -62,4 +67,12 @@
   padding: 5%;
   color: white;
   border-radius: 1vh;
+}
+
+.hr{
+  width: 100%;
+  border: 1px solid;
+  border-color: rgba(125, 0, 225);
+  margin-top: 2%;
+  margin-bottom: 5%;
 }

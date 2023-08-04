@@ -39,12 +39,12 @@ const Settings = forwardRef((props, ref) =>{
           <span>공지사항</span>
         </div>
         </Link>
-        <hr />
+        <hr className={classes.hr} />
         <div onClick={LogOutOn}>
           {/* onClick 시 로그아웃 components */}
           <span>로그아웃</span>
         </div>
-        <hr />
+        <hr className={classes.hr} />
         <div onClick={SignOutOn}>
         {/* onClick 시 회원탈퇴 components */}
         <span>회원탈퇴</span>

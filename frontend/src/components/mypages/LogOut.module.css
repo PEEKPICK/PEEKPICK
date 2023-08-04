@@ -5,7 +5,7 @@
   transform: translate(-50%, -60%);
   background-color: #fff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 2vh;
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
   width: 70%;
   height: 35%;
@@ -56,4 +56,10 @@
   border-radius: 1.5vh;
   font-size: 80%;
 
+}
+
+.hr{
+  width: 100%;
+  border: 1px solid;
+  border-color: rgba(125, 0, 225);
 }
