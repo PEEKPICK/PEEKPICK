@@ -28,7 +28,7 @@ pipeline {
                 sh """
                 cd ${PROJECT_DIR_BE}
                 chmod 777 ./gradlew
-                gradle wrapper build
+                ./gradlew clean build
                 """
             }
         }
