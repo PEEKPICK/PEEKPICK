@@ -35,6 +35,7 @@ public class Avatar {
     @OneToMany(mappedBy = "avatar")
     private List<Taste> tasteList;
 
+    // 문자열 변환
     @Override
     public String toString() {
         return "Avatar{" +
