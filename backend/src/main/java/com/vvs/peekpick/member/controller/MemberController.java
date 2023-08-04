@@ -2,7 +2,9 @@ package com.vvs.peekpick.member.controller;
 
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.global.auth.dto.MemberInfoToken;
 import com.vvs.peekpick.global.auth.dto.Token;
+import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.dto.TempSignUpDto;
@@ -17,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +33,6 @@ public class MemberController {
     private final MemberService memberService;
     private final ResponseService responseService;
 
-
     /**
      * 회원가입 처리
      * @param signUpDto
@@ -40,14 +42,27 @@ public class MemberController {
     @PostMapping("/signup")
     public DataResponse signup(@RequestBody SignUpDto signUpDto, HttpServletResponse response) {
         Token token = memberService.signup(signUpDto);
-
-        Cookie cookie = new Cookie("refreshToken", token.getRefreshToken());
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(3600 * 24 * 365); // 1년
-        response.addCookie(cookie);
+        CookieUtil.createCookie(response, token.getAccessToken());
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_CREATE, token.getAccessToken());
+    }
+
+    /**
+     * 로그아웃
+     * @param authentication
+     * @return
+     * RefreshToken 삭제 처리
+     */
+    @PostMapping("/logout")
+    public CommonResponse logout(HttpServletRequest request, HttpServletResponse response,
+                                 Authentication authentication) {
+        Long avatarId = Long.parseLong(authentication.getName());
+
+        // 선 삭제 처리 후 쿠키 정리
+        memberService.logout(avatarId);
+        CookieUtil.deleteCookie(request, response, "refreshToken");
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
 
     /**
@@ -72,6 +87,7 @@ public class MemberController {
     public CommonResponse updateAvatarInfo(Authentication authentication,
                                            @RequestBody Map<String, String> param) {
         Long avatarId = Long.parseLong(authentication.getName());
+
         memberService.updateAvatarInfo(avatarId, param);
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }

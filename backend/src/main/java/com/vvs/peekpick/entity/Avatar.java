@@ -46,7 +46,7 @@ public class Avatar {
     }
 
     // 취향 태그를 좋아요, 싫어요 분리
-    public AvatarDto toAvatarDto() {
+    public AvatarDto toAvatarDto(Achievement achievement) {
         List<String> likes = new ArrayList<>();
         List<String> disLikes = new ArrayList<>();
 
@@ -58,6 +58,7 @@ public class Avatar {
             }
         }
 
+        // 23.08.04 굉장히 마음에 안드는 로직
         return AvatarDto.builder()
                 .avatarId(this.avatarId)
                 .nickname(this.nickname)
@@ -67,6 +68,9 @@ public class Avatar {
                 .world(this.world)
                 .likes(likes)
                 .disLikes(disLikes)
+                .chatCount(achievement.getChatCount())
+                .likeCount(achievement.getLikeCount())
+                .pickPoint(achievement.getPickPoint())
                 .build();
     }
 

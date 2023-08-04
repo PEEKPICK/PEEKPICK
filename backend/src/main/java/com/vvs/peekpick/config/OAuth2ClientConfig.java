@@ -3,10 +3,10 @@ package com.vvs.peekpick.config;
 import com.vvs.peekpick.global.auth.exception.CustomAccessDeniedHandler;
 import com.vvs.peekpick.global.auth.exception.CustomAuthenticationEntryPoint;
 import com.vvs.peekpick.global.filter.JwtAuthenticationFilter;
-import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginFailureHandler;
-import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
-import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
-import com.vvs.peekpick.oauth.service.CustomOidcUserService;
+import com.vvs.peekpick.global.oauth.handler.CustomOAuth2LoginFailureHandler;
+import com.vvs.peekpick.global.oauth.handler.CustomOAuth2LoginSuccessHandler;
+import com.vvs.peekpick.global.oauth.service.CustomOAuth2UserService;
+import com.vvs.peekpick.global.oauth.service.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -80,6 +80,7 @@ public class OAuth2ClientConfig {
         return http.build();
     }
 
+    // CORS 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -87,9 +88,11 @@ public class OAuth2ClientConfig {
 
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.addAllowedOriginPattern("*");
+        corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.setAllowCredentials(false);
+//        corsConfiguration.setAllowCredentials(true);
+//        corsConfiguration.addAllowedOrigin("http://localhost:3000");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);

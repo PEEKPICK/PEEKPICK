@@ -30,4 +30,6 @@ public interface MemberService {
     void updateAvatarEmoji(Long avatarId, Long emojiId);
 
     void updateAvatarLikes(Long avatarId, List<Long> likes);
+
+    void logout(Long avatarId);
 }
