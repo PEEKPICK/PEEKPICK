@@ -1,10 +1,10 @@
 package com.vvs.peekpick.member.repository;
 
 import com.vvs.peekpick.entity.RefreshToken;
-import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 // 23.08.03 JPA 이해 부족으로 @Query 사용

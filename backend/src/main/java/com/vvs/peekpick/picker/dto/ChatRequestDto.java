@@ -13,7 +13,4 @@ public class ChatRequestDto {
     private Long senderId;
     private LocalDateTime requestTime;
 
-    public void setRequestTime(LocalDateTime requestTime) {
-        this.requestTime = requestTime;
-    }
 }

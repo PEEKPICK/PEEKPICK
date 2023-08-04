@@ -53,14 +53,14 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             .build();
 
             Member signupMember = memberRepository.save(newMember);
-            redirectUrl += "?id=" + signupMember.getMemberId();
+            redirectUrl += "/userInfo?id=" + signupMember.getMemberId();
         } else {
             Member findMember = member.get();
 
             // 가회원 상태 = 회원가입 리다이렉션
             if(findMember.getAvatar() == null) {
                 log.info("NO Avatar");
-                redirectUrl += "userinfo?id=" + findMember.getMemberId();
+                redirectUrl += "/userinfo?id=" + findMember.getMemberId();
             }
 
             // 회원 상태 = Token 발급 및 로그인 처리
@@ -74,7 +74,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 response.addCookie(cookie);
 
                 // accessToken 은 파라미터에 임시, 맘에 안든다
-                redirectUrl = "http://localhost:3000/oauth2/redirect?token=" + accessToken;
+                redirectUrl += "/oauth2/redirect?token=" + accessToken;
             }
         }
         // 신규 회원이면 회원정보 return

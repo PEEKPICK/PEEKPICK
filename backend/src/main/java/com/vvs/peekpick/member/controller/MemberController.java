@@ -2,7 +2,6 @@ package com.vvs.peekpick.member.controller;
 
 
 import com.vvs.peekpick.entity.*;
-import com.vvs.peekpick.global.auth.dto.MemberInfoToken;
 import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.member.dto.AvatarDto;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;

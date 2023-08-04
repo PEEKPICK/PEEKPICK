@@ -16,11 +16,11 @@ public interface PickerService {
 
     DataResponse<List> getPickerListByDistance(SearchPickerDto picker);
 
-    CommonResponse disconnectSession(ConnectingPickerDto picker);
+    CommonResponse disconnectSession(Long avatarId);
 
-    CommonResponse chatRequestSend(Long targetId, ChatRequestDto chatRequestDto);
+    CommonResponse chatRequestSend(Long targetId, Long senderAvatarId);
 
-    SseEmitter connectSseSession(Long memberId);
+    SseEmitter connectSseSession(Long avatarId);
 
     DataResponse<?> chatResponseReceive(ChatResponseDto chatResponseDto);
 }
