@@ -26,7 +26,6 @@ pipeline {
             // build
             steps{
                 sh """
-                cd ${PROJECT_DIR_BE}
                 chmod 777 ./gradlew
                 ./gradlew clean build
                 """
