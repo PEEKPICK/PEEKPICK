@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class ChatPublisher {
-    @Qualifier("redisTemplate")
+    @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
 
     /**

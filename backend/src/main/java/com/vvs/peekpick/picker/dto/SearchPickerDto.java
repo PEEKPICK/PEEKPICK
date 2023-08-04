@@ -13,7 +13,11 @@ import org.springframework.data.redis.core.RedisHash;
 public class SearchPickerDto {
 
     @Id
-    private Long memberId;
+    private Long avatarId;
     private Point point;
     private double distance;
+
+    public void setAvatarId(Long avatarId){
+        this.avatarId = avatarId;
+    }
 }

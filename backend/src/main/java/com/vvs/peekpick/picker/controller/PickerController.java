@@ -11,6 +11,7 @@ import com.vvs.peekpick.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -31,7 +32,8 @@ public class PickerController {
      * @return CommonResponse
      */
     @PostMapping(value = "/connect")
-    public CommonResponse connectSession(@RequestBody ConnectingPickerDto picker){
+    public CommonResponse connectSession(@RequestBody ConnectingPickerDto picker, Authentication authentication){
+        picker.setAvatarId(Long.parseLong(authentication.getName()));
         return pickerServiceImpl.connectSession(picker);
     }
 
@@ -39,18 +41,18 @@ public class PickerController {
      * 서버푸시를 위한 SSE Emitter 수신
      * @Return SSE Emitter
      */
-    @GetMapping(value = "/sse/{memberId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter sseConnect(@PathVariable Long memberId){
-        return pickerServiceImpl.connectSseSession(memberId);
+    @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter sseConnect(Authentication authentication){
+        return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
     }
 
     /**
      * 종료하거나 홈으로 이동시 세션에서 내 정보 제거
      * @return CommonResponse
      */
-    @PostMapping("/disconnect")
-    public CommonResponse disconnectSession(@RequestBody ConnectingPickerDto picker) {
-        return pickerServiceImpl.disconnectSession(picker);
+    @GetMapping("/disconnect")
+    public CommonResponse disconnectSession(Authentication authentication) {
+        return pickerServiceImpl.disconnectSession(Long.parseLong(authentication.getName()));
     }
 
     /**
@@ -58,7 +60,8 @@ public class PickerController {
      * @return DataResponse<List>
      */
     @PostMapping
-    public DataResponse<List> getPickerListByDistance(@RequestBody SearchPickerDto picker) {
+    public DataResponse<List> getPickerListByDistance(@RequestBody SearchPickerDto picker, Authentication authentication) {
+        picker.setAvatarId(Long.parseLong(authentication.getName()));
         return pickerServiceImpl.getPickerListByDistance(picker);
     }
 
@@ -66,10 +69,9 @@ public class PickerController {
      * 채팅 요청 전송
      * @return CommonResponse
      */
-    @PostMapping("chat-request/{targetId}")
-    public CommonResponse chatRequestSend(@PathVariable Long targetId, @RequestBody ChatRequestDto chatRequestDto){
-        // TODO JWT Token 으로부터 Sender Id 획득 전환 예정 
-        return pickerServiceImpl.chatRequestSend(targetId, chatRequestDto);
+    @GetMapping("chat-request/{targetId}")
+    public CommonResponse chatRequestSend(@PathVariable Long targetId, Authentication authentication){
+        return pickerServiceImpl.chatRequestSend(targetId, Long.parseLong(authentication.getName()));
     }
 
     /**
