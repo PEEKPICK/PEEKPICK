@@ -24,7 +24,7 @@
 .buttons img {
   width: 100%;
   margin: 1vh 0 1vh 0;
-  box-shadow: 1px 1px 1px 1px lightgray;
+  box-shadow: 2px 2px 2px 2px rgba(234, 234, 234, 0.75);
   border-radius: 12px;
 }
 
