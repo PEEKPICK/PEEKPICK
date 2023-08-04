@@ -16,4 +16,8 @@ public class PeekMemberServiceImpl implements PeekMemberService {
         return peekMemberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found"));
     }
+
+    public Member findMemberByAvatarId(Long avatarId) {
+        return peekMemberRepository.findByAvatarId(avatarId);
+    }
 }

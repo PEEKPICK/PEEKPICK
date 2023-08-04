@@ -10,6 +10,7 @@ import com.vvs.peekpick.util.AwsS3Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,22 +28,25 @@ public class PeekController {
 
     //내 주변 peek 가져오기
     @PostMapping
-    public ResponseEntity<DataResponse> findNearPeek(@RequestBody RequestSearchPeekDto requestSearchPeekDto) {  //@AuthenticationPrincipal Principal principal
-        Long memberId = 2L;//principal.getName();
+    public ResponseEntity<DataResponse> findNearPeek(@RequestBody RequestSearchPeekDto requestSearchPeekDto) {
+        Long memberId = 2L;
         return ResponseEntity.ok(peekRedisService.findNearPeek(memberId, requestSearchPeekDto));
     }
 
     // peek 작성
     @PostMapping(value = "/write", consumes = {"multipart/form-data"})
     public ResponseEntity<CommonResponse> addPeek(
+            Authentication authentication,
             @RequestPart("peek") RequestPeekDto requestPeekDto,
             @RequestPart("img") MultipartFile img) {
         try {
+            Long avatarId = Long.parseLong(authentication.getName());
             // 파일을 S3에 저장하고 URL 가져옴
             String imageUrl = awsS3Util.s3SaveFile(img);
             // RDB, Redis에 Peek 정보를 저장
             return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto, imageUrl));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null; //추후 예외 처리 추가 필요
         }
     }
@@ -50,9 +54,9 @@ public class PeekController {
 
     // 특정 peek 세부 내용 가져오기
     @GetMapping("/{peekId}")
-    public ResponseEntity<DataResponse> getPeek(@PathVariable Long peekId) { //@AuthenticationPrincipal Principal principal
-        Long memberId = 2L;//principal.getName();
-        return ResponseEntity.ok(peekRedisService.getPeek(memberId, peekId));
+    public ResponseEntity<DataResponse> getPeek(Authentication authentication, @PathVariable Long peekId) {
+        Long avatarId = Long.parseLong(authentication.getName());
+        return ResponseEntity.ok(peekRedisService.getPeek(avatarId, peekId));
     }
 
     // 특정 peek 삭제

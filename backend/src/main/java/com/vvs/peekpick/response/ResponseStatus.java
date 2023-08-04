@@ -30,8 +30,10 @@ public enum ResponseStatus {
 
     /* Report */
     GET_CATEGORY_SUCCESS("9000", "신고 카테고리 조회 완료"),
-    REGISTER_REPORT_SUCCESS("9001", "신고 등록 완료"); 
+    REGISTER_REPORT_SUCCESS("9001", "신고 등록 완료"),
 
+    /* 채팅 */
+    CHATROOM_EXIT_SUCCESS("4000", "채팅방을 나갔습니다.");
     private final String code;
     private final String message;
 }

@@ -61,6 +61,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
     @Override
     public CommonResponse addPeek(RequestPeekDto requestPeekDto, String imageUrl) {
+        System.out.println(requestPeekDto);
         try {
             //RDB에 저장하기 위한 Peek 객체
             Peek peek = Peek.builder()
