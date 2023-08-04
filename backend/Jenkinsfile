@@ -29,7 +29,7 @@ pipeline {
                 cd ${PROJECT_DIR_BE}
                 chmod 777 ./gradlew
                 ls -al
-                ./gradlew clean build
+                . ./gradlew clean build
                 """
             }
         }
