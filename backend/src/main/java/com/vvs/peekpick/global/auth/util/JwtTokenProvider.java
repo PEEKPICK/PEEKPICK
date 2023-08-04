@@ -1,8 +1,6 @@
 package com.vvs.peekpick.global.auth.util;
 
 import com.vvs.peekpick.entity.Member;
-import com.vvs.peekpick.oauth.model.PrincipalUser;
-import com.vvs.peekpick.oauth.model.ProviderUser;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +31,7 @@ public class JwtTokenProvider {
         // 아바타 ID, Provider로 검증
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("avatarId", Long.toString(member.getAvatar().getAvatarId()));
+        payloads.put("memberId", Long.toString(member.getMemberId()));
         payloads.put("provider", member.getProvider());
 
         return Jwts.builder()
@@ -106,22 +105,12 @@ public class JwtTokenProvider {
         return (String)claims.get("provider");
     }
 
-    // 23.08.02 마음에 안든다 createAccessToken 과 합쳐아 한다.
-    public String RefreshToAccessToken(Long avatarId, String provider) {
-        Date now = new Date();
-        Date expireDate = new Date(now.getTime() + ACCESS_TOKEN_VALIDATE_TIME);
+    public Long getIdFromToken(String token, String name) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY.getBytes())
+                .parseClaimsJws(token)
+                .getBody();
 
-        // 아바타 ID, Provider로 검증
-        Map<String, Object> payloads = new HashMap<>();
-        payloads.put("avatarId", Long.toString(avatarId));
-        payloads.put("provider", provider);
-
-        return Jwts.builder()
-                .setClaims(payloads)
-                .setSubject("auth")
-                .setIssuedAt(now)
-                .setExpiration(expireDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET_KEY.getBytes())
-                .compact();
+        return Long.parseLong((String)claims.get(name));
     }
 }

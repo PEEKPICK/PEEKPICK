@@ -1,11 +1,9 @@
 package com.vvs.peekpick.member.dto.social;
 
-import com.vvs.peekpick.oauth.model.Attributes;
-import com.vvs.peekpick.oauth.model.OAuth2ProviderUser;
+import com.vvs.peekpick.global.oauth.model.Attributes;
+import com.vvs.peekpick.global.oauth.model.OAuth2ProviderUser;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-
-import java.util.Map;
 
 public class KakaoOIdcUser extends OAuth2ProviderUser {
 

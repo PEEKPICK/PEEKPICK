@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 application.yml
 application-db.yml
+application-prod.yml
 
 ### STS ###
 .apt_generated

@@ -17,6 +17,7 @@ public enum ResponseStatus {
     CHAT_REQUEST_REJECTED("3004", "채팅 요청이 거절되었습니다"),
     CHAT_REQUEST_ACCEPTED("3005", "채팅 요청이 수락되었습니다."),
     CHAT_REQUEST_TIMEOUT("3006", "요청이 만료되었습니다"),
+
     RESPONSE_OK("200", "SUCCESS"),
     RESPONSE_CREATE("201", "SUCCESS"),
     
