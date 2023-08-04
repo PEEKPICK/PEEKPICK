@@ -1,12 +1,12 @@
 import React, { useEffect, useCallback, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
-import classes from "./Finder.module.css";
+import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
 import EmojiLocation from "./EmojiLocation";
 import { locationActions } from "../../store/locationSlice";
 
-const Finder = () => {
+const FindPicker = () => {
   const dispatch = useDispatch();
   // Redux store에서 위치값 가져오기
   const getMemberId = useSelector((state) => state.geo.memberId);
@@ -14,19 +14,20 @@ const Finder = () => {
   const getPointY = useSelector((state) => state.geo.point.y);
   const getDistance = useSelector((state) => state.geo.distance);
   //주변 유져 정보
-  const nearByUser = useSelector((state) => state.findUser.userInfomation);
+  const findInfo = useSelector((state) => state.findUser.userInfomation);
   //위치 가져왔니?
   const [isLocationFetched, setIsLocationFetched] = useState(false);
 
   const emojiCall = (requestBody) => {
     customAxios.post("/picker", requestBody).then((response) => {
-      console.log("넘어온 데이터: ", response);
+      console.log("넘어온 피커: ", response);
       // const userArrayOrigin = response.data.data;
       const userArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기
       const maxEmojisToShow = 8;
       //정보 저장
       const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
+      console.log("넘어온 limitedUserArray: ", limitedUserArray);
       dispatch(findUserActions.updateUserInfo(limitedUserArray));
     });
   };
@@ -38,7 +39,7 @@ const Finder = () => {
           // 위치값을 Redux store에 저장합니다.
           dispatch(
             locationActions.updateLoc({
-              memberId: 14,
+              memberId: 11,
               point: {
                 x: position.coords.longitude,
                 y: position.coords.latitude,
@@ -93,9 +94,9 @@ const Finder = () => {
           새로고침
         </button>
       </div>
-      <EmojiLocation nearByUser={nearByUser} />
+      <EmojiLocation findInfo={findInfo} checkVer={1} />
     </>
   );
 };
 
-export default Finder;
+export default FindPicker;
