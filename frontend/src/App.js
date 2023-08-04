@@ -29,9 +29,7 @@ import AlreadyLogin from "./components/common/AlreadyLogin";
 // import { useEffect } from "react";
 
 function App() {
-  // const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
-
-  // 2023.07. 29 - 김준형 토큰 작업
+  // 토큰 검사
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
