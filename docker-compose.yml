@@ -7,15 +7,15 @@ services:
     ports: 
      - 8081:8081
     networks:
-      - app-network
-  # frontend:
-  #   image: wnsdud12365/peekpick-react
-  #   container_name: peekpick_fe
-  #   restart: always
-  #   posts:
-  #   - 3000:3000
-  #   networks:
-  #     - app-network
+     - peekpick_network
+  frontend:
+    image: wnsdud12365/peekpick-react
+    container_name: peekpick_fe
+    restart: always
+    ports:
+     - 3000:3000
+    networks:
+     - peekpick_network
 networks:
-  app-network: 
+  peekpick_network:
     external: true

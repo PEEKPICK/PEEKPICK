@@ -1,95 +1,62 @@
 package com.vvs.peekpick.peek;
 
-import com.vvs.peekpick.peek.dto.PeekRedisDto;
+import com.vvs.peekpick.peek.dto.PeekDto;
+import com.vvs.peekpick.peek.dto.PeekLocationDto;
+import com.vvs.peekpick.peek.dto.SearchPeekDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.geo.Point;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 public class PeekRedisTest {
 
-    private final String PEEK_REDIS = "Peek";
-    private final String PEEK_LOCATION_REDIS = "PeekLocation";
-    private final String PEEK_ID_KEY = "PEEK_ID";
-    private final int MAX_PEEK = 10;
-
-    @Autowired
-    private PeekRedisService peekRedisService;
-
-    @Autowired
-    private RedisTemplate<String, Object> peekTemplate;
-
-    @Autowired
-    private RedisTemplate<String, Object> locationTemplate;
-
-    private GeoOperations<String, Object> geoOps;
-    private HashOperations<String, Object, PeekRedisDto> hashOps;
-    private ValueOperations<String, Object> valueOps;
-
-    @BeforeEach
-    public void beforeTest() {
-        peekTemplate.delete(PEEK_REDIS);
-        locationTemplate.delete(PEEK_LOCATION_REDIS);
-        peekTemplate.delete(PEEK_ID_KEY);
-        geoOps = locationTemplate.opsForGeo();
-        hashOps = peekTemplate.opsForHash();
-        valueOps = peekTemplate.opsForValue();
-    }
-
-    @AfterEach
-    public void afterTest() {
-        peekTemplate.delete(PEEK_REDIS);
-        locationTemplate.delete(PEEK_LOCATION_REDIS);
-        peekTemplate.delete(PEEK_ID_KEY);
-    }
-
-//    @Test
-//    public void testAddPeek() {
-//        PeekLocationDto peekLocationDto = new PeekLocationDto(1L, new Point(127.0, 37.0));
-//        LocalDateTime writeTime = LocalDateTime.now();
-//        PeekDto peekDto = new PeekDto(1L, 1L, "content", "imageUrl", 0, 0, writeTime, writeTime.plusMinutes(30));
-//        peekRedisService.addPeek(peekLocationDto, peekDto);
+//    private final String Peek_Redis = "Peek";
+//    private final String PeekLocation_Redis = "PeekLocation";
+//    private final int MAX_PEEK = 10;
 //
-//        // Get and verify data from Redis
-//        PeekDto getPeek = (PeekDto) peekRedisService.getPeek(1L).getData();
-//        assertEquals(peekDto.getPeekId(), getPeek.getPeekId());
-//        assertEquals(peekDto.getMemberId(), getPeek.getMemberId());
-//        assertEquals(peekDto.getContent(), getPeek.getContent());
-//        assertEquals(peekDto.getImageUrl(), getPeek.getImageUrl());
-//        assertEquals(peekDto.getLikeCount(), getPeek.getLikeCount());
-//        assertEquals(peekDto.getDisLikeCount(), getPeek.getDisLikeCount());
-//        assertEquals(peekDto.getWriteTime().withNano(0), getPeek.getWriteTime().withNano(0));
-//        assertEquals(peekDto.getFinishTime().withNano(0), getPeek.getFinishTime().withNano(0));
-//        System.out.println(getPeek);
+//    @Autowired
+//    private PeekRedisService peekRedisService;
 //
-//        // Check TTL
-//        Long ttlPeek = peekTemplate.getExpire(peekDto.getPeekId().toString());
-//        Long ttlLocation = locationTemplate.getExpire(peekLocationDto.getPeekId().toString());
+//    @Autowired
+//    private RedisTemplate<String, Object> peekTemplate;
 //
-//        System.out.println(ttlPeek);
-//        System.out.println(ttlLocation);
-////        assertNotNull(ttlPeek);
-////        assertTrue(ttlPeek > 0);
-////        assertNotNull(ttlLocation);
-////        assertTrue(ttlLocation > 0);
+//    @Autowired
+//    private RedisTemplate<String, Object> locationTemplate;
 //
-//        // Delete test data
-////        peekRedisService.deletePeek(peekDto.getPeekId());
-////        assertNull(peekRedisService.getPeek(peekLocationDto.getPeekId()).getData());
-////        assertNull(peekRedisService.getPeek(peekDto.getPeekId()).getData());
+//    private GeoOperations<String, Object> geoOps;
+//    private HashOperations<String, Object, PeekDto> hashOps;
+//
+//    @BeforeEach
+//    public void beforeTest() {
+//        geoOps = locationTemplate.opsForGeo();
+//        hashOps = peekTemplate.opsForHash();
 //    }
-
-
+//
+//    @AfterEach
+//    public void afterTest() {
+//        peekTemplate.delete(Peek_Redis);
+//        locationTemplate.delete(PeekLocation_Redis);
+//    }
+//
 //    @Test
 //    public void testAddGetPeek() {
 //        PeekLocationDto peekLocationDto = new PeekLocationDto(1L, new Point(127.0, 37.0));
-//        PeekDto peekDto = new PeekDto(1L, 1L, "content", "imageUrl", 0, 0, LocalDateTime.now(), LocalDateTime.now());
+//        PeekDto peekDto = new PeekDto(1L, 1L, "content", "imageUrl", 0, 0, LocalDateTime.now());
 //        peekRedisService.addPeek(peekLocationDto, peekDto);
 //
 //        Point getPeekLocation = geoOps.geoPos(PeekLocation_Redis, peekLocationDto.getPeekId().toString()).get(0);
@@ -109,7 +76,6 @@ public class PeekRedisTest {
 //        assertNull(peekRedisService.getPeek(peekLocationDto.getPeekId()).getData());
 //        assertNull(peekRedisService.getPeek(peekDto.getPeekId()).getData());
 //    }
-
 //    @Test
 //    public void testFindNearPeek() {
 //        List<Long> ids = Arrays.asList(1L, 2L, 3L, 4L, 5L, 6L);
