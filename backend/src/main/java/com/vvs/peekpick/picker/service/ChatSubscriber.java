@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChatSubscriber implements MessageListener {
     private final ObjectMapper objectMapper;
-    @Qualifier("redisTemplate")
+    @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
 
