@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
-import EmojiLocation from "./EmojiLocation";
+import PickLocation from "./PickLocation";
 import { locationActions } from "../../store/locationSlice";
 
 const FindPicker = () => {
@@ -94,7 +94,7 @@ const FindPicker = () => {
           새로고침
         </button>
       </div>
-      <EmojiLocation findInfo={findInfo} checkVer={1} />
+      <PickLocation findInfo={findInfo} />
     </>
   );
 };

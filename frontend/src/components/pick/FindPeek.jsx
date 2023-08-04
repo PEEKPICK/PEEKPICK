@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findPeekActions } from "../../store/findPeekSlice";
-import EmojiLocation from "./EmojiLocation";
+import PeekLocation from "./PeekLocation";
 import { locationActions } from "../../store/locationSlice";
 
 const FindPeek = () => {
@@ -13,12 +13,11 @@ const FindPeek = () => {
   const getPointY = useSelector((state) => state.geo.point.y);
   const getDistance = useSelector((state) => state.geo.distance);
   //주변 유져 정보
-  const findInfo = useSelector((state) => state.findPeek.updatePeekInfo);
+  const findInfo = useSelector((state) => state.findPeek.peekInfomation);
   //위치 가져왔니?
   const [isLocationFetched, setIsLocationFetched] = useState(false);
 
   const emojiCall = (requestBody) => {
-    console.log("asdasdasdadadasasd");
     customAxios.post("/peek", requestBody).then((response) => {
       console.log("넘어온 피크: ", response);
       // const peekArrayOrigin = response.data.data;
@@ -27,13 +26,12 @@ const FindPeek = () => {
       const maxEmojisToShow = 8;
       //정보 저장
       const limitedPeekArray = peekArrayOrigin.slice(0, maxEmojisToShow);
+      console.log("넘어온 limitedPeekArray", limitedPeekArray);
       dispatch(findPeekActions.updatePeekInfo(limitedPeekArray));
-      console.log("peek", limitedPeekArray);
     });
   };
 
   const GeoLocation = () => {
-    console.log("ASDasdasd");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -93,7 +91,7 @@ const FindPeek = () => {
           새로고침
         </button>
       </div>
-      <EmojiLocation findInfo={findInfo} checkVer={0} />
+      <PeekLocation findInfo={findInfo} />
     </>
   );
 };
