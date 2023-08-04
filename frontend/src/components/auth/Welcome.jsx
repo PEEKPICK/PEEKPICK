@@ -2,6 +2,7 @@
 import { customAxios } from '../../api/customAxios';
 
 import common from './style/Common.module.css';
+import classes from './style/Welcome.module.css';
 
 const Welcome = () => {
   // 헤더에 토큰 넣어서 백엔드에 요청
@@ -22,10 +23,13 @@ const Welcome = () => {
   };
 
   return (
-    <div>
-      <h1>환영합니다!</h1>
+    <div className={common.container}>
+      <h1 className={classes.title}>환영합니다!</h1>
       <div>
-        <p>타인과 당신의 취향에 대해 부담없이 이야기를 나눌 수 있어요!</p>
+        <p>타인과 당신의 취향에 대해
+          <br />
+          부담없이 이야기를 나눌 수 있어요!
+        </p>
       </div>
       <div>
         <img src="img/confetti.gif" alt='confetti' />

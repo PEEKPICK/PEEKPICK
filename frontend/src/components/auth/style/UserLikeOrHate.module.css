@@ -1,0 +1,36 @@
+.line1 {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #7d00ff;
+}
+
+.line2 {
+  width: 0%;
+  border-radius:0 10px 10px 0;
+  background-color: lightgray;
+}
+
+.likehateWrap {
+  margin-top: 3vh;
+}
+
+.buttonWrap {
+  display: flex;
+  margin-bottom: 2vh;
+}
+
+.buttonWrap button {
+  margin-left: 1vh;
+  background-color: #7d00ff;
+  border: 1px solid #7d00ff;
+  border-radius: 3px;
+  color: white;
+  font-size: x-small;
+  height: 2vh;
+  width: 4vh;
+  padding: 0;
+}
+
+.hate {
+  margin-top: 7vh;
+}

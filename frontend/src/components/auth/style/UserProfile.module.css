@@ -1,0 +1,25 @@
+.line1 {
+  width: 30%;
+  border-radius: 10px 0 0 10px;
+  background-color: #7d00ff;
+}
+
+.line2 {
+  width: 70%;
+  border-radius:0 10px 10px 0;
+  background-color: lightgray;
+}
+
+.emoji {
+  margin-top: 10vh;
+}
+
+.randomButton {
+  background: linear-gradient(to right, #8F00FF, #654CFF);
+  border: 0;
+  border-radius: 5px;
+  color: white;
+  width: 9vh;
+  height: 3.5vh;
+  margin-top: 3vh;
+}
