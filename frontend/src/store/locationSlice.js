@@ -6,10 +6,10 @@ const locationSlice = createSlice({
     //임의 ID 값
     memberId: null,
     point: {
-      x: null,
-      y: null,
+      x: 0,
+      y: 0,
     },
-    distance: null,
+    distance: 0,
 
     avatarId: null,
     bio: null,
