@@ -1,5 +1,5 @@
 import "./App.css";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 // import { useSelector } from "react-redux";
 
@@ -29,19 +29,18 @@ import AlreadyLogin from "./components/common/AlreadyLogin";
 // import { useEffect } from "react";
 
 function App() {
-  const isAuthenticated = true; // 추후 변경 예정 (로그인 토큰입니다.)
+  // 토큰 검사
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // 2023.07. 29 - 김준형 토큰 작업
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    const checkTokenInLocalStorage = () => {
+      const token = localStorage.getItem("jwtToken");
+      return token !== null;
+    };
+    setIsAuthenticated(checkTokenInLocalStorage());
+  }, []);
 
-  // useEffect(() => {
-  //   const checkTokenInLocalStorage = () => {
-  //     const token = localStorage.getItem("jwtToken");
-  //     return token !== null;
-  //   };
-
-  //   setIsAuthenticated(checkTokenInLocalStorage());
-  // }, []);
+  
   // const getMemberId = useSelector((state) => state.geo.memberId);
   // const getPointX = useSelector((state) => state.geo.point.x);
   // const getPointY = useSelector((state) => state.geo.point.y);
@@ -85,6 +84,7 @@ function App() {
               <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
+              <Route path="/*" element={<AlreadyLogin />} />
             </>
           )}
           {isAuthenticated && (

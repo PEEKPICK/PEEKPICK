@@ -17,7 +17,7 @@ const Login = () => {
   const test = (id) => {
     customAxios.post(`/member/login?id=test${id}`)
       .then(response => {
-        if (response.data.code === 200) {
+        if (response.data.code === '200') {
           const token = response.data.data
           localStorage.setItem("jwtToken", token);
           window.location.replace("/")
