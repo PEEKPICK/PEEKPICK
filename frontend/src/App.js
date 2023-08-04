@@ -40,7 +40,6 @@ function App() {
     setIsAuthenticated(checkTokenInLocalStorage());
   }, []);
 
-  
   // const getMemberId = useSelector((state) => state.geo.memberId);
   // const getPointX = useSelector((state) => state.geo.point.x);
   // const getPointY = useSelector((state) => state.geo.point.y);
