@@ -1,6 +1,6 @@
 import { customAxios } from '../../api/customAxios';
 
-import InfoModal from './InfoModal';
+import Modal from './Modal';
 
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
@@ -115,7 +115,7 @@ const UserNickname = () => {
       <div>
         <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
       </div>
-      {showModal && <InfoModal onClose={closeModal} />}
+      {showModal && <Modal onClose={closeModal} check={2} />}
     </div>
   );
 }
