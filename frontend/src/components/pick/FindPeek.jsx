@@ -19,7 +19,7 @@ const FindPeek = () => {
 
   const emojiCall = (requestBody) => {
     customAxios.post("/peek", requestBody).then((response) => {
-      console.log("넘어온 피크: ", response);
+      console.log("넘어온 피크 : ", response);
       // const peekArrayOrigin = response.data.data;
       const peekArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기

@@ -20,7 +20,7 @@ const FindPicker = () => {
 
   const emojiCall = (requestBody) => {
     customAxios.post("/picker", requestBody).then((response) => {
-      console.log("넘어온 피커: ", response);
+      console.log("넘어온 피커 : ", response);
       // const userArrayOrigin = response.data.data;
       const userArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기
