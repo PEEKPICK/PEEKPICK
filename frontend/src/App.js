@@ -30,15 +30,16 @@ import AlreadyLogin from "./components/common/AlreadyLogin";
 
 function App() {
   // 토큰 검사
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = true;
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const checkTokenInLocalStorage = () => {
-      const token = localStorage.getItem("jwtToken");
-      return token !== null;
-    };
-    setIsAuthenticated(checkTokenInLocalStorage());
-  }, []);
+  // useEffect(() => {
+  //   const checkTokenInLocalStorage = () => {
+  //     const token = localStorage.getItem("jwtToken");
+  //     return token !== null;
+  //   };
+  //   setIsAuthenticated(checkTokenInLocalStorage());
+  // }, []);
 
   // const getMemberId = useSelector((state) => state.geo.memberId);
   // const getPointX = useSelector((state) => state.geo.point.x);
