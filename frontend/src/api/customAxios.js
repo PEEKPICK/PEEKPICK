@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const customAxios = axios.create({
-  baseURL: "http://192.168.31.27:8081",
+  baseURL: "https://i9b309.p.ssafy.io/api",
   // baseURL: "http://localhost:8081",
 });
 
