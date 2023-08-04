@@ -150,7 +150,7 @@ const UserHate = () => {
         )}
       </div>
       <div>
-        {modalOpen && <Modal onClose={closeModal} />}
+        {modalOpen && <Modal onClose={closeModal} check={1} />}
       </div>
       <div>
         <button
