@@ -51,6 +51,9 @@ const UserInfo = () => {
           gender: userData.gender,
         }));
 
+        // 상태 갱신
+        setUsername(userData.name);
+        setEmail(userData.email);
         setPhone(userData.phone);
         setBirthday(userData.birthday);
       })
@@ -69,7 +72,7 @@ const UserInfo = () => {
     if (userInfo.name) {
       return (
         <div>
-          {userInfo.name}
+          {username}
         </div>
       );
     } else {
@@ -94,7 +97,7 @@ const UserInfo = () => {
     if (userInfo.email) {
       return (
         <div>
-          {userInfo.email}
+          {email}
         </div>
       );
     } else {
@@ -141,7 +144,7 @@ const UserInfo = () => {
     if (userInfo.phone) {
       return (
         <div>
-          {userInfo.phone}
+          {phone}
         </div>
       );
     } else {
@@ -189,7 +192,7 @@ const UserInfo = () => {
     if (userInfo.birthday) {
       return (
         <>
-          {userInfo.birthday}
+          {birthday}
         </>
       );
     } else {
