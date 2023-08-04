@@ -6,6 +6,7 @@ import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
 import { locationActions } from "../../store/locationSlice";
 // import { GeoLocation } from "./GeoLocation";
+import { useLocation } from "react-router-dom";
 
 const FindPeek = () => {
   const dispatch = useDispatch();
@@ -17,22 +18,27 @@ const FindPeek = () => {
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
   //위치 가져왔니?
   const [isLocationFetched, setIsLocationFetched] = useState(false);
+  //현재 링크 가져와
+  const location = useLocation();
+  const currentPathname = location.pathname;
 
-  const emojiCall = (requestBody) => {
-    customAxios.post("/peek", requestBody).then((response) => {
-      // console.log("넘어온 피크 : ", response);
-      const peekArrayOrigin = response.data.data;
-      // const peekArrayOrigin = response.data.data.data;
-      // 최대 n개의 이모지만 보여주기
-      const maxEmojisToShow = 8;
-      //정보 저장
-      const limitedPeekArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-      // console.log("넘어온 limitedPeekArray", limitedPeekArray);
-      dispatch(findPeekActions.updatePeekInfo(limitedPeekArray));
-    });
-  };
+  const emojiCall = useCallback(
+    (requestBody) => {
+      customAxios.post("/peek", requestBody).then((response) => {
+        console.log("넘어온 피크 : ", response);
+        const peekArrayOrigin = response.data.data;
+        // 최대 n개의 이모지만 보여주기
+        const maxEmojisToShow = 8;
+        //정보 저장
+        const limitedPeekArray = peekArrayOrigin.slice(0, maxEmojisToShow);
+        // console.log("넘어온 limitedPeekArray", limitedPeekArray);
+        dispatch(findPeekActions.updatePeekInfo(limitedPeekArray));
+      });
+    },
+    [dispatch]
+  );
 
-  const GeoLocation = () => {
+  const GeoLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -43,7 +49,7 @@ const FindPeek = () => {
                 x: position.coords.longitude,
                 y: position.coords.latitude,
               },
-              distance: 10000000,
+              distance: 10000,
             })
           );
         },
@@ -54,15 +60,16 @@ const FindPeek = () => {
     } else {
       console.error("위치 못가져왔는디");
     }
-  };
+  }, [dispatch]);
+
   useEffect(() => {
+    console.log("GeoLocation");
     const fetchLocation = async () => {
       await GeoLocation();
       setIsLocationFetched(true);
     };
     fetchLocation();
-    // eslint-disable-next-line
-  }, []);
+  }, [GeoLocation]);
 
   const handleEmojiCall = useCallback(() => {
     if (!isLocationFetched) {
@@ -76,12 +83,14 @@ const FindPeek = () => {
       distance: getDistance,
     };
     emojiCall(requestBody);
-    // eslint-disable-next-line
-  }, [getPointX, getPointY]);
+  }, [emojiCall, getPointX, getPointY, getDistance, isLocationFetched]);
 
   useEffect(() => {
-    handleEmojiCall();
-  }, [handleEmojiCall]);
+    if (currentPathname === "/peek") {
+      console.log("peek1");
+      handleEmojiCall();
+    }
+  }, [currentPathname, handleEmojiCall]);
 
   return (
     <>

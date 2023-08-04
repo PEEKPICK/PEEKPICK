@@ -6,6 +6,7 @@ import { findUserActions } from "../../store/findUserSlice";
 import PickLocation from "./PickLocation";
 import { locationActions } from "../../store/locationSlice";
 // import { GeoLocation } from "./GeoLocation";
+import { useLocation } from "react-router-dom";
 
 const FindPicker = () => {
   const dispatch = useDispatch();
@@ -18,22 +19,27 @@ const FindPicker = () => {
   const findInfo = useSelector((state) => state.findUser.userInfomation);
   //위치 가져왔니?
   const [isLocationFetched, setIsLocationFetched] = useState(false);
+  //현재 링크 가져와
+  const location = useLocation();
+  const currentPathname = location.pathname;
 
-  const emojiCall = (requestBody) => {
-    customAxios.post("/picker", requestBody).then((response) => {
-      // console.log("넘어온 피커 : ", response);
-      const userArrayOrigin = response.data.data;
-      // const userArrayOrigin = response.data.data.data;
-      // 최대 n개의 이모지만 보여주기
-      const maxEmojisToShow = 10;
-      //정보 저장
-      const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-      // console.log("넘어온 limitedUserArray: ", limitedUserArray);
-      dispatch(findUserActions.updateUserInfo(limitedUserArray));
-    });
-  };
+  const emojiCall = useCallback(
+    (requestBody) => {
+      customAxios.post("/picker", requestBody).then((response) => {
+        console.log("넘어온 피커 : ", response);
+        const userArrayOrigin = response.data.data;
+        // 최대 n개의 이모지만 보여주기
+        const maxEmojisToShow = 10;
+        //정보 저장
+        const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        dispatch(findUserActions.updateUserInfo(limitedUserArray));
+      });
+    },
+    [dispatch]
+  );
 
-  const GeoLocation = () => {
+  const GeoLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -44,7 +50,7 @@ const FindPicker = () => {
                 x: position.coords.longitude,
                 y: position.coords.latitude,
               },
-              distance: 10000000,
+              distance: 10000,
             })
           );
         },
@@ -55,15 +61,15 @@ const FindPicker = () => {
     } else {
       console.error("위치 못가져왔는디");
     }
-  };
+  }, [dispatch]);
+
   useEffect(() => {
     const fetchLocation = async () => {
       await GeoLocation();
       setIsLocationFetched(true);
     };
     fetchLocation();
-    // eslint-disable-next-line
-  }, []);
+  }, [GeoLocation]);
 
   const handleEmojiCall = useCallback(() => {
     if (!isLocationFetched) {
@@ -78,12 +84,15 @@ const FindPicker = () => {
       distance: getDistance,
     };
     emojiCall(requestBody);
-    // eslint-disable-next-line
-  }, [getPointX, getPointY]);
+  }, [emojiCall, getMemberId, getPointX, getPointY, getDistance, isLocationFetched]);
 
   useEffect(() => {
-    handleEmojiCall();
-  }, [handleEmojiCall]);
+    if (currentPathname === "/") {
+      console.log("pick");
+
+      handleEmojiCall();
+    }
+  }, [currentPathname, handleEmojiCall]);
 
   return (
     <>
