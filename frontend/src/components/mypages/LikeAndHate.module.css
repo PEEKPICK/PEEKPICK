@@ -30,3 +30,24 @@
 .list{
   width: 100%;
 }
+
+.itemWrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 3%;
+}
+
+.items {
+  font-size: small;
+  border: 0.5px solid;
+  border-color: rgba(125, 0, 225);
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  margin: 1vh;
+  width: 12vh;
+  height: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -17,22 +17,26 @@ const MyPage = () => {
   const [signoutView, setSignoutView] = useState(false);
   const [nicknameView, setNicknameView] = useState(false);
   const [ModalOutSide, setModalOutSide] = useState(false);
-  const [useremoji, setUseremoji] = useState("");
+  const [pickPoint, setPickPoint] = useState("");
+  const [likeCount, setLikeCount] = useState("");
+  const [likes, setLikes] = useState([]);
+  const [disLikes,setDisLikes] = useState([]);
   const userInfo = useSelector(state => state.auth);
-
   // 정보 확인
   const dispatch = useDispatch();
   const [emojiUrl, setEmojiUrl] = useState("");
-
+  
   // 토큰 처리
   const jwtToken = localStorage.getItem('jwtToken');
-
-
+  
+  
   // 이름과 한줄평 가져오는 usestate
+  const [useremoji, setUseremoji] = useState(userInfo.emojiUrl);
   const [bio, setBio] = useState(userInfo.bio);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [prefix, setPrefix] = useState(userInfo.prefix);
-
+  const [prefixId, setPrefixId] = useState(userInfo.prefixId);
+  
   // 페이지 렌더링 시 작동
   useEffect(() => {
     if (visible) {
@@ -59,26 +63,32 @@ const MyPage = () => {
   // api통신
   useEffect(() => {
 
-    function isTokenExpired() {
-      if (!jwtToken)return true; 
-      const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
-      const decoded = decodedToken.exp;
-      const currentTime = Date.now() / 1000;
-      return decoded < currentTime;
-    }
+    // function isTokenExpired() {
+    //   if (!jwtToken)return true; 
+    //   const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
+    //   const decoded = decodedToken.exp;
+    //   const currentTime = Date.now() / 1000;
+    //   return decoded < currentTime;
+    // }
     
     const headers = {
       Authorization: `Bearer ${jwtToken}`
     };
     const fetchData = async () => {
-      if (isTokenExpired()) {
+      // if (isTokenExpired()) {
         try {
           const response = await customAxios.get("/member/info", { headers });
+          console.log(response)
+          setLikes(response.data.data.likes);
+          setDisLikes(response.data.data.disLikes);
+          setPickPoint(response.data.data.pickPoint);
+          setLikeCount(response.data.data.likeCount);
           setEmojiUrl(response.data.data.emoji.imageUrl);
           setUseremoji(response.data.data.emoji.imageUrl);
           setBio(response.data.data.bio);
           setNickname(response.data.data.nickname);
           setPrefix(response.data.data.prefix.content);
+          setPrefixId(response.data.data.prefix.prefixId);
           const sendToMyPageData = {
             emojiUrl: response.data.data.emoji.imageUrl,
           };
@@ -86,19 +96,20 @@ const MyPage = () => {
             bio: bio,
             nickname: nickname,
             prefix: prefix,
+            prefixId: prefixId,
           }
           dispatch(authActions.updateMyPageProfile(sendToMyPageData));
           dispatch(authActions.updateUserNickname(sendToUserNicknameData));
         } catch (error) {
         }
-      } else {
-        const response = await customAxios.post("/auth/refresh", { headers });
-        const data = response.data.data;
-        console.log('hi', data);
-      }
+      // } else {
+      //   const response = await customAxios.post("/auth/refresh", { headers });
+      //   const data = response.data.data;
+      //   console.log('hi', data);
+      // }
     };
     fetchData(); // useEffect 내부에서 async 함수 호출
-  }, [dispatch, emojiUrl, useremoji, jwtToken, bio, nickname, prefix]);
+  }, [dispatch, emojiUrl, useremoji, jwtToken, bio, nickname, prefix,prefixId]);
   return (
     <div className={classes.mypage}>
       {logoutView && <LogOut setLogoutView={setLogoutView} />}
@@ -128,19 +139,19 @@ const MyPage = () => {
         <span>{prefix + " " + nickname}</span>
         {/* 프로필 수정 버튼 -> 컴포넌트 이동 */}
         {ModalOutSide ? <img src="img/pencil.png" alt="" /> :
-          <img src="img/pencil.png" alt="" onClick={onNicknameEdit} />
+          <img src="img/pencil.png" alt="" onClick={onNicknameEdit}/>
         }
       </div>
       <div className={classes.oneline}>
         <span>{bio}</span>
       </div>
       <div>
-        <PickAndLike />
+        <PickAndLike likeCount={likeCount} pickPoint={pickPoint}/>
         {/* pick 한 횟수, 좋아요 버튼 -> components 자리 */}
       </div>
       
       <hr className={classes.hr} />
-        <LikeAndHate ModalOutSide={ModalOutSide}/> 
+        <LikeAndHate ModalOutSide={ModalOutSide} likes={likes} disLikes={disLikes} /> 
       <hr className={classes.hr} />
 
       {/* 고객센터 */}
