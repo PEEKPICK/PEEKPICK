@@ -4,10 +4,97 @@
   margin-top: 10%;
   display: flex;
   justify-content: space-between;
+  z-index: 1;
+  animation: 0.2s ease-in-out loadEffect1;
 }
 
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  65% {
+    opacity: 0.65;
+    transform: scale(1.01);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 .button {
   border: none;
   cursor: pointer;
   background-color: transparent;
+}
+/* 거리설정 모달 */
+.distanceMain {
+  background-color: #ffffff;
+  border: none;
+  width: 78%;
+  height: 20%;
+  margin: 20% 5%;
+  border-radius: 0 1rem 1rem 1rem;
+  padding: 1.5rem 1.4rem;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.closeHeader {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+}
+
+.headerText {
+  display: flex;
+  margin-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: #c4c4c4;
+}
+.divider {
+  margin-top: 0.2rem;
+  height: 0.06rem;
+  background-color: #7d00ff;
+}
+
+/* 거리조절 라디오 */
+.radioBtnBox {
+  padding: 15% 0;
+}
+.radioBtn1 {
+  transform: scale(1.5);
+  margin-left: 4%;
+}
+.radioBtn2,
+.radioBtn3,
+.radioBtn4 {
+  transform: scale(1.5);
+  margin-left: 25%;
+}
+.radioBtnLine {
+  position: relative;
+  margin-top: 1rem;
+  width: 80%;
+  display: flex;
+  justify-content: flex-end;
+  height: 0.2rem;
+  background-color: #7d00ff;
 }
