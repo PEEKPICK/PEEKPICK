@@ -32,9 +32,6 @@ public class RedisConfig {
     @Value("${spring.redis.password}")
     private String password;
 
-    @Value("${spring.redis.password}")
-    private String password;
-
     /**
      * Redis 연결
      */
