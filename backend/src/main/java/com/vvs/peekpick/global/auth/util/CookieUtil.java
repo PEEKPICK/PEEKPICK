@@ -36,9 +36,9 @@ public class CookieUtil {
 
         response.addCookie(cookie);
 
-//        ResponseCookie cookie = ResponseCookie.from("None", "None")
+//        ResponseCookie cookie = ResponseCookie.from("refreshToken", value)
 //                .path("/")
-//                .domain("localhost")
+////                .domain("localhost")
 //                .httpOnly(true)
 //                .maxAge(60 * 60 * 24 * 365)
 //                .sameSite("None")

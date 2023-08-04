@@ -24,5 +24,9 @@ public class AvatarDto {
 
     private List<String> likes;
     private List<String> disLikes;
+
+    private int chatCount;
+    private int likeCount;
+    private int pickPoint; // 활동 지표
 }
 

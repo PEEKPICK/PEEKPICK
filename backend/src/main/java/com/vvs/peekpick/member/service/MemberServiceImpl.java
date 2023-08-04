@@ -92,10 +92,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아바타 정보 조회
+    // AvatarId 와 achievementId 는 같은게 보장된다.
     public AvatarDto getAvatarInfo(Long avatarId) {
         Avatar avatar = findByAvatarId(avatarId);
+        Achievement achievement = achievementRepository.findById(avatarId)
+                                                       .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
 
-        return avatar.toAvatarDto();
+        return avatar.toAvatarDto(achievement);
     }
 
     // 아바타 정보 수정
