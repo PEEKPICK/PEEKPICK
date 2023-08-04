@@ -1,15 +1,10 @@
 package com.vvs.peekpick.global.filter;
 
-import com.vvs.peekpick.entity.RefreshToken;
 import com.vvs.peekpick.exception.CustomException;
-import com.vvs.peekpick.exception.ExceptionStatus;
-import com.vvs.peekpick.global.auth.dto.MemberInfoToken;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
-import com.vvs.peekpick.member.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,7 +16,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
