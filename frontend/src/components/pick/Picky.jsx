@@ -1,9 +1,13 @@
+import Header from "./Header";
+import Finder from "./Finder";
+
 import classes from "./Picky.module.css";
 
 function Picky() {
   return (
     <div className={classes.pickyMain}>
-      <h1>Picky</h1>
+      <Header></Header>
+      <Finder></Finder>
     </div>
   );
 }
