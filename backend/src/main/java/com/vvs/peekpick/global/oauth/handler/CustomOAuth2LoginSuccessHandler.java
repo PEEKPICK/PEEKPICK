@@ -53,7 +53,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             .build();
 
             Member signupMember = memberRepository.save(newMember);
-            redirectUrl += "?id=" + signupMember.getMemberId();
+            redirectUrl += "/userInfo?id=" + signupMember.getMemberId();
         } else {
             Member findMember = member.get();
 
