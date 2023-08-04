@@ -22,7 +22,7 @@ import HateEdit from "./components/mypages/HateEdit";
 import Profile from "./components/mypages/Profile";
 // 동민
 import Picker from "./components/pick/Picker";
-import Picky from "./components/pick/Picky";
+import Peek from "./components/pick/Peek";
 // 기타공용
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
@@ -91,7 +91,7 @@ function App() {
             <>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Picker />} />
-                <Route path="picky" element={<Picky />} />
+                <Route path="peek" element={<Peek />} />
                 {/* 용범  */}
                 <Route path="mypage" element={<MyPage />} />
               </Route>
