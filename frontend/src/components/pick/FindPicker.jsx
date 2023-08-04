@@ -5,6 +5,7 @@ import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
 import PickLocation from "./PickLocation";
 import { locationActions } from "../../store/locationSlice";
+// import { GeoLocation } from "./GeoLocation";
 
 const FindPicker = () => {
   const dispatch = useDispatch();
@@ -20,14 +21,14 @@ const FindPicker = () => {
 
   const emojiCall = (requestBody) => {
     customAxios.post("/picker", requestBody).then((response) => {
-      console.log("넘어온 피커 : ", response);
-      // const userArrayOrigin = response.data.data;
-      const userArrayOrigin = response.data.data.data;
+      // console.log("넘어온 피커 : ", response);
+      const userArrayOrigin = response.data.data;
+      // const userArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기
-      const maxEmojisToShow = 8;
+      const maxEmojisToShow = 10;
       //정보 저장
       const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-      console.log("넘어온 limitedUserArray: ", limitedUserArray);
+      // console.log("넘어온 limitedUserArray: ", limitedUserArray);
       dispatch(findUserActions.updateUserInfo(limitedUserArray));
     });
   };
@@ -39,7 +40,6 @@ const FindPicker = () => {
           // 위치값을 Redux store에 저장합니다.
           dispatch(
             locationActions.updateLoc({
-              memberId: 11,
               point: {
                 x: position.coords.longitude,
                 y: position.coords.latitude,

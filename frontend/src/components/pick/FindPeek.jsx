@@ -5,6 +5,7 @@ import classes from "./FindPicker.module.css";
 import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
 import { locationActions } from "../../store/locationSlice";
+// import { GeoLocation } from "./GeoLocation";
 
 const FindPeek = () => {
   const dispatch = useDispatch();
@@ -19,14 +20,14 @@ const FindPeek = () => {
 
   const emojiCall = (requestBody) => {
     customAxios.post("/peek", requestBody).then((response) => {
-      console.log("넘어온 피크 : ", response);
-      // const peekArrayOrigin = response.data.data;
-      const peekArrayOrigin = response.data.data.data;
+      // console.log("넘어온 피크 : ", response);
+      const peekArrayOrigin = response.data.data;
+      // const peekArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기
       const maxEmojisToShow = 8;
       //정보 저장
       const limitedPeekArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-      console.log("넘어온 limitedPeekArray", limitedPeekArray);
+      // console.log("넘어온 limitedPeekArray", limitedPeekArray);
       dispatch(findPeekActions.updatePeekInfo(limitedPeekArray));
     });
   };
