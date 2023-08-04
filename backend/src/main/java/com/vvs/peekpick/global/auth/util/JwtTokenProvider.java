@@ -31,6 +31,7 @@ public class JwtTokenProvider {
         // 아바타 ID, Provider로 검증
         Map<String, Object> payloads = new HashMap<>();
         payloads.put("avatarId", Long.toString(member.getAvatar().getAvatarId()));
+        payloads.put("memberId", Long.toString(member.getMemberId()));
         payloads.put("provider", member.getProvider());
 
         return Jwts.builder()
@@ -102,5 +103,14 @@ public class JwtTokenProvider {
                 .getBody();
 
         return (String)claims.get("provider");
+    }
+
+    public Long getIdFromToken(String token, String name) {
+        Claims claims = Jwts.parser()
+                .setSigningKey(SECRET_KEY.getBytes())
+                .parseClaimsJws(token)
+                .getBody();
+
+        return Long.parseLong((String)claims.get(name));
     }
 }

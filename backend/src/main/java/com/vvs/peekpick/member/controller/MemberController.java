@@ -2,6 +2,7 @@ package com.vvs.peekpick.member.controller;
 
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.global.auth.dto.MemberInfoToken;
 import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.member.dto.AvatarDto;
@@ -86,6 +87,7 @@ public class MemberController {
     public CommonResponse updateAvatarInfo(Authentication authentication,
                                            @RequestBody Map<String, String> param) {
         Long avatarId = Long.parseLong(authentication.getName());
+
         memberService.updateAvatarInfo(avatarId, param);
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }

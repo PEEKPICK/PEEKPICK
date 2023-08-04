@@ -3,6 +3,7 @@ package com.vvs.peekpick.global.filter;
 import com.vvs.peekpick.entity.RefreshToken;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.global.auth.dto.MemberInfoToken;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.member.repository.RefreshTokenRepository;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,7 +32,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     public static final String TOKEN_EXCEPTION_KEY = "exception";
     public static final String TOKEN_INVALID = "invalid";
@@ -49,11 +49,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
 
                 // AccessToken에서 기존 값 꺼내기
-                Long avatarId = jwtTokenProvider.getAvatarIdFromToken(accessToken);
+                Long avatarId = jwtTokenProvider.getIdFromToken(accessToken, "avatarId");
+                Long memberId = jwtTokenProvider.getIdFromToken(accessToken, "memberId");
 
                 // avatarId만 넘겨준다.
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(avatarId, null, null);
+                        new UsernamePasswordAuthenticationToken(avatarId, memberId, null);
+
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
