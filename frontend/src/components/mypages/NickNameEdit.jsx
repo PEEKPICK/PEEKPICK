@@ -7,10 +7,10 @@ const NickNameEdit = forwardRef((props, ref) => {
   let wrapperRef = useRef();
   // 리덕스에 있는 자료 미리 넣어놓기
   const userInfo = useSelector(state => state.auth);
-  const [prefix, setPrefix] = useState("");
-  const [prefixId, setPrefixId] = useState('');
-  const [nickname, setNickname] = useState('');
-  const [bio, setbio] = useState('');
+  const [prefix, setPrefix] = useState(userInfo.prefix);
+  const [prefixId, setPrefixId] = useState(userInfo.prefixId);
+  const [nickname, setNickname] = useState(userInfo.nickname);
+  const [bio, setbio] = useState(userInfo.bio);
 
   // 로그인 자료
   const jwtToken = localStorage.getItem('jwtToken');
@@ -20,10 +20,6 @@ const NickNameEdit = forwardRef((props, ref) => {
 
   // 리덕스
   const dispatch = useDispatch();
-  if (bio.length >= 20) {
-    alert("한 줄 소개에는 20단어 이상이 허용되지 않습니다.")
-    setbio("");
-  }
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -46,32 +42,38 @@ const NickNameEdit = forwardRef((props, ref) => {
     props.setNicknameView(false);
   }
 
+  const profile = {
+    "prefixId": prefixId,
+    "nickname": nickname,
+    "bio" : bio,
+    "prefix":prefix,
+  }
   const titleChange = () => {
     customAxios.get("/member/prefix")
       .then((response) => {
-        console.log(response)
         setPrefix(response.data.data.content)
         setPrefixId(response.data.data.prefixId)
+        dispatch(authActions.updateUserNickname(profile))
       })
   }
 
-
+  const maxLengthHandler = (e, max) => {
+    if (e.target.value.length > max) {
+      e.target.value = e.target.value.substr(0, max);
+    }
+  };
   const changeProfile = () => {
     // 리덕스 코드 집어넣기
-    const profile = {
-      "prefixId": prefixId,
-      "nickname": nickname,
-      "bio" : bio,
-    }
     customAxios.put("/member/info", profile, {headers})
       .then((response) => {
         dispatch(authActions.updateUserNickname(profile))
-        dispatch(authActions.updateUserNickname({prefix:prefix}))
-        // window.location.reload('/mypage');
         props.setNicknameView(false);
         props.propPrefix(prefix);
         props.propBio(bio);
         props.propNickname(nickname);
+      })
+      .catch((error)=>{
+        console.log(error)
       })
   }
   return (
@@ -97,7 +99,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         <h4>닉네임</h4>
         {/* 입력 받은 정보 props로 전달해야하기 때문에 이 부분 공부 */}
         <div className={classes.nickname}>
-        <input type="text" value={nickname} placeholder={userInfo.nickname} onChange={handleNicknameChange} />
+        <input type="text" placeholder={userInfo.nickname} onChange={handleNicknameChange} onInput={e => maxLengthHandler(e, 6)}/>
         </div>
       </div>
       <div>
@@ -105,7 +107,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         {/* 이 부분도 닉네임과 타이틀 동일하게 잘 전달해야함! */}
         <div className={classes.bio}>
 
-        <input type="text" value={bio}  placeholder={userInfo.bio} onChange={handlebio} />
+        <input type="text"  placeholder={userInfo.bio} onChange={handlebio} onInput={e => maxLengthHandler(e, 20)}/>
         </div>
       </div>
       {/* 클릭시 props로 마이페이지에 값 전달 */}
