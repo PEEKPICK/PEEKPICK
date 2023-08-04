@@ -27,14 +27,17 @@ public enum ResponseStatus {
     ADD_SUCCESS("2002", "PEEK 추가 완료"),
     DELETE_SUCCESS("2003", "PEEK 삭제 완료"),
     ADD_REACTION_SUCCESS("2004", "PEEK 반응 추가 완료"),
-    PEEK_FAILURE("9000", "Fail"),
+    PEEK_FAILURE("4000", "Fail"),
+    DELETE_FAILURE("4003", "PEEK 작성자가 아닙니다."),
 
     /* Report */
-    GET_CATEGORY_SUCCESS("9000", "신고 카테고리 조회 완료"),
-    REGISTER_REPORT_SUCCESS("9001", "신고 등록 완료"),
+    GET_CATEGORY_SUCCESS("8000", "신고 카테고리 조회 완료"),
+    REGISTER_REPORT_SUCCESS("8001", "신고 등록 완료"),
+    REPORT_FAILURE("9001",  "본인은 신고 불가"),
 
     /* 채팅 */
     CHATROOM_EXIT_SUCCESS("4000", "채팅방을 나갔습니다.");
+
     private final String code;
     private final String message;
 }

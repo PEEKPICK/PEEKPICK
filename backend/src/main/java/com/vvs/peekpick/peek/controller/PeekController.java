@@ -28,8 +28,8 @@ public class PeekController {
 
     //내 주변 peek 가져오기
     @PostMapping
-    public ResponseEntity<DataResponse> findNearPeek(@RequestBody RequestSearchPeekDto requestSearchPeekDto) {
-        Long memberId = 2L;
+    public ResponseEntity<DataResponse> findNearPeek(Authentication authentication, @RequestBody RequestSearchPeekDto requestSearchPeekDto) {
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
         return ResponseEntity.ok(peekRedisService.findNearPeek(memberId, requestSearchPeekDto));
     }
 
@@ -40,11 +40,12 @@ public class PeekController {
             @RequestPart("peek") RequestPeekDto requestPeekDto,
             @RequestPart("img") MultipartFile img) {
         try {
-            Long avatarId = Long.parseLong(authentication.getName());
+            Long memberId = Long.parseLong(authentication.getCredentials().toString());
+
             // 파일을 S3에 저장하고 URL 가져옴
             String imageUrl = awsS3Util.s3SaveFile(img);
             // RDB, Redis에 Peek 정보를 저장
-            return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto, imageUrl));
+            return ResponseEntity.ok(peekRedisService.addPeek(memberId, requestPeekDto, imageUrl));
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return null; //추후 예외 처리 추가 필요
@@ -56,29 +57,30 @@ public class PeekController {
     @GetMapping("/{peekId}")
     public ResponseEntity<DataResponse> getPeek(Authentication authentication, @PathVariable Long peekId) {
         Long avatarId = Long.parseLong(authentication.getName());
-        return ResponseEntity.ok(peekRedisService.getPeek(avatarId, peekId));
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        return ResponseEntity.ok(peekRedisService.getPeek(memberId, avatarId, peekId));
     }
 
     // 특정 peek 삭제
     @DeleteMapping("/{peekId}")
-    public ResponseEntity<CommonResponse> deletePeek(@PathVariable Long peekId) {
-        return ResponseEntity.ok(peekRedisService.deletePeek(peekId));
+    public ResponseEntity<CommonResponse> deletePeek(Authentication authentication, @PathVariable Long peekId) {
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        return ResponseEntity.ok(peekRedisService.deletePeek(memberId, peekId));
     }
 
     // 특정 peek 좋아요/싫어요
     @PostMapping("/{peekId}")
-    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {//@AuthenticationPrincipal Principal principal
-        Long memberId = 2L;//principal.getName();
+    public ResponseEntity<CommonResponse> addReaction(Authentication authentication, @PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {//@AuthenticationPrincipal Principal principal
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
         boolean like = Boolean.parseBoolean(reaction.get("like").toString());
-        return ResponseEntity.ok(peekRedisService.addReaction(peekId, memberId, like));
+        return ResponseEntity.ok(peekRedisService.addReaction(memberId, peekId, like));
     }
 
 
     // 특정 peek 신고
     @PostMapping("/report/{peekId}")
-    public ResponseEntity<CommonResponse> reportPeek(@PathVariable Long peekId, @RequestBody RequestReportDto requestReportDto) { //@AuthenticationPrincipal Principal principal
-        Long memberId = 2L; //principal.getName();
-        System.out.println(requestReportDto);
+    public ResponseEntity<CommonResponse> reportPeek(Authentication authentication, @PathVariable Long peekId, @RequestBody RequestReportDto requestReportDto) { //@AuthenticationPrincipal Principal principal
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
         return ResponseEntity.ok(peekRedisService.registerReport(memberId, peekId, requestReportDto));
     }
 }

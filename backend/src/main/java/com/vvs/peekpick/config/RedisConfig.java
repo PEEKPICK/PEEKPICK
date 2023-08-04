@@ -27,6 +27,9 @@ public class RedisConfig {
 
     @Value("${spring.redis.port}")
     private int port;
+    
+    @Value("${spring.redis.password}")
+    private String password;
 
     /**
      * Redis 연결
@@ -87,31 +90,5 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-
-//    // MessageListenerAdapter : 메시지를 받아 처리하는 콜백 메서드를 제공
-//    @Bean
-//    RedisMessageListenerContainer redisContainer() {
-//        final RedisMessageListenerContainer container = new RedisMessageListenerContainer(); //RedisMessageListenerContainer : 메시지를 수신하여 리스너에 전달
-//        container.setConnectionFactory(redisConnectionFactory());
-//        container.addMessageListener(listenerAdapter(), new PatternTopic("__keyevent@*__:expired"));
-//        return container;
-//    }
-//
-//    @Bean
-//    MessageListenerAdapter listenerAdapter() {
-//        return new MessageListenerAdapter(new MessageSubscriber());
-//    }
-//    private final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
-//    //MessageSubscriber는 onMessage 메서드를 통해 메시지를 수신하며, 메시지는 만료된 키의 이름입니다. 키가 "Peek"로 시작하면 키의 ID를 추출하고 해당 ID의 peek를 삭제합니다.
-//    class MessageSubscriber implements MessageListener {
-//        @Override
-//        public void onMessage(final Message message, final byte[] pattern) {
-//            String expiredKey = message.toString();
-//            if (expiredKey.startsWith(PEEK_REDIS)) {
-//                Long peekId = Long.valueOf(expiredKey.split(":")[1]);
-//                peekRedisService.deleteLocation(peekId);
-//            }
-//        }
-//    }
 
 }

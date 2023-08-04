@@ -35,6 +35,19 @@ public class Avatar {
     @OneToMany(mappedBy = "avatar")
     private List<Taste> tasteList;
 
+    @Override
+    public String toString() {
+        return "Avatar{" +
+                "avatarId=" + avatarId +
+                ", nickname='" + nickname + '\'' +
+                ", bio='" + bio + '\'' +
+                ", emoji=" + emoji +
+                ", prefix=" + prefix +
+                ", world=" + world +
+                ", tasteList=" + tasteList +
+                '}';
+    }
+
     public void updateAvatarInfo(Prefix prefix, String nickname, String bio) {
         this.prefix = prefix;
         this.nickname = nickname;

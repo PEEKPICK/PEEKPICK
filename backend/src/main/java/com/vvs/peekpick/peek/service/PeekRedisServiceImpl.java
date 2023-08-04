@@ -1,9 +1,6 @@
 package com.vvs.peekpick.peek.service;
 
-import com.vvs.peekpick.entity.Member;
-import com.vvs.peekpick.entity.Peek;
-import com.vvs.peekpick.entity.Report;
-import com.vvs.peekpick.entity.ReportCategory;
+import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.peek.dto.*;
 import com.vvs.peekpick.report.dto.RequestReportDto;
 import com.vvs.peekpick.report.service.ReportService;
@@ -51,6 +48,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     private final PeekMemberService peekMemberService;
     private final PeekService peekService;
     private final ReportService reportService;
+    private final PeekAvatarService peekAvatarService;
 
     @PostConstruct
     public void init() {
@@ -60,12 +58,55 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse addPeek(RequestPeekDto requestPeekDto, String imageUrl) {
+    public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
+        try {
+            // 반경 m로 원 생성
+            Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
+            // 해당 원 안에 위치하는 PeekLocation 값들
+            GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
+
+            // 모든 값 가져온 뒤
+            List<ResponsePeekListDto> allPeeks = new ArrayList<>();
+            for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
+                String peekId = peekLocation.getContent().getName().toString();
+                PeekRedisDto peekRedisDto = (PeekRedisDto) valueOps.get(PEEK_REDIS + peekId);
+                boolean isViewed = setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
+                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                        .peekId(peekRedisDto.getPeekId())
+                        .special(peekRedisDto.isSpecial())
+                        .viewed(peekRedisDto.isViewed())
+                        .build();
+                allPeeks.add(responsePeekListDto);
+            }
+
+
+            // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
+            List<ResponsePeekListDto> randomPeeks;
+            if(allPeeks.size() <= MAX_PEEK){
+                randomPeeks = allPeeks;
+            } else {
+                randomPeeks = new ArrayList<>();
+                for (int i = 0; i < MAX_PEEK; i++) {
+                    int randomIndex = random.nextInt(allPeeks.size());
+                    randomPeeks.add(allPeeks.get(randomIndex));
+                    allPeeks.remove(randomIndex);
+                }
+            }
+            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
+        }
+        catch (Exception e) {
+            return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
+        }
+    }
+
+    @Override
+    public CommonResponse addPeek(Long memberId, RequestPeekDto requestPeekDto, String imageUrl) {
         System.out.println(requestPeekDto);
         try {
+            Member writer = peekMemberService.findMember(memberId);
             //RDB에 저장하기 위한 Peek 객체
             Peek peek = Peek.builder()
-                    .member(peekMemberService.findMember(requestPeekDto.getMemberId()))
+                    .member(writer)
                     .content(requestPeekDto.getContent())
                     .disLikeCount(0)
                     .likeCount(0)
@@ -79,7 +120,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             //redis에 저장하기 위한 Peek 객체 생성
             PeekRedisDto peekRedisDto = PeekRedisDto.builder()
                     .peekId(peekId)
-                    .memberId(requestPeekDto.getMemberId()) //작성자
+                    .memberId(writer.getMemberId())
                     .content(requestPeekDto.getContent())
                     .imageUrl(imageUrl)
                     .likeCount(0)
@@ -105,7 +146,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
 
     @Override
-    public DataResponse getPeek(Long memberId, Long peekId) {
+    public DataResponse getPeek(Long memberId, Long avatarId, Long peekId) {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
@@ -120,10 +161,10 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
             boolean isDisLiked = setOps.isMember("member:" + memberId + ":disLiked", String.valueOf(peekId));
 
+            System.out.println(setOps.members(key));
             // 응답해줄 Peek 객체
-            ResponsePeekDetailDto responsePeekDetailDto = ResponsePeekDetailDto.builder()
+            PeekDetailDto peekDetailDto = PeekDetailDto.builder()
                     .peekId(peekRedisDto.getPeekId())
-                    .memberId(peekRedisDto.getMemberId())
                     .content(peekRedisDto.getContent())
                     .imageUrl(peekRedisDto.getImageUrl())
                     .likeCount(peekRedisDto.getLikeCount())
@@ -132,8 +173,24 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .liked(isLiked)
                     .disLiked(isDisLiked)
                     .build();
-            if(responsePeekDetailDto == null) return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
-            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, responsePeekDetailDto);
+
+            Avatar avatar = peekAvatarService.findAvatar(avatarId);
+            PeekAvatarDto peekAvatarDto = PeekAvatarDto.builder()
+                    .avatarId(avatarId)
+                    .nickname(avatar.getNickname())
+                    .bio(avatar.getBio())
+                    .emoji(avatar.getEmoji())
+                    .prefix(avatar.getPrefix())
+                    .build();
+            System.out.println(peekDetailDto);
+            System.out.println(peekAvatarDto);
+
+            ResponsePeekDto responsePeekDto = ResponsePeekDto.builder()
+                    .peekDetailDto(peekDetailDto)
+                    .peekAvatarDto(peekAvatarDto)
+                    .build();
+
+            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, responsePeekDto);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -142,8 +199,15 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse deletePeek(Long peekId) {
+    public CommonResponse deletePeek(Long memberId, Long peekId) {
         try {
+            Long writerId = peekService.findPeek(peekId).getMember().getMemberId();
+
+            // writerId와 memberId가 동일한지 확인
+            if(!writerId.equals(memberId)) {
+                return responseService.failureCommonResponse(ResponseStatus.DELETE_FAILURE);
+            }
+
             // 삭제 전 rdb에 update
             PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
             peekService.updatePeek(peekRedisDto.getPeekId(), peekRedisDto.getLikeCount(), peekRedisDto.getDisLikeCount());
@@ -159,7 +223,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     }
 
     @Override
-    public CommonResponse addReaction(Long peekId, Long memberId, boolean like) {
+    public CommonResponse addReaction(Long memberId, Long peekId, boolean like) {
         try {
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
@@ -207,47 +271,6 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         }
     }
 
-    @Override
-    public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
-        try {
-            // 반경 m로 원 생성
-            Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
-            // 해당 원 안에 위치하는 PeekLocation 값들
-            GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
-
-            // 모든 값 가져온 뒤
-            List<ResponsePeekListDto> allPeeks = new ArrayList<>();
-            for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
-                String peekId = peekLocation.getContent().getName().toString();
-                PeekRedisDto peekRedisDto = (PeekRedisDto) valueOps.get(PEEK_REDIS + peekId);
-                boolean isViewed = setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
-                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                        .peekId(peekRedisDto.getPeekId())
-                        .special(peekRedisDto.isSpecial())
-                        .viewed(peekRedisDto.isViewed())
-                        .build();
-                allPeeks.add(responsePeekListDto);
-            }
-
-
-            // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
-            List<ResponsePeekListDto> randomPeeks;
-            if(allPeeks.size() <= MAX_PEEK){
-                randomPeeks = allPeeks;
-            } else {
-                randomPeeks = new ArrayList<>();
-                for (int i = 0; i < MAX_PEEK; i++) {
-                    int randomIndex = random.nextInt(allPeeks.size());
-                    randomPeeks.add(allPeeks.get(randomIndex));
-                    allPeeks.remove(randomIndex);
-                }
-            }
-            return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
-        }
-        catch (Exception e) {
-            return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
-        }
-    }
 
     @Override
     public CommonResponse registerReport(Long memberId, Long peekId, RequestReportDto requestReportDto) {
@@ -258,6 +281,10 @@ public class PeekRedisServiceImpl implements PeekRedisService {
         Member member = peekMemberService.findMember(memberId);
         // memberId를 사용하여 Member 엔티티를 조회 (피신고자)
         Member victim = peekMemberService.findMember(peekRedisDto.getMemberId());
+
+        if(victim.getMemberId().equals(member.getMemberId())) {
+            return responseService.failureCommonResponse(ResponseStatus.REPORT_FAILURE);
+        }
 
         ReportCategory reportCategory = reportService.findReportCategory(requestReportDto.getReportCategoryId());
 
