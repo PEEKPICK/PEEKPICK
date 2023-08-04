@@ -84,11 +84,19 @@ const LikeEdit = () => {
 
   // 좋아요한 리스트 저장 후, 취향PICK창으로 이동
   const selectedFinish = () => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+    }
     const changedLikes = {
       likes: tempMiddleList,
-      like: middleItem,
+      // like: middleItem,
     }
-    dispatch(authActions.updateUserLike(changedLikes))
+    console.log(tempMiddleList)
+    customAxios.put('/member/info/like', changedLikes, { headers })
+      .then((response) => {
+        console.log(response)
+      })
     navigate('/mypage');
   };
 
