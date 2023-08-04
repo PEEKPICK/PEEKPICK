@@ -6,7 +6,7 @@ function Peek() {
   return (
     <div className={classes.pickerMain}>
       <Header></Header>
-      {/* <FindPeek></FindPeek> */}
+      <FindPeek></FindPeek>
     </div>
   );
 }

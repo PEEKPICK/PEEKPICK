@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./EmojiLocation.module.css";
-import ModalComp from "./ModalComp";
+// import ModalComp from "./ModalComp";
 
 const EmojiLocation = ({ findInfo, checkVer }) => {
   const dispatch = useDispatch();
