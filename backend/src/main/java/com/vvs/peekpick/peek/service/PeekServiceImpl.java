@@ -23,4 +23,11 @@ public class PeekServiceImpl implements PeekService{
         return peekRepository.findById(peekId)
                 .orElseThrow(() -> new IllegalArgumentException("Peek not found"));
     }
+
+    @Override
+    @Transactional
+    public void updatePeek(Long peekId, int like, int dislike) {
+        Peek beforePeek = findPeek(peekId);
+        beforePeek.updateCounts(like, dislike);
+    }
 }

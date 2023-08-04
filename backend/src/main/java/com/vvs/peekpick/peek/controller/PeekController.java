@@ -32,19 +32,18 @@ public class PeekController {
         return ResponseEntity.ok(peekRedisService.findNearPeek(memberId, requestSearchPeekDto));
     }
 
-
     // peek 작성
     @PostMapping(value = "/write", consumes = {"multipart/form-data"})
     public ResponseEntity<CommonResponse> addPeek(
             @RequestPart("peek") RequestPeekDto requestPeekDto,
-            @RequestPart("file") MultipartFile file) {
+            @RequestPart("img") MultipartFile img) {
         try {
             // 파일을 S3에 저장하고 URL 가져옴
-            String imageUrl = awsS3Util.s3SaveFile(file);
+            String imageUrl = awsS3Util.s3SaveFile(img);
             // RDB, Redis에 Peek 정보를 저장
             return ResponseEntity.ok(peekRedisService.addPeek(requestPeekDto, imageUrl));
         } catch (Exception e) {
-            return null;
+            return null; //추후 예외 처리 추가 필요
         }
     }
 

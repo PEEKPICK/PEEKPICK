@@ -30,4 +30,9 @@ public class Peek {
 
     private LocalDateTime writeTime;
 
+    public void updateCounts(int like, int dislike) {
+        this.likeCount = like;
+        this.disLikeCount = dislike;
+    }
+
 }

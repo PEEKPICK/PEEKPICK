@@ -88,11 +88,13 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .special(false)
                     .viewed(false)
                     .build();
+
             //redis에 Peek Location 값 저장 & ttl 설정
             geoOps.add(PEEK_LOCATION_REDIS, new Point(requestPeekDto.getLongitude(), requestPeekDto.getLatitude()), peekId.toString());
             locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(PEEK_ORIGIN_TIME));
             //redis에 Peek 저장 & ttl 설정
             peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(PEEK_ORIGIN_TIME));
+
             return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
         }
         catch (Exception e) {
@@ -108,7 +110,10 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
-            setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
+            String key = "member:" + memberId + ":viewed";
+            setOps.add(key, String.valueOf(peekId));
+            // 해당 키에 대한 TTL 설정 (24시간)
+            peekTemplate.expire(key, Duration.ofHours(24));
 
             // 현재 사용자의 해당 Peek의 좋아요 / 싫어요 여부 판별
             boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
@@ -126,6 +131,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .liked(isLiked)
                     .disLiked(isDisLiked)
                     .build();
+            if(responsePeekDetailDto == null) return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_SUCCESS, responsePeekDetailDto);
         }
         catch (Exception e) {
@@ -137,6 +143,10 @@ public class PeekRedisServiceImpl implements PeekRedisService {
     @Override
     public CommonResponse deletePeek(Long peekId) {
         try {
+            // 삭제 전 rdb에 update
+            PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+            peekService.updatePeek(peekRedisDto.getPeekId(), peekRedisDto.getLikeCount(), peekRedisDto.getDisLikeCount());
+
             // redis에서 Peek Location, Peek 둘 다 삭제
             geoOps.remove(PEEK_LOCATION_REDIS, peekId.toString());
             peekTemplate.delete(PEEK_REDIS + peekId);
@@ -155,19 +165,21 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             LocalDateTime updatedFinishTime = peekRedisDto.getFinishTime(); //해당 Peek의 종료 시간
             boolean special = peekRedisDto.isSpecial(); //Hot Peek 여부
 
-            String react = like ? "member:" + memberId + ":liked" : "member:" + memberId + ":disLiked";
+            String key = "member:" + memberId + (like ? ":liked" : ":disLiked");
             int likeCnt = peekRedisDto.getLikeCount();
             int disLikeCnt = peekRedisDto.getDisLikeCount();
 
             //사용가 해당 Peek의 react를 On -> Off
-            if (setOps.isMember(react, String.valueOf(peekId))) {
-                setOps.remove(react, String.valueOf(peekId));
+            if (setOps.isMember(key, String.valueOf(peekId))) {
+                setOps.remove(key, String.valueOf(peekId));
                 if(like) likeCnt--;
                 else disLikeCnt--;
             }
             //사용가 해당 Peek의 react를 Off -> On
+            // 해당 키에 대한 TTL 설정 (24시간)
             else {
-                setOps.add(react, String.valueOf(peekId));
+                setOps.add(key, String.valueOf(peekId));
+                peekTemplate.expire(key, Duration.ofHours(24));
                 updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
                 if(like) likeCnt++;
                 else disLikeCnt++;
