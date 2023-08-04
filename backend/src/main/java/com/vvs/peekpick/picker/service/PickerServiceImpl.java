@@ -64,10 +64,6 @@ public class PickerServiceImpl implements PickerService {
     public CommonResponse connectSession(ConnectingPickerDto picker) {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         geoOperations.add(CONNECT_SESSION, picker.getPoint(), String.valueOf(picker.getAvatarId()));
-
-        // TODO JWT Token 으로부터 추출하여 SSE Emitter 전환 예정
-//        responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
-
         return responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
     }
 
