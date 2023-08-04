@@ -15,12 +15,7 @@ const Login = () => {
 
   // 테스트 버튼
   const test = (id) => {
-    const dummy = {
-      id: 1,
-      content: '더미입니다.'
-    }
-
-    customAxios.post(`/member/login?id=test${id}`, dummy)
+    customAxios.post(`/member/login?id=test${id}`)
       .then(response => {
         if (response.data.code === 200) {
           const token = response.data.data
