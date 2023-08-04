@@ -3,6 +3,7 @@ package com.vvs.peekpick.member.service;
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
@@ -36,32 +37,24 @@ public class MemberServiceImpl implements MemberService {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    /**
-     * 회원가입
-     * @param signUpDto
-     * 신규 회원이 발생 시
-     * 1. Avatar 생성
-     * 2. 업적 생성
-     * 3. 회원 생성
-     * 4. 취향 태그 등록
-     */
+    // 회원가입
+    // memberId 존재로 가회원, 일반 로직을 나누어 처리
     public Token signup(SignUpDto signUpDto) {
-        Avatar avatar = createAvatar(signUpDto);
-        Achievement achievement = createAchievement();
+        Member member;
 
-        Member findMember = memberRepository.findById(signUpDto.getMemberId())
-                                                               .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_USER));
+        // 가회원 회원가입
+        if (signUpDto.getMemberId() != null) {
+            member = provisionalSignup(signUpDto);
+        }
+        // 일반 회원 가입
+        else {
+            member = createMember(signUpDto);
+        }
 
-        findMember.updateMember(signUpDto, avatar, achievement);
-
-        addTastes(signUpDto, avatar);
-
-        // 회원가입 성공
-        String accessToken = jwtTokenProvider.createAccessToken(findMember);
+        // 토큰 처리
+        String accessToken = jwtTokenProvider.createAccessToken(member);
         String refreshToken = jwtTokenProvider.createRefreshToken();
-
-        // RefreshToken DB 저장
-        saveRefreshToken(avatar, refreshToken);
+        saveRefreshToken(member.getAvatar(), refreshToken);
 
         return new Token(accessToken, refreshToken);
     }
@@ -99,10 +92,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아바타 정보 조회
+    // AvatarId 와 achievementId 는 같은게 보장된다.
     public AvatarDto getAvatarInfo(Long avatarId) {
         Avatar avatar = findByAvatarId(avatarId);
+        Achievement achievement = achievementRepository.findById(avatarId)
+                                                       .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
 
-        return avatar.toAvatarDto();
+        return avatar.toAvatarDto(achievement);
     }
 
     // 아바타 정보 수정
@@ -139,6 +135,14 @@ public class MemberServiceImpl implements MemberService {
         updateTaste(avatar, "L", likes);
     }
 
+    // 로그아웃
+    @Override
+    public void logout(Long avatarId) {
+        refreshTokenRepository.deleteByAvatarId(avatarId);
+    }
+
+    // 취향 태그 수정
+    // 기존 태그 삭제 후 신규 태그 추가
     private void updateTaste(Avatar avatar, String type, List<Long> categoryIds) {
 
         // 기존 Tastes 가져오기
@@ -262,5 +266,19 @@ public class MemberServiceImpl implements MemberService {
                                          .avatar(avatar)
                                          .token(refreshToken).build();
         refreshTokenRepository.save(token);
+    }
+
+    // 가회원 로직
+    private Member provisionalSignup(SignUpDto signUpDto) {
+        Avatar avatar = createAvatar(signUpDto);
+        Achievement achievement = createAchievement();
+
+        Member member = memberRepository.findById(signUpDto.getMemberId())
+                .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_USER));
+
+        member.updateMember(signUpDto, avatar, achievement);
+        addTastes(signUpDto, avatar);
+
+        return member;
     }
 }
