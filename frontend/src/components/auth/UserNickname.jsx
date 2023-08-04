@@ -1,5 +1,7 @@
 import { customAxios } from '../../api/customAxios';
 
+import InfoModal from './InfoModal';
+
 import { useState } from 'react';
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +15,7 @@ const UserNickname = () => {
   const [prefix, setPrefix] = useState('37');
   const [content, setContent] = useState('아빠같은');
   const [nickname, setNickname] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   // redux, router 처리
   const navigate = useNavigate();
@@ -31,22 +34,36 @@ const UserNickname = () => {
       })
   };
 
-  // 유저 취향 PICK 페이지 이동
-  const moveToUserLikeHate = () => {
-    const changedNickname = {
-      prefixId: prefix,
-      nickname: nickname,
-    }
-    dispatch(authActions.updateUserNickname(changedNickname));
-    navigate('/userlikehate')
-  }
-
   // 닉네임 6글자 제한 함수
   const maxLengthHandler = (e, max) => {
     if (e.target.value.length > max) {
       e.target.value = e.target.value.substr(0, max);
     }
-  }
+  };
+
+  // 모달검사 함수
+  const isAnyFieldEmpty = () => {
+    return !(nickname);
+  };
+
+  // 모달종료 함수
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // 유저 취향 PICK 페이지 이동
+  const moveToUserLikeHate = () => {
+    if (isAnyFieldEmpty()) {
+      setShowModal(true);
+    } else {
+      const changedNickname = {
+      prefixId: prefix,
+      nickname: nickname,
+    }
+    dispatch(authActions.updateUserNickname(changedNickname));
+    navigate('/userlikehate');
+    }
+  };
 
   return (
     <div className={common.container}>
@@ -98,6 +115,7 @@ const UserNickname = () => {
       <div>
         <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
       </div>
+      {showModal && <InfoModal onClose={closeModal} />}
     </div>
   );
 }

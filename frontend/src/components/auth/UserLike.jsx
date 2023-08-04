@@ -39,12 +39,12 @@ const UserLike = () => {
     customAxios.get('/member/taste')
       .then(response => {
         setDataAxios(true);
-        setLikeList(response.data.data)
+        setLikeList(response.data.data);
       })
       .catch(error => {
-        console.log(error)
+        console.log(error);
       })
-  }, [])
+  }, []);
 
   // 대분류 선택 시 중분류 가져오기
   const selectLargeItemHandler = (item) => {
@@ -81,6 +81,7 @@ const UserLike = () => {
     setModalOpen(false);
   };
 
+  // 좋아요한 리스트 저장 후, 취향PICK창으로 이동
   const selectedFinish = () => {
     const changedLikes = {
       likes: tempMiddleList,
@@ -112,7 +113,7 @@ const UserLike = () => {
                   id={`radio_${index}_${middleItem.categoryId}`}
                   value={item}
                   checked={selectedLargeItem === item}
-                  className={classes.radio}
+                  className={`${classes.radio} ${classes.customRadio}`}
                   onChange={() => selectLargeItemHandler(item)}
                 />
                 <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
@@ -134,7 +135,7 @@ const UserLike = () => {
                   value={middleItem.categoryId}
                   checked={tempMiddleList.includes(middleItem.categoryId)}
                   onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
-                  className={classes.checkbox}
+                  className={`${classes.checkbox} ${classes.customCheckbox}`}
                 />
                 <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
                   {middleItem.middle}

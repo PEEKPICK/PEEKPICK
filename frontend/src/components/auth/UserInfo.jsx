@@ -1,5 +1,7 @@
 import { customAxios } from '../../api/customAxios';
 
+import InfoModal from './InfoModal';
+
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,13 +15,17 @@ const UserInfo = () => {
   const userInfo = useSelector(state => state.auth);
 
   // 상태관리
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [gender, setGender] = useState('M')
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   // 자동하이픈을 위한 useRef함수
   const phoneRef = useRef();
   const birthRef = useRef();
@@ -53,19 +59,57 @@ const UserInfo = () => {
       })
   }, [dispatch])
 
-  // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
-  const moveToUserProfile = () => {
-    const changedUserData = {
-      memberId: userInfo.memberId,
-      name: userInfo.name,
-      email: userInfo.email,
-      phone: phone,
-      birthday: birthday,
-      gender: gender,
-    }
-    dispatch(authActions.updateUserInfo(changedUserData));
-    navigate('/userprofile')
+  // 이름 상태관리
+  const changeUsernameHandler = (e) => {
+    setUsername(e.target.value)
   };
+
+  // 이름이 있다면 이름을 표시하고 없다면 input창
+  const nameIsValid = () => {
+    if (userInfo.name) {
+      setUsername(userInfo.name)
+      return (
+        <div>
+          {userInfo.name}
+        </div>
+      );
+    } else {
+      return (
+        <input
+          type="text"
+          name="username"
+          placeholder="이름 (ex. 홍길동)"
+          onChange={changeUsernameHandler}
+        />
+      );
+    }
+  };
+
+  // 이메일 상태관리
+  const changeEmailHandler = (e) => {
+    setEmail(e.target.value)
+  };
+
+  // 이메일이 있다면 이메일을 표시하고 없다면 input창
+  const emailIsValid = () => {
+    if (userInfo.email) {
+      setEmail(userInfo.email)
+      return (
+        <div>
+          {userInfo.email}
+        </div>
+      );
+    } else {
+      return (
+        <input
+          type="text"
+          name="useremail"
+          placeholder="이메일 (ex. example@example.com)"
+          onChange={changeEmailHandler}
+        />
+      );
+    }
+  }
 
   // 휴대폰 번호 자동 하이픈 생성 함수
   const autoHypenPhone = (e) => {
@@ -97,6 +141,7 @@ const UserInfo = () => {
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
     if (userInfo.phone) {
+      setPhone(userInfo.phone)
       return (
         <div>
           {userInfo.phone}
@@ -108,9 +153,8 @@ const UserInfo = () => {
           type="tel"
           name="user-phone"
           ref={phoneRef}
-          placeholder="전화번호(ex. 010-1234-5678)"
+          placeholder="전화번호 (ex. 010-1234-5678)"
           onChange={autoHypenPhone}
-          required
         />
       );
     }
@@ -146,6 +190,7 @@ const UserInfo = () => {
   // 생일이 있으면 있는거 보여주고, 없으면 input 보여줌
   const birthdayIsValid = () => {
     if (userInfo.birthday) {
+      setBirthday(userInfo.birthday)
       return (
         <>
           {userInfo.birthday}
@@ -157,11 +202,38 @@ const UserInfo = () => {
           type="text"
           name="birth"
           ref={birthRef}
-          placeholder="생년월일(ex. 1998-06-28)"
+          placeholder="생년월일 (ex. 1998-06-28)"
           onChange={autoHypenBirth}
-          required
         />
       );
+    }
+  };
+
+  // 모달검사 함수
+  const isAnyFieldEmpty = () => {
+    return !(username && email && phone && birthday);
+  };
+
+  // 모달종료 함수
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // 다음으로 이동하는 함수 (정보 갱신, 다음으로 이동)
+  const moveToUserProfile = () => {
+    if (isAnyFieldEmpty()) {
+      setShowModal(true);
+    } else {
+      const changedUserData = {
+        memberId: userInfo.memberId,
+        name: username,
+        email: email,
+        phone: phone,
+        birthday: birthday,
+        gender: gender,
+      }
+      dispatch(authActions.updateUserInfo(changedUserData));
+      navigate('/userprofile')
     }
   };
 
@@ -176,10 +248,10 @@ const UserInfo = () => {
       <div>
         <form className={classes.form}>
           <div className={classes.box}>
-            {userInfo.name}
+            {nameIsValid()}
           </div>
           <div className={classes.box}>
-            {userInfo.email}
+            {emailIsValid()}
           </div>
           <div className={classes.box}>
             {phoneIsValid()}
@@ -196,6 +268,7 @@ const UserInfo = () => {
           <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
         </form>
       </div>
+      {showModal && <InfoModal onClose={closeModal} />}
     </div>
   );
 }

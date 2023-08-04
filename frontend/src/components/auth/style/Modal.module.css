@@ -1,0 +1,32 @@
+.container {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px lightgray;
+  height: 5vh;
+  margin-top: 2vh;
+}
+
+.cancelImg {
+  width: 1vh;
+  height: 1vh;
+  float: right;
+  margin: 1% 1% 0 0;
+}
+
+.infoBox {
+  width: 100%;
+  display: flex;
+  margin-top: 1.8vh;
+}
+
+.infoImg {
+  width: 1.5vh;
+  height: 1.5vh;
+  margin: 0% 0% 0% 1%;
+}
+
+.message {
+  margin: 0.3% 0% 0% 1%;
+  font-size: 11px;
+  padding: 0;
+}

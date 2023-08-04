@@ -10,3 +10,50 @@
   display: flex;
   justify-content: center;
 }
+
+.radio {
+  display: none;
+}
+
+.radioWrap {
+  width: 100%;
+  display: flex;
+  margin: 0 0.5vh 0 0.5vh;
+}
+
+label {
+  display: flex;
+  width: 100%;
+  height: 2vh;
+  color: lightgray;
+  font-size: 5px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+input.customRadio:checked + label {
+  border: 1px solid #7d00ff;
+  border-radius: 10px;
+  color: #7d00ff;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkboxLabel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 10vh;
+  height: 3vh;
+  margin: 0.5vh 0 0.5vh 0;
+}
+
+input.customCheckbox:checked + .checkboxLabel {
+  border: 1px solid #7d00ff;
+  color: #7d00ff;
+}

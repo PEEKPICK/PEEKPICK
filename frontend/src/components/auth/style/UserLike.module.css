@@ -11,27 +11,30 @@
   justify-content: center;
 }
 
+.radio {
+  display: none;
+}
+
 .radioWrap {
   width: 100%;
   display: flex;
   margin: 0 0.5vh 0 0.5vh;
 }
 
-.radio {
-  display: none;
-}
-
 label {
+  display: flex;
   width: 100%;
-  text-align: center;
-  white-space: nowrap;
-  font-size: small;
+  height: 2vh;
+  color: lightgray;
+  font-size: 5px;
+  justify-content: center;
+  align-items: center;
   border: 1px solid lightgray;
   border-radius: 10px;
-  color: lightgray;
+  white-space: nowrap;
 }
 
-input[type=radio]:checked + label {
+input.customRadio:checked + label {
   border: 1px solid #7d00ff;
   border-radius: 10px;
   color: #7d00ff;
@@ -42,10 +45,15 @@ input[type=radio]:checked + label {
 }
 
 .checkboxLabel {
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 10vh;
+  height: 3vh;
+  margin: 0.5vh 0 0.5vh 0;
 }
 
-input[type=checkbox]:checked + .checkboxLabel {
+input.customCheckbox:checked + .checkboxLabel {
   border: 1px solid #7d00ff;
   color: #7d00ff;
 }
