@@ -37,7 +37,7 @@ const UserInfo = () => {
     const value = urlParams.get("id");
 
     // axios 통신
-    customAxios.get(`/ member/signup/info?id=${value}`)
+    customAxios.get(`/member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
 
