@@ -1,33 +1,40 @@
 package com.vvs.peekpick.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Report {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long reportId;
 
-    private Long memberId;
-    private Long victimId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "victim_id")
+    private Member victim;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reportCategor_id")
+    private ReportCategory reportCategory;
 
     @Column(length = 1)
-    private String reportType;
-
-    @Column(length = 1)
-    private String dataType;
+    private String contetnType;
 
     private String reportContentId;
 
     private String reportContent;
 
     private LocalDateTime reportTime;
+
 }

@@ -9,9 +9,8 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ResponsePeekDetailDto {
+public class PeekDetailDto {
     private Long peekId;
-    private Long memberId;
     private String content;
     private String imageUrl;
     private int likeCount;
@@ -19,4 +18,5 @@ public class ResponsePeekDetailDto {
     private LocalDateTime finishTime;
     private boolean liked;
     private boolean disLiked;
+
 }

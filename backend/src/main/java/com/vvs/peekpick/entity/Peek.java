@@ -1,34 +1,38 @@
 package com.vvs.peekpick.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Peek {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long peekId;
 
-    private Long memberId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     private String content;
 
-    private String imageUrl;
+    private int disLikeCount;
 
     private int likeCount;
 
-    private int disLikeCount;
+    private String imageUrl;
 
     private LocalDateTime writeTime;
+
+    public void updateCounts(int like, int dislike) {
+        this.likeCount = like;
+        this.disLikeCount = dislike;
+    }
 
 }

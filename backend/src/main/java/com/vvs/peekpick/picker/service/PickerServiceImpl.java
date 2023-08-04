@@ -63,38 +63,34 @@ public class PickerServiceImpl implements PickerService {
     @Override
     public CommonResponse connectSession(ConnectingPickerDto picker) {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
-        geoOperations.add(CONNECT_SESSION, picker.getPoint(), String.valueOf(picker.getMemberId()));
-
-        // TODO JWT Token 으로부터 추출하여 SSE Emitter 전환 예정
-//        responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
-
+        geoOperations.add(CONNECT_SESSION, picker.getPoint(), String.valueOf(picker.getAvatarId()));
         return responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
     }
 
     /**
      * SSE 푸시 알림을 위해 Emitter 등록
      *
-     * @param memberId - SSE Emitter를 구분할 회원 Id
+     * @param avatarId - SSE Emitter를 구분할 회원 아바타 Id
      * @return SSE Emitter - Server Sent Event 룰 수신하는 Emitter
      */
     @Override
-    public SseEmitter connectSseSession(Long memberId) {
-        SseEmitter emitter = createEmitter(memberId);
+    public SseEmitter connectSseSession(Long avatarId) {
+        SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
-        sendToClient(memberId, memberId + " : [SSE Emitter Created]");
+        sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
         return emitter;
     }
 
     /**
      * 백그라운드로 나가거나, 웹 종료시 세션에서 제거
      *
-     * @param picker - 세션에서 제거될 Picker 의 정보
+     * @param avatarId - 세션에서 제거될 Picker 의 Avatar Id
      * @return CommonResponse - 정상 상태코드와 메세지
      */
     @Override
-    public CommonResponse disconnectSession(ConnectingPickerDto picker) {
+    public CommonResponse disconnectSession(Long avatarId) {
         GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
-        geoOperations.remove(CONNECT_SESSION, picker.getMemberId().toString());
+        geoOperations.remove(CONNECT_SESSION, String.valueOf(avatarId));
         return responseService.successCommonResponse(ResponseStatus.DISCONNECT_SUCCESS);
     }
 
@@ -102,22 +98,21 @@ public class PickerServiceImpl implements PickerService {
      * 채팅 요청 전송
      *
      * @param targetId       - SSE를 받는 대상 ID
-     * @param chatRequestDto - 보낸 사람의 ID와 요청 시간
+     * @param senderAvatarId - 보낸 사람의 ID
      * @return CommonResponse - 정상 상태코드와 메세지
      */
     @Override
-    public CommonResponse chatRequestSend(Long targetId, ChatRequestDto chatRequestDto) {
-        // TODO memberId 에 송신자 id 추가 필요
+    public CommonResponse chatRequestSend(Long targetId, Long senderAvatarId) {
         // 요청 시간 만료 판별을 위한 현재 서버시간 적용
-        chatRequestDto.setRequestTime(LocalDateTime.now());
+        ChatRequestDto chatRequestDto = ChatRequestDto.builder()
+                .senderId(senderAvatarId)
+                .requestTime(LocalDateTime.now()).build();
         sendToClient(targetId, chatRequestDto);
         return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_SUCCESS);
     }
 
     /**
      * 채팅 요청에 대한 응답으로 수락하여도 시간을 비교하여 만료 처리
-     * TODO 채팅방 생성 및 사용자에게 RoomID 전송 필요
-     * TODO DataResponse로 변경 필요
      *
      * @param chatResponseDto - 요청에 응답한 회원의 ID
      * @return CommonResponse
@@ -182,13 +177,18 @@ public class PickerServiceImpl implements PickerService {
 
         // Max count 이하는 전부 반환
         if (pickerSize <= MAX_PICKER_COUNT) {
-            radius.getContent().stream().forEach(value -> pickerList.add(value.getContent().getName()));
+            radius.getContent().stream().forEach(value -> {
+                // 검색 결과에서 본인 제거
+                if (!value.getContent().getName().equals(picker.getAvatarId().toString())) {
+                    pickerList.add(value.getContent().getName());
+                }
+            });
         } else { // Max Count 이상은 랜덤으로 15명 선택
             while (pickerList.size() < MAX_PICKER_COUNT) {
                 int randomIdx = random.nextInt(pickerSize);
                 GeoResult<RedisGeoCommands.GeoLocation<String>> value = radius.getContent().get(randomIdx);
                 // 검색 결과에서 본인 제거
-                if (value.getContent().getName().equals(picker.getMemberId().toString())) continue;
+                if (value.getContent().getName().equals(picker.getAvatarId().toString())) continue;
 
                 pickerList.add(value.getContent().getName());
             }
@@ -204,15 +204,15 @@ public class PickerServiceImpl implements PickerService {
     /**
      * Server Push를 위한 SSE Emitter 생성 및 등록
      *
-     * @param memberId - SSE Emitter로 등록할 회원 아이디
+     * @param avatarId - SSE Emitter로 등록할 회원 아바타 아이디
      * @return SseEmitter - 생성한 Sse Emitter
      */
-    private SseEmitter createEmitter(Long memberId) {
+    private SseEmitter createEmitter(Long avatarId) {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
-        sseEmitterRepository.put(memberId, emitter);
+        sseEmitterRepository.put(avatarId, emitter);
 
-        emitter.onCompletion(() -> sseEmitterRepository.remove(memberId));
-        emitter.onTimeout(() -> sseEmitterRepository.remove(memberId));
+        emitter.onCompletion(() -> sseEmitterRepository.remove(avatarId));
+        emitter.onTimeout(() -> sseEmitterRepository.remove(avatarId));
 
         return emitter;
     }
