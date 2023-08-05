@@ -47,6 +47,7 @@ const UserProfile = () => {
         <h1>프로필</h1>
         <h1 className={common.pointColor}>PICK</h1>
       </div>
+      {/* 상단 설명 */}
       <div>
         <p>개성넘치는 프로필을 뽑아보세요
           <br />
@@ -54,6 +55,7 @@ const UserProfile = () => {
         </p>
       </div>
       <div>
+      {/* 상단 게이지바 */}
       <div className={common.linetag}>
         <div className={classes.line1}></div>
         <div className={classes.line2}></div>
