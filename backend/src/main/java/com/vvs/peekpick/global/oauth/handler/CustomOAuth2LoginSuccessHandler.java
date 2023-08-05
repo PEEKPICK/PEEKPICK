@@ -1,10 +1,12 @@
 package com.vvs.peekpick.global.oauth.handler;
 
 import com.vvs.peekpick.entity.Member;
+import com.vvs.peekpick.entity.RefreshToken;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.global.oauth.model.PrincipalUser;
 import com.vvs.peekpick.global.oauth.model.ProviderUser;
 import com.vvs.peekpick.member.repository.MemberRepository;
+import com.vvs.peekpick.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import java.util.Optional;
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private String redirectUrl;
 
@@ -69,6 +72,10 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 // refreshToken 은 쿠키
                 Cookie cookie = getCookie(refreshToken);
                 response.addCookie(cookie);
+
+                refreshTokenRepository.save(RefreshToken.builder()
+                                                        .avatar(findMember.getAvatar())
+                                                        .token(refreshToken).build());
 
                 // accessToken 은 파라미터에 임시, 맘에 안든다
                 redirectUrl = "https://i9b309.p.ssafy.io/oauth2/redirect?token=" + accessToken;
