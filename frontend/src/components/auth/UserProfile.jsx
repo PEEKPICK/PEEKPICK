@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { authActions } from '../../store/authSlice';
+
 import classes from './style/UserProfile.module.css';
 import common from './style/Common.module.css';
 
@@ -13,7 +14,7 @@ const UserProfile = () => {
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
   const [emojiId, setEmojiId] = useState('1');
 
-  // redux, router, redux선택 처리
+  // 함수설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,7 +22,9 @@ const UserProfile = () => {
   const randomGacha = () => {
     customAxios.get('/member/emoji')
       .then(response => {
+        // 이모지 ID 상태관리
         setEmojiId(response.data.data.emojiId);
+        // 이모지 url 상태관리
         setRandomEmoji(response.data.data.animatedImageUrl);
       })
       .catch(error => {
@@ -29,7 +32,7 @@ const UserProfile = () => {
       })
   };
 
-  // 다음으로 이동
+  // 정보 리덕스에 저장 후 다음 페이지 이동
   const moveToUserNickname = () => {
     const changedEmojiId = {
       emojiId: emojiId
