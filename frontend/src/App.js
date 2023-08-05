@@ -1,6 +1,7 @@
 import "./App.css";
-// import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+
 // import { useSelector } from "react-redux";
 
 // router import
@@ -29,20 +30,19 @@ import Peek from "./components/pick/Peek";
 // 기타공용
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
-// import { useEffect } from "react";
 
 function App() {
   // 토큰 검사
-  const isAuthenticated = true;
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const isAuthenticated = true;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // useEffect(() => {
-  //   const checkTokenInLocalStorage = () => {
-  //     const token = localStorage.getItem("jwtToken");
-  //     return token !== null;
-  //   };
-  //   setIsAuthenticated(checkTokenInLocalStorage());
-  // }, []);
+  useEffect(() => {
+    const checkTokenInLocalStorage = () => {
+      const token = localStorage.getItem("jwtToken");
+      return token !== null;
+    };
+    setIsAuthenticated(checkTokenInLocalStorage());
+  }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   // const getMemberId = useSelector((state) => state.geo.memberId);
