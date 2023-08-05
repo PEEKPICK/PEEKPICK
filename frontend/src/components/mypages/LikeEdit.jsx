@@ -34,7 +34,6 @@ const LikeEdit = () => {
   // 기본 함수 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   // axios 통신 (대분류 가져오기)
   useEffect(() => {
     customAxios.get('/member/taste')
@@ -75,6 +74,11 @@ const LikeEdit = () => {
       setTempMiddleList((prevList) => prevList.filter(item => item !== categoryId))
       setMiddleItem((prevItem) => prevItem.filter(item => item !== middle))
     }
+    const changedLikes = {
+      likes: tempMiddleList,
+      like: middleItem,
+    }
+    dispatch(authActions.updateUserLike(changedLikes))
   };
 
   // 모달창 종료
@@ -90,14 +94,18 @@ const LikeEdit = () => {
     }
     const changedLikes = {
       likes: tempMiddleList,
-      // like: middleItem,
+      like: middleItem,
     }
     console.log(tempMiddleList)
-    customAxios.put('/member/info/like', changedLikes, { headers })
+    customAxios.put('/member/info/like', { likes: tempMiddleList }, { headers })
       .then((response) => {
-        console.log(response)
+        navigate('/mypage');
+        dispatch(authActions.updateUserLike(changedLikes))
       })
-    navigate('/mypage');
+      .catch((response)=>{
+        alert("error 발생")
+      })
+
   };
 
   return (

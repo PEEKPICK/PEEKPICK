@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const customAxios = axios.create({
-  baseURL: "http://192.168.31.27:8081",
+  baseURL: "http://192.168.31.26:8081",
   // baseURL: "http://localhost:8081",
 });
 
