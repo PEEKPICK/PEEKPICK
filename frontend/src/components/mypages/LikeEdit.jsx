@@ -5,15 +5,18 @@ import Modal from '../auth/Modal';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-import { authActions } from '../../store/authSlice';
+// import { authActions } from '../../store/authSlice';
 import common from '../auth/style/Common.module.css';
 import classes from '../auth/style/UserLike.module.css';
 
 const LikeEdit = () => {
   // 중분류 정보 가져오기
   const userInfo = useSelector(state => state.auth);
+  //Link를 통한 데이터 전달
+  const location = useLocation();
+  const likeFromLink = location.like;
 
   // 상태관리
   // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
@@ -25,7 +28,7 @@ const LikeEdit = () => {
   const [likeList, setLikeList] = useState([]);
   const [middleLikeList, setMiddleLikeList] = useState(userInfo.like);
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
-  const [tempMiddleList, setTempMiddleList] = useState(userInfo.likes);
+  const [tempMiddleList, setTempMiddleList] = useState(likeFromLink);
   // middleItem - UserLikeHate에 표시할 중분류 이름
   const [middleItem, setMiddleItem] = useState(userInfo.like);
   // 대분류 라디오 버튼 설정을 위한 상태관리

@@ -19,8 +19,6 @@ const MyPage = () => {
   const [ModalOutSide, setModalOutSide] = useState(false);
   const [pickPoint, setPickPoint] = useState("");
   const [likeCount, setLikeCount] = useState("");
-  const [likes, setLikes] = useState([]);
-  const [disLikes,setDisLikes] = useState([]);
   const userInfo = useSelector(state => state.auth);
   // 정보 확인
   const dispatch = useDispatch();
@@ -29,6 +27,11 @@ const MyPage = () => {
   // 토큰 처리
   const jwtToken = localStorage.getItem('jwtToken');
   
+  // 호불호
+  const [like,setLike] = useState(userInfo.like);
+  const [hate,setHate] = useState(userInfo.hate);
+  const [likes, setLikes] = useState(userInfo.likes);
+  const [disLikes,setDisLikes] = useState(userInfo.disLikes);
   
   // 이름과 한줄평 가져오는 usestate
   const [useremoji, setUseremoji] = useState(userInfo.emojiUrl);
@@ -79,8 +82,8 @@ const MyPage = () => {
         try {
           const response = await customAxios.get("/member/info", { headers });
           console.log(response)
-          setLikes(response.data.data.likes);
-          setDisLikes(response.data.data.disLikes);
+          setLikes(response.data.data.likes.middle);
+          setDisLikes(response.data.data.disLikes.middle);
           setPickPoint(response.data.data.pickPoint);
           setLikeCount(response.data.data.likeCount);
           setEmojiUrl(response.data.data.emoji.imageUrl);
@@ -89,6 +92,8 @@ const MyPage = () => {
           setNickname(response.data.data.nickname);
           setPrefix(response.data.data.prefix.content);
           setPrefixId(response.data.data.prefix.prefixId);
+          setLike(response.data.data.likes.categoryId);
+          setHate(response.data.data.disLikes.categoryId);
           const sendToMyPageData = {
             emojiUrl: response.data.data.emoji.imageUrl,
           };
@@ -151,7 +156,7 @@ const MyPage = () => {
       </div>
       
       <hr className={classes.hr} />
-        <LikeAndHate ModalOutSide={ModalOutSide} likes={likes} disLikes={disLikes} /> 
+        <LikeAndHate ModalOutSide={ModalOutSide} likes={likes} disLikes={disLikes} like={like} hate={hate} /> 
       <hr className={classes.hr} />
 
       {/* 고객센터 */}
