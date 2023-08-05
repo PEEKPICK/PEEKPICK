@@ -1,7 +1,7 @@
 .container {
   border: 1px solid lightgray;
   border-radius: 5px;
-  box-shadow: 1px 1px 1px 1px lightgray;
+  box-shadow: 1px 1px 1px 1px rgba(234, 234, 234, 0.5);
   height: 5vh;
   margin-top: 2vh;
 }
