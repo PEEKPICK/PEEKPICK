@@ -5,7 +5,7 @@ import classes from "./PeekLocation.module.css";
 import ModalCompPeek from "./ModalCompPeek";
 
 const EmojiLocation = ({ findInfo }) => {
-  console.log(findInfo);
+  // console.log(findInfo);
   const dispatch = useDispatch();
 
   const handleOpenPeekModal = (current) => {
@@ -40,12 +40,21 @@ const EmojiLocation = ({ findInfo }) => {
             onClick={() => handleOpenPeekModal(current)}
             style={randomPosition()}
           >
-            <img
-              key={index}
-              src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Heart+Exclamation.png"
-              alt={current.peekId}
-              className={classes.EmojiImg}
-            />
+            {current.viewed ? (
+              <img
+                key={index}
+                src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Heart+Exclamation.png"
+                alt={current.peekId}
+                className={classes.EmojiImg}
+              />
+            ) : (
+              <img
+                key={index}
+                src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Speech+Balloon.png"
+                alt={current.peekId}
+                className={classes.EmojiImg}
+              />
+            )}
           </button>
         ))}
       </div>
