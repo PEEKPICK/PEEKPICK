@@ -61,14 +61,14 @@ public class Avatar {
 
     // 취향 태그를 좋아요, 싫어요 분리
     public AvatarDto toAvatarDto(Achievement achievement) {
-        List<String> likes = new ArrayList<>();
-        List<String> disLikes = new ArrayList<>();
+        List<Category> likes = new ArrayList<>();
+        List<Category> disLikes = new ArrayList<>();
 
         for (Taste taste : this.tasteList) {
             if ("L".equals(taste.getType())) {
-                likes.add(taste.getCategory().getMiddle());
+                likes.add(taste.getCategory());
             } else {
-                disLikes.add(taste.getCategory().getMiddle());
+                disLikes.add(taste.getCategory());
             }
         }
 
