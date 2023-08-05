@@ -62,7 +62,7 @@ const UserInfo = () => {
       })
   }, [dispatch])
 
-  // 이름 상태관리
+  // 이름 작성 시 상태관리
   const changeUsernameHandler = (e) => {
     setUsername(e.target.value)
   };
@@ -87,7 +87,7 @@ const UserInfo = () => {
     }
   };
 
-  // 이메일 상태관리
+  // 이메일 작성 시 상태관리
   const changeEmailHandler = (e) => {
     setEmail(e.target.value)
   };
@@ -112,7 +112,7 @@ const UserInfo = () => {
     }
   }
 
-  // 휴대폰 번호 자동 하이픈 생성 함수
+  // 휴대폰 번호 자동 하이픈 생성 함수 + 상태관리
   const autoHypenPhone = (e) => {
     const value = phoneRef.current.value.replace(/\D+/g, "");
     const phoneLength = 11;
@@ -160,7 +160,7 @@ const UserInfo = () => {
     }
   };
 
-  // 생년월일 자동 하이픈 생성 함수
+  // 생년월일 자동 하이픈 생성 함수 + 상태관리
   const autoHypenBirth = (e) => {
     const value = birthRef.current.value.replace(/\D+/g, "");
     const birthLength = 8;
@@ -208,7 +208,7 @@ const UserInfo = () => {
     }
   };
 
-  // 모달검사 함수
+  // 모달검사 함수 (하나라도 정보가 없다면 모달을 보여줌)
   const isAnyFieldEmpty = () => {
     return !(username && email && phone && birthday);
   };
