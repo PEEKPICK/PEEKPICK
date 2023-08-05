@@ -1,6 +1,5 @@
 import { customAxios } from '../../api/customAxios';
 
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,13 +7,11 @@ import common from './style/Common.module.css';
 import classes from './style/UserLikeOrHate.module.css';
 
 const UserLikeHate = () => {
-  //함수 정의 및 사용자 정보 불러오기
+  // 사용자 정보 불러오기
   const userInfo = useSelector(state => state.auth);
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    console.log(userInfo)
-  }, [userInfo]);
+  // 함수 정의
+  const navigate = useNavigate();
 
   // 좋아하는 것으로 이동
   const moveToUserLike = () => {
