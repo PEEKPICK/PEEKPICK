@@ -6,7 +6,6 @@ import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
 import { locationActions } from "../../store/locationSlice";
 // import { GeoLocation } from "./GeoLocation";
-import { useLocation } from "react-router-dom";
 
 const FindPeek = () => {
   const dispatch = useDispatch();
@@ -14,13 +13,9 @@ const FindPeek = () => {
   const getPointX = useSelector((state) => state.geo.point.x);
   const getPointY = useSelector((state) => state.geo.point.y);
   const getDistance = useSelector((state) => state.geo.distance);
+  const [myPos, setmyPos] = useState(null);
   //주변 유져 정보
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
-  //위치 가져왔니?
-  const [isLocationFetched, setIsLocationFetched] = useState(false);
-  //현재 링크 가져와
-  const location = useLocation();
-  const currentPathname = location.pathname;
 
   const emojiCall = useCallback(
     (requestBody) => {
@@ -39,6 +34,7 @@ const FindPeek = () => {
   );
 
   const GeoLocation = useCallback(() => {
+    console.log("위치찍기");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -63,40 +59,34 @@ const FindPeek = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log("GeoLocation");
-    const fetchLocation = async () => {
-      await GeoLocation();
-      setIsLocationFetched(true);
-    };
-    fetchLocation();
+    console.log(1);
+    GeoLocation();
   }, [GeoLocation]);
 
-  const handleEmojiCall = useCallback(() => {
-    if (!isLocationFetched) {
-      return; // 위치 정보가 아직 준비되지 않았으면 작업 중지
-    }
-    const requestBody = {
+  useEffect(() => {
+    setmyPos({
       point: {
         x: getPointX,
         y: getPointY,
       },
       distance: getDistance,
-    };
-    emojiCall(requestBody);
-  }, [emojiCall, getPointX, getPointY, getDistance, isLocationFetched]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    if (currentPathname === "/peek") {
-      console.log("peek1");
-      handleEmojiCall();
-    }
-  }, [currentPathname, handleEmojiCall]);
+    console.log(2);
+    console.log("peek");
+
+    emojiCall(myPos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <div className={classes.ParentreloadBtn}>
         {/* 버튼 클릭 시 handleEmojiCall 함수를 호출 */}
-        <button className={classes.reloadBtn} onClick={handleEmojiCall}>
+        <button className={classes.reloadBtn} onClick={() => emojiCall(myPos)}>
           <img src="./img/reloadBlue.png" alt="새로고침" />
           새로고침
         </button>
