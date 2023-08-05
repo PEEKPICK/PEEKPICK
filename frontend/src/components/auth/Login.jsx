@@ -10,7 +10,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const loginHandler = (service) => {
-      window.location.href = `http://localhost:8081/oauth2/authorization/${service}`;
+      window.location.href = `https://i9b309.p.ssafy.io/api/oauth2/authorization/${service}`;
   };
 
   // 테스트 버튼

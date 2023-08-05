@@ -9,7 +9,11 @@ const modalSlice = createSlice({
   name: "modal",
   initialState,
   reducers: {
-    openModal: (state, action) => {
+    openPickModal: (state, action) => {
+      state.isOpen = true;
+      state.selectedEmoji = action.payload;
+    },
+    openPeekModal: (state, action) => {
       state.isOpen = true;
       state.selectedEmoji = action.payload;
     },

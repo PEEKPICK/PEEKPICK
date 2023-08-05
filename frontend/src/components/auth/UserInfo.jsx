@@ -1,6 +1,6 @@
 import { customAxios } from '../../api/customAxios';
 
-import InfoModal from './InfoModal';
+import Modal from './Modal';
 
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -17,7 +17,7 @@ const UserInfo = () => {
   // 상태관리
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-  const [gender, setGender] = useState('M')
+  const [gender, setGender] = useState('M');
   const [phone, setPhone] = useState('');
   const [birthday, setBirthday] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -37,7 +37,7 @@ const UserInfo = () => {
     const value = urlParams.get("id");
 
     // axios 통신
-    customAxios.get(`/ member/signup/info?id=${value}`)
+    customAxios.get(`/member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
 
@@ -51,6 +51,9 @@ const UserInfo = () => {
           gender: userData.gender,
         }));
 
+        // 상태 갱신
+        setUsername(userData.name);
+        setEmail(userData.email);
         setPhone(userData.phone);
         setBirthday(userData.birthday);
       })
@@ -67,10 +70,9 @@ const UserInfo = () => {
   // 이름이 있다면 이름을 표시하고 없다면 input창
   const nameIsValid = () => {
     if (userInfo.name) {
-      setUsername(userInfo.name)
       return (
         <div>
-          {userInfo.name}
+          {username}
         </div>
       );
     } else {
@@ -93,10 +95,9 @@ const UserInfo = () => {
   // 이메일이 있다면 이메일을 표시하고 없다면 input창
   const emailIsValid = () => {
     if (userInfo.email) {
-      setEmail(userInfo.email)
       return (
         <div>
-          {userInfo.email}
+          {email}
         </div>
       );
     } else {
@@ -141,10 +142,9 @@ const UserInfo = () => {
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
     if (userInfo.phone) {
-      setPhone(userInfo.phone)
       return (
         <div>
-          {userInfo.phone}
+          {phone}
         </div>
       );
     } else {
@@ -190,10 +190,9 @@ const UserInfo = () => {
   // 생일이 있으면 있는거 보여주고, 없으면 input 보여줌
   const birthdayIsValid = () => {
     if (userInfo.birthday) {
-      setBirthday(userInfo.birthday)
       return (
         <>
-          {userInfo.birthday}
+          {birthday}
         </>
       );
     } else {
@@ -268,7 +267,7 @@ const UserInfo = () => {
           <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
         </form>
       </div>
-      {showModal && <InfoModal onClose={closeModal} />}
+      {showModal && <Modal onClose={closeModal} check={2} />}
     </div>
   );
 }

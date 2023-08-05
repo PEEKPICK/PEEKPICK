@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
-import EmojiLocation from "./EmojiLocation";
+import PickLocation from "./PickLocation";
 import { locationActions } from "../../store/locationSlice";
 
 const FindPicker = () => {
@@ -20,7 +20,7 @@ const FindPicker = () => {
 
   const emojiCall = (requestBody) => {
     customAxios.post("/picker", requestBody).then((response) => {
-      console.log("넘어온 피커: ", response);
+      console.log("넘어온 피커 : ", response);
       // const userArrayOrigin = response.data.data;
       const userArrayOrigin = response.data.data.data;
       // 최대 n개의 이모지만 보여주기
@@ -94,7 +94,7 @@ const FindPicker = () => {
           새로고침
         </button>
       </div>
-      <EmojiLocation findInfo={findInfo} checkVer={1} />
+      <PickLocation findInfo={findInfo} />
     </>
   );
 };
