@@ -15,7 +15,7 @@
 }
 
 .randomButton {
-  background: linear-gradient(to right, #8F00FF, #654CFF);
+  background: linear-gradient(to right, rgba(143, 0, 255, 1), rgba(101, 76, 255, 0.85));
   border: 0;
   border-radius: 5px;
   color: white;
