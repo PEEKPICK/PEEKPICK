@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '../../store/authSlice';
 import common from './style/Common.module.css';
-import classes from './style/UserHate.module.css';
+import classes from './style/UserLike.module.css';
 
 const UserHate = () => {
   // 중분류 정보 가져오기
