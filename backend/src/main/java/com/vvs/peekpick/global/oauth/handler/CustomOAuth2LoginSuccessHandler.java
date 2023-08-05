@@ -71,7 +71,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 response.addCookie(cookie);
 
                 // accessToken 은 파라미터에 임시, 맘에 안든다
-                redirectUrl += "https://i9b309.p.ssafy.io/oauth2/redirect?token=" + accessToken;
+                redirectUrl = "https://i9b309.p.ssafy.io/oauth2/redirect?token=" + accessToken;
             }
         }
         // 신규 회원이면 회원정보 return
