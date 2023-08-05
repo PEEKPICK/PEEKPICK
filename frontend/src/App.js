@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+// import { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 // import { useSelector } from "react-redux";
 
@@ -23,6 +23,9 @@ import Profile from "./components/mypages/Profile";
 // 동민
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
+// import { useSelector, useDispatch } from "react-redux";
+// import { locationActions } from "./store/locationSlice";
+// import { customAxios } from "./api/customAxios";
 // 기타공용
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
@@ -30,16 +33,18 @@ import AlreadyLogin from "./components/common/AlreadyLogin";
 
 function App() {
   // 토큰 검사
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const isAuthenticated = true;
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  useEffect(() => {
-    const checkTokenInLocalStorage = () => {
-      const token = localStorage.getItem("jwtToken");
-      return token !== null;
-    };
-    setIsAuthenticated(checkTokenInLocalStorage());
-  }, []);
+  // useEffect(() => {
+  //   const checkTokenInLocalStorage = () => {
+  //     const token = localStorage.getItem("jwtToken");
+  //     return token !== null;
+  //   };
+  //   setIsAuthenticated(checkTokenInLocalStorage());
+  // }, []);
 
+  // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   // const getMemberId = useSelector((state) => state.geo.memberId);
   // const getPointX = useSelector((state) => state.geo.point.x);
   // const getPointY = useSelector((state) => state.geo.point.y);
@@ -54,7 +59,7 @@ function App() {
   //     //     y: getPointY,
   //     //   },
   //     // };
-  //     eventSource = new EventSource(`http://192.168.31.27:8081/picker/sse/14`, {
+  //     eventSource = new EventSource(`ttp://192.168.31.27:8081/picker/sse/14`, {
   //       headers: {
   //         Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwiYXZhdGFySWQiOiIxNiIsInByb3ZpZGVyIjoibm9uZSIsImV4cCI6MTY5MTEzODI1NywiaWF0IjoxNjkxMDUxODU3fQ.LxvrptoKP1zov91wGhI0k2r-57lkTb25NLAjCqSlCnA4HsrvemMwENon9TraljYJX3EL6SzkpkpDOicEcYILyA`,
   //       },
@@ -65,6 +70,65 @@ function App() {
   //     };
   //   }
   // }, [getMemberId, getPointX, getPointY, eventSource]);
+
+  //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
+  // const dispatch = useDispatch();
+  // const getPointX = useSelector((state) => state.geo.point.x);
+  // const getPointY = useSelector((state) => state.geo.point.y);
+
+  // useEffect(() => {
+  //   const handleVisibilityChange = () => {
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           // 위치값을 Redux store에 저장합니다.
+  //           dispatch(
+  //             locationActions.updateLoc({
+  //               point: {
+  //                 x: position.coords.longitude,
+  //                 y: position.coords.latitude,
+  //               },
+  //               distance: 10000000,
+  //             })
+  //           );
+  //         },
+  //         (error) => {
+  //           console.error(error);
+  //         }
+  //       );
+  //     } else {
+  //       console.error("위치 못가져왔는디");
+  //     }
+  //     if (document.visibilityState === "visible") {
+  //       // 앱이 포그라운드에 있을 때
+  //       console.log("접속했다리");
+  //       const requestBody = {
+  //         point: {
+  //           x: getPointX,
+  //           y: getPointY,
+  //         },
+  //       };
+  //       customAxios.post("/picker/connect", requestBody).then((response) => {
+  //         console.log(response);
+  //       });
+  //     } else {
+  //       // 앱이 백그라운드에 있을 때
+  //       console.log("나갔다리");
+  //       customAxios.post("/picker/disconnect").then((response) => {
+  //         console.log(response);
+  //       });
+  //     }
+  //   };
+  //   //초기 실행
+  //   handleVisibilityChange();
+
+  //   //실행
+  //   document.addEventListener("visibilitychange", handleVisibilityChange);
+  //   //종료
+  //   return () => {
+  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
+  //   };
+  // }, [dispatch, getPointX, getPointY]);
 
   return (
     <div>

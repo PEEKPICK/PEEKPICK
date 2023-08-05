@@ -5,6 +5,7 @@ import classes from "./FindPicker.module.css";
 import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
 import { locationActions } from "../../store/locationSlice";
+// import { GeoLocation } from "./GeoLocation";
 
 const FindPeek = () => {
   const dispatch = useDispatch();
@@ -12,26 +13,28 @@ const FindPeek = () => {
   const getPointX = useSelector((state) => state.geo.point.x);
   const getPointY = useSelector((state) => state.geo.point.y);
   const getDistance = useSelector((state) => state.geo.distance);
+  const [myPos, setmyPos] = useState(null);
   //주변 유져 정보
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
-  //위치 가져왔니?
-  const [isLocationFetched, setIsLocationFetched] = useState(false);
 
-  const emojiCall = (requestBody) => {
-    customAxios.post("/peek", requestBody).then((response) => {
-      console.log("넘어온 피크 : ", response);
-      // const peekArrayOrigin = response.data.data;
-      const peekArrayOrigin = response.data.data.data;
-      // 최대 n개의 이모지만 보여주기
-      const maxEmojisToShow = 8;
-      //정보 저장
-      const limitedPeekArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-      console.log("넘어온 limitedPeekArray", limitedPeekArray);
-      dispatch(findPeekActions.updatePeekInfo(limitedPeekArray));
-    });
-  };
+  const emojiCall = useCallback(
+    (requestBody) => {
+      customAxios.post("/peek", requestBody).then((response) => {
+        console.log("넘어온 피크 : ", response);
+        const peekArrayOrigin = response.data.data;
+        // 최대 n개의 이모지만 보여주기
+        const maxEmojisToShow = 8;
+        //정보 저장
+        const limitedPeekArray = peekArrayOrigin.slice(0, maxEmojisToShow);
+        // console.log("넘어온 limitedPeekArray", limitedPeekArray);
+        dispatch(findPeekActions.updatePeekInfo(limitedPeekArray));
+      });
+    },
+    [dispatch]
+  );
 
-  const GeoLocation = () => {
+  const GeoLocation = useCallback(() => {
+    console.log("위치찍기");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -42,7 +45,7 @@ const FindPeek = () => {
                 x: position.coords.longitude,
                 y: position.coords.latitude,
               },
-              distance: 10000000,
+              distance: 10000,
             })
           );
         },
@@ -53,40 +56,37 @@ const FindPeek = () => {
     } else {
       console.error("위치 못가져왔는디");
     }
-  };
-  useEffect(() => {
-    const fetchLocation = async () => {
-      await GeoLocation();
-      setIsLocationFetched(true);
-    };
-    fetchLocation();
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
-  const handleEmojiCall = useCallback(() => {
-    if (!isLocationFetched) {
-      return; // 위치 정보가 아직 준비되지 않았으면 작업 중지
-    }
-    const requestBody = {
+  useEffect(() => {
+    console.log(1);
+    GeoLocation();
+  }, [GeoLocation]);
+
+  useEffect(() => {
+    setmyPos({
       point: {
         x: getPointX,
         y: getPointY,
       },
       distance: getDistance,
-    };
-    emojiCall(requestBody);
-    // eslint-disable-next-line
-  }, [getPointX, getPointY]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    handleEmojiCall();
-  }, [handleEmojiCall]);
+    console.log(2);
+    console.log("peek");
+
+    emojiCall(myPos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <div className={classes.ParentreloadBtn}>
         {/* 버튼 클릭 시 handleEmojiCall 함수를 호출 */}
-        <button className={classes.reloadBtn} onClick={handleEmojiCall}>
+        <button className={classes.reloadBtn} onClick={() => emojiCall(myPos)}>
           <img src="./img/reloadBlue.png" alt="새로고침" />
           새로고침
         </button>

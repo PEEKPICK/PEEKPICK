@@ -5,46 +5,47 @@ import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
 import PickLocation from "./PickLocation";
 import { locationActions } from "../../store/locationSlice";
+// import { GeoLocation } from "./GeoLocation";
 
 const FindPicker = () => {
   const dispatch = useDispatch();
   // Redux store에서 위치값 가져오기
-  const getMemberId = useSelector((state) => state.geo.memberId);
   const getPointX = useSelector((state) => state.geo.point.x);
   const getPointY = useSelector((state) => state.geo.point.y);
   const getDistance = useSelector((state) => state.geo.distance);
+  const [myPos, setmyPos] = useState(null);
   //주변 유져 정보
   const findInfo = useSelector((state) => state.findUser.userInfomation);
-  //위치 가져왔니?
-  const [isLocationFetched, setIsLocationFetched] = useState(false);
 
-  const emojiCall = (requestBody) => {
-    customAxios.post("/picker", requestBody).then((response) => {
-      console.log("넘어온 피커 : ", response);
-      // const userArrayOrigin = response.data.data;
-      const userArrayOrigin = response.data.data.data;
-      // 최대 n개의 이모지만 보여주기
-      const maxEmojisToShow = 8;
-      //정보 저장
-      const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-      console.log("넘어온 limitedUserArray: ", limitedUserArray);
-      dispatch(findUserActions.updateUserInfo(limitedUserArray));
-    });
-  };
+  const emojiCall = useCallback(
+    (requestBody) => {
+      customAxios.post("/picker", requestBody).then((response) => {
+        console.log("넘어온 피커 : ", response);
+        const userArrayOrigin = response.data.data;
+        // 최대 n개의 이모지만 보여주기
+        const maxEmojisToShow = 8;
+        //정보 저장
+        const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        dispatch(findUserActions.updateUserInfo(limitedUserArray));
+      });
+    },
+    [dispatch]
+  );
 
-  const GeoLocation = () => {
+  const GeoLocation = useCallback(() => {
+    console.log("위치찍기");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // 위치값을 Redux store에 저장합니다.
           dispatch(
             locationActions.updateLoc({
-              memberId: 11,
               point: {
                 x: position.coords.longitude,
                 y: position.coords.latitude,
               },
-              distance: 10000000,
+              distance: 10000,
             })
           );
         },
@@ -55,41 +56,37 @@ const FindPicker = () => {
     } else {
       console.error("위치 못가져왔는디");
     }
-  };
-  useEffect(() => {
-    const fetchLocation = async () => {
-      await GeoLocation();
-      setIsLocationFetched(true);
-    };
-    fetchLocation();
-    // eslint-disable-next-line
-  }, []);
+  }, [dispatch]);
 
-  const handleEmojiCall = useCallback(() => {
-    if (!isLocationFetched) {
-      return; // 위치 정보가 아직 준비되지 않았으면 작업 중지
-    }
-    const requestBody = {
-      memberId: getMemberId,
+  useEffect(() => {
+    console.log(1);
+    GeoLocation();
+  }, [GeoLocation]);
+
+  useEffect(() => {
+    setmyPos({
       point: {
         x: getPointX,
         y: getPointY,
       },
       distance: getDistance,
-    };
-    emojiCall(requestBody);
-    // eslint-disable-next-line
-  }, [getPointX, getPointY]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
-    handleEmojiCall();
-  }, [handleEmojiCall]);
+    console.log(2);
+    console.log("pick");
+
+    emojiCall(myPos);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
       <div className={classes.ParentreloadBtn}>
         {/* 버튼 클릭 시 handleEmojiCall 함수를 호출 */}
-        <button className={classes.reloadBtn} onClick={handleEmojiCall}>
+        <button className={classes.reloadBtn} onClick={() => emojiCall(myPos)}>
           <img src="./img/reloadBlue.png" alt="새로고침" />
           새로고침
         </button>

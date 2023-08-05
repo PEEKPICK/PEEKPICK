@@ -1,9 +1,10 @@
 import React from "react";
-import ChartAlert from "./ChatAlert";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import classes from "./NavigationBar.module.css";
+
 const NavigationBar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const myPage = location.pathname === "/mypage";
   const peek = location.pathname === "/peek";
@@ -11,55 +12,35 @@ const NavigationBar = () => {
 
   return (
     <div className={classes.container}>
-      {/* 알림 올경우 생성되는 알림창 components */}
-      <ChartAlert></ChartAlert>
       {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
       <nav className={classes.navibar}>
-        {peek ? (
-          <Link to="peek">
-            <div className={classes.on}>
-              <img src="img/heartWhite.png" alt="" />
-              <p>이슈</p>
-            </div>
-          </Link>
-        ) : (
-          <Link to="peek">
-            <div>
-              <img src="img/heartBlack.png" alt="" />
-              <p>이슈</p>
-            </div>
-          </Link>
-        )}
-        {picker ? (
-          <Link to={""}>
-            <div className={classes.on}>
-              <img src="img/finderWhite.png" alt="" />
-              <p>사람</p>
-            </div>
-          </Link>
-        ) : (
-          <Link to={""}>
-            <div>
-              <img src="img/finderBlack.png" alt="" />
-              <p>사람</p>
-            </div>
-          </Link>
-        )}
-        {myPage ? (
-          <Link to={"mypage"}>
-            <div className={classes.on}>
-              <img src="img/mypageWhite.png" alt="" />
-              <p>프로필</p>
-            </div>
-          </Link>
-        ) : (
-          <Link to={"mypage"}>
-            <div>
-              <img src="img/mypageBlack.png" alt="" />
-              <p>프로필</p>
-            </div>
-          </Link>
-        )}
+        <div
+          className={peek ? classes.on : ""}
+          onClick={() => {
+            navigate("/peek");
+          }} // Use navigate function
+        >
+          <img src={peek ? "img/heartWhite.png" : "img/heartBlack.png"} alt="" />
+          <p>이슈</p>
+        </div>
+        <div
+          className={picker ? classes.on : ""}
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          <img src={picker ? "img/finderWhite.png" : "img/finderBlack.png"} alt="" />
+          <p>사람</p>
+        </div>
+        <div
+          className={myPage ? classes.on : ""}
+          onClick={() => {
+            navigate("/mypage");
+          }}
+        >
+          <img src={myPage ? "img/mypageWhite.png" : "img/mypageBlack.png"} alt="" />
+          <p>프로필</p>
+        </div>
       </nav>
     </div>
   );
