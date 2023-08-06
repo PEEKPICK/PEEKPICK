@@ -38,20 +38,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             String accessToken = getAccessToken(request);
-
+            log.info("==== start =====");
             // AccessToken 유효성 검사
             if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
-
+                log.info("===== Token OK =====");
                 // AccessToken에서 기존 값 꺼내기
                 Long avatarId = jwtTokenProvider.getIdFromToken(accessToken, "avatarId");
                 Long memberId = jwtTokenProvider.getIdFromToken(accessToken, "memberId");
+                log.info("memberId={}", memberId);
+                log.info("avatarId={}", avatarId);
 
                 // avatarId만 넘겨준다.
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(avatarId, memberId, null);
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
+                log.info("===== END =====");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }  catch (MalformedJwtException e) {
