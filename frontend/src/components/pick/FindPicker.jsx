@@ -11,9 +11,7 @@ const FindPicker = () => {
   const myPos = useSelector((state) => state.location.userPos);
   const findInfo = useSelector((state) => state.findUser.userInfomation);
   const emojiCall = useCallback(() => {
-    console.log("Pick 니 위치야", myPos);
     customAxios.post("/picker", myPos).then((response) => {
-      console.log("넘어온 피커 : ", response);
       const userArrayOrigin = response.data.data;
       if (Array.isArray(userArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
