@@ -55,38 +55,44 @@ function App() {
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   useEffect(() => {
-    const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-    const eventSource = new EventSourcePolyfill(sseURL, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-      },
-    });
+    const fetchData = async () => {
+      try {
+        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+        const eventSource = new EventSourcePolyfill(sseURL, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        });
 
-    eventSource.onopen = () => {
-      // 연결 시 할 일
-      console.log("SSE성공!!!!!!");
+        eventSource.onopen = () => {
+          // 연결 시 할 일
+          console.log("SSE성공!!!!!!");
+        };
+
+        // 받아오는 data로 할 일
+        eventSource.onmessage = async (e) => {
+          const res = await e.data;
+          const parsedData = JSON.parse(res);
+          console.log("SSE메시지", parsedData);
+        };
+
+        eventSource.onerror = async (e) => {
+          // 종료 또는 에러 발생 시 할 일
+          eventSource.close();
+
+          if (e.error) {
+            // 에러 발생 시 할 일
+          }
+          console.log("SSE에러!!!!!!");
+          if (e.target.readyState === EventSource.CLOSED) {
+            // 종료 시 할 일
+            console.log("SSE닫아!!!!!!");
+          }
+        };
+      } catch (error) {}
     };
 
-    // 받아오는 data로 할 일
-    eventSource.onmessage = async (e) => {
-      const res = await e.data;
-      const parsedData = JSON.parse(res);
-      console.log("SSE메시지", parsedData);
-    };
-
-    eventSource.onerror = (e) => {
-      // 종료 또는 에러 발생 시 할 일
-      eventSource.close();
-
-      if (e.error) {
-        // 에러 발생 시 할 일
-      }
-      console.log("SSE에러!!!!!!");
-      if (e.target.readyState === EventSource.CLOSED) {
-        // 종료 시 할 일
-        console.log("SSE닫아!!!!!!");
-      }
-    };
+    fetchData();
   }, []);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!

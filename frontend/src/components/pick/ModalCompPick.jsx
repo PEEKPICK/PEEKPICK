@@ -10,11 +10,12 @@ const ModalComp = () => {
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
   const handleCloseModal = () => {
+    console.log("isSelectedEmoji", isSelectedEmoji);
     dispatch(modalActions.closeModal());
   };
   //채팅요청
   const plzChat = () => {
-    customAxios.get("/picker/chat-request/2").then((response) => {
+    customAxios.get(`/picker/chat-request/${isSelectedEmoji.avatarId}`).then((response) => {
       console.log("채팅요청", response);
     });
   };
