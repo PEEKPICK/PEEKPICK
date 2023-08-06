@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+
 // import { useSelector } from "react-redux";
 
 // router import
@@ -29,7 +30,6 @@ import Peek from "./components/pick/Peek";
 // 기타공용
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
-// import { useEffect } from "react";
 
 function App() {
   // 토큰 검사
