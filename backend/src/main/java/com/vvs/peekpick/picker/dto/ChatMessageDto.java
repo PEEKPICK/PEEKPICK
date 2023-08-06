@@ -16,12 +16,18 @@ public class ChatMessageDto {
     private String message;
     private String sendTime;
 
+    private static final String EXPIRE_MESSAGE = "채팅방이 종료되었습니다.";
+
     public String toString(){
         return "Sender:"+this.sender+"\\dMessage:"+this.message+"\\dSendTime:"+this.sendTime.toString();
     }
 
     public void setSendTime(String sendTime){
         this.sendTime = sendTime;
+    }
+
+    public void expiredMessage(){
+        this.message = EXPIRE_MESSAGE;
     }
 
 }
