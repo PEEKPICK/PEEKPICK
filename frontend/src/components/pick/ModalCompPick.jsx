@@ -2,6 +2,7 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
+import { customAxios } from "../../api/customAxios";
 
 const ModalComp = () => {
   //유져 정보 모달용
@@ -11,7 +12,12 @@ const ModalComp = () => {
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
   };
-
+  //채팅요청
+  const plzChat = () => {
+    customAxios.get("/picker/chat-request/1").then((response) => {
+      console.log("채팅요청", response);
+    });
+  };
   return (
     <>
       {isModalState && isSelectedEmoji && (
@@ -23,11 +29,7 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img
-              src={isSelectedEmoji.emoji.animatedImageUrl}
-              alt="프로필"
-              className={classes.profileImg}
-            />
+            <img src={isSelectedEmoji.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
@@ -45,7 +47,7 @@ const ModalComp = () => {
               <p>
                 {isSelectedEmoji.likes.map((like, index) => (
                   <span key={index} className={classes.likeInfo}>
-                    #{like}
+                    #{like.middle}
                   </span>
                 ))}
               </p>
@@ -55,13 +57,15 @@ const ModalComp = () => {
               <p>
                 {isSelectedEmoji.disLikes.map((disLikes, index) => (
                   <span key={index} className={classes.likeInfo}>
-                    #{disLikes}{" "}
+                    #{disLikes.middle}{" "}
                   </span>
                 ))}
               </p>
             </div>
           </div>
-          <button className={classes.pick}>PICK</button>
+          <button className={classes.pick} onClick={() => plzChat()}>
+            PICK
+          </button>
         </Modal>
       )}
     </>
