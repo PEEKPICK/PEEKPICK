@@ -1,11 +1,9 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
-import { locationActions } from "../../store/locationSlice";
-// import { GeoLocation } from "./GeoLocation";
 
 const FindPeek = () => {
   const dispatch = useDispatch();
@@ -13,8 +11,8 @@ const FindPeek = () => {
   const myPos = useSelector((state) => state.location.userPos);
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
 
+  console.log("Peek 니 위치야", myPos);
   const emojiCall = useCallback(({ myPos }) => {
-    console.log("Pick 니 위치야", myPos);
     customAxios.post("/peek", myPos).then((response) => {
       console.log("넘어온 피크 : ", response);
       const peekArrayOrigin = response.data.data;

@@ -8,13 +8,12 @@ import PickLocation from "./PickLocation";
 const FindPicker = () => {
   const dispatch = useDispatch();
   //주변 유져 정보
-  const findInfo = useSelector((state) => state.findUser.userInfomation);
   const myPos = useSelector((state) => state.location.userPos);
-
+  const findInfo = useSelector((state) => state.findUser.userInfomation);
   const emojiCall = useCallback(
     ({ myPos }) => {
-      console.log("Peek 니 위치야", myPos);
       customAxios.post("/picker", myPos).then((response) => {
+        console.log("Pick 니 위치야", myPos);
         console.log("넘어온 피커 : ", response);
         const userArrayOrigin = response.data.data;
         if (Array.isArray(userArrayOrigin)) {

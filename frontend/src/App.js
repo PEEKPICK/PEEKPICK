@@ -25,7 +25,7 @@ import Profile from "./components/mypages/Profile";
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
-import { EventSourcePolyfill } from "event-source-polyfill";
+// import { EventSourcePolyfill } from "event-source-polyfill";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -54,17 +54,13 @@ function App() {
   }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  useEffect(() => {
-    console.log("sse 쏜다");
-    const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-    const newEventSource = new EventSourcePolyfill(sseURL, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
-    });
-
-    newEventSource.onmessage = (event) => {
-      console.log("@@@@@@@@@@@", event.data);
-    };
-  }, []);
+  // useEffect(() => {
+  //   console.log("sse 쏜다");
+  //   const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+  //   const eventSource = new EventSource(sseURL, {
+  //     headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
+  //   });
+  // }, []);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
   const myPos = useSelector((state) => state.location.userPos);
@@ -91,6 +87,7 @@ function App() {
                 distance: updatedPos.distance,
               })
             );
+            console.log("12", myPos);
           },
           (error) => {
             console.error(error);
