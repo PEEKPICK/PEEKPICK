@@ -10,7 +10,6 @@ const ModalComp = () => {
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
   const handleCloseModal = () => {
-    console.log("isSelectedEmoji", isSelectedEmoji);
     dispatch(modalActions.closeModal());
   };
   //채팅요청
