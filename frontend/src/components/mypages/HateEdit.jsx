@@ -1,13 +1,195 @@
 import React from 'react';
+import { customAxios } from '../../api/customAxios';
+
+import Modal from '../auth/Modal';
+
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate} from 'react-router-dom';
+
+import { authActions } from '../../store/authSlice';
+import common from '../auth/style/Common.module.css';
+import classes from '../auth/style/UserLike.module.css';
+
+const LikeEdit = () => {
+  // 중분류 정보 가져오기
+  const userInfo = useSelector(state => state.auth);
+  // 상태관리
+  // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
+  const [dataAxios, setDataAxios] = useState(false);
+  const [middleDataAxios, setMiddleDataAxios] = useState(false);
+  // modal 판단을 위한 flag
+  const [modalOpen, setModalOpen] = useState(false);
+  // likeList, middleLikeList는 대분류, 중분류 표시
+  const [likeList, setLikeList] = useState([]);
+  const [middleLikeList, setMiddleLikeList] = useState([]);
+  // tempMiddleList - 백엔드 전송을 위한 중분류 id
+  const [tempMiddleList, setTempMiddleList] = useState(userInfo.disLikes);
+  // middleItem - UserLikeHate에 표시할 중분류 이름
+  const [middleItem, setMiddleItem] = useState(userInfo.hate);
+  // 대분류 라디오 버튼 설정을 위한 상태관리
+  const [selectedLargeItem, setSelectedLargeItem] = useState(null);
+  
+  // 기본 함수 설정
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`
+    };
+    customAxios.get('/member/info',{headers})
+    .then(response =>{
+      if (response.data.data.disLikes && response.data.data.disLikes.length > 0) {
+        const disLikesData = response.data.data.disLikes.map((item) => item.categoryId);
+        setTempMiddleList(disLikesData);
+      }
+    })
+  }, []);
+
+  // axios 통신 (대분류 가져오기)
+  useEffect(() => {
+    
+    customAxios.get('/member/taste')
+    .then(response => {
+      setDataAxios(true);
+      setLikeList(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  }, []);
 
 
-const HateEdit = () => {
+  // 대분류 선택 시 중분류 가져오기
+  const selectLargeItemHandler = (item) => {
+    setSelectedLargeItem(item);
+
+    customAxios.get(`/member/taste?category_large=${item}`)
+      .then(response => {
+        setMiddleDataAxios(true);
+        setMiddleLikeList(response.data.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  };
+
+  // 중분류 선택 시, 5개 여부 파악 및 리스트에 추가
+  const middleListCheck = (categoryId, middle) => {
+    console.log(categoryId, middle)
+    if (!tempMiddleList.includes(categoryId)) {
+      if (tempMiddleList.length < 5) {
+        setTempMiddleList((prevList) => [...prevList, categoryId])
+        setMiddleItem((prevItem) => [...prevItem, middle])
+      } else {
+        setModalOpen(true);
+      }
+    } else {
+      setTempMiddleList((prevList) => prevList.filter(item => item !== categoryId))
+      setMiddleItem((prevItem) => prevItem.filter(item => item !== middle))
+    }
+    const changedDisLikes = {
+      disLikes: tempMiddleList,
+      hate: middleItem,
+    }
+    dispatch(authActions.updateUserHate(changedDisLikes))
+  };
+
+  // 모달창 종료
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  // 좋아요한 리스트 저장 후, 취향PICK창으로 이동
+  const selectedFinish = () => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`,
+    }
+    const changedDisLikes = {
+      disLikes: tempMiddleList,
+      hate: middleItem,
+    }
+    console.log(tempMiddleList)
+    customAxios.put('/member/info/disLike', { disLikes: tempMiddleList }, { headers })
+      .then((response) => {
+        navigate('/mypage');
+        dispatch(authActions.updateUserHate(changedDisLikes))
+        console.log(response)
+      })
+  };
+
   return (
-    <div>
-      {/* 준형이꺼 꺼억 */}
-      <p>HateEdit</p>
+    <div className={common.container}>
+      <div>
+        <div>
+          <h1>좋아해요</h1>
+        </div>
+        <div>
+          <p>(최대 5개 선택 가능)</p>
+        </div>
+      </div>
+      <div className={common.defaultLine}></div>
+      <div>
+        {dataAxios ? (
+          <div className={common.largelist}>
+            {likeList.map((item, index) => (
+              <div key={index} className={classes.radioWrap}>
+                <input
+                  type="radio"
+                  name="selectedItem"
+                  id={`radio_${index}_${middleItem.categoryId}`}
+                  value={item}
+                  checked={selectedLargeItem === item}
+                  className={`${classes.radio} ${classes.customRadio}`}
+                  onChange={() => selectLargeItemHandler(item)}
+                />
+                <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
+                  {item}
+                </label>
+              </div>
+            ))}
+          </div>
+        ) : (<span>에러가 발생했습니다.</span>)}
+      </div>
+      <div className={classes.middle}>
+        {middleDataAxios ? (
+          <div className={common.middlelist}>
+            {middleLikeList.map(middleItem => (
+              <div key={middleItem.categoryId}>
+                <input
+                  type="checkbox"
+                  id={middleItem.categoryId}
+                  value={middleItem.categoryId}
+                  checked={tempMiddleList.includes(middleItem.categoryId)}
+                  onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
+                  className={`${classes.checkbox} ${classes.customCheckbox}`}
+                />
+                <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
+                  {middleItem.middle}
+                </label>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className={classes.error}>
+            <span>대분류를 선택해주세요!</span>
+          </div>
+        )}
+      </div>
+      <div>
+        {modalOpen && <Modal onClose={closeModal} />}
+      </div>
+      <div>
+        <button
+          onClick={selectedFinish}
+          className={common.next}
+        >선택완료</button>
+      </div>
     </div>
   );
 }
 
-export default HateEdit;
+export default LikeEdit;
