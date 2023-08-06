@@ -1,4 +1,4 @@
-import { customAxios } from '../../api/customAxios';
+import { authAxios } from '../../api/customAxios';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +20,7 @@ const UserProfile = () => {
 
   // 이모지 다시 뽑기를 위한 버튼
   const randomGacha = () => {
-    customAxios.get('/member/emoji')
+    authAxios.get('/member/emoji')
       .then(response => {
         // 이모지 ID 상태관리
         setEmojiId(response.data.data.emojiId);

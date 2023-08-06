@@ -1,4 +1,4 @@
-import { customAxios } from '../../api/customAxios';
+import { authAxios } from '../../api/customAxios';
 
 import Modal from './Modal';
 
@@ -37,7 +37,7 @@ const UserInfo = () => {
     const value = urlParams.get("id");
 
     // axios 통신
-    customAxios.get(`/member/signup/info?id=${value}`)
+    authAxios.get(`/member/signup/info?id=${value}`)
       .then(response => {
         const userData = response.data.data;
 

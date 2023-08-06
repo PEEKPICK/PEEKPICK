@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { customAxios } from '../../api/customAxios';
+import { authAxios } from '../../api/customAxios';
 import { useNavigate } from 'react-router-dom';
 
 import classes from './style/Login.module.css';
@@ -15,7 +15,7 @@ const Login = () => {
 
   // 테스트 버튼
   const test = (id) => {
-    customAxios.post(`/member/login?id=test${id}`)
+    authAxios.post(`/member/login?id=test${id}`)
       .then(response => {
         if (response.data.code === '200') {
           const token = response.data.data

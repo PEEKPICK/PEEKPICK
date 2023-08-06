@@ -7,15 +7,11 @@ import classes from './style/Welcome.module.css';
 const Welcome = () => {
   // 헤더에 토큰 넣어서 백엔드에 요청
   const startapp = () => {
-    const token = localStorage.getItem('jwtToken');
-
-    customAxios.get("/member/info", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
+    customAxios.get("/member/info")
       .then(response => {
-        console.log(response);
+        if (response.data.code === "200") {
+          window.location.replace("/");
+        }
       })
       .catch(error => {
         console.log(error);

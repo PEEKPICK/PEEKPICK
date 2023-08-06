@@ -1,4 +1,4 @@
-import { customAxios } from '../../api/customAxios';
+import { authAxios } from '../../api/customAxios';
 
 import Modal from './Modal';
 
@@ -24,7 +24,7 @@ const UserNickname = () => {
 
   //함수 정의 (랜덤 수식어 뽑기)
   const randomPrefix = () => {
-    customAxios.get('/member/prefix')
+    authAxios.get('/member/prefix')
       .then(response => {
         setPrefix(response.data.data.prefixId);
         setContent(response.data.data.content);
