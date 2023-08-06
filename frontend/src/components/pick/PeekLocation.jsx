@@ -5,7 +5,6 @@ import classes from "./PeekLocation.module.css";
 import ModalCompPeek from "./ModalCompPeek";
 
 const EmojiLocation = ({ findInfo }) => {
-  // console.log(findInfo);
   const dispatch = useDispatch();
 
   const handleOpenPeekModal = (current) => {
