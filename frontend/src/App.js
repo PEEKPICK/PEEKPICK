@@ -25,7 +25,7 @@ import Profile from "./components/mypages/Profile";
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
-// import { EventSourcePolyfill } from "event-source-polyfill";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -54,65 +54,107 @@ function App() {
   }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  // useEffect(() => {
-  //   console.log("sse 쏜다");
-  //   const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-  //   const eventSource = new EventSource(sseURL, {
-  //     headers: { Authorization: `Bearer ${localStorage.getItem("jwtToken")}` },
-  //   });
-  // }, []);
+  useEffect(() => {
+    const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+    const eventSource = new EventSourcePolyfill(sseURL, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+      },
+    });
+
+    eventSource.onopen = () => {
+      // 연결 시 할 일
+      console.log("SSE성공!!!!!!");
+    };
+
+    // 받아오는 data로 할 일
+    eventSource.onmessage = async (e) => {
+      const res = await e.data;
+      const parsedData = JSON.parse(res);
+      console.log("SSE메시지", parsedData);
+    };
+
+    eventSource.onerror = (e) => {
+      // 종료 또는 에러 발생 시 할 일
+      eventSource.close();
+
+      if (e.error) {
+        // 에러 발생 시 할 일
+      }
+      console.log("SSE에러!!!!!!");
+      if (e.target.readyState === EventSource.CLOSED) {
+        // 종료 시 할 일
+        console.log("SSE닫아!!!!!!");
+      }
+    };
+  }, []);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
   const myPos = useSelector((state) => state.location.userPos);
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
+    const handleVisibilityChange = async () => {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const updatedPos = {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+          const updatedPos = {
+            point: {
+              x: position.coords.longitude,
+              y: position.coords.latitude,
+            },
+            distance: 1000000000,
+          };
+          // 위치 정보를 스토어에 저장
+          dispatch(
+            locationActions.updateLoc({
               point: {
-                x: position.coords.longitude,
-                y: position.coords.latitude,
+                x: updatedPos.point.x,
+                y: updatedPos.point.y,
               },
-              distance: 1000000000,
-            };
-            // 위치 정보를 스토어에 저장
-            dispatch(
-              locationActions.updateLoc({
+              distance: updatedPos.distance,
+            })
+          );
+          console.log("App에서 위치", myPos);
+
+          if (document.visibilityState === "visible") {
+            // 앱이 포그라운드에 있을 때
+            try {
+              await customAxios.post("/picker/connect", {
                 point: {
                   x: updatedPos.point.x,
                   y: updatedPos.point.y,
                 },
-                distance: updatedPos.distance,
-              })
-            );
-            console.log("App에서 위치", myPos);
-          },
-          (error) => {
-            console.error(error);
+              });
+              console.log("CONNET", document.visibilityState);
+            } catch (error) {
+              console.error("CONNET 에러:", error);
+            }
+          } else if (document.hidden === true) {
+            // 앱이 백그라운드에 있을 때
+            try {
+              await customAxios.post("/picker/disconnect");
+              console.log("DISCONNECT", document.hidden);
+            } catch (error) {
+              console.error("DISCONNECT 에러:", error);
+            }
           }
-        );
+        } catch (error) {
+          console.error("위치 못가져왔는디:", error);
+        }
       } else {
-        console.error("위치 못가져왔는디");
+        console.error("Geolocation을 지원하지 않습니다.");
       }
     };
 
-    if (document.visibilityState === "visible") {
-      // 앱이 포그라운드에 있을 때
-      customAxios.post("/picker/connect", myPos);
-    } else {
-      // 앱이 백그라운드에 있을 때
-      customAxios.post("/picker/disconnect").then((response) => {
-        console.log("앙 접종띠", response);
-      });
-    }
-    //초기 실행
+    // 초기 실행
     handleVisibilityChange();
 
-    //실행
+    // 실행
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    //종료
+
+    // 종료
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
