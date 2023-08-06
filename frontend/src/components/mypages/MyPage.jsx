@@ -20,7 +20,7 @@ const MyPage = () => {
   const [pickPoint, setPickPoint] = useState("");
   const [likeCount, setLikeCount] = useState("");
   const [likes, setLikes] = useState([]);
-  const [disLikes, setDisLikes] = useState([]);
+  const [disLikes,setDisLikes] = useState([]);
   const userInfo = useSelector(state => state.auth);
   // 정보 확인
   const dispatch = useDispatch();
@@ -28,6 +28,11 @@ const MyPage = () => {
   // 토큰 처리
   const jwtToken = localStorage.getItem('jwtToken');
   
+  // 호불호
+  const [like,setLike] = useState(userInfo.like);
+  const [hate,setHate] = useState(userInfo.hate);
+  const [likes, setLikes] = useState(userInfo.likes);
+  const [disLikes,setDisLikes] = useState(userInfo.disLikes);
   
   // 이름과 한줄평 가져오는 usestate
   const [useremoji, setUseremoji] = useState(userInfo.emojiUrl);
@@ -76,32 +81,32 @@ const MyPage = () => {
 
     const fetchData = async () => {
       // if (isTokenExpired()) {
-      try {
-        const response = await customAxios.get("/member/info", { headers });
-        console.log(response);
-        setLikes(response.data.data.likes);
-        setDisLikes(response.data.data.disLikes);
-        setPickPoint(response.data.data.pickPoint);
-        setLikeCount(response.data.data.likeCount);
-        setUseremoji(response.data.data.emoji.imageUrl);
-        setBio(response.data.data.bio);
-        setNickname(response.data.data.nickname);
-        setPrefix(response.data.data.prefix.content);
-        setPrefixId(response.data.data.prefix.prefixId);
-        const sendToMyPageData = {
-          emojiUrl: useremoji,
-        };
-        const sendToUserNicknameData = {
-          bio: bio,
-          nickname: nickname,
-          prefix: prefix,
-          prefixId: prefixId,
+        try {
+          const response = await customAxios.get("/member/info", { headers });
+          console.log(response)
+          setLikes(response.data.data.likes);
+          setDisLikes(response.data.data.disLikes);
+          setPickPoint(response.data.data.pickPoint);
+          setLikeCount(response.data.data.likeCount);
+          setEmojiUrl(response.data.data.emoji.imageUrl);
+          setUseremoji(response.data.data.emoji.imageUrl);
+          setBio(response.data.data.bio);
+          setNickname(response.data.data.nickname);
+          setPrefix(response.data.data.prefix.content);
+          setPrefixId(response.data.data.prefix.prefixId);
+          const sendToMyPageData = {
+            emojiUrl: response.data.data.emoji.imageUrl,
+          };
+          const sendToUserNicknameData = {
+            bio: bio,
+            nickname: nickname,
+            prefix: prefix,
+            prefixId: prefixId,
+          }
+          dispatch(authActions.updateMyPageProfile(sendToMyPageData));
+          dispatch(authActions.updateUserNickname(sendToUserNicknameData));
+        } catch (error) {
         }
-        dispatch(authActions.updateMyPageProfile(sendToMyPageData));
-        dispatch(authActions.updateUserNickname(sendToUserNicknameData));
-      } catch (error) {
-        console.error(error);
-      }
       // } else {
       //   const response = await customAxios.post("/auth/refresh", { headers });
       //   const data = response.data.data;
@@ -152,7 +157,7 @@ const MyPage = () => {
       </div>
 
       <hr className={classes.hr} />
-      <LikeAndHate ModalOutSide={ModalOutSide} likes={likes} disLikes={disLikes} />
+        <LikeAndHate ModalOutSide={ModalOutSide} likes={likes} disLikes={disLikes} /> 
       <hr className={classes.hr} />
 
       {/* 고객센터 */}
