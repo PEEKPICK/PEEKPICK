@@ -20,7 +20,7 @@ public interface PickerService {
 
     CommonResponse chatRequestSend(Long targetId, Long senderAvatarId);
 
-    SseEmitter connectSseSession(Long avatarId);
+    DataResponse<?> connectSseSession(Long avatarId);
 
     DataResponse<?> chatResponseReceive(ChatResponseDto chatResponseDto);
 }
