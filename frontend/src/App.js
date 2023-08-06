@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // import { useSelector } from "react-redux";
@@ -24,16 +24,12 @@ import Profile from "./components/mypages/Profile";
 // 동민
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
-// import { useSelector, useDispatch } from "react-redux";
-// import { locationActions } from "./store/locationSlice";
 // import { customAxios } from "./api/customAxios";
 // 기타공용
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
 
 function App() {
-  // 토큰 검사
-  // const isAuthenticated = true;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // PWA 적용을 위한 vh변환 함수
@@ -54,31 +50,17 @@ function App() {
   }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  // const getMemberId = useSelector((state) => state.geo.memberId);
-  // const getPointX = useSelector((state) => state.geo.point.x);
-  // const getPointY = useSelector((state) => state.geo.point.y);
+  const login = useCallback(() => {
+    const eventSource = new EventSource(`https://i9b309.p.ssafy.io/api/picker/sse`);
 
-  // let eventSource = null;
-  // useEffect(() => {
-  //   if (getMemberId !== null && getPointX !== null && getPointY !== null) {
-  //     // const requestBody = {
-  //     //   memberId: getMemberId,
-  //     //   point: {
-  //     //     x: getPointX,
-  //     //     y: getPointY,
-  //     //   },
-  //     // };
-  //     eventSource = new EventSource(`ttp://192.168.31.27:8081/picker/sse/14`, {
-  //       headers: {
-  //         Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwiYXZhdGFySWQiOiIxNiIsInByb3ZpZGVyIjoibm9uZSIsImV4cCI6MTY5MTEzODI1NywiaWF0IjoxNjkxMDUxODU3fQ.LxvrptoKP1zov91wGhI0k2r-57lkTb25NLAjCqSlCnA4HsrvemMwENon9TraljYJX3EL6SzkpkpDOicEcYILyA`,
-  //       },
-  //     });
+    eventSource.onmessage = (event) => {
+      console.log("result", event.data);
+    };
+  }, []);
 
-  //     eventSource.onmessage = (event) => {
-  //       console.log("result", event.data);
-  //     };
-  //   }
-  // }, [getMemberId, getPointX, getPointY, eventSource]);
+  useEffect(() => {
+    login();
+  }, [login]);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
   // const dispatch = useDispatch();

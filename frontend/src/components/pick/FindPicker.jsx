@@ -18,12 +18,14 @@ const FindPicker = () => {
     customAxios.post("/picker", requestBody).then((response) => {
       console.log("넘어온 피커 : ", response);
       const userArrayOrigin = response.data.data;
-      // 최대 n개의 이모지만 보여주기
-      const maxEmojisToShow = 8;
-      //정보 저장
-      const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-      // console.log("넘어온 limitedUserArray: ", limitedUserArray);
-      dispatch(findUserActions.updateUserInfo(limitedUserArray));
+      if (Array.isArray(userArrayOrigin)) {
+        // 최대 n개의 이모지만 보여주기
+        const maxEmojisToShow = 8;
+        //정보 저장
+        const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        dispatch(findUserActions.updateUserInfo(limitedUserArray));
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
