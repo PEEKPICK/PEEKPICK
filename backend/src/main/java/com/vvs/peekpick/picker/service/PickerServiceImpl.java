@@ -232,6 +232,7 @@ public class PickerServiceImpl implements PickerService {
         );
 
         try {
+            log.info("=== Server Sent Event Called!! : {} ===", targetId);
             emitter.send(SseEmitter.event().id(String.valueOf(targetId)).data(data));
         } catch (Exception e) {
             sseEmitterRepository.remove(targetId);
