@@ -129,6 +129,20 @@ public class MemberController {
 
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
+    /**
+     * 싫어요 태그 업데이트
+     * @param authentication
+     * @param param
+     * @return
+     */
+    @PutMapping("/info/disLike")
+    public CommonResponse updateAvatarDisLikes(Authentication authentication,
+                                            @RequestBody Map<String, List<Long>> param) {
+        Long avatarId = Long.valueOf(authentication.getName());
+        memberService.updateAvatarLikes(avatarId, param.get("disLikes"));
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
+    }
 
     /**
      * 수식어 뽑기

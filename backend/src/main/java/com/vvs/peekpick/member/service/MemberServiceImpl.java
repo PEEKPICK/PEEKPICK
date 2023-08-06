@@ -135,6 +135,13 @@ public class MemberServiceImpl implements MemberService {
         updateTaste(avatar, "L", likes);
     }
 
+    // 아바타 dislikes 태그 수정
+    @Override
+    public void updateAvatarDisLikes(Long avatarId, List<Long> disLikes) {
+        Avatar avatar = findByAvatarId(avatarId);
+        updateTaste(avatar, "D", disLikes);
+    }
+
     // 로그아웃
     @Override
     public void logout(Long avatarId) {
