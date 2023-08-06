@@ -2,7 +2,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import authSlice from "./authSlice";
-import geoLocation from "./locationSlice";
+import locationSlice from "./locationSlice";
 import modalSlice from "./modalSlice";
 import findUserSlice from "./findUserSlice";
 import findPeekSlice from "./findPeekSlice";
@@ -10,7 +10,7 @@ import findPeekSlice from "./findPeekSlice";
 const store = configureStore({
   reducer: {
     auth: authSlice,
-    geo: geoLocation,
+    location: locationSlice,
     modal: modalSlice,
     findUser: findUserSlice,
     findPeek: findPeekSlice,

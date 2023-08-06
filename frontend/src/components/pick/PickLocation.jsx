@@ -5,7 +5,7 @@ import classes from "./PickLocation.module.css";
 import ModalCompPick from "./ModalCompPick";
 
 const EmojiLocation = ({ findInfo }) => {
-  // console.log(findInfo);
+  console.log("findInfo",findInfo);
   const dispatch = useDispatch();
 
   const handleOpenPickModal = (current) => {
