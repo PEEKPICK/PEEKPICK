@@ -15,7 +15,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomOAuth2LoginFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
-    @Value("${auth.secretKey}")
+    @Value("${auth.redirectUrl}")
     private String redirectURL;
 
     // 23.08.02 OAuth 인증 실패 시 home Redirect
