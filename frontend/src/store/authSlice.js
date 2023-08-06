@@ -57,7 +57,7 @@ const authSlice = createSlice({
       const newItem = action.payload;
       state.disLikes = newItem.disLikes;
       state.hate = newItem.hate;
-    },
+    }
   },
 });
 
