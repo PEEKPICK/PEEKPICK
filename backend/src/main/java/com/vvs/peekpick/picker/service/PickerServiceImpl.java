@@ -82,12 +82,12 @@ public class PickerServiceImpl implements PickerService {
      * @return SSE Emitter - Server Sent Event 룰 수신하는 Emitter
      */
     @Override
-    public SseEmitter connectSseSession(Long avatarId) {
+    public DataResponse<?> connectSseSession(Long avatarId) {
         log.info("=== Picker Service : {} ===", avatarId);
         SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
         sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
-        return emitter;
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, emitter);
     }
 
     /**
