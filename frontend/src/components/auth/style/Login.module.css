@@ -9,13 +9,13 @@
 }
 
 .eyes {
-  margin-top: 27vh;
+  margin-top: 31vh;
   width: 7vh;
 }
 
 .buttons {
   margin-top: auto;
-  margin-bottom: 7vh;
+  margin-bottom: 3vh;
   display: flex;
   flex-direction: column;
   align-items: center;
