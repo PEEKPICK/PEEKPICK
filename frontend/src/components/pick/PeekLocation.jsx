@@ -32,32 +32,36 @@ const EmojiLocation = ({ findInfo }) => {
 
   return (
     <>
-      <div className={classes.emojiArea}>
-        {findInfo.map((current, index) => (
-          <button
-            key={index}
-            className={classes.EmojiBtn}
-            onClick={() => handleOpenPeekModal(current)}
-            style={randomPosition()}
-          >
-            {current.viewed ? (
-              <img
-                key={index}
-                src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Heart+Exclamation.png"
-                alt={current.peekId}
-                className={classes.EmojiImg}
-              />
-            ) : (
-              <img
-                key={index}
-                src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Speech+Balloon.png"
-                alt={current.peekId}
-                className={classes.EmojiImg}
-              />
-            )}
-          </button>
-        ))}
-      </div>
+      {findInfo.length > 0 ? (
+        <div className={classes.emojiArea}>
+          {findInfo.map((current, index) => (
+            <button
+              key={index}
+              className={classes.EmojiBtn}
+              onClick={() => handleOpenPeekModal(current)}
+              style={randomPosition()}
+            >
+              {current.viewed ? (
+                <img
+                  key={index}
+                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Heart+Exclamation.png"
+                  alt={current.peekId}
+                  className={classes.EmojiImg}
+                />
+              ) : (
+                <img
+                  key={index}
+                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Speech+Balloon.png"
+                  alt={current.peekId}
+                  className={classes.EmojiImg}
+                />
+              )}
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div>텅</div>
+      )}
 
       {/* 모달 */}
       <ModalCompPeek findInfo={findInfo} />
