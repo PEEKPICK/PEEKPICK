@@ -25,6 +25,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,6 +40,7 @@ public class PickerServiceImpl implements PickerService {
     // Redis에 저장될 Key
     private final String CONNECT_SESSION = "session";
     private final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
+    private final int REQUEST_TIMEOUT = 15;
     private final String REQUEST_REJECTED = "채팅이 거절되었습니다.";
     private final String REQUEST_ACCEPTED = "채팅이 수락되었습니다.";
 
@@ -54,6 +56,13 @@ public class PickerServiceImpl implements PickerService {
     private final MemberServiceImpl memberService;
     private final ChatService chatService;
 
+    private GeoOperations<String, String> geoOperations;
+
+    @PostConstruct
+    public void init() {
+        geoOperations = redisTemplate.opsForGeo();
+    }
+
     /**
      * 현재 사용자의 위치와 ID를 세션에 등록
      *
@@ -62,7 +71,6 @@ public class PickerServiceImpl implements PickerService {
      */
     @Override
     public CommonResponse connectSession(ConnectingPickerDto picker) {
-        GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         geoOperations.add(CONNECT_SESSION, picker.getPoint(), String.valueOf(picker.getAvatarId()));
         return responseService.successCommonResponse(ResponseStatus.CONNECTING_SUCCESS);
     }
@@ -75,6 +83,7 @@ public class PickerServiceImpl implements PickerService {
      */
     @Override
     public SseEmitter connectSseSession(Long avatarId) {
+        log.info("=== Picker Service : {} ===", avatarId);
         SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
         sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
@@ -89,7 +98,6 @@ public class PickerServiceImpl implements PickerService {
      */
     @Override
     public CommonResponse disconnectSession(Long avatarId) {
-        GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
         geoOperations.remove(CONNECT_SESSION, String.valueOf(avatarId));
         return responseService.successCommonResponse(ResponseStatus.DISCONNECT_SUCCESS);
     }
@@ -127,7 +135,7 @@ public class PickerServiceImpl implements PickerService {
         // 수락
         else {
             // 요청 시간이 만료되기 이전
-            if (chatResponseDto.getRequestTime().plusSeconds(15).isAfter(LocalDateTime.now())) {
+            if (chatResponseDto.getRequestTime().plusSeconds(REQUEST_TIMEOUT).isAfter(LocalDateTime.now())) {
                 GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
                 Point point = geoOperations.position(CONNECT_SESSION, String.valueOf(chatResponseDto.getRequestSenderId())).get(0);
                 if (point == null) { // 상대가 접속중이지 않을 때
@@ -165,8 +173,6 @@ public class PickerServiceImpl implements PickerService {
      */
     @Override
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
-        GeoOperations<String, String> geoOperations = redisTemplate.opsForGeo();
-
         // 현재위치로부터 반경 Distance(m)에 있는 Picker 리스트 조회
         GeoResults<RedisGeoCommands.GeoLocation<String>> radius = geoOperations.radius(CONNECT_SESSION, new Circle(picker.getPoint(), picker.getDistance()));
 
@@ -177,12 +183,9 @@ public class PickerServiceImpl implements PickerService {
 
         // Max count 이하는 전부 반환
         if (pickerSize <= MAX_PICKER_COUNT) {
-            radius.getContent().stream().forEach(value -> {
-                // 검색 결과에서 본인 제거
-                if (!value.getContent().getName().equals(picker.getAvatarId().toString())) {
-                    pickerList.add(value.getContent().getName());
-                }
-            });
+            radius.getContent().stream()
+                    .filter(value -> !value.getContent().getName().equals(picker.getAvatarId().toString()))
+                    .forEach(value -> pickerList.add(value.getContent().getName()));
         } else { // Max Count 이상은 랜덤으로 15명 선택
             while (pickerList.size() < MAX_PICKER_COUNT) {
                 int randomIdx = random.nextInt(pickerSize);
