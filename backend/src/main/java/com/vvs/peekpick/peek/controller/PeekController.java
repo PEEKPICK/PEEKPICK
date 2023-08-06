@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
-@Slf4j
+//@Slf4j
 @RestController
 @RequestMapping("/peek")
 @RequiredArgsConstructor
@@ -40,6 +40,7 @@ public class PeekController {
             @RequestPart("peek") RequestPeekDto requestPeekDto,
             @RequestPart("img") MultipartFile img) {
         try {
+            System.out.println("글 작성");
             Long memberId = Long.parseLong(authentication.getCredentials().toString());
 
             // 파일을 S3에 저장하고 URL 가져옴

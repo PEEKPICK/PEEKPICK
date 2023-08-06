@@ -24,7 +24,6 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService {
@@ -70,15 +69,16 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
                 String peekId = peekLocation.getContent().getName().toString();
                 PeekRedisDto peekRedisDto = (PeekRedisDto) valueOps.get(PEEK_REDIS + peekId);
+                boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
                 boolean isViewed = setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
                 ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
                         .peekId(peekRedisDto.getPeekId())
-                        .special(peekRedisDto.isSpecial())
-                        .viewed(peekRedisDto.isViewed())
+                        .special(true)
+                        .viewed(true)
                         .build();
                 allPeeks.add(responsePeekListDto);
+                System.out.println("Viewed status: " + responsePeekListDto.isViewed());
             }
-
 
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
             List<ResponsePeekListDto> randomPeeks;
@@ -101,7 +101,6 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
     @Override
     public CommonResponse addPeek(Long memberId, RequestPeekDto requestPeekDto, String imageUrl) {
-        System.out.println(requestPeekDto);
         try {
             Member writer = peekMemberService.findMember(memberId);
             //RDB에 저장하기 위한 Peek 객체
@@ -161,7 +160,6 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
             boolean isDisLiked = setOps.isMember("member:" + memberId + ":disLiked", String.valueOf(peekId));
 
-            System.out.println(setOps.members(key));
             // 응답해줄 Peek 객체
             PeekDetailDto peekDetailDto = PeekDetailDto.builder()
                     .peekId(peekRedisDto.getPeekId())
@@ -182,8 +180,6 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .emoji(avatar.getEmoji())
                     .prefix(avatar.getPrefix())
                     .build();
-            System.out.println(peekDetailDto);
-            System.out.println(peekAvatarDto);
 
             ResponsePeekDto responsePeekDto = ResponsePeekDto.builder()
                     .peekDetailDto(peekDetailDto)
