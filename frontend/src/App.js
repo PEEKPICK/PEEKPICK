@@ -36,7 +36,16 @@ function App() {
   // const isAuthenticated = true;
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  // PWA 적용을 위한 vh변환 함수
+  function setScreenSize() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  }
+
   useEffect(() => {
+    // vh변환 함수 작동
+    setScreenSize();
+
     const checkTokenInLocalStorage = () => {
       const token = localStorage.getItem("jwtToken");
       return token !== null;
@@ -131,7 +140,7 @@ function App() {
   // }, [dispatch, getPointX, getPointY]);
 
   return (
-    <div>
+    <div className="App">
       {/* 라우터 */}
       <Routes>
         <>
