@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // import { useSelector } from "react-redux";
@@ -50,17 +50,15 @@ function App() {
   }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  const login = useCallback(() => {
+
+  useEffect(() => {
+    console.log("sse 쏜다");
     const eventSource = new EventSource(`https://i9b309.p.ssafy.io/api/picker/sse`);
 
     eventSource.onmessage = (event) => {
-      console.log("result", event.data);
+      console.log("@@@@@@@@@@@", event.data);
     };
   }, []);
-
-  useEffect(() => {
-    login();
-  }, [login]);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
   // const dispatch = useDispatch();
