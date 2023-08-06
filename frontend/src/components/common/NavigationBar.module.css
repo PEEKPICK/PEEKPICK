@@ -4,6 +4,7 @@
     width: 90%;
     left: 5%;
     height: auto;
+    display: inline-block;
 }
 
 .navibar {

@@ -90,7 +90,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         {/* 형용사 버튼클릭시 input 안에 들어옴 변경 금지
                 input 말고 div로 디자인 해야할지도? */}
         <div className={classes.titleinline}>
-        <input type="text" value={prefix} placeholder={userInfo.prefix} readOnly />
+        <input type="text" value={prefix} placeholder={props.prefix} readOnly />
         {/* 클릭시 형용사 랜덤으로 백에서 뽑아오기 */}
         <img src="img/reloadWhite.png" alt="타이틀 바꾸기 버튼" onClick={titleChange} />
         </div>
@@ -99,7 +99,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         <h4>닉네임</h4>
         {/* 입력 받은 정보 props로 전달해야하기 때문에 이 부분 공부 */}
         <div className={classes.nickname}>
-        <input type="text" placeholder={userInfo.nickname} onChange={handleNicknameChange} onInput={e => maxLengthHandler(e, 6)}/>
+        <input type="text" placeholder={props.nickname} onChange={handleNicknameChange} onInput={e => maxLengthHandler(e, 6)}/>
         </div>
       </div>
       <div>
@@ -107,7 +107,7 @@ const NickNameEdit = forwardRef((props, ref) => {
         {/* 이 부분도 닉네임과 타이틀 동일하게 잘 전달해야함! */}
         <div className={classes.bio}>
 
-        <input type="text"  placeholder={userInfo.bio} onChange={handlebio} onInput={e => maxLengthHandler(e, 20)}/>
+        <input type="text"  placeholder={props.bio} onChange={handlebio} onInput={e => maxLengthHandler(e, 20)}/>
         </div>
       </div>
       {/* 클릭시 props로 마이페이지에 값 전달 */}
