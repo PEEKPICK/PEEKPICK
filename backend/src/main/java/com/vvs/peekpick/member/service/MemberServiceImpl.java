@@ -181,10 +181,10 @@ public class MemberServiceImpl implements MemberService {
             }
             if (!found) {
                 Taste taste = Taste.builder()
-                        .avatar(avatar)
-                        .category(category)
-                        .type(type)
-                        .build();
+                                   .avatar(avatar)
+                                   .category(category)
+                                   .type(type)
+                                   .build();
                 tasteRepository.save(taste);
             }
         }
@@ -214,11 +214,11 @@ public class MemberServiceImpl implements MemberService {
     // 업적 생성
     private Achievement createAchievement() {
         Achievement achievement = Achievement.builder()
-                .chatCount(0)
-                .likeCount(0)
-                .disLikeCount(0)
-                .pickPoint(0)
-                .updateDate(LocalDateTime.now()).build();
+                                             .chatCount(0)
+                                             .likeCount(0)
+                                             .disLikeCount(0)
+                                             .pickPoint(0)
+                                             .updateDate(LocalDateTime.now()).build();
 
         return achievementRepository.save(achievement);
     }

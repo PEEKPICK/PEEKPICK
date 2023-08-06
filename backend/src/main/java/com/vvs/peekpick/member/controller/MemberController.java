@@ -139,7 +139,7 @@ public class MemberController {
     public CommonResponse updateAvatarDisLikes(Authentication authentication,
                                             @RequestBody Map<String, List<Long>> param) {
         Long avatarId = Long.valueOf(authentication.getName());
-        memberService.updateAvatarLikes(avatarId, param.get("disLikes"));
+        memberService.updateAvatarDisLikes(avatarId, param.get("disLikes"));
 
         return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
