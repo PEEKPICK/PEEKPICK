@@ -25,7 +25,7 @@ public class Report {
     private Member victim;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reportCategor_id")
+    @JoinColumn(name = "reportCategory_id")
     private ReportCategory reportCategory;
 
     @Column(length = 1)

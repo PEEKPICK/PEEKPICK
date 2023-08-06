@@ -9,7 +9,6 @@ import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -36,7 +35,7 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
-    @Qualifier("locationRedisTemplate")
+    @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> locationTemplate;
     private GeoOperations<String, Object> geoOps;
     private ValueOperations<String, Object> valueOps;
@@ -260,6 +259,8 @@ public class PeekRedisServiceImpl implements PeekRedisService {
                     .build();
             valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto);
 
+            peekService.updatePeek(peekRedisDto.getPeekId(), likeCnt, disLikeCnt);
+
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } catch (Exception e) {
             return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
@@ -269,39 +270,41 @@ public class PeekRedisServiceImpl implements PeekRedisService {
 
     @Override
     public CommonResponse registerReport(Long memberId, Long peekId, RequestReportDto requestReportDto) {
-
+        // 신고당한 Peek 조회
         PeekRedisDto peekRedisDto = (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
 
-        // memberId를 사용하여 Member 엔티티를 조회 (신고자)
+        // 신고한 사람
         Member member = peekMemberService.findMember(memberId);
-        // memberId를 사용하여 Member 엔티티를 조회 (피신고자)
+
+        // 신고 당한 사람
         Member victim = peekMemberService.findMember(peekRedisDto.getMemberId());
 
+        // 본인 Peek은 신고 불가
         if(victim.getMemberId().equals(member.getMemberId())) {
             return responseService.failureCommonResponse(ResponseStatus.REPORT_FAILURE);
         }
 
-        ReportCategory reportCategory = reportService.findReportCategory(requestReportDto.getReportCategoryId());
+        ReportCategory reportCategory = reportService.findCategoryById(requestReportDto.getReportCategoryId());
 
-        Peek peek = Peek.builder()
-                .member(victim) //신고 당한 사람
-                .content(peekRedisDto.getContent())
-                .disLikeCount(peekRedisDto.getDisLikeCount())
-                .likeCount(peekRedisDto.getLikeCount())
-                .imageUrl(peekRedisDto.getImageUrl())
-                .writeTime(peekRedisDto.getWriteTime())
-                .build();
+//        Peek peek = Peek.builder()
+//                .member(victim) //신고 당한 사람
+//                .content(peekRedisDto.getContent())
+//                .disLikeCount(peekRedisDto.getDisLikeCount())
+//                .likeCount(peekRedisDto.getLikeCount())
+//                .imageUrl(peekRedisDto.getImageUrl())
+//                .writeTime(peekRedisDto.getWriteTime())
+//                .build();
 
         //peek에 저장 (이미 저장되어 있고 ttl expire 되기 전 update 로직 구현 필요)
         //peekService.savePeek(peek);
         Report report = Report.builder()
-                .member(member)
-                .victim(victim)
-                .reportCategory(reportCategory)
-                .contetnType("P")
-                .reportContentId(peekRedisDto.getPeekId().toString())
-                .reportContent(requestReportDto.getReportContent())
-                .reportTime(LocalDateTime.now())
+                .member(member) //신고자
+                .victim(victim) //피신고자
+                .reportCategory(reportCategory) //reportCategory 객체
+                .contetnType("P") //Peek임
+                .reportContentId(peekRedisDto.getPeekId().toString()) //Peek의 id
+                .reportContent(requestReportDto.getReportContent()) //신고 내용
+                .reportTime(LocalDateTime.now()) //
                 .build();
 
         //repor에 추가
