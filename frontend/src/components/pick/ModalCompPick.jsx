@@ -14,7 +14,7 @@ const ModalComp = () => {
   };
   //채팅요청
   const plzChat = () => {
-    customAxios.get("/picker/chat-request/1").then((response) => {
+    customAxios.get("/picker/chat-request/2").then((response) => {
       console.log("채팅요청", response);
     });
   };
@@ -38,6 +38,7 @@ const ModalComp = () => {
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>100</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span>
               <p className={classes.intro}>지각률 66.6% 보장</p>
+              <p>{isSelectedEmoji.avatarId}</p>
             </div>
           </div>
           <div className={classes.divider}></div>
