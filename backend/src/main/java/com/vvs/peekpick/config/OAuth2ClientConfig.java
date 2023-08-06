@@ -1,62 +1,86 @@
 package com.vvs.peekpick.config;
 
-import com.vvs.peekpick.oauth.handler.CustomOAuth2LoginSuccessHandler;
-import com.vvs.peekpick.oauth.service.CustomOAuth2UserService;
-import com.vvs.peekpick.oauth.service.CustomOidcUserService;
+import com.vvs.peekpick.global.auth.exception.CustomAccessDeniedHandler;
+import com.vvs.peekpick.global.auth.exception.CustomAuthenticationEntryPoint;
+import com.vvs.peekpick.global.filter.JwtAuthenticationFilter;
+import com.vvs.peekpick.global.oauth.handler.CustomOAuth2LoginFailureHandler;
+import com.vvs.peekpick.global.oauth.handler.CustomOAuth2LoginSuccessHandler;
+import com.vvs.peekpick.global.oauth.service.CustomOAuth2UserService;
+import com.vvs.peekpick.global.oauth.service.CustomOidcUserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+/**
+ * SecurityConfig
+ */
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class OAuth2ClientConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomOidcUserService customOidcUserService;
+
     private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler;
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/static/js/**", "/static/images/**", "/static/css/**","/static/scss/**");
-    }
+    private final CustomOAuth2LoginFailureHandler customOAuth2LoginFailureHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    @Value("${auth.ignored-urls}")
+    private String[] ignoredUrls;
 
     @Bean
     SecurityFilterChain oauth2SecurityFilterChain(HttpSecurity http) throws Exception {
-
         // 23.07.25 CSRF 비활성화
         // Form 로그인 처리 X
         http
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 방식 사용 X
+                .and()
                 .csrf().disable()
-                .authorizeRequests((requests) -> requests
-                .antMatchers("/api/user")
-                .access("hasAnyRole('SCOPE_profile','SCOPE_email')")
-                .antMatchers("/api/oidc")
-                .access("hasRole('SCOPE_openid')")
-                .antMatchers("/", "/member/signup", "/login")
-                .permitAll()
-                .anyRequest().permitAll());
+                .formLogin().disable()
+                .httpBasic().disable();
 
+        http
+                .authorizeRequests()
+                .antMatchers(ignoredUrls).permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        //OAuth 관련 설정
         http
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService) // 네이버
                                 .oidcUserService(customOidcUserService) // 구글, 카카오
                                 .and()
-                                .successHandler(customOAuth2LoginSuccessHandler))); // 인증 성공
-//                        .failureHandler(customOAuth2LoginFailureHandler)); // 인증 실패 (미구현)
+                                .successHandler(customOAuth2LoginSuccessHandler) // 인증 성공
+                                .failureHandler(customOAuth2LoginFailureHandler)) // 인증 실패
+                                .permitAll());
 
-        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+        // 23.08.02 간단하게 구현, 완성도를 위해 디테일한 명세 필요
+        http
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint) // 인증 실패
+                .accessDeniedHandler(customAccessDeniedHandler); // 인가 실패
 
         return http.build();
-   }
+    }
+
+    // CORS 설정
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
@@ -65,7 +89,11 @@ public class OAuth2ClientConfig {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedOriginPattern("*");
-        corsConfiguration.setAllowCredentials(false);
+        corsConfiguration.addAllowedOrigin("https://i9b309.p.ssafy.io");
+        corsConfiguration.addAllowedOrigin("https://i9b309.p.ssafy.io/ws");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+
+        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
