@@ -104,8 +104,6 @@ function App() {
               distance: updatedPos.distance,
             })
           );
-          console.log("App에서 위치", myPos);
-
           if (document.visibilityState === "visible") {
             // 앱이 포그라운드에 있을 때
             try {
