@@ -84,6 +84,7 @@ const MyPage = () => {
         const response = await customAxios.get("/member/info", { headers });
         // 호불호 집어넣기
         // Likes 데이터 처리
+        console.log(response)
         if (response.data.data.likes && response.data.data.likes.length > 0) {
           const likesData = response.data.data.likes.map((item) => item.categoryId);
           setLikes(likesData);

@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, forwardRef } from 'react';
 import classes from './LogOut.module.css';
-import { Link } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
+import { customAxios } from '../../api/customAxios';
 
 const LogOut = forwardRef((props, ref) => {
   let wrapperRef = useRef();
+  const navigate = useNavigate();
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -27,7 +29,23 @@ const LogOut = forwardRef((props, ref) => {
   };
 
   const Logout = () => {
-    localStorage.clear();
+    const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {
+      Authorization : `Bearer ${jwtToken}`,
+    }
+    customAxios.post('/member/logout',{headers})
+    .then(response=>{
+      console.log(response)
+      localStorage.clear();
+      // 바꿔야함
+      // setTimeout(function(){
+        navigate('/');
+        window.location.reload();
+      // }, 500)
+     })
+     .catch(response=>{
+      console.log(response)
+     })
   };
 
   return (
@@ -48,11 +66,9 @@ const LogOut = forwardRef((props, ref) => {
           <span>싫어!</span>
         </div>
         {/* 클릭시 로그아웃 */}
-        <Link to="/login">
           <div onClick={Logout} className={classes.like}>
             <span>좋아!</span>
           </div>
-        </Link>
       </div>
     </div>
   );
