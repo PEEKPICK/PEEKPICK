@@ -1,4 +1,4 @@
-import { customAxios } from '../../api/customAxios';
+import { authAxios } from '../../api/customAxios';
 
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -39,7 +39,7 @@ const UserLikeHate = () => {
       disLikes: userInfo.disLikes,
     }
   
-    customAxios.post('/member/signup', dataToSend)
+    authAxios.post('/member/signup', dataToSend)
       .then(response => {
         if (response.data.code === "201") {
           const accessToken = response.data.data;
