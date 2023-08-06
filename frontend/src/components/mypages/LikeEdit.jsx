@@ -5,19 +5,15 @@ import Modal from '../auth/Modal';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
-// import { authActions } from '../../store/authSlice';
+import { authActions } from '../../store/authSlice';
 import common from '../auth/style/Common.module.css';
 import classes from '../auth/style/UserLike.module.css';
 
 const LikeEdit = () => {
   // 중분류 정보 가져오기
   const userInfo = useSelector(state => state.auth);
-  //Link를 통한 데이터 전달
-  const location = useLocation();
-  const likeFromLink = location.like;
-
   // 상태관리
   // dataAxios, middleDataAxios - 결과값, 오류값 판단을 위한 flag
   const [dataAxios, setDataAxios] = useState(false);
@@ -26,17 +22,18 @@ const LikeEdit = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // likeList, middleLikeList는 대분류, 중분류 표시
   const [likeList, setLikeList] = useState([]);
-  const [middleLikeList, setMiddleLikeList] = useState(userInfo.like);
+  const [middleLikeList, setMiddleLikeList] = useState([]);
   // tempMiddleList - 백엔드 전송을 위한 중분류 id
-  const [tempMiddleList, setTempMiddleList] = useState(likeFromLink);
+  const [tempMiddleList, setTempMiddleList] = useState(userInfo.likes);
   // middleItem - UserLikeHate에 표시할 중분류 이름
   const [middleItem, setMiddleItem] = useState(userInfo.like);
   // 대분류 라디오 버튼 설정을 위한 상태관리
   const [selectedLargeItem, setSelectedLargeItem] = useState(null);
-
+  
   // 기본 함수 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
 
   // axios 통신 (대분류 가져오기)
   useEffect(() => {
@@ -78,6 +75,11 @@ const LikeEdit = () => {
       setTempMiddleList((prevList) => prevList.filter(item => item !== categoryId))
       setMiddleItem((prevItem) => prevItem.filter(item => item !== middle))
     }
+    const changedLikes = {
+      likes: tempMiddleList,
+      like: middleItem,
+    }
+    dispatch(authActions.updateUserLike(changedLikes))
   };
 
   // 모달창 종료
@@ -93,14 +95,14 @@ const LikeEdit = () => {
     }
     const changedLikes = {
       likes: tempMiddleList,
-      // like: middleItem,
+      like: middleItem,
     }
     console.log(tempMiddleList)
-    customAxios.put('/member/info/like', changedLikes, { headers })
+    customAxios.put('/member/info/like', { likes: tempMiddleList }, { headers })
       .then((response) => {
-        console.log(response)
+        navigate('/mypage');
+        dispatch(authActions.updateUserLike(changedLikes))
       })
-    navigate('/mypage');
   };
 
   return (
