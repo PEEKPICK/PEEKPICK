@@ -46,7 +46,6 @@ function App() {
   useEffect(() => {
     // vh변환 함수 작동
     setScreenSize();
-
     const checkTokenInLocalStorage = () => {
       const token = localStorage.getItem("jwtToken");
       return token !== null;
@@ -104,16 +103,13 @@ function App() {
 
     if (document.visibilityState === "visible") {
       // 앱이 포그라운드에 있을 때
-      console.log("@@@@@@@@@@@@접속했다리@@@@@@@@@@@");
-      console.log("???????", myPos);
       customAxios.post("/picker/connect", myPos).then((response) => {
-        console.log(response);
+        console.log("앙 접속띠", response);
       });
     } else {
       // 앱이 백그라운드에 있을 때
-      console.log("@@@@@@@@@@나갔다리@@@@@@@@@@@@@");
       customAxios.post("/picker/disconnect").then((response) => {
-        console.log(response);
+        console.log("앙 접종띠", response);
       });
     }
     //초기 실행
