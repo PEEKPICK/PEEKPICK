@@ -89,8 +89,11 @@ public class OAuth2ClientConfig {
         corsConfiguration.addAllowedHeader("*");
         corsConfiguration.addAllowedMethod("*");
         corsConfiguration.addAllowedOriginPattern("*");
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.setAllowCredentials(false);
+        corsConfiguration.addAllowedOrigin("https://i9b309.p.ssafy.io");
+        corsConfiguration.addAllowedOrigin("https://i9b309.p.ssafy.io/ws");
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+
+        corsConfiguration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
