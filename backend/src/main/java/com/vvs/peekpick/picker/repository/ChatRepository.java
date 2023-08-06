@@ -1,5 +1,6 @@
 package com.vvs.peekpick.picker.repository;
 
+import com.vvs.peekpick.picker.dto.ChatRoomDto;
 import com.vvs.peekpick.picker.service.ChatPublisher;
 import com.vvs.peekpick.picker.service.ChatSubscriber;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,13 +35,13 @@ public class ChatRepository {
     @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
     private ListOperations<String, Object> opsListChat;
-    private Map<String, ChannelTopic> topics;
+    private Map<String, ChatRoomDto> topics;
 
     // Redis 저장을 위한 Key 값
     private final static String CHAT_KEY = "CHATTING:";
 
     @PostConstruct
-    private void init(){
+    private void init() {
         topics = new ConcurrentHashMap<>();
         opsListChat = redisTemplate.opsForList();
     }
@@ -47,24 +49,30 @@ public class ChatRepository {
     public String createChatRoom() {
         String roomId = UUID.randomUUID().toString();
         ChannelTopic topic = new ChannelTopic(roomId);
+        ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                .createTime(LocalDateTime.now())
+                .channelTopic(topic)
+                .build();
         redisMessageListenerContainer.addMessageListener(chatSubscriber, topic);
         try {
-            topics.put(roomId, topic);
+            topics.put(roomId, chatRoomDto);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return roomId;
     }
 
-    public Optional<ChannelTopic> getTopic(String roomId) {
+    public Optional<ChatRoomDto> getTopic(String roomId) {
         return Optional.ofNullable(topics.get(roomId));
     }
 
     public void chatLogAppend(String message, String roomId) {
-        opsListChat.rightPush(CHAT_KEY+roomId, message);
+        opsListChat.rightPush(CHAT_KEY + roomId, message);
     }
 
     public List<Object> chatEnd(String roomId) {
-        return opsListChat.range(CHAT_KEY+roomId, 0, -1);
+        List<Object> result = opsListChat.range(CHAT_KEY + roomId, 0, -1);
+        opsListChat.getOperations().delete(CHAT_KEY + roomId);
+        return result;
     }
 }

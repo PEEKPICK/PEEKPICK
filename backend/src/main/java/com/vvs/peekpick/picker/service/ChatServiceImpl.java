@@ -4,6 +4,7 @@ import com.vvs.peekpick.entity.Chat;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.picker.dto.ChatMessageDto;
+import com.vvs.peekpick.picker.dto.ChatRoomDto;
 import com.vvs.peekpick.picker.repository.ChatJpaRepository;
 import com.vvs.peekpick.picker.repository.ChatRepository;
 import com.vvs.peekpick.response.CommonResponse;
@@ -29,7 +30,7 @@ public class ChatServiceImpl implements ChatService {
      * Redis Pub/Sub 을 위한 채팅방 (Topic) 획득 함수
      * @param roomId - 채팅방 UUID
      */
-    public ChannelTopic getTopic(String roomId) {
+    public ChatRoomDto getChatRoom(String roomId) {
         return chatRepository.getTopic(roomId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.CHAT_ROOM_DOES_NOT_EXIST)
         );
