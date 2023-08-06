@@ -42,7 +42,7 @@ public class PickerController {
      * @Return SSE Emitter
      */
     @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public DataResponse<?> sseConnect(Authentication authentication){
+    public SseEmitter sseConnect(Authentication authentication){
         log.info("=== Picker Controller : {} ===", authentication.getName());
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
 
