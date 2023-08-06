@@ -1,10 +1,13 @@
 package com.vvs.peekpick.global.oauth.handler;
 
+import com.vvs.peekpick.entity.Avatar;
 import com.vvs.peekpick.entity.Member;
+import com.vvs.peekpick.entity.RefreshToken;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.global.oauth.model.PrincipalUser;
 import com.vvs.peekpick.global.oauth.model.ProviderUser;
 import com.vvs.peekpick.member.repository.MemberRepository;
+import com.vvs.peekpick.member.repository.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final MemberRepository memberRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private String redirectUrl;
 
@@ -53,7 +57,6 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
             redirectUrl = "https://i9b309.p.ssafy.io/userInfo?id=" + signupMember.getMemberId();
         } else {
             Member findMember = member.get();
-
             // 가회원 상태 = 회원가입 리다이렉션
             if(findMember.getAvatar() == null) {
                 log.info("NO Avatar");
@@ -62,23 +65,37 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
 
             // 회원 상태 = Token 발급 및 로그인 처리
             else {
+                Avatar avatar = findMember.getAvatar();
+
                 log.info("가입 회원");
                 String accessToken = jwtTokenProvider.createAccessToken(member.get());
                 String refreshToken = jwtTokenProvider.createRefreshToken();
 
+                // RefreshToken 이 있는지 확인
+                Optional<RefreshToken> dbToken = refreshTokenRepository.findByAvatarId(avatar.getAvatarId());
+
+                // 이미 있으면 갱신
+                if (dbToken.isPresent()) {
+                    refreshTokenRepository.updateTokenByAvatarId(refreshToken, avatar.getAvatarId());
+                } else {
+                    refreshTokenRepository.save(RefreshToken.builder()
+                                                            .avatar(findMember.getAvatar())
+                                                            .token(refreshToken).build());
+                }
+
                 // refreshToken 은 쿠키
-                Cookie cookie = getCookie(refreshToken);
+                Cookie cookie = createCookie(refreshToken);
                 response.addCookie(cookie);
 
                 // accessToken 은 파라미터에 임시, 맘에 안든다
-                redirectUrl += "https://i9b309.p.ssafy.io/oauth2/redirect?token=" + accessToken;
+                redirectUrl = "https://i9b309.p.ssafy.io/oauth2/redirect?token=" + accessToken;
             }
         }
         // 신규 회원이면 회원정보 return
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 
-    private static Cookie getCookie(String refreshToken) {
+    private static Cookie createCookie(String refreshToken) {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         cookie.setHttpOnly(true);
         cookie.setPath("/");

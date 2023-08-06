@@ -22,8 +22,8 @@ public class AvatarDto {
     private Prefix prefix;
     private World world;
 
-    private List<String> likes;
-    private List<String> disLikes;
+    private List<Category> likes;
+    private List<Category> disLikes;
 
     private int chatCount;
     private int likeCount;
