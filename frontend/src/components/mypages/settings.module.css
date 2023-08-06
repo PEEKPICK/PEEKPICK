@@ -1,0 +1,26 @@
+.settings{
+  position: absolute;
+  width: 70%;
+  right: 10%;
+  top:8vh;
+  background-color: white;
+  padding: 5%;
+  border-top-left-radius: 3vh;
+  border-bottom-left-radius:3vh ;
+  border-bottom-right-radius:3vh ;
+  border:1px solid;
+  border-color:rgba(125,0,225,0.25);
+  z-index: 10;
+}
+
+.settings div div {
+  margin: 5%;
+}
+
+.hr{
+  width: 100%;
+  border: 1px solid;
+  border-color: rgba(125, 0, 225);
+  margin-top: 2%;
+  margin-bottom: 5%;
+}
