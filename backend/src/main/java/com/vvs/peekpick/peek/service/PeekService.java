@@ -1,32 +1,19 @@
 package com.vvs.peekpick.peek.service;
 
-import com.vvs.peekpick.entity.Peek;
-import com.vvs.peekpick.peek.repository.PeekRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.vvs.peekpick.peek.dto.RequestPeekDto;
+import com.vvs.peekpick.peek.dto.RequestSearchPeekDto;
+import com.vvs.peekpick.report.dto.RequestReportDto;
+import com.vvs.peekpick.response.CommonResponse;
+import com.vvs.peekpick.response.DataResponse;
 
-@Slf4j
-@Service
-@RequiredArgsConstructor
-public class PeekService {
-    private final PeekRepository peekRepository;
+import java.util.List;
 
-    public Peek findPeek(Long peekId) {
-        return peekRepository.findById(peekId)
-                .orElseThrow(() -> new IllegalArgumentException("Peek not found"));
-    }
+public interface PeekService {
+    DataResponse<List> findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto); //내 주변 Peek 찾기 & Peek 로딩 시
+    CommonResponse addPeek(Long memberId, RequestPeekDto requestPeekDto, String imageUrl); //Peek 작성
+    DataResponse getPeek(Long memberId, Long avatarId, Long peekId); //id로 Peek 찾기
+    CommonResponse deletePeek(Long memberId, Long peekId); //Peek 삭제
+    CommonResponse addReaction(Long memberId, Long peekId, boolean like); //Peek 반응 추가
+    CommonResponse  registerReport(Long memberId, Long peekId, RequestReportDto requestReportDto); //Peek 신고
 
-    @Transactional
-    public Long savePeek(Peek peek) {
-        Peek savedPeek = peekRepository.save(peek);
-        return savedPeek.getPeekId();
-    }
-
-    @Transactional
-    public void updatePeek(Long peekId, int like, int dislike) {
-        Peek beforePeek = findPeek(peekId);
-        beforePeek.updateCounts(like, dislike);
-    }
 }
