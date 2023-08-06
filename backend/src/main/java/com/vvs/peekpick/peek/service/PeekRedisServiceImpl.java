@@ -69,12 +69,11 @@ public class PeekRedisServiceImpl implements PeekRedisService {
             for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
                 String peekId = peekLocation.getContent().getName().toString();
                 PeekRedisDto peekRedisDto = (PeekRedisDto) valueOps.get(PEEK_REDIS + peekId);
-                boolean isLiked= setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
                 boolean isViewed = setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
                 ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
                         .peekId(peekRedisDto.getPeekId())
-                        .special(true)
-                        .viewed(true)
+                        .special(peekRedisDto.isSpecial())
+                        .viewed(isViewed)
                         .build();
                 allPeeks.add(responsePeekListDto);
                 System.out.println("Viewed status: " + responsePeekListDto.isViewed());
