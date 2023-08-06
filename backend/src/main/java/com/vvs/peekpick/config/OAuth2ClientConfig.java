@@ -91,8 +91,6 @@ public class OAuth2ClientConfig {
         corsConfiguration.addAllowedOriginPattern("*");
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.setAllowCredentials(false);
-//        corsConfiguration.setAllowCredentials(true);
-//        corsConfiguration.addAllowedOrigin("http://localhost:3000");
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration);
