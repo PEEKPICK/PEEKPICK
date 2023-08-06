@@ -83,6 +83,7 @@ public class PickerServiceImpl implements PickerService {
      */
     @Override
     public SseEmitter connectSseSession(Long avatarId) {
+        log.info("=== Picker Service : {} ===", avatarId);
         SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
         sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");

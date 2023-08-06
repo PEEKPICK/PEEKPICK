@@ -43,6 +43,7 @@ public class PickerController {
      */
     @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter sseConnect(Authentication authentication){
+        log.info("=== Picker Controller : {} ===", authentication.getName());
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
     }
 
