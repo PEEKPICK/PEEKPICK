@@ -102,10 +102,6 @@ const LikeEdit = () => {
         navigate('/mypage');
         dispatch(authActions.updateUserLike(changedLikes))
       })
-      .catch((response)=>{
-        alert("error 발생")
-      })
-
   };
 
   return (

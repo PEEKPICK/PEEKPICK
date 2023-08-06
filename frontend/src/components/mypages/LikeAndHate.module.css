@@ -34,7 +34,8 @@
 .itemWrap {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 3%;
+  margin-left: 5%;
+
 }
 
 .items {
