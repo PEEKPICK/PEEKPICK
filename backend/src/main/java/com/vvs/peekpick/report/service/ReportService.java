@@ -3,10 +3,13 @@ package com.vvs.peekpick.report.service;
 import com.vvs.peekpick.entity.Member;
 import com.vvs.peekpick.entity.Report;
 import com.vvs.peekpick.entity.ReportCategory;
+import com.vvs.peekpick.member.repository.MemberRepository;
 import com.vvs.peekpick.member.service.MemberService;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
+import com.vvs.peekpick.peek.service.PeekRedisService;
 import com.vvs.peekpick.report.dto.RequestReportDto;
 import com.vvs.peekpick.report.repository.ReportCategoryRepository;
+import com.vvs.peekpick.report.repository.ReportMemberRepository;
 import com.vvs.peekpick.report.repository.ReportRepository;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
@@ -19,27 +22,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
-@Slf4j
-@Service
-@AllArgsConstructor
-public class ReportService  {
+public interface ReportService  {
 
-    private final ReportRepository reportRepository;
-    private final ReportCategoryRepository reportCategoryRepository;
-    private final ResponseService responseService;
-    public DataResponse allCategory() {
-        return responseService.successDataResponse(ResponseStatus.GET_CATEGORY_SUCCESS, reportCategoryRepository.findAll());
-    }
 
-    public ReportCategory findCategoryById(Long reportCategoryId) {
-        return reportCategoryRepository.findById(reportCategoryId)
-                .orElseThrow(() -> new IllegalArgumentException("ReportCategory not found"));
-    }
+    DataResponse allCategory();
+
+    ReportCategory findCategoryById(Long reportCategoryId);
+    
     @Transactional
-    public Report saveReport(Report report) {
-        return reportRepository.save(report);
-    }
+    public Report saveReport(Report report);
+
+    CommonResponse peekReport(Long memberId, Long peekId, RequestReportDto requestReportDto);
 
 
 }
