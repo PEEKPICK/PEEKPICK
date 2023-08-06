@@ -1,5 +1,5 @@
 import "./App.css";
-// import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 // import { useSelector } from "react-redux";
@@ -33,16 +33,16 @@ import AlreadyLogin from "./components/common/AlreadyLogin";
 
 function App() {
   // 토큰 검사
-  const isAuthenticated = true;
-  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const isAuthenticated = true;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // useEffect(() => {
-  //   const checkTokenInLocalStorage = () => {
-  //     const token = localStorage.getItem("jwtToken");
-  //     return token !== null;
-  //   };
-  //   setIsAuthenticated(checkTokenInLocalStorage());
-  // }, []);
+  useEffect(() => {
+    const checkTokenInLocalStorage = () => {
+      const token = localStorage.getItem("jwtToken");
+      return token !== null;
+    };
+    setIsAuthenticated(checkTokenInLocalStorage());
+  }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   // const getMemberId = useSelector((state) => state.geo.memberId);
