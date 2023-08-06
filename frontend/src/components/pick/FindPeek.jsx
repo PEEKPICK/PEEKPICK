@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
@@ -10,9 +10,8 @@ const FindPeek = () => {
   //주변 유져 정보
   const myPos = useSelector((state) => state.location.userPos);
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
-
-  console.log("Peek 니 위치야", myPos);
-  const emojiCall = useCallback(({ myPos }) => {
+  const emojiCall = useCallback(() => {
+    console.log("Peek 니 위치야", myPos);
     customAxios.post("/peek", myPos).then((response) => {
       console.log("넘어온 피크 : ", response);
       const peekArrayOrigin = response.data.data;
@@ -25,8 +24,19 @@ const FindPeek = () => {
         dispatch(findPeekActions.updatePeekInfo(limitedUserArray));
       }
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [myPos, dispatch]);
+
+  useEffect(() => {
+    // 2초 딜레이 후에 emojiCall 함수 호출
+    const timeout = setTimeout(() => {
+      emojiCall(myPos);
+    }, 1000);
+
+    // cleanup 함수에서 timeout 해제
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [myPos, emojiCall]);
 
   return (
     <>

@@ -87,7 +87,7 @@ function App() {
                 distance: updatedPos.distance,
               })
             );
-            console.log("12", myPos);
+            console.log("App에서 위치", myPos);
           },
           (error) => {
             console.error(error);
@@ -100,9 +100,7 @@ function App() {
 
     if (document.visibilityState === "visible") {
       // 앱이 포그라운드에 있을 때
-      customAxios.post("/picker/connect", myPos).then((response) => {
-        console.log("앙 접속띠", response);
-      });
+      customAxios.post("/picker/connect", myPos);
     } else {
       // 앱이 백그라운드에 있을 때
       customAxios.post("/picker/disconnect").then((response) => {
