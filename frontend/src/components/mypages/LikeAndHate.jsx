@@ -9,7 +9,7 @@ const LikeAndHate = ({ ModalOutSide, like, hate,likes,hates }) => {
   // 또한, axios put 요청을 추가해야 할 수도 있습니다.
 
   const handleLikeEdit = () => {
-    navigate(`/likeedit?likes=${likes}`);
+    navigate('/likeedit');
   };
 
   const handleHateEdit = () => {
