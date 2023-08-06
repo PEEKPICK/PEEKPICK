@@ -25,7 +25,7 @@ import Profile from "./components/mypages/Profile";
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
-// import { EventSourcePolyfill } from "event-source-polyfill";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -58,18 +58,36 @@ function App() {
     const fetchData = async () => {
       try {
         const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-        const eventSource = new EventSource(sseURL, {
+        const eventSource = new EventSourcePolyfill(sseURL, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
           },
         });
-        eventSource.addEventListener("sse", function (event) {
-          console.log("event.data", event.data);
-          const data = JSON.parse(event.data);
-          console.log("data", data);
-        });
-        eventSource.onmessage = (event) => {
-          console.log("result", event.data);
+
+        eventSource.onopen = async (e) => {
+          // 연결 시 할 일
+          console.log("SSE 오픈", e);
+        };
+
+        // 받아오는 data로 할 일
+        eventSource.onmessage = async (e) => {
+          const res = await e.data;
+          const parsedData = JSON.parse(res);
+          console.log("SSE메시지", parsedData);
+        };
+
+        eventSource.onerror = async (e) => {
+          // 종료 또는 에러 발생 시 할 일
+          eventSource.close();
+
+          if (e.error) {
+            // 에러 발생 시 할 일
+          }
+          console.log("SSE에러!!!!!!");
+          if (e.target.readyState === EventSource.CLOSED) {
+            // 종료 시 할 일
+            console.log("SSE닫아!!!!!!");
+          }
         };
       } catch (error) {}
     };
