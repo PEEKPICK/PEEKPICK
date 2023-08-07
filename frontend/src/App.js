@@ -25,7 +25,7 @@ import Profile from "./components/mypages/Profile";
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
-import { EventSourcePolyfill } from "event-source-polyfill";
+// import { EventSourcePolyfill } from "event-source-polyfill";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
