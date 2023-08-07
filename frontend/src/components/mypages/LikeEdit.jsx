@@ -10,6 +10,7 @@ import { useNavigate} from 'react-router-dom';
 import { authActions } from '../../store/authSlice';
 import common from '../auth/style/Common.module.css';
 import classes from '../auth/style/UserLike.module.css';
+import { toast } from 'react-hot-toast';
 
 const LikeEdit = () => {
   // 중분류 정보 가져오기
@@ -35,11 +36,8 @@ const LikeEdit = () => {
   const dispatch = useDispatch();
   
   useEffect(() => {
-    const jwtToken = localStorage.getItem('jwtToken');
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`
-    };
-    customAxios.get('/member/info',{headers})
+
+    customAxios.get('/member/info')
     .then(response =>{
       if (response.data.data.likes && response.data.data.likes.length > 0) {
         const likesData = response.data.data.likes.map((item) => item.categoryId);
@@ -104,19 +102,19 @@ const LikeEdit = () => {
 
   // 좋아요한 리스트 저장 후, 취향PICK창으로 이동
   const selectedFinish = () => {
-    const jwtToken = localStorage.getItem('jwtToken');
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`,
-    }
     const changedLikes = {
       likes: tempMiddleList,
       like: middleItem,
     }
     console.log(tempMiddleList)
-    customAxios.put('/member/info/like', { likes: tempMiddleList }, { headers })
+    customAxios.put('/member/info/like', { likes: tempMiddleList })
       .then((response) => {
         navigate('/mypage');
-        dispatch(authActions.updateUserLike(changedLikes))
+        dispatch(authActions.updateUserLike(changedLikes));
+        toast.success("좋아요 수정 완료");
+      })
+      .catch((response)=>{
+        toast.error("좋아요 수정 실패");
       })
   };
 
@@ -179,7 +177,7 @@ const LikeEdit = () => {
         )}
       </div>
       <div>
-        {modalOpen && <Modal onClose={closeModal} />}
+        {modalOpen && <Modal onClose={closeModal} check={1}/>}
       </div>
       <div>
         <button

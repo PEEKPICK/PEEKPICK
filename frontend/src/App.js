@@ -33,6 +33,9 @@ import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
 import { useDispatch } from "react-redux";
 
+// toast
+import { Toaster } from "react-hot-toast";
+
 function App() {
   const dispatch = useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -160,6 +163,7 @@ function App() {
 
   return (
     <div className="App">
+      <div><Toaster /></div>
       {/* 라우터 */}
       <Routes>
         <>

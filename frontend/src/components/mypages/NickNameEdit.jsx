@@ -3,6 +3,8 @@ import classes from './NickNameEdit.module.css';
 import { customAxios } from '../../api/customAxios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/authSlice';
+import { toast} from 'react-hot-toast';
+
 const NickNameEdit = forwardRef((props, ref) => {
   let wrapperRef = useRef();
   // 리덕스에 있는 자료 미리 넣어놓기
@@ -12,11 +14,6 @@ const NickNameEdit = forwardRef((props, ref) => {
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [bio, setbio] = useState(userInfo.bio);
 
-  // 로그인 자료
-  const jwtToken = localStorage.getItem('jwtToken');
-  const headers = {
-    Authorization: `Bearer ${jwtToken}`
-  }
 
   // 리덕스
   const dispatch = useDispatch();
@@ -64,10 +61,11 @@ const NickNameEdit = forwardRef((props, ref) => {
   };
   const changeProfile = () => {
     // 리덕스 코드 집어넣기
-    customAxios.put("/member/info", profile, { headers })
+    customAxios.put("/member/info", profile)
       .then((response) => {
         dispatch(authActions.updateUserNickname(profile))
         props.setNicknameView(false);
+        toast.success("프로필 수정 완료");
         // props.propPrefix(prefix);
         // props.propBio(bio);
         // props.propNickname(nickname);
@@ -80,6 +78,8 @@ const NickNameEdit = forwardRef((props, ref) => {
       })
       .catch((error) => {
         console.log(error)
+        props.setNicknameView(false);
+        toast.error("프로필 수정 실패");
       })
   }
   return (
