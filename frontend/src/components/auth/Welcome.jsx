@@ -35,7 +35,7 @@ const Welcome = () => {
         </p>
       </div>
       <div>
-        <img src="img/confetti.gif" alt='confetti' />
+        <img src="img/confetti.gif" alt='confetti' className={classes.confetti} />
       </div>
       <div>
         <button onClick={startapp} className={common.next}>시작하기</button>

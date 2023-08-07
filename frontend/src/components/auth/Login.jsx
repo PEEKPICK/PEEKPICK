@@ -36,13 +36,8 @@ const Login = () => {
     <div className={classes.container}>
       <img
         src="img/temp_background.png"
-        alt="eyes"
+        alt="background"
         className={classes.background}
-      />
-      <img
-        src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Eyes.png"
-        alt="eyes"
-        className={classes.eyes}
       />
       <div className={classes.buttons}>
         {/* 이미지로 변경 예정 */}
