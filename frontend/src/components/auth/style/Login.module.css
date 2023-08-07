@@ -11,13 +11,6 @@
   margin-top: 20%;
 }
 
-.eyes {
-  position: absolute;
-  z-index: 2;
-  width: 15%;
-  margin-top: 52%;
-}
-
 .buttons {
   z-index: 2;
   margin-top: auto;
