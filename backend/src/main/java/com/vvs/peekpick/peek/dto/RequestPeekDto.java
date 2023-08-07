@@ -1,6 +1,7 @@
 package com.vvs.peekpick.peek.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.geo.Point;
