@@ -47,6 +47,7 @@ const FindPeek = () => {
         </button>
       </div>
       <PeekLocation findInfo={findInfo} />
+      {/* 여기다가 글쓰기 만들장 */}
     </>
   );
 };
