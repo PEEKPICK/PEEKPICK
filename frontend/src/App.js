@@ -141,12 +141,7 @@ function App() {
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
-<<<<<<< HEAD
               console.log("채팅 요청이 왔어요:", jsonData);
-=======
-              console.log("채팅 요청이 왔어요:", senderId);
-
->>>>>>> 20f536a067931b59a21c611c6636e376bbf2c8f0
               setIsCustomModal(true);
 
               // 토스트 메시지 띄우기
@@ -248,13 +243,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-<<<<<<< HEAD
       <ToastContainer />
-=======
-      {/* <ToastContainer className={classes.toastMain} /> */}
-      {customModal ? <ToastNotification /> : ""}
-
->>>>>>> 20f536a067931b59a21c611c6636e376bbf2c8f0
     </div>
   );
 }
