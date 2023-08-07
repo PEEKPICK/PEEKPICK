@@ -187,7 +187,9 @@ const MyPage = () => {
 
       <hr className={classes.hr} />
       <LikeAndHate ModalOutSide={ModalOutSide} like={like} hate={hate} likes={likes} disLikes={disLikes} />
+
       <hr className={classes.hr2} />
+
 
       {/* 고객센터 */}
       <div className={classes.customercenterimg}>
