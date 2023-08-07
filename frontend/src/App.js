@@ -56,51 +56,55 @@ function App() {
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-        const eventSource = new EventSourcePolyfill(sseURL, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-          },
-        });
+      if (isAuthenticated) {
+        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+        try {
+          const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+          const eventSource = new EventSourcePolyfill(sseURL, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            },
+          });
 
-        eventSource.onopen = async (e) => {
-          // 연결 시 할 일
-          console.log("SSE 오픈", e);
-        };
+          eventSource.onopen = async (e) => {
+            // 연결 시 할 일
+            console.log("SSE 오픈", e);
+          };
 
-        // 받아오는 data로 할 일
-        eventSource.onmessage = async (e) => {
-          const res = await e.data;
-          const parsedData = JSON.parse(res);
-          console.log("SSE메시지", parsedData);
-        };
+          // 받아오는 data로 할 일
+          eventSource.onmessage = async (e) => {
+            const res = await e.data;
+            const parsedData = JSON.parse(res);
+            console.log("SSE메시지", parsedData);
+          };
 
-        eventSource.onerror = async (e) => {
-          // 종료 또는 에러 발생 시 할 일
-          eventSource.close();
+          eventSource.onerror = async (e) => {
+            // 종료 또는 에러 발생 시 할 일
+            eventSource.close();
 
-          if (e.error) {
-            // 에러 발생 시 할 일
-          }
-          console.log("SSE에러!!!!!!");
-          if (e.target.readyState === EventSource.CLOSED) {
-            // 종료 시 할 일
-            console.log("SSE닫아!!!!!!");
-          }
-        };
-      } catch (error) {}
+            if (e.error) {
+              // 에러 발생 시 할 일
+            }
+            console.log("SSE에러!!!!!!");
+            if (e.target.readyState === EventSource.CLOSED) {
+              // 종료 시 할 일
+              console.log("SSE닫아!!!!!!");
+            }
+          };
+        } catch (error) {}
+      }
+      console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
     };
-
     fetchData();
-  }, []);
+  }, [isAuthenticated]);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
   const myPos = useSelector((state) => state.location.userPos);
 
   useEffect(() => {
     const handleVisibilityChange = async () => {
-      if (navigator.geolocation) {
+      if (isAuthenticated && navigator.geolocation) {
+        console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
         try {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -148,7 +152,7 @@ function App() {
           console.error("위치 못가져왔는디:", error);
         }
       } else {
-        console.error("Geolocation을 지원하지 않습니다.");
+        console.log("위치 또는 토큰이 인증되지 않았습니다.");
       }
     };
 
@@ -162,7 +166,7 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [dispatch, myPos]);
+  }, [dispatch, myPos, isAuthenticated]);
 
   return (
     <div className="App">
