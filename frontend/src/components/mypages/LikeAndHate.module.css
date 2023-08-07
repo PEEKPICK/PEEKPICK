@@ -13,14 +13,16 @@
   border:0;
   padding:0.4vh 0.6vh 0.4vh 0.6vh;
   border-radius: 0.3vh;
+  font-size: xx-small;
 }
 
 .likehate button{
   color: white;
   background-color: rgba(125, 0, 225);
   border:0;
-  padding:0.4vh 0.6vh 0.4vh 0.6vh;
+  padding:0.5vh 0.8vh 0.5vh 0.8vh;
   border-radius: 0.3vh;
+  font-size: xx-small;
 }
 
 .likehate span{
@@ -34,7 +36,7 @@
 .itemWrap {
   display: flex;
   flex-wrap: wrap;
-  margin-left: 5%;
+  margin-left: 1vh;
 
 }
 

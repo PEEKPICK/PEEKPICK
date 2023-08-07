@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { customAxios } from '../../api/customAxios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/authSlice';
@@ -12,10 +12,9 @@ const Profile = (props) => {
   const [emojiId, setEmojiId] = useState("");
   const [emojiUrl, setEmojiUrl] = useState(userInfo.emojiUrl);
   const [emojiCheck, setEmojiCheck] = useState(false);
-  const jwtToken = localStorage.getItem('jwtToken');
-  const headers = {
-    Authorization: `Bearer ${jwtToken}`,
-  }
+
+  const navigate  =useNavigate();
+
   // API 요청
   const changeImg = () => {
     customAxios.get("/member/emoji")
@@ -28,10 +27,12 @@ const Profile = (props) => {
         setEmojiUrl(response.data.data.imageUrl)
         setEmojiCheck(true)
       })
-  }
-
-  const ImgChangePut = () => {
-    customAxios.put("/member/info/emoji", { emojiId }, { headers })
+    }
+    const moveToMyPage = ()=>{
+      navigate('/mypage');
+    }
+    const ImgChangePut = () => {
+      customAxios.put("/member/info/emoji", { emojiId })
       .then((response) => {
         // 콘솔
         console.log(emojiUrl)
@@ -46,6 +47,7 @@ const Profile = (props) => {
         // 리덕스의 action을 통해 데이터 변경
         dispatch(authActions.updateMyPageProfile(sendToMyPageData))
         dispatch(authActions.updateProfile(sendToProfile))
+        navigate('/mypage');
       })
       .catch((response) => {
         console.log(response)
@@ -57,11 +59,9 @@ const Profile = (props) => {
       <div className={classes.profiletop}>
         <h1>프로필 변경</h1>
         {/* 클릭시 마이페이지로 이동하는 x 버튼 */}
-        <Link to={"/mypage"}>
-          <img src="img/cancel.png" alt="" />
-        </Link>
+          <img src="img/cancel.png" alt="" onClick={moveToMyPage}/>
       </div>
-      <hr className={classes.hr}/>
+      <hr className={classes.hr} />
       <div className={classes.emoji}>
         {/* 백에서 전달하는 이모지 */}
         {emojiCheck ? <img src={emojiUrl} alt="" /> : <img src={userInfo.emojiUrl} alt="" />}
@@ -72,17 +72,14 @@ const Profile = (props) => {
       </div>
       {/* 다시 뽑기 한번이상 클릭시 선택완료 버튼 색상 on */}
       {/* 클릭시 props로 이모지 마이페이지로 전달 */}
-      {emojiCheck?
-        <Link to="/mypage" className={classes.completeon}>
-          <div onClick={ImgChangePut}>
-            <h4>선택 완료</h4>
-          </div>
-        </Link> :
-        <Link to="/mypage" className={classes.complete}>
-          <div onClick={ImgChangePut}>
-            <h4>선택 완료</h4>
-          </div>
-        </Link>}
+      {emojiCheck ?
+        <div onClick={ImgChangePut} className={classes.completeon}>
+          <h4>선택 완료</h4>
+        </div>
+        :
+        <div onClick={ImgChangePut} className={classes.complete}>
+          <h4>선택 완료</h4>
+        </div>}
 
     </div>
   );
