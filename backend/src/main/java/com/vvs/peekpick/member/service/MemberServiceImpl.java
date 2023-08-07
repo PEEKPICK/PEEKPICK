@@ -153,6 +153,12 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.updateChatCountByMemberId(memberId2);
     }
 
+    // Peek 좋아요, 싫어요 업데이트
+    @Override
+    public void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount) {
+        memberRepository.updateLikeDisLikeCountByMemberId(memberId, likeCount, disLikeCount);
+    }
+
     // 취향 태그 수정
     // 기존 태그 삭제 후 신규 태그 추가
     private void updateTaste(Avatar avatar, String type, List<Long> categoryIds) {

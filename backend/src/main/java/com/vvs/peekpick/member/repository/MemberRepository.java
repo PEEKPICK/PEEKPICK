@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -20,9 +21,23 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Achievement a " +
-            "SET a.chatCount = a.chatCount + 1 " +
+            "SET a.chatCount = a.chatCount + 1, " +
+            "    a.pickPoint = a.pickPoint + 5 " +
             "WHERE a.achievementId = (SELECT m.achievement.achievementId " +
             "                         FROM Member m " +
             "                         WHERE m.memberId = :memberId)")
     void updateChatCountByMemberId(@Param("memberId")Long memberId);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Achievement a " +
+           "SET a.likeCount = a.likeCount + :likeCount, " +
+           "    a.disLikeCount = a.disLikeCount + :disLikeCount, " +
+           "    a.pickPoint = a.pickPoint + :likeCount " +
+           "WHERE a.achievementId = (SELECT m.achievement.achievementId " +
+           "                         FROM Member m " +
+           "                         WHERE m.memberId = :memberId)")
+    void updateLikeDisLikeCountByMemberId(@Param("memberId") Long memberId,
+                                          @Param("likeCount") int likeCount,
+                                          @Param("disLikeCount") int disLikeCount);
 }

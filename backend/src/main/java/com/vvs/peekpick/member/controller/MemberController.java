@@ -203,13 +203,23 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
-//    @PostMapping("/chatStart")
-//    public CommonResponse MemberChatStart(@RequestBody Map<String, Long> param) {
-//        Long memberId1 = param.get("memberId1");
-//        Long memberId2 = param.get("memberId2");
-//
-//        memberService.updatePickPoint(memberId1, memberId2);
-//
-//        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
-//    }
+    @PostMapping("/chatStart")
+    public CommonResponse MemberChatStart(@RequestBody Map<String, Long> param) {
+        Long memberId1 = param.get("memberId1");
+        Long memberId2 = param.get("memberId2");
+
+        memberService.updatePickPoint(memberId1, memberId2);
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
+    }
+
+    @PostMapping("/likecount")
+    public CommonResponse MemberLikeCount(@RequestBody Map<String, Integer> param) {
+        Long memberId = Long.valueOf(param.get("memberId"));
+        int likeCount = param.get("likeCount");
+        int disLikeCount = param.get("disLikeCount");
+
+        memberService.updateLikeDisLikeCount(memberId, likeCount, disLikeCount);
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
+    }
 }
