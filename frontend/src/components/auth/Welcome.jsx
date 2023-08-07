@@ -5,10 +5,12 @@ import common from './style/Common.module.css';
 import classes from './style/Welcome.module.css';
 
 const Welcome = () => {
-  // 헤더에 토큰 넣어서 백엔드에 요청
-  const token = localStorage.getItem('jwtToken')
+  // 로컬스토리지 토큰 저장
+  
 
+  // 토큰 인증 함수
   const startapp = () => {
+    const token = localStorage.getItem('jwtToken')
     authAxios.get("/member/info", {
       headers: {
         Authorization: `Bearer ${token}`
@@ -35,7 +37,7 @@ const Welcome = () => {
         </p>
       </div>
       <div>
-        <img src="img/confetti.gif" alt='confetti' />
+        <img src="img/confetti.gif" alt='confetti' className={classes.confetti} />
       </div>
       <div>
         <button onClick={startapp} className={common.next}>시작하기</button>
