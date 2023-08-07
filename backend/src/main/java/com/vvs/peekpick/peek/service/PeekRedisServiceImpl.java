@@ -40,7 +40,8 @@ public class PeekRedisServiceImpl implements PeekRedisService{
 
     @Override
     public void setPeek(PeekRedisDto peekRedisDto, Long peekId, int time) {
-        peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(time));
+        //peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(time));
+        peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto);
     }
 
     @Override
