@@ -4,6 +4,7 @@
     display: inline;
     background-color: white;
     justify-content: center;
+    overflow : scroll;
 }
 
 /* mypage 상단 */
@@ -12,10 +13,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: rgba(125, 0, 255, 0.65);
+    background-color: rgba(125, 0, 255, 0.75);
     height: 10vh;
     color:white;
-    font-size: large;
+    font-size: x-large;
     margin:0;
 }
 
@@ -31,7 +32,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: linear-gradient(to bottom, rgba(125, 0, 255, 0.65) 50%, white 25%);
+    background-image: linear-gradient(to bottom, rgba(125, 0, 255, 0.75) 50%, white 25%);
 }
 
 .profileimg img {
@@ -41,6 +42,7 @@
     background-color: white;
     border-radius: 5vh;
     padding: 1vh;
+
 }
 
 .profileimg a {
@@ -136,5 +138,13 @@
     margin-left: 5%;
     border: 1px solid;
     border-color: rgba(125, 0, 225);
-    margin-bottom: 2%;
+    /* margin-bottom: 5%; */
+}
+
+.hr2{
+    width: 90%;
+    margin-left: 5%;
+    border: 1px solid;
+    border-color: rgba(125, 0, 225);
+    margin-bottom: 7%;
 }
