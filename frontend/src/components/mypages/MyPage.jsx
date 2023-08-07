@@ -36,7 +36,7 @@ const MyPage = () => {
   // 이름과 한줄평 가져오는 usestate
   const [useremoji, setUseremoji] = useState(userInfo.emojiUrl);
   const [bio, setBio] = useState(userInfo.bio);
-  const [nickname, setNickname] = useState(userInfo.nickname);
+  const [nickname, setNickname] = useState("");
   const [prefix, setPrefix] = useState(userInfo.prefix);
   const [prefixId, setPrefixId] = useState(userInfo.prefixId);
 
@@ -79,6 +79,7 @@ const MyPage = () => {
       if (isTokenExpired()) {
         try {
           const response = await customAxios.get("/member/info");
+          console.log("Hi")
           setPickPoint(response.data.data.pickPoint);
           setLikeCount(response.data.data.likeCount);
           setUseremoji(response.data.data.emoji.imageUrl);
