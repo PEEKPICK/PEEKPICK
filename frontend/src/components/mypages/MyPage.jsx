@@ -18,28 +18,28 @@ const MyPage = () => {
   const [nicknameView, setNicknameView] = useState(false);
   const [ModalOutSide, setModalOutSide] = useState(false);
   const [pickPoint, setPickPoint] = useState("");
-  const [likeCount, setLikeCount] = useState("");                                                                                                                      
+  const [likeCount, setLikeCount] = useState("");
   const userInfo = useSelector(state => state.auth);
   // 정보 확인
   const dispatch = useDispatch();
-  
+
   // 토큰 처리
   // const jwtToken = localStorage.getItem('jwtToken');
-  
+
   // 호불호 관리 ID
   const [likes, setLikes] = useState(userInfo.likes);
   const [disLikes, setDisLikes] = useState(userInfo.disLikes);
   // 호불호 관리 content
   const [like, setLike] = useState(userInfo.like);
   const [hate, setHate] = useState(userInfo.hate);
-  
+
   // 이름과 한줄평 가져오는 usestate
   const [useremoji, setUseremoji] = useState(userInfo.emojiUrl);
   const [bio, setBio] = useState(userInfo.bio);
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [prefix, setPrefix] = useState(userInfo.prefix);
   const [prefixId, setPrefixId] = useState(userInfo.prefixId);
-  
+
   // 페이지 렌더링 시 작동
   useEffect(() => {
     if (visible) {
@@ -66,7 +66,7 @@ const MyPage = () => {
   // api통신
   useEffect(() => {
     const jwtToken = localStorage.getItem('jwtToken');
-
+    console.log("mypage")
     function isTokenExpired() {
       if (!jwtToken) return true;
       const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
@@ -77,64 +77,65 @@ const MyPage = () => {
 
     const fetchData = async () => {
       if (isTokenExpired()) {
-      try {
-        const response = await customAxios.get("/member/info");
-        // 호불호 집어넣기
-        // Likes 데이터 처리
-        if (response.data.data.likes && response.data.data.likes.length > 0) {
-          const likesData = response.data.data.likes.map((item) => item.categoryId);
-          setLikes(likesData);
-        }
+        try {
+          const response = await customAxios.get("/member/info");
+          setPickPoint(response.data.data.pickPoint);
+          setLikeCount(response.data.data.likeCount);
+          setUseremoji(response.data.data.emoji.imageUrl);
+          setBio(response.data.data.bio);
+          setNickname(response.data.data.nickname);
+          setPrefix(response.data.data.prefix.content);
+          setPrefixId(response.data.data.prefix.prefixId);
+          // 호불호 집어넣기
+          // Likes 데이터 처리
+          if (response.data.data.likes && response.data.data.likes.length > 0) {
+            const likesData = response.data.data.likes.map((item) => item.categoryId);
+            setLikes(likesData);
+          }
 
-        // Like 데이터 처리
-        if (response.data.data.likes && response.data.data.likes.length > 0) {
-          const likeData = response.data.data.likes.map((item) => item.middle);
-          setLike(likeData);
-        }
+          // Like 데이터 처리
+          if (response.data.data.likes && response.data.data.likes.length > 0) {
+            const likeData = response.data.data.likes.map((item) => item.middle);
+            setLike(likeData);
+          }
 
-        // DisLikes 데이터 처리
-        if (response.data.data.disLikes && response.data.data.disLikes.length > 0) {
-          const disLikesData = response.data.data.disLikes.map((item) => item.categoryId);
-          setDisLikes(disLikesData);
-        }
+          // DisLikes 데이터 처리
+          if (response.data.data.disLikes && response.data.data.disLikes.length > 0) {
+            const disLikesData = response.data.data.disLikes.map((item) => item.categoryId);
+            setDisLikes(disLikesData);
+          }
 
-        // Hate 데이터 처리
-        if (response.data.data.disLikes && response.data.data.disLikes.length > 0) {
-          const hateData = response.data.data.disLikes.map((item) => item.middle);
-          setHate(hateData);
+          // Hate 데이터 처리
+          if (response.data.data.disLikes && response.data.data.disLikes.length > 0) {
+            const hateData = response.data.data.disLikes.map((item) => item.middle);
+            setHate(hateData);
+          }
+          const sendToMyPageData = {
+            emojiUrl: useremoji,
+          };
+          const sendToUserNicknameData = {
+            bio: bio,
+            nickname: nickname,
+            prefix: prefix,
+            prefixId: prefixId,
+          }
+          dispatch(authActions.updateMyPageProfile(sendToMyPageData));
+          dispatch(authActions.updateUserNickname(sendToUserNicknameData));
+
+          const sendToUserLikeData = {
+            likes: likes,
+            like: like,
+          }
+          const sendToUserHateData = {
+            disLikes: disLikes,
+            hate: hate,
+          }
+          dispatch(authActions.updateUserLike(sendToUserLikeData));
+          dispatch(authActions.updateUserHate(sendToUserHateData));
+        } catch (error) {
+          console.error(error);
+          console.log('hi');
         }
-        setPickPoint(response.data.data.pickPoint);
-        setLikeCount(response.data.data.likeCount);
-        setUseremoji(response.data.data.emoji.imageUrl);
-        setBio(response.data.data.bio);
-        setNickname(response.data.data.nickname);
-        setPrefix(response.data.data.prefix.content);
-        setPrefixId(response.data.data.prefix.prefixId);
-        const sendToMyPageData = {
-          emojiUrl: useremoji,
-        };
-        const sendToUserNicknameData = {
-          bio: bio,
-          nickname: nickname,
-          prefix: prefix,
-          prefixId: prefixId,
-        }
-        const sendToUserLikeData = {
-          likes:likes,
-          like:like,
-        }
-        const sendToUserHateData = {
-          disLikes:disLikes,
-          hate:hate,
-        }
-        dispatch(authActions.updateMyPageProfile(sendToMyPageData));
-        dispatch(authActions.updateUserNickname(sendToUserNicknameData));
-        dispatch(authActions.updateUserLike(sendToUserLikeData));
-        dispatch(authActions.updateUserHate(sendToUserHateData));
-      } catch (error) {
-        console.error(error);
-        console.log('hi');
-      }
       } else {
         const response = await customAxios.post("/auth/refresh");
         console.log(response)
@@ -143,8 +144,8 @@ const MyPage = () => {
 
     fetchData(); // useEffect 내부에서 async 함수 호출
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-   return (
+  }, [dispatch,useremoji]);
+  return (
     <div className={classes.mypage}>
       {logoutView && <LogOut setLogoutView={setLogoutView} />}
       {signoutView && <SignOut setSignoutView={setSignoutView} />}
@@ -185,7 +186,7 @@ const MyPage = () => {
       </div>
 
       <hr className={classes.hr} />
-      <LikeAndHate ModalOutSide={ModalOutSide} like={like} hate={hate} likes={likes} disLikes={disLikes}/>
+      <LikeAndHate ModalOutSide={ModalOutSide} like={like} hate={hate} likes={likes} disLikes={disLikes} />
       <hr className={classes.hr} />
 
       {/* 고객센터 */}
