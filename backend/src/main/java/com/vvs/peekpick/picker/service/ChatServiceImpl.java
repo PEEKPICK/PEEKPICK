@@ -76,6 +76,10 @@ public class ChatServiceImpl implements ChatService {
                 .build();
         // Log 저장
         chatJpaRepository.save(chat);
+        
+        // 채팅방 (Topic) 삭제
+        chatRepository.deleteChatRoomByRoomId(roomId);
+
         return responseService.successCommonResponse(ResponseStatus.CHATROOM_EXIT_SUCCESS);
     }
 

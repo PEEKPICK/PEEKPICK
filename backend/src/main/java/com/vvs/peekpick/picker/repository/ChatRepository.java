@@ -66,6 +66,10 @@ public class ChatRepository {
         return Optional.ofNullable(topics.get(roomId));
     }
 
+    public void deleteChatRoomByRoomId(String roomId) {
+        topics.remove(roomId);
+    }
+
     public void chatLogAppend(String message, String roomId) {
         opsListChat.rightPush(CHAT_KEY + roomId, message);
     }
