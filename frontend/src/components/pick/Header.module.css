@@ -27,9 +27,11 @@
   }
 }
 .button {
+  margin-top: 100px;
   border: none;
   cursor: pointer;
   background-color: transparent;
+  z-index: 1000000;
 }
 /* 거리설정 모달 */
 .distanceMain {

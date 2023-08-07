@@ -2,6 +2,8 @@ import Modal from "react-modal";
 import classes from "./Header.module.css";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+
 const Header = () => {
   const [isDistance, setIsDistance] = useState(false);
   const location = useLocation();
@@ -15,14 +17,16 @@ const Header = () => {
   const handleDistanceChange = (distance) => {
     setSelectedDistance(distance);
   };
-
+  const toggle = () => {
+    toast.isActive(false);
+  };
   return (
     <>
       <div className={classes.headerMain}>
         <button className={classes.button}>
           <img src="/img/distance.png" alt="거리조절버튼" onClick={() => setIsDistance(true)} />
         </button>
-        <button className={classes.button}>
+        <button className={classes.button} onClick={() => toggle()}>
           <img src="/img/aram.png" alt="알림버튼" />
         </button>
       </div>
