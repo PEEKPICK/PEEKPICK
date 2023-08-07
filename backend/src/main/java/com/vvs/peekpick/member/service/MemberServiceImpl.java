@@ -234,7 +234,7 @@ public class MemberServiceImpl implements MemberService {
                               .emoji(emojiRepository.findById(signUpDto.getEmojiId()).orElseThrow())
                               .prefix(prefixRepository.findById(signUpDto.getPrefixId()).orElseThrow())
                               .world(worldRepository.findById(1).orElseThrow())
-                              .nickname(signUpDto.getNickname())
+                              .nickname(filtering.changeAll(signUpDto.getNickname()))
                               .bio("").build();
 
         return avatarRepository.save(avatar);
