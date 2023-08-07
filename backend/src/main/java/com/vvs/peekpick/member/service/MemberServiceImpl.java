@@ -9,6 +9,7 @@ import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import com.vvs.peekpick.member.repository.*;
+import com.vvs.peekpick.wordFilter.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,8 @@ public class MemberServiceImpl implements MemberService {
     private final RefreshTokenRepository refreshTokenRepository;
 
     private final JwtTokenProvider jwtTokenProvider;
+
+    private final BadWordFiltering filtering = new BadWordFiltering("♡");
 
     // 회원가입
     // memberId 존재로 가회원, 일반 로직을 나누어 처리
@@ -108,7 +111,8 @@ public class MemberServiceImpl implements MemberService {
 
         Long prefixId = Long.valueOf(param.get("prefixId"));
         String nickname = param.get("nickname");
-        String bio = param.get("bio");
+        String beforeFilteringBio = param.get("bio");
+        String bio = filtering.changeAll(beforeFilteringBio);
 
         Prefix prefix = prefixRepository.findById(prefixId)
                                         .orElseThrow(() -> new CustomException(ExceptionStatus.EXCEPTION_SAMPLE));
