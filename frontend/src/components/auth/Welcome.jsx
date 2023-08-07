@@ -5,9 +5,10 @@ import common from './style/Common.module.css';
 import classes from './style/Welcome.module.css';
 
 const Welcome = () => {
-  // 헤더에 토큰 넣어서 백엔드에 요청
+  // 로컬스토리지 토큰 저장
   const token = localStorage.getItem('jwtToken')
 
+  // 토큰 인증 함수
   const startapp = () => {
     authAxios.get("/member/info", {
       headers: {
