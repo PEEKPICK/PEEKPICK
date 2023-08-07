@@ -71,7 +71,6 @@ public class PeekServiceImpl implements PeekService {
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
             return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
     }
