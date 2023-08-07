@@ -66,7 +66,6 @@ const MyPage = () => {
   // api통신
   useEffect(() => {
     const jwtToken = localStorage.getItem('jwtToken');
-    console.log("mypage")
     function isTokenExpired() {
       if (!jwtToken) return true;
       const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
@@ -134,11 +133,10 @@ const MyPage = () => {
           dispatch(authActions.updateUserHate(sendToUserHateData));
         } catch (error) {
           console.error(error);
-          console.log('hi');
         }
       } else {
         const response = await customAxios.post("/auth/refresh");
-        console.log(response)
+        console.log(response);
       }
     };
 

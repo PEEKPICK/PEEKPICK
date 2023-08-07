@@ -26,26 +26,40 @@ const Announcement = () => {
       </div>
       <div className={classes.noticecontent}>
         <div className={classes.noticeitem}>
-          <span className={classes.noticedate}>2023년 8월 18일</span>
+          <span className={classes.noticedate}>2023년 8월 8일</span>
           <div className={classes.noticetextimg}>
-            <p className={classes.noticetext}>최종 발표 두둥 등장</p>
+            <p className={classes.noticetext}>중간 발표 최종.ver</p>
             <img src="img/down.png" alt="" onClick={()=> {toggleContent(1)}}/>
           </div>
         </div>
         {contentVisible[1]&&<div className={classes.content}>
-          곧 최종 발표가 진행된다 우와아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아ㅏ아아
+          데이터 전달 로직 수정중..
           </div>}
       </div>
       <div className={classes.noticecontent}>
         <div className={classes.noticeitem}>
-          <span className={classes.noticedate}>2023년 8월 18일</span>
+          <span className={classes.noticedate}>2023년 8월 9일</span>
           <div className={classes.noticetextimg}>
-            <p className={classes.noticetext}>최종 발표 두둥 등장</p>
+            <p className={classes.noticetext}>중간 발표 최종의 최종.ver</p>
             <img src="img/down.png" alt="" onClick={()=> {toggleContent(2)}}/>
           </div>
         </div>
         {contentVisible[2]&&<div className={classes.content}>
-          곧 최종 발표가 진행된다 우와아아아아아아ㅏ아아아아아아아아ㅏ아아아아아아아ㅏ아아
+          이게 왜 안돼..?
+          </div>}
+      </div>
+      <div className={classes.noticecontent}>
+        <div className={classes.noticeitem}>
+          <span className={classes.noticedate}>2023년 8월 10일</span>
+          <div className={classes.noticetextimg}>
+            <p className={classes.noticetext}>중간 발표 최종의 최종의 최종.ver</p>
+            <img src="img/down.png" alt="" onClick={()=> {toggleContent(3)}}/>
+          </div>
+        </div>
+        {contentVisible[3]&&<div className={classes.content}>
+          아아..시간이 되버렸습니다..
+          저는 최선을 다했어요..
+          잘 되겠죠..?
           </div>}
       </div>
     </div>

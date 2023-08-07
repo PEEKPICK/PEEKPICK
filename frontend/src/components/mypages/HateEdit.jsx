@@ -10,6 +10,7 @@ import { useNavigate} from 'react-router-dom';
 import { authActions } from '../../store/authSlice';
 import common from '../auth/style/Common.module.css';
 import classes from '../auth/style/UserLike.module.css';
+import { toast } from 'react-hot-toast';
 
 const LikeEdit = () => {
   // 중분류 정보 가져오기
@@ -117,7 +118,10 @@ const LikeEdit = () => {
       .then((response) => {
         navigate('/mypage');
         dispatch(authActions.updateUserHate(changedDisLikes))
-        console.log(response)
+        toast.success("싫어요 수정 성공");
+        // console.log(response)
+      }).catch((response)=>{
+        toast.error("싫어요 수정 실패");
       })
   };
 
@@ -180,7 +184,7 @@ const LikeEdit = () => {
         )}
       </div>
       <div>
-        {modalOpen && <Modal onClose={closeModal} />}
+        {modalOpen && <Modal onClose={closeModal} check={1}/>}
       </div>
       <div>
         <button
