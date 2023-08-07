@@ -33,19 +33,34 @@ const LikeEdit = () => {
   // 기본 함수 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  
+  useEffect(() => {
+    const jwtToken = localStorage.getItem('jwtToken');
+    const headers = {
+      Authorization: `Bearer ${jwtToken}`
+    };
+    customAxios.get('/member/info',{headers})
+    .then(response =>{
+      if (response.data.data.likes && response.data.data.likes.length > 0) {
+        const likesData = response.data.data.likes.map((item) => item.categoryId);
+        setTempMiddleList(likesData);
+      }
+    })
+  }, []);
 
   // axios 통신 (대분류 가져오기)
   useEffect(() => {
+    
     customAxios.get('/member/taste')
-      .then(response => {
-        setDataAxios(true);
-        setLikeList(response.data.data);
+    .then(response => {
+      setDataAxios(true);
+      setLikeList(response.data.data);
       })
       .catch(error => {
         console.log(error);
       })
   }, []);
+
 
   // 대분류 선택 시 중분류 가져오기
   const selectLargeItemHandler = (item) => {

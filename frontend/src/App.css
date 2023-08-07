@@ -1,5 +1,5 @@
 .App {
-  width: 400px;
+  width: clac(var(--vw, 1vw) * 100);
   height: clac(var(--vh, 1vh) * 100);
   border: 1px solid black;
 }
