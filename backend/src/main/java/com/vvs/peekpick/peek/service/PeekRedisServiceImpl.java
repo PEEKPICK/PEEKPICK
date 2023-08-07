@@ -60,7 +60,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     @Override
     public void setPeekLocation(double lon, double lat, Long peekId, int time) {
         geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
-        locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(time));
+        //locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(time));
     }
 
     @Override

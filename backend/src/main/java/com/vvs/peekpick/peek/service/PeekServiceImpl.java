@@ -22,7 +22,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
     private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 1440; // PEEK 기본 지속 시간
+    private final int PEEK_ORIGIN_TIME = 30; // PEEK 기본 지속 시간
     private final int PEEK_REACTION_TIME = 5; // 좋아요, 싫어요 시 증가되는 시간
     private final Random random = new Random();
 
@@ -54,7 +54,6 @@ public class PeekServiceImpl implements PeekService {
                         .viewed(isViewed)
                         .build();
                 allPeeks.add(responsePeekListDto);
-                System.out.println("Viewed status: " + responsePeekListDto.isViewed());
             }
 
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
@@ -72,6 +71,7 @@ public class PeekServiceImpl implements PeekService {
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
+            System.out.println(e.getMessage());
             return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
     }
