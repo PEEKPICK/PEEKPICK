@@ -48,6 +48,10 @@ public class PickerController {
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
     }
 
+    /**
+     * 서버푸시 SSE Emitter 삭제
+     * @return CommonResponse
+     */
     @GetMapping("/sse/disconnect")
     public CommonResponse sseDisconnect(Authentication authentication){
         return pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
