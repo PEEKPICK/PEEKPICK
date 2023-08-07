@@ -62,7 +62,6 @@ const ModalComp = (view) => {
               )}
             </p>
           </div>
-          <button className={classes.pick}>PICK</button>
         </Modal>
       )}
     </>
