@@ -4,6 +4,7 @@
     display: inline;
     background-color: white;
     justify-content: center;
+    overflow : scroll;
 }
 
 /* mypage 상단 */
@@ -137,5 +138,13 @@
     margin-left: 5%;
     border: 1px solid;
     border-color: rgba(125, 0, 225);
-    margin-bottom: 2%;
+    /* margin-bottom: 5%; */
+}
+
+.hr2{
+    width: 90%;
+    margin-left: 5%;
+    border: 1px solid;
+    border-color: rgba(125, 0, 225);
+    margin-bottom: 7%;
 }
