@@ -3,10 +3,11 @@ package com.vvs.peekpick.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.vvs.peekpick.peek.service.RedisKeyExpirationListener;
+import com.vvs.peekpick.peek.service.PeekRedisExpirationPublisher;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.MessageListener;
@@ -106,9 +107,8 @@ public class RedisConfig {
     }
 
     @Bean
-    public MessageListener listener() {
-        return new RedisKeyExpirationListener();
+    public MessageListener listener(ApplicationEventPublisher eventPublisher) {
+        return new PeekRedisExpirationPublisher(eventPublisher);
     }
-
 
 }

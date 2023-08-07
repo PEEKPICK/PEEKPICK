@@ -20,8 +20,8 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService{
 
-    private final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
-    private final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
+    public static final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
+    public static final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
