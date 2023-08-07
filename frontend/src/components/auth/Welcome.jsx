@@ -6,10 +6,11 @@ import classes from './style/Welcome.module.css';
 
 const Welcome = () => {
   // 로컬스토리지 토큰 저장
-  const token = localStorage.getItem('jwtToken')
+  
 
   // 토큰 인증 함수
   const startapp = () => {
+    const token = localStorage.getItem('jwtToken')
     authAxios.get("/member/info", {
       headers: {
         Authorization: `Bearer ${token}`
