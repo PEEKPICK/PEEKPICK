@@ -7,7 +7,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
   // 수락
   const handleAccept = async () => {
     //내 ID
-    toast.dismiss();
+
     try {
       const res = await customAxios.get("/member/info");
       const receiverID = res.data.data.avatarId;
@@ -24,18 +24,21 @@ const CustomToast = ({ message, senderId, requestTime }) => {
     } catch (error) {
       console.error(error);
     }
+    toast.dismiss({ containerId: "an Id" });
+    console.log({ containerId: "an Id" });
   };
 
   // 거절
   const handleReject = () => {
-    const body = {
-      requestSenderId: 1,
-      requestReceiverId: 2,
-      requestTime: "2023-07-31T14:20:00.1685066",
-      response: "N",
-    };
-    customAxios.put("/picker/chat-reponse", body).then((res) => {});
-    toast.clearWaitingQueue(senderId);
+    // const body = {
+    //   requestSenderId: 1,
+    //   requestReceiverId: 2,
+    //   requestTime: "2023-07-31T14:20:00.1685066",
+    //   response: "N",
+    // };
+    // customAxios.put("/picker/chat-reponse", body).then((res) => {});
+    toast.dismiss({ containerId: "an Id" });
+    console.log({ containerId: "an Id" });
   };
 
   //모두 닫기

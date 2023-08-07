@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // toast
 import { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
+
   // 채팅 수락 | 거절
   // const [showChatRequest, setShowChatRequest] = useState(false);
   // const [chatRequestId, setChatRequestId] = useState(null);
@@ -140,7 +142,6 @@ function App() {
                 position: "top-right",
                 closeOnClick: true,
                 draggable: false,
-                autoClose: 30000,
                 className: "toast-message",
                 pauseOnFocusLoss: false,
               });
@@ -165,7 +166,7 @@ function App() {
 
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
-    if (isAuthenticated && navigator.geolocation) {
+    const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         // 앱이 포그라운드에 있을 때
         customAxios
@@ -175,17 +176,27 @@ function App() {
               y: getPosY,
             },
           })
-          .then(() => {
-            console.log("Connect:", document.visibilityState);
+          .then((e) => {
+            console.log("보는중: ", e);
           });
       } else {
         // 앱이 백그라운드에 있을 때
-        customAxios.post("/picker/disconnect").then((e) => {
-          console.log("DISCONNECT:", document.visibilityState);
-        });
+        const res = axios.post("/picker/disconnect");
+        console.log("res", res);
       }
-    }
-  }, [getPosX, getPosY, isAuthenticated]);
+    };
+
+    handleVisibilityChange();
+
+    // visibility change 이벤트 리스너 등록
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="App">
@@ -229,7 +240,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer />
+      <ToastContainer limit={3} autoClose={10000} />
     </div>
   );
 }
