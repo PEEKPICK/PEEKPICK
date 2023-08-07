@@ -14,6 +14,5 @@ public interface PeekService {
     DataResponse getPeek(Long memberId, Long avatarId, Long peekId); //id로 Peek 찾기
     CommonResponse deletePeek(Long memberId, Long peekId); //Peek 삭제
     CommonResponse addReaction(Long memberId, Long peekId, boolean like); //Peek 반응 추가
-    CommonResponse  registerReport(Long memberId, Long peekId, RequestReportDto requestReportDto); //Peek 신고
 
 }
