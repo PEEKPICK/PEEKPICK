@@ -13,6 +13,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class ChatController {
      * WebSocket 에서 /pub/chat/publish 엔드포인트의 메시지를 처리하는 메서드
      */
     @MessageMapping("/chat/publish")
-    public void message(ChatMessageDto messageDto) {
+    public void message(@RequestBody ChatMessageDto messageDto) {
         ChatRoomDto chatRoomDto = chatService.getChatRoom(messageDto.getRoomId());
         if (LocalDateTime.now().isAfter(chatRoomDto.getCreateTime().plusMinutes(10))){
             // 10분 이후 메시지를 잠금
