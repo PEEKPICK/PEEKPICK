@@ -23,4 +23,6 @@ public interface PickerService {
     SseEmitter connectSseSession(Long avatarId);
 
     DataResponse<?> chatResponseReceive(ChatResponseDto chatResponseDto);
+
+    CommonResponse disconnectSseSession(Long avatarId);
 }

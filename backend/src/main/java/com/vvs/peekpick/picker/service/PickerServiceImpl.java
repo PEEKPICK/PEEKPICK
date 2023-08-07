@@ -39,7 +39,7 @@ public class PickerServiceImpl implements PickerService {
 
     // Redis에 저장될 Key
     private final String CONNECT_SESSION = "session";
-    private final Long DEFAULT_TIMEOUT = 60L * 1000 * 60;
+    private final Long DEFAULT_TIMEOUT = 60L * 1000 * 60 * 24;
     private final int REQUEST_TIMEOUT = 15;
     private final String REQUEST_REJECTED = "채팅이 거절되었습니다.";
     private final String REQUEST_ACCEPTED = "채팅이 수락되었습니다.";
@@ -87,6 +87,18 @@ public class PickerServiceImpl implements PickerService {
         // 연결 수립을 위한 Dummy 이벤트 전송
         sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
         return emitter;
+    }
+
+    /**
+     * SSE Emitter를 제거
+     *
+     * @param avatarId - SSE Emitter를 구분할 회원 아바타 Id
+     * @return CommonResponse
+     */
+    @Override
+    public CommonResponse disconnectSseSession(Long avatarId) {
+        sseEmitterRepository.remove(avatarId);
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
     }
 
     /**
@@ -220,6 +232,10 @@ public class PickerServiceImpl implements PickerService {
         });
         emitter.onTimeout(() -> {
             log.info("=== SSE Emitter 종료 onTimeout ===");
+            sseEmitterRepository.remove(avatarId);
+        });
+        emitter.onError((e) -> {
+            log.info("=== SSE Emitter Error!!! ===");
             sseEmitterRepository.remove(avatarId);
         });
 
