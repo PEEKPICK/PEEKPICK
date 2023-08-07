@@ -28,7 +28,6 @@ import { locationActions } from "./store/locationSlice";
 import { EventSourcePolyfill } from "event-source-polyfill";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import classes from "./Toast.module.css";
 import ToastNotification from "./components/pick/ToastNotification";
 
 // 기타공용
@@ -49,7 +48,6 @@ function App() {
   // 채팅 수락 | 거절
   // const [showChatRequest, setShowChatRequest] = useState(false);
   // const [chatRequestId, setChatRequestId] = useState(null);
-  const [customModal, setIsCustomModal] = useState(false);
 
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
@@ -106,16 +104,6 @@ function App() {
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   useEffect(() => {
-    const handleAccept = () => {
-      // 수락 처리 로직
-      console.log("Accepted");
-    };
-
-    const handleReject = () => {
-      // 거절 처리 로직
-      console.log("Rejected");
-    };
-
     const fetchData = async () => {
       if (isAuthenticated) {
         // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
@@ -141,16 +129,12 @@ function App() {
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
+              const requestTime = jsonData.requestTime;
               console.log("채팅 요청이 왔어요:", jsonData);
-              setIsCustomModal(true);
 
               // 토스트 메시지 띄우기
               const toastContent = (
-                <ToastNotification
-                  message="채팅 요청이 왔습니다."
-                  senderId={senderId}
-                  senderId2="300"
-                />
+                <ToastNotification message="채팅 요청이 왔습니다." senderId={senderId} requestTime={requestTime} />
               );
               toast(toastContent, {
                 position: "top-right",
