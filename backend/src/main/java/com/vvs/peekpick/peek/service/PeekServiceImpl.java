@@ -8,6 +8,7 @@ import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
+import com.vvs.peekpick.wordFilter.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -31,6 +32,7 @@ public class PeekServiceImpl implements PeekService {
     private final ReportService reportService;
     private final PeekAvatarService peekAvatarService;
     private final PeekRedisService peekRedisService;
+    private final BadWordFiltering filtering = new BadWordFiltering("♡");
 
     @Override
     public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
@@ -78,10 +80,12 @@ public class PeekServiceImpl implements PeekService {
     public CommonResponse addPeek(Long memberId, RequestPeekDto requestPeekDto, String imageUrl) {
         try {
             Member writer = peekMemberService.findMember(memberId);
+            String afterFiltering = filtering.changeAll(requestPeekDto.getContent());
+
             //RDB에 저장하기 위한 Peek 객체
             Peek peek = Peek.builder()
                     .member(writer)
-                    .content(requestPeekDto.getContent())
+                    .content(afterFiltering)
                     .disLikeCount(0)
                     .likeCount(0)
                     .imageUrl(imageUrl)
@@ -95,7 +99,7 @@ public class PeekServiceImpl implements PeekService {
             PeekRedisDto peekRedisDto = PeekRedisDto.builder()
                     .peekId(peekId)
                     .memberId(writer.getMemberId())
-                    .content(requestPeekDto.getContent())
+                    .content(afterFiltering)
                     .imageUrl(imageUrl)
                     .likeCount(0)
                     .disLikeCount(0)
