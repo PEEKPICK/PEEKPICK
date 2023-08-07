@@ -26,9 +26,10 @@ import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import classes from "./Toast.module.css";
+// import classes from "./Toast.module.css";
+import ToastNotification from "./components/pick/ToastNotification";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -48,6 +49,7 @@ function App() {
   // 채팅 수락 | 거절
   // const [showChatRequest, setShowChatRequest] = useState(false);
   // const [chatRequestId, setChatRequestId] = useState(null);
+  const [customModal, setIsCustomModal] = useState(false);
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -78,7 +80,7 @@ function App() {
               x: position.coords.longitude,
               y: position.coords.latitude,
             },
-            distance: 1000000000,
+            distance: 100000,
           };
           // 위치 정보를 스토어에 저장
           dispatch(
@@ -130,7 +132,7 @@ function App() {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
               console.log("채팅 요청이 왔어요:", senderId);
-
+              setIsCustomModal(true);
               // 토스트 메시지 띄우기
               toast(`채팅 요청이 왔어요. 수락하시겠습니까? ${senderId}`, {
                 position: "top-right",
@@ -185,7 +187,9 @@ function App() {
 
   return (
     <div className="App">
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       {/* 라우터 */}
       <Routes>
         <>
@@ -223,7 +227,8 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer className={classes.toastMain} />
+      {/* <ToastContainer className={classes.toastMain} /> */}
+      {customModal ? <ToastNotification /> : ""}
     </div>
   );
 }
