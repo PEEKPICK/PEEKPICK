@@ -51,7 +51,7 @@ const authSlice = createSlice({
     updateUserLike (state, action) {
       const newItem = action.payload;
       state.likes = newItem.likes;
-      state.like = newItem.like
+      state.like = newItem.like;
     },
     updateUserHate (state, action) {
       const newItem = action.payload;

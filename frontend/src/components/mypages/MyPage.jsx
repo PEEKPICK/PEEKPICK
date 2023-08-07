@@ -66,25 +66,23 @@ const MyPage = () => {
   // api통신
   useEffect(() => {
     const jwtToken = localStorage.getItem('jwtToken');
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`
-    };
 
-    // function isTokenExpired() {
-    //   if (!jwtToken) return true;
-    //   const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
-    //   const decoded = decodedToken.exp;
-    //   const currentTime = Date.now() / 1000;
-    //   return decoded < currentTime;
-    // }
+    function isTokenExpired() {
+      if (!jwtToken) return true;
+      const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
+      const decoded = decodedToken.exp;
+      const currentTime = Date.now() / 1000;
+      console.log(decoded)
+      console.log(currentTime)
+      return decoded < currentTime;
+    }
 
     const fetchData = async () => {
-      // if (isTokenExpired()) {
+      if (isTokenExpired()) {
       try {
-        const response = await customAxios.get("/member/info", { headers });
+        const response = await customAxios.get("/member/info");
         // 호불호 집어넣기
         // Likes 데이터 처리
-        console.log(response)
         if (response.data.data.likes && response.data.data.likes.length > 0) {
           const likesData = response.data.data.likes.map((item) => item.categoryId);
           setLikes(likesData);
@@ -139,11 +137,10 @@ const MyPage = () => {
         console.error(error);
         console.log('hi');
       }
-      // } else {
-      //   const response = await customAxios.post("/auth/refresh", { headers });
-      //   const data = response.data.data;
-      //   console.log('hi', data);
-      // }
+      } else {
+        const response = await customAxios.post("/auth/refresh");
+        console.log(response)
+      }
     };
 
     fetchData(); // useEffect 내부에서 async 함수 호출
