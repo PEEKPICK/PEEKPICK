@@ -83,7 +83,6 @@ public class PickerServiceImpl implements PickerService {
      */
     @Override
     public SseEmitter connectSseSession(Long avatarId) {
-        log.info("=== Picker Service : {} ===", avatarId);
         SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
         sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
@@ -214,8 +213,15 @@ public class PickerServiceImpl implements PickerService {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         sseEmitterRepository.put(avatarId, emitter);
 
-        emitter.onCompletion(() -> sseEmitterRepository.remove(avatarId));
-        emitter.onTimeout(() -> sseEmitterRepository.remove(avatarId));
+        emitter.onCompletion(() -> {
+            log.info("=== SSE Emitter 종료 onCompletion ===");
+            sseEmitterRepository.remove(avatarId);
+
+        });
+        emitter.onTimeout(() -> {
+            log.info("=== SSE Emitter 종료 onTimeout ===");
+            sseEmitterRepository.remove(avatarId);
+        });
 
         return emitter;
     }
@@ -232,7 +238,6 @@ public class PickerServiceImpl implements PickerService {
         );
 
         try {
-            log.info("=== Server Sent Event Called!! : {} ===", targetId);
             emitter.send(SseEmitter.event().id(String.valueOf(targetId)).data(data));
         } catch (Exception e) {
             sseEmitterRepository.remove(targetId);

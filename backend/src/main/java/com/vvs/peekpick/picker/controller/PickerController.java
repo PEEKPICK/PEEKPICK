@@ -44,7 +44,6 @@ public class PickerController {
      */
     @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter sseConnect(Authentication authentication, HttpServletResponse response){
-        log.info("=== Picker Controller : {} ===", authentication.getName());
         response.setHeader("X-Accel-Buffering", "no");
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
 
