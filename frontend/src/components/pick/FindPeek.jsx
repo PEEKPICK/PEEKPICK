@@ -12,6 +12,7 @@ const FindPeek = () => {
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
   const emojiCall = useCallback(() => {
     customAxios.post("/peek", myPos).then((response) => {
+      // console.log("PEEK", response);
       const peekArrayOrigin = response.data.data;
       if (Array.isArray(peekArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
