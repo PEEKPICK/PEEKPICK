@@ -31,8 +31,8 @@
 .titleinline{
   display: flex;
   align-items: center;
-  margin-bottom: 3.5vh;
-  margin-left: 1%;
+  margin-bottom: 3vh;
+  /* margin-left: 2%; */
 }
 
 .titleinline input{
@@ -40,12 +40,15 @@
   border-radius: 0.8vh;
   border: 1px solid gray;
   width: 65%;
+  padding-left: 3%;
+  margin-top: 2%;
 }
 .titleinline img{
   background-color: rgba(125, 0, 255, 1);
   margin-left: 10%;
   padding: 0.7vh 1.7vh 0.7vh 1.7vh;
   border-radius: 1.5vh;
+  margin-top: 2%;
 }
 
 /* 닉네임 */
@@ -53,8 +56,8 @@
 .nickname{
   display: flex;
   align-items: center;
-  margin-bottom: 3.5vh;
-  margin-left: 1%;
+  margin-bottom: 3.0vh;
+  /* margin-left: 1%; */
 }
 
 .nickname input{
@@ -62,6 +65,9 @@
   border-radius: 0.8vh;
   border: 1px solid gray;
   width: 65%;
+  padding-left: 3%;
+  margin-top: 2%;
+
 }
 
 /* 한줄 소개 */
@@ -69,8 +75,8 @@
 .bio{
   display: flex;
   align-items: center;
-  margin-bottom: 3.5vh;
-  margin-left: 1%;
+  margin-bottom: 3vh;
+  /* margin-left: 1%; */
 }
 
 .bio input{
@@ -78,6 +84,8 @@
   border-radius: 0.8vh;
   border: 1px solid gray;
   width: 95%;
+  padding-left: 3%;
+  margin-top: 2%;
 }
 
 .savebtn{
