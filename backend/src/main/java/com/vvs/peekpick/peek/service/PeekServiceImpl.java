@@ -242,39 +242,4 @@ public class PeekServiceImpl implements PeekService {
         }
     }
 
-
-    @Override
-    public CommonResponse registerReport(Long memberId, Long peekId, RequestReportDto requestReportDto) {
-        // 신고당한 Peek 조회
-        PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
-
-        // 신고한 사람
-        Member member = peekMemberService.findMember(memberId);
-
-        // 신고 당한 사람
-        Member victim = peekMemberService.findMember(peekRedisDto.getMemberId());
-
-        // 본인 Peek은 신고 불가
-        if(victim.getMemberId().equals(member.getMemberId())) {
-            return responseService.failureCommonResponse(ResponseStatus.REPORT_FAILURE);
-        }
-
-        ReportCategory reportCategory = reportService.findCategoryById(requestReportDto.getReportCategoryId());
-
-        Report report = Report.builder()
-                .member(member) //신고자
-                .victim(victim) //피신고자
-                .reportCategory(reportCategory) //reportCategory 객체
-                .contetnType("P") //Peek
-                .reportContentId(peekRedisDto.getPeekId().toString()) //Peek의 id
-                .reportContent(requestReportDto.getReportContent()) //신고 내용
-                .reportTime(LocalDateTime.now()) //신고 작성 시간
-                .build();
-
-        //report에 추가
-        reportService.saveReport(report);
-        return responseService.successCommonResponse(ResponseStatus.REGISTER_REPORT_SUCCESS);
-    }
-
-
 }

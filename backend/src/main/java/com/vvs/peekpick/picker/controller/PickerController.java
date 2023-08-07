@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
@@ -42,8 +43,9 @@ public class PickerController {
      * @Return SSE Emitter
      */
     @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public SseEmitter sseConnect(Authentication authentication){
+    public SseEmitter sseConnect(Authentication authentication, HttpServletResponse response){
         log.info("=== Picker Controller : {} ===", authentication.getName());
+        response.setHeader("X-Accel-Buffering", "no");
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
 
     }

@@ -75,12 +75,4 @@ public class PeekController {
         boolean like = Boolean.parseBoolean(reaction.get("like").toString());
         return ResponseEntity.ok(peekService.addReaction(memberId, peekId, like));
     }
-
-
-    // 특정 peek 신고
-    @PostMapping("/report/{peekId}")
-    public ResponseEntity<CommonResponse> reportPeek(Authentication authentication, @PathVariable Long peekId, @RequestBody RequestReportDto requestReportDto) { //@AuthenticationPrincipal Principal principal
-        Long memberId = Long.parseLong(authentication.getCredentials().toString());
-        return ResponseEntity.ok(peekService.registerReport(memberId, peekId, requestReportDto));
-    }
 }

@@ -141,7 +141,7 @@ public class PickerServiceImpl implements PickerService {
                 if (point == null) { // 상대가 접속중이지 않을 때
                     throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
                 } else { // 상대가 접속중일 때
-                    String roomId = chatService.createChatRoom();
+                    String roomId = chatService.createChatRoom(chatResponseDto.getRequestSenderId(), chatResponseDto.getRequestReceiverId());
 
                     // 요청자 + 채팅방 정보 ( 응답자에게 전송 )
                     ChatNotificationDto senderNotification = ChatNotificationDto.builder()
