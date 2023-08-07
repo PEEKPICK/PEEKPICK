@@ -26,9 +26,9 @@ import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import classes from "./Toast.module.css";
+import classes from "./Toast.module.css";
 import ToastNotification from "./components/pick/ToastNotification";
 
 // 기타공용
@@ -106,6 +106,16 @@ function App() {
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   useEffect(() => {
+    const handleAccept = () => {
+      // 수락 처리 로직
+      console.log("Accepted");
+    };
+
+    const handleReject = () => {
+      // 거절 처리 로직
+      console.log("Rejected");
+    };
+
     const fetchData = async () => {
       if (isAuthenticated) {
         // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
@@ -128,24 +138,27 @@ function App() {
 
           // 받아오는 data로 할 일
           eventSource.onmessage = (e) => {
-            console.log("SSE 메시지", e);
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
-              console.log("채팅 요청이 왔어요:", senderId);
-
+              console.log("채팅 요청이 왔어요:", jsonData);
               setIsCustomModal(true);
 
               // 토스트 메시지 띄우기
-              toast(`채팅 요청이 왔어요. 수락하시겠습니까? ${senderId}`, {
+              const toastContent = (
+                <ToastNotification
+                  message="채팅 요청이 왔습니다."
+                  senderId={senderId}
+                  senderId2="300"
+                />
+              );
+              toast(toastContent, {
                 position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                draggable: false,
+                autoClose: 30000,
+                className: "toast-message",
+                pauseOnFocusLoss: false,
               });
             } else {
               console.log("연결만 했어");
@@ -230,9 +243,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      {/* <ToastContainer className={classes.toastMain} /> */}
-      {customModal ? <ToastNotification /> : ""}
-
+      <ToastContainer />
     </div>
   );
 }

@@ -1,28 +1,5 @@
-.toastAlert {
-  background-color: rgba(255, 127, 80);
-  border: 1px solid rgba(255, 127, 80, 0.1);
-  border-radius: 10px;
-  height: 40px;
-  width: 80%;
-  padding: 5px;
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: black;
+.toastMain {
+  color: #000000;
+  font-size: 2vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-}
-
-.toastAlert img {
-  width: 25px;
-  height: auto;
-  margin-right: 10px;
-}
-
-.toastAlert p {
-  margin: 0;
 }
