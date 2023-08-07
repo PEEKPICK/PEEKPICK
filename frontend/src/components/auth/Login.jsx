@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { authAxios } from '../../api/customAxios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 import classes from './style/Login.module.css';
 
@@ -48,7 +49,7 @@ const Login = () => {
         {/* 테스트 버튼 */}
         <img src="img/kakao_login.png" alt="kakao" onClick={() => loginHandler('kakao')} />
         {/* <img src="img/naver_login.png" alt="naver" onClick={() => loginHandler('naver')} /> */}
-        <img src="img/naver_login.png" alt="naver" onClick={() => alert('아직 개발 중인 서비스 입니다.')} />
+        <img src="img/naver_login.png" alt="naver" onClick={() => toast.error('개발 중인 서비스입니다.')} />
         <img src="img/google_login.png" alt="google" onClick={() => loginHandler('google')} />
       </div>
     </div>
