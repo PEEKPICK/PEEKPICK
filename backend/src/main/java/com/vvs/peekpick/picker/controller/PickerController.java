@@ -46,8 +46,13 @@ public class PickerController {
     public SseEmitter sseConnect(Authentication authentication, HttpServletResponse response){
         response.setHeader("X-Accel-Buffering", "no");
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
-
     }
+
+    @GetMapping("/sse/disconnect")
+    public CommonResponse sseDisconnect(Authentication authentication){
+        return pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
+    }
+
 
     /**
      * 종료하거나 홈으로 이동시 세션에서 내 정보 제거
