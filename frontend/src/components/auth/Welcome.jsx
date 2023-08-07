@@ -1,14 +1,21 @@
 // useNavigate는 다른 js파일로 이동할 때 사용
-import { customAxios } from '../../api/customAxios';
+import { authAxios } from '../../api/customAxios';
 
 import common from './style/Common.module.css';
 import classes from './style/Welcome.module.css';
 
 const Welcome = () => {
   // 헤더에 토큰 넣어서 백엔드에 요청
+  const token = localStorage.getItem('jwtToken')
+
   const startapp = () => {
-    customAxios.get("/member/info")
+    authAxios.get("/member/info", {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
       .then(response => {
+        console.log(response.data)
         if (response.data.code === "200") {
           window.location.replace("/");
         }
