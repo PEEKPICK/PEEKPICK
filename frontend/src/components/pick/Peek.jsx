@@ -1,12 +1,15 @@
 import classes from "./Peek.module.css";
 import Header from "./Header";
 import FindPeek from "./FindPeek";
+import ErrorBoundary from "../common/ErrorBoundary";
 
 function Peek() {
   return (
     <div className={classes.pickerMain}>
-      <Header></Header>
-      <FindPeek></FindPeek>
+      <ErrorBoundary>
+        <Header></Header>
+        <FindPeek></FindPeek>
+      </ErrorBoundary>
     </div>
   );
 }
