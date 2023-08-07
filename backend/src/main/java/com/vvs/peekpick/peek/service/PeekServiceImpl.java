@@ -129,8 +129,7 @@ public class PeekServiceImpl implements PeekService {
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
             // 해당 키에 대한 TTL 설정 (24시간)
-            peekRedisService.setViewedByMember(memberId, peekId);
-            peekRedisService.setPeekExpire(memberId, 24);
+            peekRedisService.setViewedByMember(memberId, peekId, 24);
 
             // 현재 사용자의 해당 Peek의 좋아요 / 싫어요 여부 판별
             boolean isLiked= peekRedisService.getReactionMember(memberId, true, peekId);

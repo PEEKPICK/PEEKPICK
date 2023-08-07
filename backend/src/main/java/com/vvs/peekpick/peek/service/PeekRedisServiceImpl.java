@@ -21,7 +21,7 @@ import java.time.Duration;
 public class PeekRedisServiceImpl implements PeekRedisService{
 
     private final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
-    private final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
+    private final String PEEK_LOCATION_REDIS = "Peek_Location:"; //(key) Peek_Location:peek의 id / (value) Peek의 값
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
@@ -45,11 +45,6 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setPeekExpire(Long memberId, int time) {
-        peekTemplate.expire("member:" + memberId + ":viewed", Duration.ofHours(time));
-    }
-
-    @Override
     public void deletePeek(Long peekId) {
         peekTemplate.delete(PEEK_REDIS + peekId);
     }
@@ -60,7 +55,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
     @Override
     public void setPeekLocation(double lon, double lat, Long peekId, int time) {
-        geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
+        geoOps.add(PEEK_LOCATION_REDIS+peekId, new Point(lon, lat), peekId.toString());
         //locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(time));
     }
 
@@ -85,8 +80,9 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setViewedByMember(Long memberId, Long peekId) {
+    public void setViewedByMember(Long memberId, Long peekId, int time) {
         setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
+        peekTemplate.expire("member:" + memberId + ":viewed", Duration.ofHours(time));
     }
     @Override
     public boolean getViewdByMember(Long memberId, Long peekId) {
