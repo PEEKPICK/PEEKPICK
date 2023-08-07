@@ -31,7 +31,7 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import { customAxios } from "./api/customAxios";
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
@@ -53,54 +53,7 @@ function App() {
     setIsAuthenticated(checkTokenInLocalStorage());
   }, []);
 
-  // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  useEffect(() => {
-    const fetchData = async () => {
-      if (isAuthenticated) {
-        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
-        try {
-          const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-          const eventSource = new EventSourcePolyfill(sseURL, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-            },
-          });
-
-          eventSource.onopen = async (e) => {
-            // 연결 시 할 일
-            console.log("SSE 오픈", e);
-          };
-
-          // 받아오는 data로 할 일
-          eventSource.onmessage = async (e) => {
-            const res = await e.data;
-            const parsedData = JSON.parse(res);
-            console.log("SSE메시지", parsedData);
-          };
-
-          eventSource.onerror = async (e) => {
-            // 종료 또는 에러 발생 시 할 일
-            eventSource.close();
-
-            if (e.error) {
-              // 에러 발생 시 할 일
-            }
-            console.log("SSE에러!!!!!!");
-            if (e.target.readyState === EventSource.CLOSED) {
-              // 종료 시 할 일
-              console.log("SSE닫아!!!!!!");
-            }
-          };
-        } catch (error) {}
-      }
-      console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
-    };
-    fetchData();
-  }, [isAuthenticated]);
-
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
-  const myPos = useSelector((state) => state.location.userPos);
-
   useEffect(() => {
     const handleVisibilityChange = async () => {
       if (isAuthenticated && navigator.geolocation) {
@@ -166,7 +119,44 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [dispatch, myPos, isAuthenticated]);
+  }, [dispatch, isAuthenticated]);
+
+  // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
+  useEffect(() => {
+    const fetchData = async () => {
+      if (isAuthenticated) {
+        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+        try {
+          const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+          const eventSource = new EventSourcePolyfill(sseURL, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+            },
+          });
+
+          // eventSource.onopen = async (e) => {
+          //   // 연결 시 할 일
+          //   console.log("SSE 오픈", e);
+          // };
+
+          // 받아오는 data로 할 일
+          eventSource.onmessage = (e) => {
+            console.log("SSE 메시지", e);
+          };
+
+          eventSource.onerror = (e) => {
+            // 종료 또는 에러 발생 시 할 일
+            console.log("SSE에러!!!!!!,", e);
+            eventSource.close();
+          };
+        } catch (error) {
+          console.log("SSE 생성 오류: ", error);
+        }
+      }
+      console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
+    };
+    fetchData();
+  }, [isAuthenticated]);
 
   return (
     <div className="App">
