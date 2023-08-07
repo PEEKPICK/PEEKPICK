@@ -5,6 +5,9 @@ import com.vvs.peekpick.entity.Report;
 import com.vvs.peekpick.entity.ReportCategory;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import com.vvs.peekpick.peek.service.PeekRedisService;
+import com.vvs.peekpick.picker.dto.ChatMemberDto;
+import com.vvs.peekpick.picker.dto.ChatRoomDto;
+import com.vvs.peekpick.picker.service.ChatService;
 import com.vvs.peekpick.report.dto.RequestReportDto;
 import com.vvs.peekpick.report.repository.ReportCategoryRepository;
 import com.vvs.peekpick.report.repository.ReportMemberRepository;
@@ -30,6 +33,7 @@ public class ReportServiceImpl implements ReportService{
     private final ReportMemberRepository reportMemberRepository;
     private final ResponseService responseService;
     private final PeekRedisService peekRedisService;
+    private final ChatService chatService;
 
     @Override
     public DataResponse allCategory() {
@@ -71,7 +75,7 @@ public class ReportServiceImpl implements ReportService{
                 .victim(victim) //피신고자
                 .reportCategory(reportCategory) //reportCategory 객체
                 .contetnType("P") //Peek
-                .reportContentId(peekRedisDto.getPeekId().toString()) //Peek의 id
+                .reportContentId(peekId.toString()) //Peek의 id
                 .reportContent(requestReportDto.getReportContent()) //신고 내용
                 .reportTime(LocalDateTime.now()) //신고 작성 시간
                 .build();
@@ -83,8 +87,32 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public CommonResponse chatReport(Long memberId, String roomId, RequestReportDto requestReportDto) {
+        // 신고당한 chat room 조회
+        ChatRoomDto chatRoomDto = chatService.getChatRoom(roomId);
 
-        return null;
+        ChatMemberDto chatMemberDto = (ChatMemberDto) chatService.getMembersByRoomId(roomId).getData();
+        // 신고한 사람
+        Member member = reportMemberRepository.findById(memberId).orElseThrow();
+        // 신고 당한 사람
+        Member victim;
+        if(chatMemberDto.getSenderId().equals(memberId)) victim = reportMemberRepository.findById(chatMemberDto.getSenderId()).orElseThrow();
+        else victim = reportMemberRepository.findById(chatMemberDto.getReceiverId()).orElseThrow();
+
+        ReportCategory reportCategory = findCategoryById(requestReportDto.getReportCategoryId());
+
+        Report report = Report.builder()
+                .member(member) //신고자
+                .victim(victim) //피신고자
+                .reportCategory(reportCategory) //reportCategory 객체
+                .contetnType("C") //chat
+                .reportContentId(roomId) //chat의 id
+                .reportContent(requestReportDto.getReportContent()) //신고 내용
+                .reportTime(LocalDateTime.now()) //신고 작성 시간
+                .build();
+
+        //report에 추가
+        saveReport(report);
+        return responseService.successCommonResponse(ResponseStatus.REGISTER_REPORT_SUCCESS);
     }
 
 
