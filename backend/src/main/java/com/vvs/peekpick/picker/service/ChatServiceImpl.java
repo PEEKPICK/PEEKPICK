@@ -41,10 +41,12 @@ public class ChatServiceImpl implements ChatService {
      * @return roomId - 채팅방 UUID
      */
     @Override
-    public String createChatRoom() {
+    public String createChatRoom(Long senderId, Long receiverId) {
         String roomId = chatRepository.createChatRoom();
         Chat chatLog = Chat.builder()
                 .roomId(roomId)
+                .senderId(senderId)
+                .receiverId(receiverId)
                 .build();
 
         chatJpaRepository.save(chatLog);

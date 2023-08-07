@@ -9,7 +9,7 @@ public interface ChatService {
 
     ChatRoomDto getChatRoom(String roomId);
 
-    String createChatRoom();
+    String createChatRoom(Long senderId, Long receiverId);
 
     CommonResponse exitChatRoom(String roomId);
 
