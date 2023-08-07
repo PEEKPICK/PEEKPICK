@@ -1,5 +1,11 @@
 .App {
   width: clac(var(--vw, 1vw) * 100);
   height: clac(var(--vh, 1vh) * 100);
-  border: 1px solid black;
+}
+.toast-message {
+  background-color: #f4e9ff !important;
+  padding: 30px 20px;
+  border-radius: 1.3rem 1.3rem !important;
+  margin: 0.5vh;
+  display: flex;
 }
