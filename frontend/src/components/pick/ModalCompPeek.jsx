@@ -6,7 +6,6 @@ import classes from "./ModalComp.module.css";
 const ModalComp = (view) => {
   //유져 정보 모달용
   const dispatch = useDispatch();
-  console.log(view);
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
   const handleCloseModal = () => {
@@ -62,7 +61,6 @@ const ModalComp = (view) => {
               )}
             </p>
           </div>
-          <button className={classes.pick}>PICK</button>
         </Modal>
       )}
     </>

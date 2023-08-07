@@ -26,17 +26,25 @@ import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
 import { EventSourcePolyfill } from "event-source-polyfill";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import classes from "./Toast.module.css";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  // Connect | disConnect
+  const getPosX = useSelector((state) => state.location.userPos.point.x);
+  const getPosY = useSelector((state) => state.location.userPos.point.y);
+  // 채팅 수락 | 거절
+  // const [showChatRequest, setShowChatRequest] = useState(false);
+  // const [chatRequestId, setChatRequestId] = useState(null);
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -53,11 +61,11 @@ function App() {
     setIsAuthenticated(checkTokenInLocalStorage());
   }, []);
 
-  //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
+  //위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!
   useEffect(() => {
-    const handleVisibilityChange = async () => {
+    const handlePosChange = async () => {
       if (isAuthenticated && navigator.geolocation) {
-        console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
+        // console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
         try {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -79,59 +87,32 @@ function App() {
               distance: updatedPos.distance,
             })
           );
-          if (document.visibilityState === "visible") {
-            // 앱이 포그라운드에 있을 때
-            try {
-              await customAxios.post("/picker/connect", {
-                point: {
-                  x: updatedPos.point.x,
-                  y: updatedPos.point.y,
-                },
-              });
-              console.log("CONNET", document.visibilityState);
-            } catch (error) {
-              console.error("CONNET 에러:", error);
-            }
-          } else if (document.hidden === true) {
-            // 앱이 백그라운드에 있을 때
-            try {
-              await customAxios.post("/picker/disconnect");
-              console.log("DISCONNECT", document.hidden);
-            } catch (error) {
-              console.error("DISCONNECT 에러:", error);
-            }
-          }
         } catch (error) {
           console.error("위치 못가져왔는디:", error);
         }
       } else {
-        console.log("위치 또는 토큰이 인증되지 않았습니다.");
+        // console.log("위치 또는 토큰이 인증되지 않았습니다.");
       }
     };
-
-    // 초기 실행
-    handleVisibilityChange();
-
-    // 실행
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    // 종료
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
+    //초기 실행
+    handlePosChange();
   }, [dispatch, isAuthenticated]);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
-        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+        // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
         try {
           const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
           const eventSource = new EventSourcePolyfill(sseURL, {
             headers: {
+              "Content-Type": "text/event-stream",
+              "Cache-Control": "no-cache",
+              Connection: "keep-alive",
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
             },
+            heartbeatTimeout: 8640000,
           });
 
           // eventSource.onopen = async (e) => {
@@ -142,6 +123,25 @@ function App() {
           // 받아오는 data로 할 일
           eventSource.onmessage = (e) => {
             console.log("SSE 메시지", e);
+            if (e.data.includes("senderId")) {
+              const jsonData = JSON.parse(e.data);
+              const senderId = jsonData.senderId;
+              console.log("채팅 요청이 왔어요:", senderId);
+
+              // 토스트 메시지 띄우기
+              toast(`채팅 요청이 왔어요. 수락하시겠습니까? ${senderId}`, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
+            } else {
+              console.log("연결만 했어");
+            }
           };
 
           eventSource.onerror = (e) => {
@@ -153,10 +153,32 @@ function App() {
           console.log("SSE 생성 오류: ", error);
         }
       }
-      console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
+      // console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
     };
     fetchData();
   }, [isAuthenticated]);
+
+  //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
+  useEffect(() => {
+    if (document.visibilityState === "visible") {
+      // 앱이 포그라운드에 있을 때
+      customAxios
+        .post("/picker/connect", {
+          point: {
+            x: getPosX,
+            y: getPosY,
+          },
+        })
+        .then(() => {
+          console.log("Connect:", document.visibilityState);
+        });
+    } else {
+      // 앱이 백그라운드에 있을 때
+      customAxios.post("/picker/disconnect").then((e) => {
+        console.log("DISCONNECT:", document.visibilityState);
+      });
+    }
+  }, [getPosX, getPosY]);
 
   return (
     <div className="App">
@@ -196,6 +218,8 @@ function App() {
           )}
         </>
       </Routes>
+      {/* ToastContainer를 추가 */}
+      <ToastContainer className={classes.toastMain} />
     </div>
   );
 }

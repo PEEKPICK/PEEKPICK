@@ -15,7 +15,7 @@ const ModalComp = () => {
   //채팅요청
   const plzChat = () => {
     customAxios.get(`/picker/chat-request/${isSelectedEmoji.avatarId}`).then((response) => {
-      console.log("채팅요청", response);
+      console.log("채팅요청", response.data.message);
     });
   };
   return (
@@ -29,7 +29,11 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img src={isSelectedEmoji.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
+            <img
+              src={isSelectedEmoji.emoji.animatedImageUrl}
+              alt="프로필"
+              className={classes.profileImg}
+            />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
@@ -37,9 +41,13 @@ const ModalComp = () => {
               <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>100</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span>
-              <p className={classes.intro}>지각률 66.6% 보장</p>
-              <p>{isSelectedEmoji.avatarId}</p>
+              {isSelectedEmoji.bio && isSelectedEmoji.bio.trim() !== "" ? (
+                <p className={classes.intro}>{isSelectedEmoji.bio}</p>
+              ) : (
+                <p className={classes.intro}>내용이 없습니다.</p>
+              )}
             </div>
+            <p>{isSelectedEmoji.avatarId}</p>
           </div>
           <div className={classes.divider}></div>
           <div className={classes.modalBody}>
