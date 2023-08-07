@@ -36,5 +36,5 @@ public interface ReportService  {
 
     CommonResponse peekReport(Long memberId, Long peekId, RequestReportDto requestReportDto);
 
-
+    CommonResponse chatReport(Long memberId, String roomId, RequestReportDto requestReportDto);
 }

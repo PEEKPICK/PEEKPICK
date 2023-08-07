@@ -81,5 +81,11 @@ public class ReportServiceImpl implements ReportService{
         return responseService.successCommonResponse(ResponseStatus.REGISTER_REPORT_SUCCESS);
     }
 
+    @Override
+    public CommonResponse chatReport(Long memberId, String roomId, RequestReportDto requestReportDto) {
+
+        return null;
+    }
+
 
 }

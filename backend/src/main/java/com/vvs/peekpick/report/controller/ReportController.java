@@ -31,4 +31,11 @@ public class ReportController {
         return ResponseEntity.ok(reportService.peekReport(memberId, peekId, requestReportDto));
     }
 
+    // 특정 Chat 신고
+    @PostMapping("/picker/{chatroomId}")
+    public ResponseEntity<CommonResponse> reportChat(Authentication authentication, @PathVariable String roomId, @RequestBody RequestReportDto requestReportDto) { //@AuthenticationPrincipal Principal principal
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        return ResponseEntity.ok(reportService.chatReport(memberId, roomId, requestReportDto));
+    }
+
 }
