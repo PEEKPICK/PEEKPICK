@@ -50,6 +50,7 @@ function App() {
   // const [showChatRequest, setShowChatRequest] = useState(false);
   // const [chatRequestId, setChatRequestId] = useState(null);
   const [customModal, setIsCustomModal] = useState(false);
+
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -132,7 +133,9 @@ function App() {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
               console.log("채팅 요청이 왔어요:", senderId);
+
               setIsCustomModal(true);
+
               // 토스트 메시지 띄우기
               toast(`채팅 요청이 왔어요. 수락하시겠습니까? ${senderId}`, {
                 position: "top-right",
@@ -229,6 +232,7 @@ function App() {
       {/* ToastContainer를 추가 */}
       {/* <ToastContainer className={classes.toastMain} /> */}
       {customModal ? <ToastNotification /> : ""}
+
     </div>
   );
 }
