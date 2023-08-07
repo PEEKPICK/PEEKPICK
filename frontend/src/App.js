@@ -165,25 +165,27 @@ function App() {
 
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
-    if (document.visibilityState === "visible") {
-      // 앱이 포그라운드에 있을 때
-      customAxios
-        .post("/picker/connect", {
-          point: {
-            x: getPosX,
-            y: getPosY,
-          },
-        })
-        .then(() => {
-          console.log("Connect:", document.visibilityState);
+    if (isAuthenticated && navigator.geolocation) {
+      if (document.visibilityState === "visible") {
+        // 앱이 포그라운드에 있을 때
+        customAxios
+          .post("/picker/connect", {
+            point: {
+              x: getPosX,
+              y: getPosY,
+            },
+          })
+          .then(() => {
+            console.log("Connect:", document.visibilityState);
+          });
+      } else {
+        // 앱이 백그라운드에 있을 때
+        customAxios.post("/picker/disconnect").then((e) => {
+          console.log("DISCONNECT:", document.visibilityState);
         });
-    } else {
-      // 앱이 백그라운드에 있을 때
-      customAxios.post("/picker/disconnect").then((e) => {
-        console.log("DISCONNECT:", document.visibilityState);
-      });
+      }
     }
-  }, [getPosX, getPosY]);
+  }, [getPosX, getPosY, isAuthenticated]);
 
   return (
     <div className="App">
