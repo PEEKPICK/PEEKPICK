@@ -36,7 +36,7 @@ const MyPage = () => {
   // 이름과 한줄평 가져오는 usestate
   const [useremoji, setUseremoji] = useState(userInfo.emojiUrl);
   const [bio, setBio] = useState(userInfo.bio);
-  const [nickname, setNickname] = useState("");
+  const [nickname, setNickname] = useState(userInfo.nickname);
   const [prefix, setPrefix] = useState(userInfo.prefix);
   const [prefixId, setPrefixId] = useState(userInfo.prefixId);
 
@@ -66,7 +66,6 @@ const MyPage = () => {
   // api통신
   useEffect(() => {
     const jwtToken = localStorage.getItem('jwtToken');
-    console.log("mypage")
     function isTokenExpired() {
       if (!jwtToken) return true;
       const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
@@ -79,7 +78,6 @@ const MyPage = () => {
       if (isTokenExpired()) {
         try {
           const response = await customAxios.get("/member/info");
-          console.log("Hi")
           setPickPoint(response.data.data.pickPoint);
           setLikeCount(response.data.data.likeCount);
           setUseremoji(response.data.data.emoji.imageUrl);
@@ -135,11 +133,10 @@ const MyPage = () => {
           dispatch(authActions.updateUserHate(sendToUserHateData));
         } catch (error) {
           console.error(error);
-          console.log('hi');
         }
       } else {
         const response = await customAxios.post("/auth/refresh");
-        console.log(response)
+        console.log(response);
       }
     };
 

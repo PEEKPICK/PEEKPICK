@@ -4,6 +4,7 @@ import { customAxios } from '../../api/customAxios';
 import { useDispatch, useSelector } from 'react-redux';
 import { authActions } from '../../store/authSlice';
 import classes from './profile.module.css';
+import { toast } from 'react-hot-toast';
 const Profile = (props) => {
   // 상태 관리
 
@@ -13,13 +14,12 @@ const Profile = (props) => {
   const [emojiUrl, setEmojiUrl] = useState(userInfo.emojiUrl);
   const [emojiCheck, setEmojiCheck] = useState(false);
 
-  const navigate  =useNavigate();
+  const navigate = useNavigate();
 
   // API 요청
   const changeImg = () => {
     customAxios.get("/member/emoji")
       .then((response) => {
-        console.log(response)
         // 이런 식으로 한 이유는 새로고침을 하고 프로필 편집을 들어가면,
         // store에 이미지가 없기 때문에, 삼항연산자로 두가지 방식을 필요할 때마다 사용으로
         // 해결
@@ -27,16 +27,14 @@ const Profile = (props) => {
         setEmojiUrl(response.data.data.imageUrl)
         setEmojiCheck(true)
       })
-    }
-    const moveToMyPage = ()=>{
-      navigate('/mypage');
-    }
-    const ImgChangePut = () => {
-      customAxios.put("/member/info/emoji", { emojiId })
+  }
+  const moveToMyPage = () => {
+    navigate('/mypage');
+  }
+  const ImgChangePut = () => {
+    customAxios.put("/member/info/emoji", { emojiId })
       .then((response) => {
         // 콘솔
-        console.log(emojiUrl)
-        console.log(response)
         // 리덕스에 정보 저장을 위한 데이터 생성
         const sendToMyPageData = {
           emojiUrl: emojiUrl,
@@ -45,12 +43,14 @@ const Profile = (props) => {
           emojiId: emojiId,
         }
         // 리덕스의 action을 통해 데이터 변경
-        dispatch(authActions.updateMyPageProfile(sendToMyPageData))
-        dispatch(authActions.updateProfile(sendToProfile))
+        dispatch(authActions.updateMyPageProfile(sendToMyPageData));
+        dispatch(authActions.updateProfile(sendToProfile));
+        toast.success("이모지 수정 완료");
         navigate('/mypage');
       })
       .catch((response) => {
-        console.log(response)
+        toast.error("이모지 수정 실패");
+        navigate('/mypage');
       })
   }
 
@@ -59,7 +59,7 @@ const Profile = (props) => {
       <div className={classes.profiletop}>
         <h1>프로필 변경</h1>
         {/* 클릭시 마이페이지로 이동하는 x 버튼 */}
-          <img src="img/cancel.png" alt="" onClick={moveToMyPage}/>
+        <img src="img/cancel.png" alt="" onClick={moveToMyPage} />
       </div>
       <hr className={classes.hr} />
       <div className={classes.emoji}>
