@@ -3,11 +3,13 @@ package com.vvs.peekpick.picker.service;
 import com.vvs.peekpick.entity.Chat;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
+import com.vvs.peekpick.picker.dto.ChatMemberDto;
 import com.vvs.peekpick.picker.dto.ChatMessageDto;
 import com.vvs.peekpick.picker.dto.ChatRoomDto;
 import com.vvs.peekpick.picker.repository.ChatJpaRepository;
 import com.vvs.peekpick.picker.repository.ChatRepository;
 import com.vvs.peekpick.response.CommonResponse;
+import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -83,5 +86,13 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void appendLog(ChatMessageDto messageDto) {
         chatRepository.chatLogAppend(messageDto.toString(), messageDto.getRoomId());
+    }
+
+    @Override
+    public DataResponse<?> getMembersByRoomId(String roomId) {
+        ChatMemberDto chatMembers = chatJpaRepository.findMembersByRoomId(roomId).orElseThrow(
+                () -> new CustomException(ExceptionStatus.CHAT_ROOM_DOES_NOT_EXIST)
+        );
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, chatMembers);
     }
 }
