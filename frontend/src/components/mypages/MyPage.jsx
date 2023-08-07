@@ -74,7 +74,7 @@ const MyPage = () => {
       const currentTime = Date.now() / 1000;
       console.log(decoded)
       console.log(currentTime)
-      return decoded < currentTime;
+      return decoded > currentTime;
     }
 
     const fetchData = async () => {
