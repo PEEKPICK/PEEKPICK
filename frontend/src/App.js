@@ -25,13 +25,13 @@ import Profile from "./components/mypages/Profile";
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
-import { EventSourcePolyfill } from "event-source-polyfill";
+// import { EventSourcePolyfill } from "event-source-polyfill";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function App() {
   const dispatch = useDispatch();
@@ -60,7 +60,7 @@ function App() {
         console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
         try {
           const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-          const eventSource = new EventSourcePolyfill(sseURL, {
+          const eventSource = new EventSource(sseURL, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
             },
@@ -73,19 +73,16 @@ function App() {
 
           // 받아오는 data로 할 일
           eventSource.onmessage = async (e) => {
-            const res = await e.data;
+            const res = e.data;
             const parsedData = JSON.parse(res);
-            console.log("SSE메시지", parsedData);
+            console.log("SSE 메시지", parsedData);
           };
 
           eventSource.onerror = async (e) => {
             // 종료 또는 에러 발생 시 할 일
             eventSource.close();
 
-            if (e.error) {
-              // 에러 발생 시 할 일
-            }
-            console.log("SSE에러!!!!!!");
+            console.log("SSE에러!!!!!!,", e);
             if (e.target.readyState === EventSource.CLOSED) {
               // 종료 시 할 일
               console.log("SSE닫아!!!!!!");
@@ -99,8 +96,6 @@ function App() {
   }, [isAuthenticated]);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
-  const myPos = useSelector((state) => state.location.userPos);
-
   useEffect(() => {
     const handleVisibilityChange = async () => {
       if (isAuthenticated && navigator.geolocation) {
@@ -166,7 +161,7 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [dispatch, myPos, isAuthenticated]);
+  }, [dispatch, isAuthenticated]);
 
   return (
     <div className="App">
