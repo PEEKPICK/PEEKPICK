@@ -72,8 +72,6 @@ const MyPage = () => {
       const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
       const decoded = decodedToken.exp;
       const currentTime = Date.now() / 1000;
-      console.log(decoded)
-      console.log(currentTime)
       return decoded > currentTime;
     }
 
