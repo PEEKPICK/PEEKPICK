@@ -12,13 +12,12 @@ import java.util.stream.Collectors;
 
 public class BadWordFiltering implements BadWords {
     private final Set<String> set = new HashSet<>(List.of(koreaWords));
-    private String substituteValue = "*";
+    private String substituteValue = "♡";
 
     //대체 문자 지정 (기본값 : *)
     public BadWordFiltering(String substituteValue) {
         this.substituteValue = substituteValue;
     }
-    public BadWordFiltering() {}
 
     public String changeAll(String text) {
         for (String word : set) {

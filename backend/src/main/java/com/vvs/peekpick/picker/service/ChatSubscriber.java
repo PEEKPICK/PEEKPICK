@@ -2,6 +2,7 @@ package com.vvs.peekpick.picker.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vvs.peekpick.picker.dto.ChatMessageDto;
+import com.vvs.peekpick.wordFilter.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,7 +20,7 @@ public class ChatSubscriber implements MessageListener {
     @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
     private final SimpMessageSendingOperations messagingTemplate;
-
+    private final BadWordFiltering filtering = new BadWordFiltering("♡");
 
     /**
      * 메시지가 발행되면 해당 메시지를 처리
@@ -29,7 +30,8 @@ public class ChatSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             String publishedMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            ChatMessageDto messageDto = objectMapper.readValue(publishedMessage, ChatMessageDto.class);
+            String afterFiltering = filtering.changeAll(publishedMessage);
+            ChatMessageDto messageDto = objectMapper.readValue(afterFiltering, ChatMessageDto.class);
             messagingTemplate.convertAndSend("/sub/chat/room/"+messageDto.getRoomId(), messageDto);
         } catch (Exception e) {
             throw new RuntimeException(e);
