@@ -110,7 +110,8 @@ public class MemberServiceImpl implements MemberService {
         Avatar avatar = findByAvatarId(avatarId);
 
         Long prefixId = Long.valueOf(param.get("prefixId"));
-        String nickname = param.get("nickname");
+        String beforeFilteringNickname = param.get("nickname");
+        String nickname = filtering.changeAll(beforeFilteringNickname);
         String beforeFilteringBio = param.get("bio");
         String bio = filtering.changeAll(beforeFilteringBio);
 
