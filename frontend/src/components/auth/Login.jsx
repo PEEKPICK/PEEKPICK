@@ -34,7 +34,11 @@ const Login = () => {
 
   return (
     <div className={classes.container}>
-      <img src="img/temp_background.png" alt="eyes" className={classes.background} />
+      <img
+        src="img/temp_background.png"
+        alt="eyes"
+        className={classes.background}
+      />
       <div className={classes.buttons}>
         {/* 이미지로 변경 예정 */}
         {/* 테스트 버튼 */}
