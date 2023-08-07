@@ -24,16 +24,17 @@ import Profile from "./components/mypages/Profile";
 // 동민
 import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
-// import { useSelector, useDispatch } from "react-redux";
-// import { locationActions } from "./store/locationSlice";
-// import { customAxios } from "./api/customAxios";
+import { locationActions } from "./store/locationSlice";
+import { EventSourcePolyfill } from "event-source-polyfill";
+
 // 기타공용
+import { customAxios } from "./api/customAxios";
 import Layout from "./components/common/Layout";
 import AlreadyLogin from "./components/common/AlreadyLogin";
+import { useDispatch, useSelector } from "react-redux";
 
 function App() {
-  // 토큰 검사
-  // const isAuthenticated = true;
+  const dispatch = useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // PWA 적용을 위한 vh변환 함수
@@ -45,7 +46,6 @@ function App() {
   useEffect(() => {
     // vh변환 함수 작동
     setScreenSize();
-
     const checkTokenInLocalStorage = () => {
       const token = localStorage.getItem("jwtToken");
       return token !== null;
@@ -54,90 +54,115 @@ function App() {
   }, []);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  // const getMemberId = useSelector((state) => state.geo.memberId);
-  // const getPointX = useSelector((state) => state.geo.point.x);
-  // const getPointY = useSelector((state) => state.geo.point.y);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+        const eventSource = new EventSourcePolyfill(sseURL, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+        });
 
-  // let eventSource = null;
-  // useEffect(() => {
-  //   if (getMemberId !== null && getPointX !== null && getPointY !== null) {
-  //     // const requestBody = {
-  //     //   memberId: getMemberId,
-  //     //   point: {
-  //     //     x: getPointX,
-  //     //     y: getPointY,
-  //     //   },
-  //     // };
-  //     eventSource = new EventSource(`ttp://192.168.31.27:8081/picker/sse/14`, {
-  //       headers: {
-  //         Authorization: `Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhdXRoIiwiYXZhdGFySWQiOiIxNiIsInByb3ZpZGVyIjoibm9uZSIsImV4cCI6MTY5MTEzODI1NywiaWF0IjoxNjkxMDUxODU3fQ.LxvrptoKP1zov91wGhI0k2r-57lkTb25NLAjCqSlCnA4HsrvemMwENon9TraljYJX3EL6SzkpkpDOicEcYILyA`,
-  //       },
-  //     });
+        eventSource.onopen = async (e) => {
+          // 연결 시 할 일
+          console.log("SSE 오픈", e);
+        };
 
-  //     eventSource.onmessage = (event) => {
-  //       console.log("result", event.data);
-  //     };
-  //   }
-  // }, [getMemberId, getPointX, getPointY, eventSource]);
+        // 받아오는 data로 할 일
+        eventSource.onmessage = async (e) => {
+          const res = await e.data;
+          const parsedData = JSON.parse(res);
+          console.log("SSE메시지", parsedData);
+        };
+
+        eventSource.onerror = async (e) => {
+          // 종료 또는 에러 발생 시 할 일
+          eventSource.close();
+
+          if (e.error) {
+            // 에러 발생 시 할 일
+          }
+          console.log("SSE에러!!!!!!");
+          if (e.target.readyState === EventSource.CLOSED) {
+            // 종료 시 할 일
+            console.log("SSE닫아!!!!!!");
+          }
+        };
+      } catch (error) {}
+    };
+
+    fetchData();
+  }, []);
 
   //앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!앱을 보는중이니?!!?!?!
-  // const dispatch = useDispatch();
-  // const getPointX = useSelector((state) => state.geo.point.x);
-  // const getPointY = useSelector((state) => state.geo.point.y);
+  const myPos = useSelector((state) => state.location.userPos);
 
-  // useEffect(() => {
-  //   const handleVisibilityChange = () => {
-  //     if (navigator.geolocation) {
-  //       navigator.geolocation.getCurrentPosition(
-  //         (position) => {
-  //           // 위치값을 Redux store에 저장합니다.
-  //           dispatch(
-  //             locationActions.updateLoc({
-  //               point: {
-  //                 x: position.coords.longitude,
-  //                 y: position.coords.latitude,
-  //               },
-  //               distance: 10000000,
-  //             })
-  //           );
-  //         },
-  //         (error) => {
-  //           console.error(error);
-  //         }
-  //       );
-  //     } else {
-  //       console.error("위치 못가져왔는디");
-  //     }
-  //     if (document.visibilityState === "visible") {
-  //       // 앱이 포그라운드에 있을 때
-  //       console.log("접속했다리");
-  //       const requestBody = {
-  //         point: {
-  //           x: getPointX,
-  //           y: getPointY,
-  //         },
-  //       };
-  //       customAxios.post("/picker/connect", requestBody).then((response) => {
-  //         console.log(response);
-  //       });
-  //     } else {
-  //       // 앱이 백그라운드에 있을 때
-  //       console.log("나갔다리");
-  //       customAxios.post("/picker/disconnect").then((response) => {
-  //         console.log(response);
-  //       });
-  //     }
-  //   };
-  //   //초기 실행
-  //   handleVisibilityChange();
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (navigator.geolocation) {
+        try {
+          const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+          const updatedPos = {
+            point: {
+              x: position.coords.longitude,
+              y: position.coords.latitude,
+            },
+            distance: 1000000000,
+          };
+          // 위치 정보를 스토어에 저장
+          dispatch(
+            locationActions.updateLoc({
+              point: {
+                x: updatedPos.point.x,
+                y: updatedPos.point.y,
+              },
+              distance: updatedPos.distance,
+            })
+          );
+          if (document.visibilityState === "visible") {
+            // 앱이 포그라운드에 있을 때
+            try {
+              await customAxios.post("/picker/connect", {
+                point: {
+                  x: updatedPos.point.x,
+                  y: updatedPos.point.y,
+                },
+              });
+              console.log("CONNET", document.visibilityState);
+            } catch (error) {
+              console.error("CONNET 에러:", error);
+            }
+          } else if (document.hidden === true) {
+            // 앱이 백그라운드에 있을 때
+            try {
+              await customAxios.post("/picker/disconnect");
+              console.log("DISCONNECT", document.hidden);
+            } catch (error) {
+              console.error("DISCONNECT 에러:", error);
+            }
+          }
+        } catch (error) {
+          console.error("위치 못가져왔는디:", error);
+        }
+      } else {
+        console.error("Geolocation을 지원하지 않습니다.");
+      }
+    };
 
-  //   //실행
-  //   document.addEventListener("visibilitychange", handleVisibilityChange);
-  //   //종료
-  //   return () => {
-  //     document.removeEventListener("visibilitychange", handleVisibilityChange);
-  //   };
-  // }, [dispatch, getPointX, getPointY]);
+    // 초기 실행
+    handleVisibilityChange();
+
+    // 실행
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 종료
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [dispatch, myPos]);
 
   return (
     <div className="App">

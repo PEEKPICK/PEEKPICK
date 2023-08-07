@@ -5,7 +5,6 @@ import classes from "./PickLocation.module.css";
 import ModalCompPick from "./ModalCompPick";
 
 const EmojiLocation = ({ findInfo }) => {
-  console.log("findInfo",findInfo);
   const dispatch = useDispatch();
 
   const handleOpenPickModal = (current) => {
@@ -32,23 +31,27 @@ const EmojiLocation = ({ findInfo }) => {
 
   return (
     <>
-      <div className={classes.emojiArea}>
-        {findInfo.map((current, index) => (
-          <button
-            key={index}
-            className={classes.EmojiBtn}
-            onClick={() => handleOpenPickModal(current)}
-            style={randomPosition()}
-          >
-            <img
+      {findInfo.length > 0 ? (
+        <div className={classes.emojiArea}>
+          {findInfo.map((current, index) => (
+            <button
               key={index}
-              src={current.emoji.animatedImageUrl}
-              alt={current.emoji.emojiId}
-              className={classes.EmojiImg}
-            />
-          </button>
-        ))}
-      </div>
+              className={classes.EmojiBtn}
+              onClick={() => handleOpenPickModal(current)}
+              style={randomPosition()}
+            >
+              <img
+                key={index}
+                src={current.emoji.animatedImageUrl}
+                alt={current.emoji.emojiId}
+                className={classes.EmojiImg}
+              />
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div>텅</div>
+      )}
       {/* 모달 */}
       <ModalCompPick findInfo={findInfo} />
     </>
