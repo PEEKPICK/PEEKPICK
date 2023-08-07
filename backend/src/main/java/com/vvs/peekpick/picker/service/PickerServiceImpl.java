@@ -213,8 +213,15 @@ public class PickerServiceImpl implements PickerService {
         SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
         sseEmitterRepository.put(avatarId, emitter);
 
-        emitter.onCompletion(() -> sseEmitterRepository.remove(avatarId));
-        emitter.onTimeout(() -> sseEmitterRepository.remove(avatarId));
+        emitter.onCompletion(() -> {
+            log.info("=== SSE Emitter 종료 onCompletion ===");
+            sseEmitterRepository.remove(avatarId);
+
+        });
+        emitter.onTimeout(() -> {
+            log.info("=== SSE Emitter 종료 onTimeout ===");
+            sseEmitterRepository.remove(avatarId);
+        });
 
         return emitter;
     }
