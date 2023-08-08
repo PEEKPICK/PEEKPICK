@@ -126,7 +126,7 @@ form {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	background: #000;
+	background: rgba(125, 0, 255, 1);
 }
 
 .debtAmountSlider input,
@@ -156,6 +156,7 @@ form {
 	white-space: nowrap;
 	opacity: 0.85;
 	transition: all 0.15s ease-in-out;
+  color: rgba(125, 0, 255, 0.5);
 }
 
 .debtAmountSlider label::after {
@@ -166,7 +167,7 @@ form {
 	transform: translate(-50%, -50%);
 	width: 30px;
 	height: 30px;
-	border: 2px solid #000;
+	border: 2px solid rgba(125, 0, 255, 1);
 	background: #fff;
 	border-radius: 50%;
 	pointer-events: none;
@@ -174,6 +175,7 @@ form {
 	z-index: 1;
 	cursor: pointer;
 	transition: all 0.15s ease-in-out;
+  color: rgba(125, 0, 255, 1);
 }
 
 .debtAmountSlider label:hover::after {
@@ -221,7 +223,7 @@ form {
 	top: 50%;
 	width: 12px;
 	height: 12px;
-	background: #000;
+	background: rgba(125, 0, 255, 1);
 	border-radius: 50%;
 	transition: all 0.15s ease-in-out;
 	transform: translate(-50%, -50%);
@@ -246,7 +248,7 @@ form + button {
 	font-size: 24px;
 	font-weight: 600;
 	background: #fff;
-	border: 2px solid #000;
+	border: 2px solid rgba(125, 0, 255, 1);
 	border-radius: 8px;
 	outline: 0;
 	user-select: none;
@@ -254,7 +256,7 @@ form + button {
 }
 
 form + button:hover {
-	background: #000;
+	background: rgba(125, 0, 255, 1);
 	color: #fff;
 }
 
