@@ -87,7 +87,7 @@
   line-height: 1.9rem;
 }
 .disLike {
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
   border-radius: 1rem;
   background-color: #7d00ff;
   color: #ffffff;
@@ -97,19 +97,18 @@
   line-height: 1.9rem;
 }
 
-.like + p {
-  margin-top: 1.5rem;
+.LikeWrap {
+  height: 50%;
+  line-height: 300%;
 }
 
-.disLike + p {
-  margin-top: 1.5rem;
-}
 .likeInfo {
   padding: 0.5rem;
   border-radius: 1rem;
   background-color: #ffffff;
   border: 0.0625rem solid #7d00ff;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
+  white-space: normal;
 }
 /* 모달 하단  */
 
