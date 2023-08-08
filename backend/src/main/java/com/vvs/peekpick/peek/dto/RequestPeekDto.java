@@ -13,5 +13,6 @@ public class RequestPeekDto {
     private String content;
     private double longitude; //경도
     private double latitude; //위도
+    private MultipartFile img;
 
 }

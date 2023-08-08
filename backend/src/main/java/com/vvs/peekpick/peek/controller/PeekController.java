@@ -36,13 +36,12 @@ public class PeekController {
     @PostMapping(value = "/write", consumes = {"multipart/form-data"})
     public ResponseEntity<CommonResponse> addPeek(
             Authentication authentication,
-            @RequestPart("peek") RequestPeekDto requestPeekDto,
-            @RequestPart(name = "img", required = false) MultipartFile img) {
+            @ModelAttribute RequestPeekDto requestPeekDto) {
         try {
-            System.out.println("글 작성");
             Long memberId = Long.parseLong(authentication.getCredentials().toString());
 
             String imageUrl = null;
+            MultipartFile img = requestPeekDto.getImg();
             // 파일이 제공되면 S3에 저장하고 URL 가져옴
             if (img != null && !img.isEmpty()) {
                 imageUrl = awsS3Util.s3SaveFile(img);

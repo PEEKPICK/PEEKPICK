@@ -1,5 +1,6 @@
 package com.vvs.peekpick.peek.service;
 
+import com.vvs.peekpick.peek.dto.PeekLocationDto;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,6 +56,11 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     @Override
     public void setPeekLocation(double lon, double lat, Long peekId, int time) {
         geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
+    }
+
+    @Override
+    public Point getPeekLocation(Long peekId) {
+        return (Point) geoOps.position(PEEK_LOCATION_REDIS, peekId.toString());
     }
 
     @Override
