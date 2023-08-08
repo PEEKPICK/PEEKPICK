@@ -10,11 +10,15 @@ RUN npm cache clean --force
 
 RUN npm install
 
-# RUN npm run build
+RUN npm run build
 
-COPY . .
+FROM nginx:1.21.3-alpine
 
-EXPOSE 3000
+COPY etc/nginx/nginx.conf /etc/nginx/nginx.conf
 
-ENTRYPOINT [ "npm", "run", "start" ]
+COPY ./build /usr/share/nginx/html
+
+EXPOSE 80
+
+ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
