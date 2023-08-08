@@ -64,6 +64,12 @@
   font-size: 1.25rem;
 }
 
+/* 거리조절 종료버튼 */
+.distanceClose {
+  height: 50%;
+  width: 5%;
+}
+
 .headerText {
   display: flex;
   margin-top: 0.2rem;

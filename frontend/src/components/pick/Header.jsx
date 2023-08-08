@@ -10,7 +10,7 @@ const Header = () => {
   const textToShow =
     location.pathname === "/peek"
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
-      : "보고 싶은 PICK의 거리를 설정할 수 있어요.";
+      : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
   const [selectedDistance, setSelectedDistance] = useState(0);
 
@@ -38,9 +38,7 @@ const Header = () => {
         >
           <div className={classes.closeHeader}>
             <p>거리 설정</p>
-            <button onClick={() => setIsDistance(false)} className={classes.distanceClose}>
-              X
-            </button>
+            <img src="img/cancel.png" alt="cancel" onClick={() => setIsDistance(false)} className={classes.distanceClose} />
           </div>
           <span className={classes.headerText}>{textToShow}</span>
           <div className={classes.divider}></div>
