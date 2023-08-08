@@ -6,11 +6,11 @@ const ModalWrite = ({ setWrite }) => {
   const handleWrite = (e) => {
     setWriteData(e.target.value);
   }
-  const imgAccept=()=>{
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.capture = 'camera';
+  const imgAccept=(event)=>{
+    const selectedImage = event.target.files[0];
+    if(selectedImage){
+      console.log('hi')
+    }
   };
 
   const postWrite = () => {
@@ -38,7 +38,7 @@ const ModalWrite = ({ setWrite }) => {
       </div>
       <hr />
       <input type="text" onChange={handleWrite} />
-      <input type="file" accept="image/*" capture="camera" onClick={imgAccept} />
+      <input type="file" accept="image/*" onClick={imgAccept} />
       <button onClick={postWrite}>입력 완료</button>
     </div>
   );
