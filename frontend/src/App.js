@@ -38,7 +38,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 // toast
 import { Toaster } from "react-hot-toast";
-import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
@@ -136,7 +135,11 @@ function App() {
 
               // 토스트 메시지 띄우기
               const toastContent = (
-                <ToastNotification message="채팅 요청이 왔습니다." senderId={senderId} requestTime={requestTime} />
+                <ToastNotification
+                  message="채팅 요청이 왔습니다."
+                  senderId={senderId}
+                  requestTime={requestTime}
+                />
               );
               toast(toastContent, {
                 position: "top-right",
@@ -181,8 +184,9 @@ function App() {
           });
       } else {
         // 앱이 백그라운드에 있을 때
-        const res = axios.post("/picker/disconnect");
-        console.log("res", res);
+        customAxios.post("/picker/disconnect").then((res) => {
+          console.log("안봐?!!?", res);
+        });
       }
     };
 
