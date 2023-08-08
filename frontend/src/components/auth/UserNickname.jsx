@@ -12,8 +12,8 @@ import common from './style/Common.module.css';
 
 const UserNickname = () => {
   // 상태관리
-  const [prefix, setPrefix] = useState('37');
-  const [content, setContent] = useState('아빠같은');
+  const [prefix, setPrefix] = useState('1');
+  const [content, setContent] = useState('미소천사인');
   const [nickname, setNickname] = useState('');
   const [showModal, setShowModal] = useState(false);
 

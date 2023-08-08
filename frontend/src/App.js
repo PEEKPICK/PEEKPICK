@@ -26,9 +26,9 @@ import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import classes from "./Toast.module.css";
+import ToastNotification from "./components/pick/ToastNotification";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -45,9 +45,11 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
+
   // 채팅 수락 | 거절
   // const [showChatRequest, setShowChatRequest] = useState(false);
   // const [chatRequestId, setChatRequestId] = useState(null);
+
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -68,7 +70,7 @@ function App() {
   useEffect(() => {
     const handlePosChange = async () => {
       if (isAuthenticated && navigator.geolocation) {
-        // console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
+        console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
         try {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -78,7 +80,7 @@ function App() {
               x: position.coords.longitude,
               y: position.coords.latitude,
             },
-            distance: 1000000000,
+            distance: 100000000,
           };
           // 위치 정보를 스토어에 저장
           dispatch(
@@ -94,7 +96,7 @@ function App() {
           console.error("위치 못가져왔는디:", error);
         }
       } else {
-        // console.log("위치 또는 토큰이 인증되지 않았습니다.");
+        console.log("위치 또는 토큰이 인증되지 않았습니다.");
       }
     };
     //초기 실행
@@ -105,7 +107,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
-        // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
         try {
           const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
           const eventSource = new EventSourcePolyfill(sseURL, {
@@ -118,29 +120,33 @@ function App() {
             heartbeatTimeout: 8640000,
           });
 
-          // eventSource.onopen = async (e) => {
-          //   // 연결 시 할 일
-          //   console.log("SSE 오픈", e);
-          // };
+          eventSource.onopen = async (e) => {
+            // 연결 시 할 일
+            console.log("SSE 오픈", e);
+          };
 
           // 받아오는 data로 할 일
           eventSource.onmessage = (e) => {
-            console.log("SSE 메시지", e);
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
-              console.log("채팅 요청이 왔어요:", senderId);
+              const requestTime = jsonData.requestTime;
+              console.log("채팅 요청이 왔어요:", jsonData);
 
               // 토스트 메시지 띄우기
-              toast(`채팅 요청이 왔어요. 수락하시겠습니까? ${senderId}`, {
+              const toastContent = (
+                <ToastNotification
+                  message="채팅 요청이 왔습니다."
+                  senderId={senderId}
+                  requestTime={requestTime}
+                />
+              );
+              toast(toastContent, {
                 position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                draggable: false,
+                className: "toast-message",
+                pauseOnFocusLoss: false,
               });
             } else {
               console.log("연결만 했어");
@@ -163,29 +169,44 @@ function App() {
 
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
-    if (document.visibilityState === "visible") {
-      // 앱이 포그라운드에 있을 때
-      customAxios
-        .post("/picker/connect", {
-          point: {
-            x: getPosX,
-            y: getPosY,
-          },
-        })
-        .then(() => {
-          console.log("Connect:", document.visibilityState);
-        });
-    } else {
-      // 앱이 백그라운드에 있을 때
-      customAxios.post("/picker/disconnect").then((e) => {
-        console.log("DISCONNECT:", document.visibilityState);
-      });
-    }
-  }, [getPosX, getPosY]);
+    const handleVisibilityChange = () => {
+      if (isAuthenticated) {
+        if (document.visibilityState === "visible") {
+          // 앱이 포그라운드에 있을 때
+          customAxios
+            .post("/picker/connect", {
+              point: {
+                x: getPosX,
+                y: getPosY,
+              },
+            })
+            .then((e) => {
+              console.log("보는중: ", e.data);
+            });
+          // 앱이 백그라운드에 있을 때
+          customAxios.get("/picker/disconnect").then((res) => {
+            console.log("안봐?!!?", res.data);
+          });
+        }
+      }
+    };
+
+    handleVisibilityChange();
+
+    // visibility change 이벤트 리스너 등록
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isAuthenticated, getPosX, getPosY]);
 
   return (
     <div className="App">
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       {/* 라우터 */}
       <Routes>
         <>
@@ -223,7 +244,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer className={classes.toastMain} />
+      <ToastContainer limit={3} autoClose={10000} />
     </div>
   );
 }

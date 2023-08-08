@@ -5,9 +5,6 @@ import common from './style/Common.module.css';
 import classes from './style/Welcome.module.css';
 
 const Welcome = () => {
-  // 로컬스토리지 토큰 저장
-  
-
   // 토큰 인증 함수
   const startapp = () => {
     const token = localStorage.getItem('jwtToken')
