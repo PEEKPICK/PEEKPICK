@@ -202,8 +202,7 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-    /* eslint-disable-next-line */
-  }, [isAuthenticated]);
+  }, [isAuthenticated, getPosX, getPosY]);
 
   return (
     <div className="App">
@@ -247,7 +246,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer limit={3} autoClose={10000} />
+      <ToastContainer limit={3} autoClose={15000} />
     </div>
   );
 }
