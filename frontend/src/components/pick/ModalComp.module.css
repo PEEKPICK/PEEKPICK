@@ -27,9 +27,7 @@
 }
 /* 프로필이미지 */
 .profileImg {
-  border: 0.12rem solid black;
   border-radius: 3.125rem;
-  margin-top: 0.3rem;
   width: 4rem;
   height: 4rem;
 }
@@ -38,6 +36,7 @@
 .modalHead {
   padding: 0 0.5rem;
   display: flex;
+  align-items: center;
 }
 .modalHeadText {
   width: 100%;
