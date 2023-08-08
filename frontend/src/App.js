@@ -128,6 +128,7 @@ function App() {
 
           // 받아오는 data로 할 일 1 : 수락핬을 때: 받는 쪽
           eventSource.onmessage = (e) => {
+            console.log("SSE : ", e);
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
@@ -146,16 +147,25 @@ function App() {
                 position: "top-right",
                 closeOnClick: true,
                 draggable: false,
+                autoClose: 15000,
                 className: "toast-message",
                 pauseOnFocusLoss: false,
               });
-              // 받아오는 data로 할 일 1 : 수락핬을 때: 보낸 쪽
             }
-            // else if (e.data.includes("senderId")) {
-            //   console.log("aa");
-            // }
-            else {
-              console.log("채팅 보낸 놈", e);
+            // 받아오는 data로 할 일 1 : 수락핬을 때: 보낸 쪽
+            else if (e.data === "채팅이 거절되었습니다.") {
+              console.log("꺼절: ", e.data);
+              const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
+              toast(toastContent, {
+                position: "top-right",
+                autoClose: 3000,
+                closeOnClick: true,
+                draggable: false,
+                className: "toast-message",
+                pauseOnFocusLoss: false,
+              });
+            } else {
+              console.log("무슨 에러인데 ", e);
             }
           };
 
@@ -251,7 +261,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer limit={3} autoClose={15000} />
+      <ToastContainer limit={3} />
     </div>
   );
 }
