@@ -95,9 +95,10 @@ function App() {
         } catch (error) {
           console.error("위치 못가져왔는디:", error);
         }
-      } else {
-        console.log("위치 또는 토큰이 인증되지 않았습니다.");
       }
+      // else {
+      //   console.log("위치 또는 토큰이 인증되지 않았습니다.");
+      // }
     };
     //초기 실행
     handlePosChange();
@@ -107,7 +108,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
-        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+        // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
         try {
           const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
           const eventSource = new EventSourcePolyfill(sseURL, {
@@ -120,10 +121,10 @@ function App() {
             heartbeatTimeout: 8640000,
           });
 
-          eventSource.onopen = async (e) => {
-            // 연결 시 할 일
-            console.log("SSE 오픈", e);
-          };
+          // eventSource.onopen = async (e) => {
+          //   // 연결 시 할 일
+          //   console.log("SSE 오픈", e);
+          // };
 
           // 받아오는 data로 할 일
           eventSource.onmessage = (e) => {
@@ -183,6 +184,7 @@ function App() {
             .then((e) => {
               console.log("보는중: ", e.data);
             });
+        } else {
           // 앱이 백그라운드에 있을 때
           customAxios.get("/picker/disconnect").then((res) => {
             console.log("안봐?!!?", res.data);
@@ -200,7 +202,8 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isAuthenticated, getPosX, getPosY]);
+    /* eslint-disable-next-line */
+  }, [isAuthenticated]);
 
   return (
     <div className="App">
