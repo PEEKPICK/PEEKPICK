@@ -6,13 +6,18 @@ const ModalWrite = ({ setWrite }) => {
   const handleWrite = (e) => {
     setWriteData(e.target.value);
   }
-
+  imgAccept=()=>{
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.capture = 'camera';
+  };
 
   const postWrite = () => {
     let f = new FormData();
     f.append("content", writeData);
-    f.append("longitude",127.0);
-    f.append("latitude",37.0);
+    f.append("longitude", 127.0);
+    f.append("latitude", 37.0);
 
     customAxios.post("/peek/write", f)
       .then((response) => {
@@ -33,6 +38,7 @@ const ModalWrite = ({ setWrite }) => {
       </div>
       <hr />
       <input type="text" onChange={handleWrite} />
+      <input type="file" accept="image/*" capture="camera" onClick={imgAccept} />
       <button onClick={postWrite}>입력 완료</button>
     </div>
   );
