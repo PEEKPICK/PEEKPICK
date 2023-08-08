@@ -1,10 +1,9 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import classes from "./ToastNotification.module.css";
 import { customAxios } from "../../api/customAxios";
 import { chatActions } from "../../store/chatSlice";
-
 const CustomToast = ({ message, senderId, requestTime }) => {
   const dispatch = useDispatch();
   // 수락
@@ -23,14 +22,17 @@ const CustomToast = ({ message, senderId, requestTime }) => {
       await customAxios.post("/picker/chat-response", body).then((response) => {
         console.log("채팅 수락: ", response.data);
         const roomId = response.data.data.roomId;
+
         dispatch(chatActions.callRoomID(roomId));
+        dispatch(chatActions.updateConnectState(true));
+
+        // dispatch(chatActions.callRoomID(createTime));
       });
     } catch (error) {
       console.error(error);
     }
     toast.dismiss({ containerId: "an Id" });
   };
-
   // 거절
   const handleReject = async () => {
     try {

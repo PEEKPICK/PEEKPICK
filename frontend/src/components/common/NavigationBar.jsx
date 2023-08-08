@@ -1,8 +1,13 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import classes from "./NavigationBar.module.css";
+//채팅
+import { useSelector, useDispatch } from "react-redux";
+import { chatActions } from "../../store/chatSlice";
+import CreateReadChat from "../pick/CreateReadChat";
 
 const NavigationBar = () => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -10,14 +15,25 @@ const NavigationBar = () => {
   const peek = location.pathname === "/peek";
   const picker = location.pathname === "/";
 
+  //채팅
+  const isModalState = useSelector((state) => state.roomId.chatModalState);
+  const getRoomId = useSelector((state) => state.roomId.roomId);
+  const test = () => {
+    console.log("isModalState", isModalState);
+    console.log("getRoomId", getRoomId);
+    dispatch(chatActions.updateChatModalState(!isModalState));
+  };
+  const declare = () => {};
   return (
     <>
       <div className={classes.container}>
+        {/* 채팅 모달 */}
         <div className={classes.chatPull}>
           <span>채팅왔다</span>
-
-          <button>볼꺼냐?</button>
+          <button onClick={() => test()}>볼꺼냐?</button>
+          <button onClick={() => declare()}>나가?</button>
         </div>
+        <CreateReadChat isModalState={isModalState} />
         {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
         <nav className={classes.navibar}>
           <div
