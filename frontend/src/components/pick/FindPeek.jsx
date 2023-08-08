@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect,useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
-
+import ModalWrite from "./ModalWrite";
 const FindPeek = () => {
   const dispatch = useDispatch();
   //주변 유져 정보
@@ -24,6 +24,13 @@ const FindPeek = () => {
       }
     });
   }, [myPos, dispatch]);
+
+    //글작성 상태관리
+    const [write, setWrite] = useState(false);
+    //글작성 버튼 온
+    const modalWriteOnOff =()=>{
+      setWrite(true);
+    }
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
@@ -48,6 +55,8 @@ const FindPeek = () => {
       </div>
       <PeekLocation findInfo={findInfo} />
       {/* 여기다가 글쓰기 만들장 */}
+      <img src="" alt="눌러" onClick={modalWriteOnOff}/>
+      {write && <ModalWrite setWrite={setWrite}/>}
     </>
   );
 };
