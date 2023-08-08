@@ -20,7 +20,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 COPY --from=build /build /usr/share/nginx/html
 
-EXPOSE 443
+EXPOSE 80
 
 ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
 
