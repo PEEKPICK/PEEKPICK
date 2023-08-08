@@ -22,5 +22,4 @@ COPY --from=build /build /usr/share/nginx/html
 
 EXPOSE 3000
 
-ENTRYPOINT [ "nginx", "-g", "daemon off;" ]
-
+CMD [ "nginx", "-g", "daemon off;" ]
