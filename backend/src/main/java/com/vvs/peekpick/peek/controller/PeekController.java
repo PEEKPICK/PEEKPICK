@@ -37,13 +37,17 @@ public class PeekController {
     public ResponseEntity<CommonResponse> addPeek(
             Authentication authentication,
             @RequestPart("peek") RequestPeekDto requestPeekDto,
-            @RequestPart("img") MultipartFile img) {
+            @RequestPart(name = "img", required = false) MultipartFile img) {
         try {
             System.out.println("글 작성");
             Long memberId = Long.parseLong(authentication.getCredentials().toString());
 
-            // 파일을 S3에 저장하고 URL 가져옴
-            String imageUrl = awsS3Util.s3SaveFile(img);
+            String imageUrl = null;
+            // 파일이 제공되면 S3에 저장하고 URL 가져옴
+            if (img != null && !img.isEmpty()) {
+                imageUrl = awsS3Util.s3SaveFile(img);
+            }
+
             // RDB, Redis에 Peek 정보를 저장
             return ResponseEntity.ok(peekService.addPeek(memberId, requestPeekDto, imageUrl));
         } catch (Exception e) {
