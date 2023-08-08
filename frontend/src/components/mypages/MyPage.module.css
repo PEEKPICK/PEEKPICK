@@ -14,7 +14,7 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(125, 0, 255, 0.75);
-    height: 10vh;
+    height: 8vh;
     color:white;
     font-size: x-large;
     margin:0;
@@ -22,7 +22,7 @@
 
 .settingimg {
     position: absolute;
-    right: 10%;
+    right: 7%;
     width: 7%;
 }
 
@@ -87,6 +87,12 @@
     justify-content: center;
     align-items: center;
     margin-top: 5%;
+    background-color: rgba(125, 0, 255, 0.1);
+    padding: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-radius: 1vh;
+    text-align: center;
 }
 
 /* 호불호 */
@@ -148,3 +154,4 @@
     border-color: rgba(125, 0, 225);
     margin-bottom: 7%;
 }
+

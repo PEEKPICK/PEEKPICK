@@ -148,7 +148,7 @@ const MyPage = () => {
   }, [dispatch,useremoji]);
   return (
     <div className={classes.mypage}>
-      {logoutView && <LogOut setLogoutView={setLogoutView} />}
+      {logoutView && <LogOut setLogoutView={setLogoutView}/>}
       {signoutView && <SignOut setSignoutView={setSignoutView} />}
       {nicknameView && <NickNameEdit setNicknameView={setNicknameView} propPrefix={setPrefix} propBio={setBio} propNickname={setNickname} nickname={nickname} bio={bio} prefix={prefix} />}
       {visible && <Settings setVisible={setVisible} setLogoutView={setLogoutView} setSignoutView={setSignoutView} />}
@@ -157,8 +157,8 @@ const MyPage = () => {
           <span>마이페이지</span>
           {/* 설정 버튼 components 제작 고려중 or 클릭시 components 이동 */}
           {ModalOutSide ?
-            <img src="img/settings.png" alt="클릭해라" className={classes.settingimg} /> :
-            <img src="img/settings.png" alt="클릭해라" onClick={onSettings} className={classes.settingimg} />}
+            <img src="img/setting.png" alt="클릭해라" className={classes.settingimg} /> :
+            <img src="img/setting.png" alt="클릭해라" onClick={onSettings} className={classes.settingimg} />}
         </div>
         <div className={classes.profileimg}>
           {/* 프로필 사진 클릭시 components // props로 이미지 가져오기 생각중 */}

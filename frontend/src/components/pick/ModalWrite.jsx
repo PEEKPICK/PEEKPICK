@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { customAxios } from "../../api/customAxios";
-import classes from './ModalWrite.module.css'
-const ModalWrite = ({ setWrite }) => {
+import classes from './ModalWrite.module.css';
+import Modal from "react-modal";
+const ModalWrite = ({ setWrite,write }) => {
   const [writeData, setWriteData] = useState("");
   const [imgData, setImgData] = useState("");
   const handleWrite = (e) => {
     setWriteData(e.target.value);
   }
-
+  const handleCloseModal= ()=>{
+    setWrite(!write);
+  }
   const postWrite = () => {
     let f = new FormData();
     f.append("content", writeData);
@@ -32,7 +35,11 @@ const ModalWrite = ({ setWrite }) => {
     }
   };
   return (
-    <div className={classes.container}>
+    <Modal 
+    isOpen={write}
+    onRequestClose={() => handleCloseModal()}
+    className={classes.modalMain}
+    >
       <div className={classes.top}>
         <span>흔적 남기기</span>
         <img src="img/cancel.png" alt="" />
@@ -41,7 +48,7 @@ const ModalWrite = ({ setWrite }) => {
       <input type="text" onChange={handleWrite} />
       <input type="file" accept="image/*" onChange={imgAccept} />
       <button onClick={postWrite}>입력 완료</button>
-    </div>
+    </Modal>
   );
 }
 
