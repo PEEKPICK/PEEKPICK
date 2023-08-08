@@ -170,23 +170,24 @@ function App() {
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        // 앱이 포그라운드에 있을 때
-        customAxios
-          .post("/picker/connect", {
-            point: {
-              x: getPosX,
-              y: getPosY,
-            },
-          })
-          .then((e) => {
-            console.log("보는중: ", e.data);
+      if (isAuthenticated) {
+        if (document.visibilityState === "visible") {
+          // 앱이 포그라운드에 있을 때
+          customAxios
+            .post("/picker/connect", {
+              point: {
+                x: getPosX,
+                y: getPosY,
+              },
+            })
+            .then((e) => {
+              console.log("보는중: ", e.data);
+            });
+          // 앱이 백그라운드에 있을 때
+          customAxios.post("/picker/disconnect").then((res) => {
+            console.log("안봐?!!?", res.data);
           });
-      } else {
-        // 앱이 백그라운드에 있을 때
-        customAxios.post("/picker/disconnect").then((res) => {
-          console.log("안봐?!!?", res.data);
-        });
+        }
       }
     };
 

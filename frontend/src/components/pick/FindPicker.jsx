@@ -16,7 +16,7 @@ const FindPicker = () => {
       const userArrayOrigin = response.data.data;
       if (Array.isArray(userArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
-        const maxEmojisToShow = 8;
+        const maxEmojisToShow = 100;
         //정보 저장
         const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
         console.log("넘어온 limitedUserArray: ", limitedUserArray);
