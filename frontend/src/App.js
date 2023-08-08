@@ -184,7 +184,7 @@ function App() {
               console.log("보는중: ", e.data);
             });
           // 앱이 백그라운드에 있을 때
-          customAxios.post("/picker/disconnect").then((res) => {
+          customAxios.get("/picker/disconnect").then((res) => {
             console.log("안봐?!!?", res.data);
           });
         }
@@ -200,8 +200,7 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-    // eslint-disable-next-line
-  }, []);
+  }, [isAuthenticated, getPosX, getPosY]);
 
   return (
     <div className="App">

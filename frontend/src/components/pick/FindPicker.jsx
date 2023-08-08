@@ -12,14 +12,14 @@ const FindPicker = () => {
   const findInfo = useSelector((state) => state.findUser.userInfomation);
   const emojiCall = useCallback(() => {
     customAxios.post("/picker", myPos).then((response) => {
-      console.log(myPos);
+      // console.log(myPos);
       const userArrayOrigin = response.data.data;
       if (Array.isArray(userArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
         const maxEmojisToShow = 100;
         //정보 저장
         const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-        console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
         dispatch(findUserActions.updateUserInfo(limitedUserArray));
       }
     });
