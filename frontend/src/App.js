@@ -70,7 +70,7 @@ function App() {
   useEffect(() => {
     const handlePosChange = async () => {
       if (isAuthenticated && navigator.geolocation) {
-        // console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
+        console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
         try {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -80,7 +80,7 @@ function App() {
               x: position.coords.longitude,
               y: position.coords.latitude,
             },
-            distance: 100000,
+            distance: 100000000,
           };
           // 위치 정보를 스토어에 저장
           dispatch(
@@ -96,7 +96,7 @@ function App() {
           console.error("위치 못가져왔는디:", error);
         }
       } else {
-        // console.log("위치 또는 토큰이 인증되지 않았습니다.");
+        console.log("위치 또는 토큰이 인증되지 않았습니다.");
       }
     };
     //초기 실행
@@ -107,7 +107,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       if (isAuthenticated) {
-        // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+        console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
         try {
           const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
           const eventSource = new EventSourcePolyfill(sseURL, {
@@ -120,10 +120,10 @@ function App() {
             heartbeatTimeout: 8640000,
           });
 
-          // eventSource.onopen = async (e) => {
-          //   // 연결 시 할 일
-          //   console.log("SSE 오픈", e);
-          // };
+          eventSource.onopen = async (e) => {
+            // 연결 시 할 일
+            console.log("SSE 오픈", e);
+          };
 
           // 받아오는 data로 할 일
           eventSource.onmessage = (e) => {
@@ -180,12 +180,12 @@ function App() {
             },
           })
           .then((e) => {
-            console.log("보는중: ", e);
+            console.log("보는중: ", e.data);
           });
       } else {
         // 앱이 백그라운드에 있을 때
         customAxios.post("/picker/disconnect").then((res) => {
-          console.log("안봐?!!?", res);
+          console.log("안봐?!!?", res.data);
         });
       }
     };
