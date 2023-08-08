@@ -1,5 +1,5 @@
-.nicknameedit{
-  position: absolute;
+.nicknameedit {
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -60%);
@@ -11,31 +11,35 @@
   width: 80%;
   height: 40%;
   z-index: 1015;
+  animation: 0.2s ease-in-out loadEffect1;
 }
 
-.nicknameedittop{
+
+.nicknameedittop {
   display: flex;
   align-items: center;
 }
 
-.nicknameedittop img{
+.nicknameedittop img {
   position: absolute;
   right: 5%;
   top: 5%;
 }
+
 /* 타이틀 */
 
-.title{
+.title {
   margin-top: 5%;
 }
-.titleinline{
+
+.titleinline {
   display: flex;
   align-items: center;
   margin-bottom: 3vh;
   /* margin-left: 2%; */
 }
 
-.titleinline input{
+.titleinline input {
   height: 3.5vh;
   border-radius: 0.8vh;
   border: 1px solid gray;
@@ -43,7 +47,8 @@
   padding-left: 3%;
   margin-top: 2%;
 }
-.titleinline img{
+
+.titleinline img {
   background-color: rgba(125, 0, 255, 1);
   margin-left: 10%;
   padding: 0.7vh 1.7vh 0.7vh 1.7vh;
@@ -53,14 +58,14 @@
 
 /* 닉네임 */
 
-.nickname{
+.nickname {
   display: flex;
   align-items: center;
   margin-bottom: 3.0vh;
   /* margin-left: 1%; */
 }
 
-.nickname input{
+.nickname input {
   height: 3.5vh;
   border-radius: 0.8vh;
   border: 1px solid gray;
@@ -72,14 +77,14 @@
 
 /* 한줄 소개 */
 
-.bio{
+.bio {
   display: flex;
   align-items: center;
   margin-bottom: 3vh;
   /* margin-left: 1%; */
 }
 
-.bio input{
+.bio input {
   height: 3.5vh;
   border-radius: 0.8vh;
   border: 1px solid gray;
@@ -88,13 +93,13 @@
   margin-top: 2%;
 }
 
-.savebtn{
+.savebtn {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.savebtn span{
+.savebtn span {
   width: auto;
   height: 0 auto;
   background-color: rgba(125, 0, 255, 1);
@@ -103,7 +108,7 @@
   color: white;
 }
 
-.hr{
+.hr {
   width: 100%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);

@@ -29,7 +29,7 @@ const FindPeek = () => {
     const [write, setWrite] = useState(false);
     //글작성 버튼 온
     const modalWriteOnOff =()=>{
-      setWrite(true);
+      setWrite(!write);
     }
 
   useEffect(() => {
@@ -53,9 +53,9 @@ const FindPeek = () => {
           새로고침
         </button>
       </div>
-      <PeekLocation findInfo={findInfo} />
+      {!write&&<PeekLocation findInfo={findInfo} />}
       {/* 여기다가 글쓰기 만들장 */}
-      <img src="" alt="눌러" onClick={modalWriteOnOff}/>
+      <img src="img/pencil.png" alt="눌러" onClick={modalWriteOnOff}/>
       {write && <ModalWrite setWrite={setWrite}/>}
     </>
   );
