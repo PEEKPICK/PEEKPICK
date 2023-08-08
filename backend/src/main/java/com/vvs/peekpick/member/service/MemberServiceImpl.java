@@ -3,7 +3,6 @@ package com.vvs.peekpick.member.service;
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
-import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
@@ -105,7 +104,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아바타 정보 수정
-    @Override
     public void updateAvatarInfo(Long avatarId, Map<String, String> param) {
         Avatar avatar = findByAvatarId(avatarId);
 
@@ -123,7 +121,6 @@ public class MemberServiceImpl implements MemberService {
 
 
     // 아바타 이모지 수정
-    @Override
     public void updateAvatarEmoji(Long avatarId, Long emojiId) {
         Avatar avatar = findByAvatarId(avatarId);
 
@@ -134,23 +131,32 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아바타 likes 태그 수정
-    @Override
     public void updateAvatarLikes(Long avatarId, List<Long> likes) {
         Avatar avatar = findByAvatarId(avatarId);
         updateTaste(avatar, "L", likes);
     }
 
     // 아바타 dislikes 태그 수정
-    @Override
     public void updateAvatarDisLikes(Long avatarId, List<Long> disLikes) {
         Avatar avatar = findByAvatarId(avatarId);
         updateTaste(avatar, "D", disLikes);
     }
 
     // 로그아웃
-    @Override
     public void logout(Long avatarId) {
         refreshTokenRepository.deleteByAvatarId(avatarId);
+    }
+
+    // 채팅 시작 시 채팅 횟수 증가
+    public void updatePickPoint(Long memberId1, Long memberId2) {
+        memberRepository.updateChatCountByMemberId(memberId1);
+        memberRepository.updateChatCountByMemberId(memberId2);
+    }
+
+    // Peek 좋아요, 싫어요 업데이트
+    @Override
+    public void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount) {
+        memberRepository.updateLikeDisLikeCountByMemberId(memberId, likeCount, disLikeCount);
     }
 
     // 취향 태그 수정
