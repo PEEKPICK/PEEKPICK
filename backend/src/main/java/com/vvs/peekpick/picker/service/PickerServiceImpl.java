@@ -3,6 +3,7 @@ package com.vvs.peekpick.picker.service;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.dto.AvatarDto;
+import com.vvs.peekpick.member.service.MemberService;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.picker.dto.*;
 import com.vvs.peekpick.picker.repository.PickerJpaRepository;
@@ -53,7 +54,7 @@ public class PickerServiceImpl implements PickerService {
     private final PickerRedisRepository pickerRedisRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final SseEmitterRepository sseEmitterRepository;
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
     private final ChatService chatService;
 
     private GeoOperations<String, String> geoOperations;
@@ -153,6 +154,9 @@ public class PickerServiceImpl implements PickerService {
                     throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
                 } else { // 상대가 접속중일 때
                     String roomId = chatService.createChatRoom(chatResponseDto.getRequestSenderId(), chatResponseDto.getRequestReceiverId());
+
+                    // PICK Point 증가
+                    memberService.updatePickPoint(chatResponseDto.getRequestReceiverId(), chatResponseDto.getRequestSenderId());
 
                     // 요청자 + 채팅방 정보 ( 응답자에게 전송 )
                     ChatNotificationDto senderNotification = ChatNotificationDto.builder()
