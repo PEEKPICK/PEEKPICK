@@ -12,11 +12,8 @@ const Header = () => {
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
-  const [selectedDistance, setSelectedDistance] = useState(0);
+  const [selectedDistance, setSelectedDistance] = useState(50);
 
-  const handleDistanceChange = (distance) => {
-    setSelectedDistance(distance);
-  };
   const toggle = () => {
     toast.isActive(false);
   };
@@ -50,6 +47,8 @@ const Header = () => {
                   id="1"
                   value="50"
                   name="debt-amount"
+                  checked={selectedDistance === 50}
+                  onChange={() => setSelectedDistance(50)}
                   required
                 />
                 <label htmlFor="1" data-debt-amount="50"></label>
@@ -58,6 +57,8 @@ const Header = () => {
                   id="2"
                   value="100"
                   name="debt-amount"
+                  checked={selectedDistance === 100}
+                  onChange={() => setSelectedDistance(100)}
                   required
                 />
                 <label htmlFor="2" data-debt-amount="100"></label>
@@ -66,6 +67,8 @@ const Header = () => {
                   id="3"
                   value="150"
                   name="debt-amount"
+                  checked={selectedDistance === 150}
+                  onChange={() => setSelectedDistance(150)}
                   required
                 />
                 <label htmlFor="3" data-debt-amount="150"></label>
@@ -74,6 +77,8 @@ const Header = () => {
                   id="4"
                   value="200"
                   name="debt-amount"
+                  checked={selectedDistance === 200}
+                  onChange={() => setSelectedDistance(200)}
                   required
                 />
                 <label htmlFor="4" data-debt-amount="200"></label>
