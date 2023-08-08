@@ -42,22 +42,44 @@ const Header = () => {
           </div>
           <span className={classes.headerText}>{textToShow}</span>
           <div className={classes.divider}></div>
-          <div className={classes.distanceSlider}>
-            <div className={classes.gauge} style={{ width: `${selectedDistance}%` }}></div>
-            <div className={classes.selectBox}>
-              <div className={classes.meterSelector1} onClick={() => handleDistanceChange(0)}>
-                0m
+          <div className={classes.formWrapper}>
+            <form>
+              <div className={classes.debtAmountSlider}>
+                <input
+                  type="radio"
+                  id="1"
+                  value="50"
+                  name="debt-amount"
+                  required
+                />
+                <label htmlFor="1" data-debt-amount="50"></label>
+                <input
+                  type="radio"
+                  id="2"
+                  value="100"
+                  name="debt-amount"
+                  required
+                />
+                <label htmlFor="2" data-debt-amount="100"></label>
+                <input
+                  type="radio"
+                  id="3"
+                  value="150"
+                  name="debt-amount"
+                  required
+                />
+                <label htmlFor="3" data-debt-amount="150"></label>
+                <input
+                  type="radio"
+                  id="4"
+                  value="200"
+                  name="debt-amount"
+                  required
+                />
+                <label htmlFor="4" data-debt-amount="200"></label>
+                <div className={classes.debtAmountPos}></div>
               </div>
-              <div className={classes.meterSelector} onClick={() => handleDistanceChange(33)}>
-                50m
-              </div>
-              <div className={classes.meterSelector3} onClick={() => handleDistanceChange(66)}>
-                150m
-              </div>
-              <div className={classes.meterSelector4} onClick={() => handleDistanceChange(100)}>
-                250m
-              </div>
-            </div>
+            </form>
           </div>
         </Modal>
       )}
