@@ -15,8 +15,10 @@ public class ChatMessageDto {
     private String sender;
     private String message;
     private String sendTime;
+    private String expireFlag;
 
-    private static final String EXPIRE_MESSAGE = "채팅방이 종료되었습니다.";
+    private static final String EXPIRED = "EXPIRED";
+
 
     public String toString(){
         return "Sender:"+this.sender+"\\dMessage:"+this.message+"\\dSendTime:"+this.sendTime.toString();
@@ -26,8 +28,7 @@ public class ChatMessageDto {
         this.sendTime = sendTime;
     }
 
-    public void expiredMessage(){
-        this.message = EXPIRE_MESSAGE;
+    public void expireMessage(){
+        this.expireFlag = EXPIRED;
     }
-
 }
