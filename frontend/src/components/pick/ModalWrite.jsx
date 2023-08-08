@@ -6,7 +6,7 @@ const ModalWrite = ({ setWrite }) => {
   const handleWrite = (e) => {
     setWriteData(e.target.value);
   }
-  imgAccept=()=>{
+  const imgAccept=()=>{
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
