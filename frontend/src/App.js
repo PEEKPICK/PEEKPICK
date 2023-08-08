@@ -26,9 +26,9 @@ import Picker from "./components/pick/Picker";
 import Peek from "./components/pick/Peek";
 import { locationActions } from "./store/locationSlice";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import classes from "./Toast.module.css";
+import ToastNotification from "./components/pick/ToastNotification";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // toast
 import { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,9 +46,11 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
+
   // 채팅 수락 | 거절
   // const [showChatRequest, setShowChatRequest] = useState(false);
   // const [chatRequestId, setChatRequestId] = useState(null);
+
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
@@ -78,7 +81,7 @@ function App() {
               x: position.coords.longitude,
               y: position.coords.latitude,
             },
-            distance: 1000000000,
+            distance: 100000,
           };
           // 위치 정보를 스토어에 저장
           dispatch(
@@ -125,22 +128,22 @@ function App() {
 
           // 받아오는 data로 할 일
           eventSource.onmessage = (e) => {
-            console.log("SSE 메시지", e);
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
-              console.log("채팅 요청이 왔어요:", senderId);
+              const requestTime = jsonData.requestTime;
+              console.log("채팅 요청이 왔어요:", jsonData);
 
               // 토스트 메시지 띄우기
-              toast(`채팅 요청이 왔어요. 수락하시겠습니까? ${senderId}`, {
+              const toastContent = (
+                <ToastNotification message="채팅 요청이 왔습니다." senderId={senderId} requestTime={requestTime} />
+              );
+              toast(toastContent, {
                 position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
                 closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "light",
+                draggable: false,
+                className: "toast-message",
+                pauseOnFocusLoss: false,
               });
             } else {
               console.log("연결만 했어");
@@ -163,29 +166,43 @@ function App() {
 
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
-    if (document.visibilityState === "visible") {
-      // 앱이 포그라운드에 있을 때
-      customAxios
-        .post("/picker/connect", {
-          point: {
-            x: getPosX,
-            y: getPosY,
-          },
-        })
-        .then(() => {
-          console.log("Connect:", document.visibilityState);
-        });
-    } else {
-      // 앱이 백그라운드에 있을 때
-      customAxios.post("/picker/disconnect").then((e) => {
-        console.log("DISCONNECT:", document.visibilityState);
-      });
-    }
-  }, [getPosX, getPosY]);
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // 앱이 포그라운드에 있을 때
+        customAxios
+          .post("/picker/connect", {
+            point: {
+              x: getPosX,
+              y: getPosY,
+            },
+          })
+          .then((e) => {
+            console.log("보는중: ", e);
+          });
+      } else {
+        // 앱이 백그라운드에 있을 때
+        const res = axios.post("/picker/disconnect");
+        console.log("res", res);
+      }
+    };
+
+    handleVisibilityChange();
+
+    // visibility change 이벤트 리스너 등록
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    // 컴포넌트 언마운트 시 이벤트 리스너 제거
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className="App">
-      <div><Toaster /></div>
+      <div>
+        <Toaster />
+      </div>
       {/* 라우터 */}
       <Routes>
         <>
@@ -223,7 +240,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer className={classes.toastMain} />
+      <ToastContainer limit={3} autoClose={10000} />
     </div>
   );
 }
