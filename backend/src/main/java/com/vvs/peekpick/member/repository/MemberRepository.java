@@ -23,10 +23,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     @Query("UPDATE Achievement a " +
             "SET a.chatCount = a.chatCount + 1, " +
             "    a.pickPoint = a.pickPoint + 5 " +
-            "WHERE a.achievementId = (SELECT m.achievement.achievementId " +
-            "                         FROM Member m " +
-            "                         WHERE m.memberId = :memberId)")
-    void updateChatCountByMemberId(@Param("memberId")Long memberId);
+            "WHERE a.achievementId = :avatarId")
+    void updateChatCountByMemberId(@Param("avatarId")Long avatarId);
 
     @Modifying
     @Transactional
