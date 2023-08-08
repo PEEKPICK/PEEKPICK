@@ -20,8 +20,8 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService{
 
-    private final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
-    private final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
+    public static final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
+    public static final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
@@ -40,13 +40,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
 
     @Override
     public void setPeek(PeekRedisDto peekRedisDto, Long peekId, int time) {
-        //peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(time));
-        peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto);
-    }
-
-    @Override
-    public void setPeekExpire(Long memberId, int time) {
-        peekTemplate.expire("member:" + memberId + ":viewed", Duration.ofHours(time));
+        peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(time));
     }
 
     @Override
@@ -61,7 +55,6 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     @Override
     public void setPeekLocation(double lon, double lat, Long peekId, int time) {
         geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
-        //locationTemplate.expire(PEEK_LOCATION_REDIS, Duration.ofMinutes(time));
     }
 
     @Override
@@ -85,8 +78,9 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setViewedByMember(Long memberId, Long peekId) {
+    public void setViewedByMember(Long memberId, Long peekId, int time) {
         setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
+        peekTemplate.expire("member:" + memberId + ":viewed", Duration.ofHours(time));
     }
     @Override
     public boolean getViewdByMember(Long memberId, Long peekId) {
