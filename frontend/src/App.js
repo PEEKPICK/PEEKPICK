@@ -154,10 +154,32 @@ function App() {
             }
             // 받아오는 data로 할 일 1 : 수락핬을 때: 보낸 쪽
             else if (e.data === "채팅이 거절되었습니다.") {
-              console.log("꺼절: ", e.data);
+              console.log("거절: ", e.data);
               const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
               toast(toastContent, {
-                position: "top-right",
+                position: "top- ight",
+                autoClose: 3000,
+                closeOnClick: true,
+                draggable: false,
+                className: "toast-message",
+                pauseOnFocusLoss: false,
+              });
+            } else if (e.data === "채팅 요청이 수락되었습니다.") {
+              console.log("수락: ", e.data);
+              const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
+              toast(toastContent, {
+                position: "top- ight",
+                autoClose: 3000,
+                closeOnClick: true,
+                draggable: false,
+                className: "toast-message",
+                pauseOnFocusLoss: false,
+              });
+            } else if (e.data === "요청이 만료되었습니다.") {
+              console.log("만료: ", e.data);
+              const toastContent = <ToastNotification message={"채팅 요청이 만료되었습니다."} />;
+              toast(toastContent, {
+                position: "top- ight",
                 autoClose: 3000,
                 closeOnClick: true,
                 draggable: false,
@@ -165,7 +187,7 @@ function App() {
                 pauseOnFocusLoss: false,
               });
             } else {
-              console.log("무슨 에러인데 ", e);
+              console.log(e);
             }
           };
 
