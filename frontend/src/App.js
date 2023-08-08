@@ -126,13 +126,13 @@ function App() {
           //   console.log("SSE 오픈", e);
           // };
 
-          // 받아오는 data로 할 일
+          // 받아오는 data로 할 일 1 : 수락핬을 때: 받는 쪽
           eventSource.onmessage = (e) => {
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
               const requestTime = jsonData.requestTime;
-              console.log("채팅 요청이 왔어요:", jsonData);
+              console.log("채팅 받는 놈", jsonData);
 
               // 토스트 메시지 띄우기
               const toastContent = (
@@ -149,8 +149,13 @@ function App() {
                 className: "toast-message",
                 pauseOnFocusLoss: false,
               });
-            } else {
-              console.log("연결만 했어");
+              // 받아오는 data로 할 일 1 : 수락핬을 때: 보낸 쪽
+            }
+            // else if (e.data.includes("senderId")) {
+            //   console.log("aa");
+            // }
+            else {
+              console.log("채팅 보낸 놈", e);
             }
           };
 
