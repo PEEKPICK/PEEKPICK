@@ -1,5 +1,7 @@
 FROM node:18-alpine
 
+ENV NODE_ENV production
+
 CMD [ "cd", "/frontend" ]
 
 COPY package.json .
