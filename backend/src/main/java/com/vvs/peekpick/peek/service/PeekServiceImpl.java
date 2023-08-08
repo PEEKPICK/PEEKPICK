@@ -2,14 +2,13 @@ package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.peek.dto.*;
-import com.vvs.peekpick.report.dto.RequestReportDto;
-import com.vvs.peekpick.report.service.ReportService;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
 import com.vvs.peekpick.response.ResponseStatus;
 import com.vvs.peekpick.wordFilter.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
@@ -31,23 +31,24 @@ public class PeekServiceImpl implements PeekService {
     private final ResponseService responseService;
     private final PeekMemberService peekMemberService;
     private final PeekRdbService peekRdbService;
-    private final ReportService reportService;
     private final PeekAvatarService peekAvatarService;
     private final PeekRedisService peekRedisService;
     private final BadWordFiltering filtering = new BadWordFiltering("♡");
+
 
     @Override
     public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
         try {
             // 반경 m로 원 생성
             Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
+
             // 해당 원 안에 위치하는 PeekLocation 값들
-            GeoResults<RedisGeoCommands.GeoLocation<Object>> nearPeekLocation = peekRedisService.getNearLoaction(circle);
+            List<String> nearPeekIds = peekRedisService.getNearLocation(circle.getCenter(), circle.getRadius().getValue());
 
             // 모든 값 가져온 뒤
             List<ResponsePeekListDto> allPeeks = new ArrayList<>();
-            for (GeoResult<RedisGeoCommands.GeoLocation<Object>> peekLocation : nearPeekLocation) {
-                Long peekId = Long.parseLong(peekLocation.getContent().getName().toString());
+            for (String nearPeekId : nearPeekIds) {
+                Long peekId = Long.parseLong(nearPeekId);
                 PeekRedisDto peekRedisDto = peekRedisService.getPeekValueOps(peekId);
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
                 ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
@@ -57,6 +58,8 @@ public class PeekServiceImpl implements PeekService {
                         .build();
                 allPeeks.add(responsePeekListDto);
             }
+
+            System.out.println(allPeeks.size());
 
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
             List<ResponsePeekListDto> randomPeeks;
@@ -111,7 +114,7 @@ public class PeekServiceImpl implements PeekService {
                     .build();
 
             //redis에 Peek Location 값 저장 & ttl 설정
-            peekRedisService.setPeekLocation(requestPeekDto.getLongitude(), requestPeekDto.getLatitude(), peekId, PEEK_ORIGIN_TIME);
+            peekRedisService.setPeekLocation(requestPeekDto.getLongitude(), requestPeekDto.getLatitude(), peekId);
             //redis에 Peek 저장 & ttl 설정
             peekRedisService.setPeek(peekRedisDto, peekId, PEEK_ORIGIN_TIME);
 

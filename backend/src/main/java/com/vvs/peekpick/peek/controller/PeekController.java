@@ -32,29 +32,29 @@ public class PeekController {
         return ResponseEntity.ok(peekService.findNearPeek(memberId, requestSearchPeekDto));
     }
 
-    // peek 작성
-    @PostMapping(value = "/write", consumes = {"multipart/form-data"})
+//    // peek 작성
+    @PostMapping(value = "/write")
     public ResponseEntity<CommonResponse> addPeek(
-            Authentication authentication,
-            @ModelAttribute RequestPeekDto requestPeekDto) {
-        try {
-            Long memberId = Long.parseLong(authentication.getCredentials().toString());
+            Authentication authentication, RequestPeekDto requestPeekDto, MultipartFile img) {
+            try {
+                System.out.println("글 작성");
+                Long memberId = Long.parseLong(authentication.getCredentials().toString());
 
-            String imageUrl = null;
-            MultipartFile img = requestPeekDto.getImg();
-            // 파일이 제공되면 S3에 저장하고 URL 가져옴
-            if (img != null && !img.isEmpty()) {
-                imageUrl = awsS3Util.s3SaveFile(img);
-            }
+                System.out.println(requestPeekDto);
+                // 파일을 S3에 저장하고 URL 가져옴
+                String imageUrl = null;
+                // 파일이 제공되면 S3에 저장하고 URL 가져옴
+                if (img != null && !img.isEmpty()) {
+                    imageUrl = awsS3Util.s3SaveFile(img);
+                }
 
-            // RDB, Redis에 Peek 정보를 저장
-            return ResponseEntity.ok(peekService.addPeek(memberId, requestPeekDto, imageUrl));
-        } catch (Exception e) {
+                // RDB, Redis에 Peek 정보를 저장
+                return ResponseEntity.ok(peekService.addPeek(memberId, requestPeekDto, imageUrl));
+            }  catch (Exception e) {
             System.out.println(e.getMessage());
             return null; //추후 예외 처리 추가 필요
         }
     }
-
 
     // 특정 peek 세부 내용 가져오기
     @GetMapping("/{peekId}")

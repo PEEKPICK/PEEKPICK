@@ -1,10 +1,11 @@
 package com.vvs.peekpick.peek.service;
 
-import com.vvs.peekpick.peek.dto.PeekLocationDto;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -15,8 +16,12 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Type;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService{
@@ -26,9 +31,9 @@ public class PeekRedisServiceImpl implements PeekRedisService{
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
-    @Qualifier("commonRedisTemplate")
-    private final RedisTemplate<String, Object> locationTemplate;
-    private GeoOperations<String, Object> geoOps;
+
+    private final RedisTemplate<String, String> locationTemplate;
+    private GeoOperations<String, String> geoOps;
     private ValueOperations<String, Object> valueOps;
     private SetOperations<String, Object> setOps;
 
@@ -54,8 +59,14 @@ public class PeekRedisServiceImpl implements PeekRedisService{
         return (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
     }
     @Override
-    public void setPeekLocation(double lon, double lat, Long peekId, int time) {
-        geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
+    public void setPeekLocation(double lon, double lat, Long peekId) {
+        log.info("=== PEEK REDIS SERVICE IMPL {}, {}", lon, lat);
+        log.info("=== PEEK REDIS SERVICE IMPL {}", peekId.toString());
+        try {
+            geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
+        } catch (Exception e) {
+            log.error("Error while adding to geoOps: ", e);
+        }
     }
 
     @Override
@@ -69,8 +80,17 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public GeoResults<RedisGeoCommands.GeoLocation<Object>> getNearLoaction(Circle circle) {
-        return geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
+    public List<String> getNearLocation(Point point, double distance) { //GeoResults<RedisGeoCommands.GeoLocation<String>>
+        System.out.println(point);
+        System.out.println(distance);
+        List<String> nearPeekIds = new ArrayList<>();
+        GeoResults<RedisGeoCommands.GeoLocation<String>> allLocations = geoOps.radius(PEEK_LOCATION_REDIS, new Circle(new Point(point.getX(), point.getY()), new Distance(distance, RedisGeoCommands.DistanceUnit.KILOMETERS)));
+
+        allLocations.forEach(location -> {
+            nearPeekIds.add(location.getContent().getName());
+        });
+        System.out.println(nearPeekIds);
+        return nearPeekIds;
     }
 
     @Override

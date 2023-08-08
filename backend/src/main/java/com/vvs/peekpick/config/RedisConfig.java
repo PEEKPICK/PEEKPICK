@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.vvs.peekpick.peek.service.PeekRedisExpirationPublisher;
+import com.vvs.peekpick.peek.service.RedisExpiredEventListener;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,7 +34,7 @@ public class RedisConfig {
 
     @Value("${spring.redis.port}")
     private int port;
-    
+
     @Value("${spring.redis.password}")
     private String password;
 
@@ -59,18 +60,19 @@ public class RedisConfig {
 //    }
 
     @Bean
-    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory){
+    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
     }
-  
+
     @Bean
     public RedisTemplate<?, ?> peekRedisTemplate() {
         RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         return redisTemplate;
     }
+
     @Bean
     public RedisTemplate<String, Object> peekRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> template = new RedisTemplate<>();
@@ -82,8 +84,8 @@ public class RedisConfig {
         template.setConnectionFactory(redisConnectionFactory);
         template.afterPropertiesSet();
         return template;
-    }  
-    
+    }
+
     @Bean
     public RedisTemplate<String, Object> commonRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
@@ -99,7 +101,7 @@ public class RedisConfig {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
 
-        // 키 만료 이벤트를 수신하기 위한 패턴을 추가합니다.
+        // 키 만료 이벤트를 수신하기 위한 패턴을 추가합
         Topic topic = new PatternTopic("__keyevent@0__:expired");
         container.addMessageListener(listener, topic);
 

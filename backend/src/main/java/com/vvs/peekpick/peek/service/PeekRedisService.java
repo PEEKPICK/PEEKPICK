@@ -1,21 +1,22 @@
 package com.vvs.peekpick.peek.service;
 
-import com.vvs.peekpick.peek.dto.PeekLocationDto;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import org.springframework.data.geo.Circle;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 
+import java.util.List;
+
 public interface PeekRedisService {
 
     void setPeek(PeekRedisDto peekRedisDto, Long peekId, int time);
     void deletePeek(Long peekId);
     PeekRedisDto getPeek(Long peekId);
-    void setPeekLocation(double lon, double lat, Long peekId, int time);
+    void setPeekLocation(double lon, double lat, Long peekId);
     Point getPeekLocation(Long peekId);
     void deletePeekLocation(Long peekId);
-    GeoResults<RedisGeoCommands.GeoLocation<Object>> getNearLoaction(Circle circle);
+    List<String> getNearLocation(Point point, double distance);
     void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto);
     PeekRedisDto getPeekValueOps(Long peekId);
     void setViewedByMember(Long memberId, Long peekId, int time);

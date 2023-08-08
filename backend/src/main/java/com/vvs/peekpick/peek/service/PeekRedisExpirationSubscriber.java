@@ -17,7 +17,7 @@ public class PeekRedisExpirationSubscriber  {
     public void onPeekExpiredEvent(PeekExpiredEventDto event) {
         if (event.getExpiredKey().startsWith(PeekRedisServiceImpl.PEEK_REDIS)) {
             String peekId = event.getExpiredKey().split(":")[1];
-            System.out.println(peekId+" : 만료됨");
+            System.out.println(peekId+" : 만료");
             peekRedisService.deletePeekLocation(Long.parseLong(peekId));
         }
     }
