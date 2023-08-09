@@ -59,7 +59,7 @@ public class PeekServiceImpl implements PeekService {
                 allPeeks.add(responsePeekListDto);
             }
 
-            System.out.println(allPeeks.size());
+            if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
 
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
             List<ResponsePeekListDto> randomPeeks;
@@ -131,6 +131,7 @@ public class PeekServiceImpl implements PeekService {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
+            if(peekRedisDto==null) return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
             // 해당 키에 대한 TTL 설정 (24시간)
@@ -184,14 +185,28 @@ public class PeekServiceImpl implements PeekService {
                 return responseService.failureCommonResponse(ResponseStatus.DELETE_FAILURE);
             }
 
-            // 삭제 전 rdb에 update
-            PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
-            peekRdbService.updatePeek(peekRedisDto.getPeekId(), peekRedisDto.getLikeCount(), peekRedisDto.getDisLikeCount());
+            // redis에서 Peek & 관련 Key 삭제 / 좋아요, 싫어요 수 가져오기
+            PeekReactionCntDto peekReactionCntDto = peekRedisService.deletePeek(peekId);
 
-            // redis에서 Peek Location, Peek 둘 다 삭제
-            peekRedisService.deletePeekLocation(peekId);
-            peekRedisService.deletePeek(peekId);
+            // rdb에 좋아요, 싫어요 수 update
+            peekRdbService.updatePeek(peekId, peekReactionCntDto.getLikeCnt(), peekReactionCntDto.getDisLikeCnt());
 
+            return responseService.successCommonResponse(ResponseStatus.DELETE_SUCCESS);
+        }
+        catch (Exception e) {
+            return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
+        }
+    }
+
+    @Override
+    public CommonResponse deletePeekExpired(Long peekId) {
+        try {
+            // redis에서 Peek & 관련 Key 삭제 / 좋아요, 싫어요 수 가져오기
+            PeekReactionCntDto peekReactionCntDto = peekRedisService.deletePeek(peekId);
+
+            // rdb에 좋아요, 싫어요 수 update
+            peekRdbService.updatePeek(peekId, peekReactionCntDto.getLikeCnt(), peekReactionCntDto.getDisLikeCnt());
+            
             return responseService.successCommonResponse(ResponseStatus.DELETE_SUCCESS);
         }
         catch (Exception e) {
@@ -241,7 +256,7 @@ public class PeekServiceImpl implements PeekService {
                     .build();
             peekRedisService.setPeekValueOps(peekId, updatedPeekRedisDto);
 
-            peekRdbService.updatePeek(peekRedisDto.getPeekId(), likeCnt, disLikeCnt);
+            //peekRdbService.updatePeek(peekRedisDto.getPeekId(), likeCnt, disLikeCnt);
 
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } catch (Exception e) {
