@@ -69,13 +69,14 @@ self.addEventListener('message', (event) => {
   }
 });
 
-self.addEventListener('fetch', (event) => {
-  console.log(event);
-
-  console.log(event.request.url);
-  console.log(event.request.headers);
-  event.request.url = event.request.referrer;  
-  event.respondWith(
-    fetch(event.request)
-  );
+self.addEventListener('fetch', event => {
+  const referrer = event.request.referrer;
+  
+  // 특정 리퍼러를 검사하여 캐시 우회 후 네트워크 요청 보내기
+  if (referrer.includes('/api/authorization')) {
+    event.respondWith(fetch(event.request));
+  } else {
+    // 기본적으로는 캐시에서 응답 찾기 시도
+    event.respondWith(caches.match(event.request).then(response => response || fetch(event.request)));
+  }
 });
