@@ -12,5 +12,5 @@ public interface AvatarRepository extends JpaRepository<Avatar, Long> {
            "SET a.world.worldId = :worldId " +
            "WHERE a.avatarId = :avatarId")
     void updateWorldByAvatarId(@Param("avatarId") Long avatarId,
-                               @Param("worldId") int worldId);
+                               @Param("worldId") Long worldId);
 }

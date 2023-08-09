@@ -167,7 +167,7 @@ public class MemberController {
 
     @PostMapping("/world")
     public CommonResponse updateWorld(Authentication authentication,
-                                      @RequestBody Map<String, Integer> param) {
+                                      @RequestBody Map<String, Long> param) {
         Long avatarId = Long.valueOf(authentication.getName());
         memberService.updateWorld(avatarId, param.get("worldId"));
 

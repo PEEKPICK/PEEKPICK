@@ -37,5 +37,5 @@ public interface MemberService {
 
     void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount);
 
-    void updateWorld(Long avatarId, Integer worldId);
+    void updateWorld(Long avatarId, Long worldId);
 }
