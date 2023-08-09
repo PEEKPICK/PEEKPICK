@@ -172,7 +172,7 @@ function App() {
               const roomId = jsonData.roomId;
               console.log("수락: ", roomId);
               dispatch(chatActions.callRoomID(roomId));
-              // dispatch(chatActions.updateConnectState(true));
+              dispatch(chatActions.updateConnectState(true));
 
               const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
               toast(toastContent, {
@@ -208,12 +208,12 @@ function App() {
               },
             })
             .then((e) => {
-              // console.log("보는중: ", e.data);
+              console.log("보는중: ", e.data);
             });
         } else {
           // 앱이 백그라운드에 있을 때
           customAxios.get("/picker/disconnect").then((res) => {
-            // console.log("안봐?!!?", res.data);
+            console.log("안봐?!!?", res.data);
           });
         }
       }
