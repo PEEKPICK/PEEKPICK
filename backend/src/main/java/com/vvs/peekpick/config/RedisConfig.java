@@ -50,15 +50,6 @@ public class RedisConfig {
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-//    @Bean
-//    public RedisTemplate<String, Object> chatRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-//            RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-//            redisTemplate.setConnectionFactory(redisConnectionFactory);
-//            redisTemplate.setKeySerializer(new StringRedisSerializer());
-//            redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-//            return redisTemplate;
-//    }
-
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
@@ -94,7 +85,6 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
         return redisTemplate;
     }
-
 
     @Bean
     public RedisMessageListenerContainer redisPeekListenerContainer(RedisConnectionFactory connectionFactory, MessageListener listener) {

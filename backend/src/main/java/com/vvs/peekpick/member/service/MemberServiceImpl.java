@@ -148,9 +148,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 채팅 시작 시 채팅 횟수 증가
-    public void updatePickPoint(Long memberId1, Long memberId2) {
-        memberRepository.updateChatCountByMemberId(memberId1);
-        memberRepository.updateChatCountByMemberId(memberId2);
+    public void updatePickPoint(Long avatarId1, Long avatarId2) {
+        memberRepository.updateChatCountByMemberId(avatarId1);
+        memberRepository.updateChatCountByMemberId(avatarId2);
     }
 
     // Peek 좋아요, 싫어요 업데이트

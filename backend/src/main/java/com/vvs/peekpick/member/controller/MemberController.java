@@ -205,8 +205,8 @@ public class MemberController {
 
     @PostMapping("/chatStart")
     public CommonResponse MemberChatStart(@RequestBody Map<String, Long> param) {
-        Long memberId1 = param.get("memberId1");
-        Long memberId2 = param.get("memberId2");
+        Long memberId1 = param.get("avatarId1");
+        Long memberId2 = param.get("avatarId2");
 
         memberService.updatePickPoint(memberId1, memberId2);
 

@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatRepository {
 
     // 채팅방에 발행되는 메시지를 처리할 Listener
+    @Qualifier("redisMessageListenerContainer")
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     // 발행/구독 서비스
     private final ChatSubscriber chatSubscriber;
