@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 import classes from './ModalWrite.module.css';
 import Modal from "react-modal";
+import { toast} from 'react-hot-toast';
 const ModalWrite = ({ setWrite, write }) => {
   const [writeData, setWriteData] = useState("");
   const [imgData, setImgData] = useState("");
@@ -21,11 +22,13 @@ const ModalWrite = ({ setWrite, write }) => {
     customAxios.post("/peek/write", f)
       .then((response) => {
         console.log(response);
-        console.log([...f.entries()]);
+        toast.success("PEEK 성공");
         setWrite(false);
       })
       .catch((response) => {
         console.log(response);
+        toast.error("ERROR");
+        setWrite(false);
       })
   }
   const imgAccept = (event) => {
