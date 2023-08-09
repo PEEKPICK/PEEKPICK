@@ -70,3 +70,9 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener('fetch', (event) => {
+  const {method, headers, url} = event.request;
+  console.log("Fetch Method : ", method);
+  console.log("Fetch Headers : ",headers);
+  console.log("Fetch URL : ", url);
+});
