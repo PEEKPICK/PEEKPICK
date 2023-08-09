@@ -134,11 +134,7 @@ function App() {
 
               // 토스트 메시지 띄우기
               const toastContent = (
-                <ToastNotification
-                  message="채팅 요청이 왔습니다."
-                  senderId={senderId}
-                  requestTime={requestTime}
-                />
+                <ToastNotification message="채팅 요청이 왔습니다." senderId={senderId} requestTime={requestTime} />
               );
               toast(toastContent, {
                 position: "top-right",

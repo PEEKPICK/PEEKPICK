@@ -5,6 +5,7 @@ import { chatActions } from "../../store/chatSlice";
 import React, { useEffect, useState } from "react";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
+import { customAxios } from "../../api/customAxios";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,12 @@ const CreateReadChat = ({ isModalState }) => {
   const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
+  const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
+  const chatPop = () => {
+    console.log("getRoomId", getRoomId);
+    console.log("isSelectedEmoji", isSelectedEmoji);
+    dispatch(chatActions.updateChatModalState(!isModalState));
+  };
 
   const handleCloseModal = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
@@ -38,6 +45,7 @@ const CreateReadChat = ({ isModalState }) => {
     const disconnect = () => {
       if (stompClient !== null) {
         stompClient.disconnect();
+        setReceivedMessages([]);
       }
     };
     disconnect();
@@ -66,38 +74,69 @@ const CreateReadChat = ({ isModalState }) => {
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
   };
 
-  // useEffect(() => {
-  //   connect();
-  //   return () => disconnect();
-  // }, [disconnect]);
+  const declare = () => {
+    const requestBody = {
+      roomId: getRoomId,
+    };
+
+    customAxios
+      .post("/picker/chat-end", requestBody)
+      .then(() => {
+        console.log("요청 성공:", "나가기 성공");
+        // 요청이 성공했을 때 실행할 코드 작성
+        dispatch(chatActions.callRoomID(""));
+      })
+      .catch(() => {
+        console.error("요청 실패:", "나가기 실패");
+        // 요청이 실패했을 때 실행할 코드 작성
+      });
+  };
 
   return (
     <Modal
       isOpen={newModalState}
       onRequestClose={() => handleCloseModal()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
       contentLabel="Selected Emoji Modal"
-      className={classes.test}
+      className={classes.chatMain}
     >
+      <div className={classes.chatHeader}>
+        <button onClick={() => declare()}>
+          <img src="img/cancel.png" alt="나가기" />
+        </button>
+        <h4 className={classes.time}>9:49</h4>
+        <button className={classes.siren}>
+          <img src="img/siren.png" alt="신고" />
+        </button>
+        <button onClick={() => chatPop()}>
+          <img src="img/down.png" alt="내리기" />
+        </button>
+      </div>
+      <div className={classes.divider} />
       <div>
-        <h1>WebSocket Client</h1>
-        <div>
-          <label htmlFor="message">Message:</label>
-          <input
-            type="text"
-            id="message"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button onClick={joinChatRoom}>Send</button>
-        </div>
-        <div>
-          <h2>Received Messages:</h2>
-          <ul id="messageList">
-            {receivedMessages.map((message, index) => (
-              <li key={index}>{message.message}</li>
-            ))}
-          </ul>
-        </div>
+        <ul id="messageList" className={classes.chat}>
+          {receivedMessages.map((message, index) => (
+            <div className={classes.chatBubble}>
+              {message.sender === "self" ? (
+                <>
+                  <li key={index} className={classes.selfMessage}>
+                    {message.message}
+                  </li>
+                </>
+              ) : (
+                <>
+                  <img src="img/down.png" alt="나가기" key={index} className={classes.otherIcon} />
+                  <li key={index} className={classes.otherMessage}>
+                    {message.message}
+                  </li>
+                </>
+              )}
+            </div>
+          ))}
+        </ul>
+      </div>
+      <div className={classes.sendBar}>
+        <input type="text" id="message" value={message} onChange={(e) => setMessage(e.target.value)} />
+        <button onClick={joinChatRoom} />
       </div>
     </Modal>
   );

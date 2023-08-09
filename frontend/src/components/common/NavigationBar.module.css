@@ -5,6 +5,7 @@
   left: 5%;
   height: auto;
   display: inline-block;
+  z-index: 99;
 }
 
 .navibar {
@@ -18,7 +19,7 @@
   border-color: rgba(125, 0, 255);
   height: auto;
   width: 100%;
-
+  z-index: 10;
 }
 
 .navibar div {
@@ -58,7 +59,7 @@
   border-top-left-radius: 3vh;
   border-top-right-radius: 3vh;
   z-index: -1;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .alert img {
@@ -68,10 +69,4 @@
 .alert span {
   justify-self: start;
   align-self: center;
-}
-
-.chatPull {
-  border: 1px solid black;
-  display: flex;
-  justify-content: space-around;
 }
