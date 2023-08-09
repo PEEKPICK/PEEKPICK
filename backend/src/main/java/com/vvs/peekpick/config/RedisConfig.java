@@ -94,21 +94,21 @@ public class RedisConfig {
     }
 
 
-    @Bean
-    public RedisMessageListenerContainer redisPeekListenerContainer(RedisConnectionFactory connectionFactory, MessageListener listener) {
-        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-        container.setConnectionFactory(connectionFactory);
-
-        // 키 만료 이벤트를 수신하기 위한 패턴을 추가합니다.
-        Topic topic = new PatternTopic("__keyevent@0__:expired");
-        container.addMessageListener(listener, topic);
-
-        return container;
-    }
-
-    @Bean
-    public MessageListener listener(ApplicationEventPublisher eventPublisher) {
-        return new PeekRedisExpirationPublisher(eventPublisher);
-    }
+//    @Bean
+//    public RedisMessageListenerContainer redisPeekListenerContainer(RedisConnectionFactory connectionFactory, MessageListener listener) {
+//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+//        container.setConnectionFactory(connectionFactory);
+//
+//        // 키 만료 이벤트를 수신하기 위한 패턴을 추가합니다.
+//        Topic topic = new PatternTopic("__keyevent@0__:expired");
+//        container.addMessageListener(listener, topic);
+//
+//        return container;
+//    }
+//
+//    @Bean
+//    public MessageListener listener(ApplicationEventPublisher eventPublisher) {
+//        return new PeekRedisExpirationPublisher(eventPublisher);
+//    }
 
 }
