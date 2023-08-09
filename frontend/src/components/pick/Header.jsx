@@ -45,7 +45,7 @@ const Header = () => {
       .catch(error => {
         console.log(error)
       })
-  }, [dispatch])
+  }, [dispatch]);
 
   // 페이지 렌딩 시 월드맵 선택 정보 받아옴
   useEffect(() => {
@@ -56,7 +56,28 @@ const Header = () => {
       .catch(error => {
         console.log(error)
       })
-  }, [])
+  }, []);
+
+  // 뒤로가기 버튼
+  const moveBackHandler = () => {
+    setIsWorldMap(false);
+  };
+
+  // 선택완료 버튼
+  const checkOutHandler = () => {
+    // 보낼 데이터 선택
+    const dataToSend = {
+      worldId: checkMap
+    }
+    // axios
+    customAxios.post('/member/world', dataToSend)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+  };
 
   return (
     <>
@@ -139,17 +160,25 @@ const Header = () => {
             <div className={classes.worldMap}>
               {worldMapList.map(item => (
                 <div key={item.worldId} className={classes.carousel}>
-                  <input type="radio" id={item.worldId} name="carousel[]" checked={checkMap === item.worldId} />
+                  <input
+                    type="radio"
+                    id={item.worldId}
+                    name="carousel[]"
+                    checked={checkMap === item.worldId}
+                    onChange={() => setCheckMap(item.worldId)}
+                  />
                 </div>
               ))}
             </div>
             <div className={classes.buttonWrap}>
               <button
                 className={classes.selected}
+                onClick={checkOutHandler}
               >선택 완료
               </button>
               <button
                 className={classes.back}
+                onClick={moveBackHandler}
               >뒤로 가기
               </button>
             </div>
