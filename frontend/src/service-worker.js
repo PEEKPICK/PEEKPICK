@@ -76,16 +76,11 @@ self.addEventListener('fetch', (event) => {
   console.log("Fetch Headers : ",headers);
   console.log("Fetch URL : ", url);
 
-  if (event.request.url.includes('/api/oauth2/authorization/')) {
-    console.log("OK");
-    console.log(event.request.url);
-    return;
-  }
-
   event.respondWith(
-    caches.match(event.request)
-      .then(function(response) {
-        return response || fetch(event.request);
-      })
+    // 먼저 네트워크를 시도합니다.
+    fetch(event.request).catch(function() {
+      // 실패하면 캐시에서 리소스를 찾습니다.
+      return caches.match(event.request);
+    })
   );
 });
