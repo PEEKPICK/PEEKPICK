@@ -5,7 +5,6 @@ import { chatActions } from "../../store/chatSlice";
 import React, { useEffect, useState } from "react";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
-import { useCallback } from "react";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -19,7 +18,7 @@ const CreateReadChat = ({ isModalState }) => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
 
-  const connect = useCallback(() => {
+  const connect = () => {
     const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
     const client = Stomp.over(socket);
 
@@ -30,13 +29,13 @@ const CreateReadChat = ({ isModalState }) => {
         showMessage(JSON.parse(chatMessage.body));
       });
     });
-  }, [getRoomId]);
+  };
 
-  const disconnect = useCallback(() => {
+  const disconnect = () => {
     if (stompClient !== null) {
       stompClient.disconnect();
     }
-  }, [stompClient]);
+  };
 
   const joinChatRoom = () => {
     if (stompClient) {
@@ -64,7 +63,7 @@ const CreateReadChat = ({ isModalState }) => {
     connect();
     return () => disconnect();
     /* eslint-disable-next-line */
-  }, [setMessage]);
+  }, []);
 
   return (
     <Modal
