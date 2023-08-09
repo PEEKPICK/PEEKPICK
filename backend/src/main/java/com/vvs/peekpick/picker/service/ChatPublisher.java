@@ -25,6 +25,7 @@ public class ChatPublisher {
         // 전송 시각 - 서버시간으로 적용
         messageDto.setSendTime(LocalDateTime.now().toString());
         log.info("=== Message in Publisher {} ===", messageDto.getMessage());
+        log.info("=== Topic {} ===", topic);
         redisTemplate.convertAndSend(topic.getTopic(), messageDto);
     }
 }
