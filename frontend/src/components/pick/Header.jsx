@@ -51,7 +51,7 @@ const Header = () => {
                   onChange={() => setSelectedDistance(50)}
                   required
                 />
-                <label htmlFor="1" data-debt-amount="50"></label>
+                <label htmlFor="1" data-debt-amount="50m"></label>
                 <input
                   type="radio"
                   id="2"
@@ -61,7 +61,7 @@ const Header = () => {
                   onChange={() => setSelectedDistance(100)}
                   required
                 />
-                <label htmlFor="2" data-debt-amount="100"></label>
+                <label htmlFor="2" data-debt-amount="100m"></label>
                 <input
                   type="radio"
                   id="3"
@@ -71,7 +71,7 @@ const Header = () => {
                   onChange={() => setSelectedDistance(150)}
                   required
                 />
-                <label htmlFor="3" data-debt-amount="150"></label>
+                <label htmlFor="3" data-debt-amount="150m"></label>
                 <input
                   type="radio"
                   id="4"
@@ -81,7 +81,7 @@ const Header = () => {
                   onChange={() => setSelectedDistance(200)}
                   required
                 />
-                <label htmlFor="4" data-debt-amount="200"></label>
+                <label htmlFor="4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
               </div>
             </form>
