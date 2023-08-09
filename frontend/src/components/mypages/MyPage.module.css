@@ -3,6 +3,7 @@
 .mypage {
     background-color: white;
     justify-content: center;
+    background-size: cover;
 }
 
 /* mypage 상단 */
