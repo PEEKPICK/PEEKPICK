@@ -78,7 +78,7 @@ self.addEventListener('fetch', (event) => {
 
   if (event.request.url.includes('/api/oauth2/authorization/')) {
     console.log("OK");
-    console.log(eqven.request.url);
+    console.log(event.request.url);
     return;
   }
 
