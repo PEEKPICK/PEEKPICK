@@ -76,10 +76,10 @@ self.addEventListener('fetch', (event) => {
   console.log("Fetch Headers : ",headers);
   console.log("Fetch URL : ", url);
 
-  const oauthUrl = /api\/oauth2\/authorization\//;
-
-  if (oauthUrl.test(url)) {
-    return fetch(event.request);
+  if (event.request.url.includes('/api/oauth2/authorization/')) {
+    console.log("OK");
+    console.log(eqven.request.url);
+    return;
   }
 
   event.respondWith(
