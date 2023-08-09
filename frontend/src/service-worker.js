@@ -71,23 +71,6 @@ self.addEventListener('message', (event) => {
 
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    // 먼저 네트워크를 시도합니다.
     fetch(event.request)
-      .then(response => {
-        // 응답이 성공적으로 완료되면, 해당 응답을 캐시에 저장하고 반환합니다.
-        const responseClone = response.clone();
-        caches.open('dynamic').then(cache => {
-          cache.put(event.request, responseClone);
-        });
-        return response;
-      })
-      .catch(() => {
-        // 실패하면 캐시에서 리소스를 찾습니다.
-        return caches.match(event.request)
-          .then(response => {
-            // 캐시에서 해당 리소스를 찾았으면 반환하고, 그렇지 않으면 기본 페이지나 오류 페이지를 반환합니다.
-            return response || caches.match('/offline.html');
-          });
-      })
   );
 });
