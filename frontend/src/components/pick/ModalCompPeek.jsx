@@ -60,6 +60,13 @@ const ModalComp = (view) => {
                 <p>내용이 없습니다.</p>
               )}
             </p>
+            <div>
+              <img src={isSelectedEmoji.peekDetailDto.imageUrl} alt="" />
+            </div>
+            <div>
+              <span>{isSelectedEmoji.peekDetailDto.likeCount}</span>
+              <span>{isSelectedEmoji.peekDetailDto.disLikeCount}</span>
+            </div>
           </div>
         </Modal>
       )}

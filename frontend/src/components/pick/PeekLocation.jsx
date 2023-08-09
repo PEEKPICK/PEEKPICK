@@ -14,7 +14,7 @@ const EmojiLocation = ({ findInfo }) => {
     SetView(current.viewed);
     console.log("peekId", peekId);
     customAxios.get(`/peek/${peekId}`).then((res) => {
-      console.log("res", res.data.data);
+      console.log(res.data.data.peekDetailDto)
       dispatch(modalActions.openPeekModal(res.data.data));
     });
   };

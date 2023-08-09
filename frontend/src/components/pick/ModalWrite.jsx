@@ -16,6 +16,7 @@ const ModalWrite = ({ setWrite, write }) => {
     setImgFile("");
     setWriteData("");
     setImgData("");
+    setImgData("");
     setWrite(!write);
   }
   const postWrite = () => {
