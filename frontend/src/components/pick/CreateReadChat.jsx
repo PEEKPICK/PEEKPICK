@@ -2,75 +2,70 @@ import Modal from "react-modal";
 import classes from "./CreateReadChat.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { chatActions } from "../../store/chatSlice";
-import React, { useEffect, useRef, useState } from "react";
-import * as StompJs from "@stomp/stompjs";
+import React, { useEffect, useState } from "react";
 import * as SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
+import { useCallback } from "react";
 
-const CreateReadChat = (isModalState) => {
+const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
   const newModalState = useSelector((state) => state.roomId.chatModalState);
   const getRoomId = useSelector((state) => state.roomId.roomId);
-
-  const client = useRef({});
-  const [chatMessages, setChatMessages] = useState([]);
+  const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState("");
+  const [receivedMessages, setReceivedMessages] = useState([]);
 
   const handleCloseModal = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
 
-  const connect = () => {
-    client.current = new StompJs.Client({
-      webSocketFactory: () => new SockJS("https://i9b309.p.ssafy.io/ws"), // proxy를 통한 접속
-      headers: {
-        Authorization: localStorage.getItem("jwtToken"),
-      },
-      // debug: function (str) {
-      //   console.log("debug : ", str);
-      // },
-      reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
-      onConnect: () => {
-        subscribe();
-      },
-      onStompError: (frame) => {
-        console.error("frame", frame);
-        dispatch(chatActions.updateConnectState(false));
-      },
-    });
+  const connect = useCallback(() => {
+    const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
+    const client = Stomp.over(socket);
 
-    client.current.activate();
-  };
-  const disconnect = () => {
-    client.current.deactivate();
-    dispatch(chatActions.updateConnectState(false));
-  };
-  const subscribe = () => {
-    client.current.subscribe(`/sub/chat/room/${getRoomId}`, ({ body }) => {
-      setChatMessages((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
+    client.connect({}, (frame) => {
+      setStompClient(client);
+      client.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
+        console.log("니가 보낸거!!!!!!!!!!!!", JSON.parse(chatMessage.body));
+        showMessage(JSON.parse(chatMessage.body));
+      });
     });
-  };
+  }, [getRoomId]);
 
-  const publish = (message) => {
-    if (!client.current.connected) {
-      console.log("!client.current.connected: ", message);
-      return;
+  const disconnect = useCallback(() => {
+    if (stompClient !== null) {
+      stompClient.disconnect();
     }
-    console.log("보낸 메시지!!!!! : ", message);
-    client.current.publish({
-      destination: "/pub/chat/publish",
-      body: JSON.stringify({ roomId: getRoomId, message: message, sendTime: "" }),
-    });
-    console.log("보낸 getRoomId : ", getRoomId);
-    console.log("보낸 message : ", message);
-    setMessage("");
+  }, [stompClient]);
+
+  const joinChatRoom = () => {
+    if (stompClient) {
+      stompClient.send(
+        "/pub/chat/publish",
+        {},
+        JSON.stringify({
+          roomId: getRoomId,
+          sender: "",
+          message: message,
+          sendTime: "",
+          expireFlag: "",
+        })
+      );
+      console.log("joinChatRoom", message);
+      setMessage("");
+    }
+  };
+
+  const showMessage = (message) => {
+    setReceivedMessages((prevMessages) => [...prevMessages, message]);
   };
 
   useEffect(() => {
     connect();
     return () => disconnect();
-  }, [connect, disconnect]);
+    /* eslint-disable-next-line */
+  }, [setMessage]);
+
   return (
     <Modal
       isOpen={newModalState}
@@ -78,29 +73,25 @@ const CreateReadChat = (isModalState) => {
       contentLabel="Selected Emoji Modal"
       className={classes.test}
     >
-      <div className={classes.chat}>
-        {chatMessages && chatMessages.length > 0 && (
-          <ul>
-            {chatMessages.map((_chatMessage, index) => (
-              <li key={index} className={classes.message}>
-                {_chatMessage.message}
-              </li>
-            ))}
-          </ul>
-        )}
+      <div>
+        <h1>WebSocket Client</h1>
         <div>
+          <label htmlFor="message">Message:</label>
           <input
-            type={"text"}
-            placeholder={"message"}
+            type="text"
+            id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                publish(message);
-              }
-            }}
           />
-          <button onClick={() => publish(message)}>전송</button>
+          <button onClick={joinChatRoom}>Send</button>
+        </div>
+        <div>
+          <h2>Received Messages:</h2>
+          <ul id="messageList">
+            {receivedMessages.map((message, index) => (
+              <li key={index}>{message.message}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </Modal>

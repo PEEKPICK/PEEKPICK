@@ -18,15 +18,13 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         response: "Y",
       };
 
-      console.log("body", body);
+      // console.log("body", body);
       await customAxios.post("/picker/chat-response", body).then((response) => {
         console.log("채팅 수락: ", response.data);
         const roomId = response.data.data.roomId;
 
+        // dispatch(chatActions.updateConnectState(true));
         dispatch(chatActions.callRoomID(roomId));
-        dispatch(chatActions.updateConnectState(true));
-
-        // dispatch(chatActions.callRoomID(createTime));
       });
     } catch (error) {
       console.error(error);
@@ -45,7 +43,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         response: "N",
       };
 
-      console.log("body", body);
+      // console.log("body", body);
       await customAxios.post("/picker/chat-response", body).then((response) => {
         console.log("채팅 거절 : ", response.data);
       });
@@ -67,7 +65,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         response: "N",
       };
 
-      console.log("body", body);
+      // console.log("body", body);
       const response = await customAxios.post("/picker/chat-response", body);
       console.log("채팅 거절", response.data);
     } catch (error) {

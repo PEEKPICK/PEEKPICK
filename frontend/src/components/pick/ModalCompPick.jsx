@@ -15,7 +15,7 @@ const ModalComp = () => {
   //채팅요청
   const plzChat = () => {
     customAxios.get(`/picker/chat-request/${isSelectedEmoji.avatarId}`).then((response) => {
-      console.log("채팅요청", response.data.message);
+      console.log(response.data.message);
     });
   };
   return (

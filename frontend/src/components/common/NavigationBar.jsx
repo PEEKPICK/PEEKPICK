@@ -5,7 +5,7 @@ import classes from "./NavigationBar.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { chatActions } from "../../store/chatSlice";
 import CreateReadChat from "../pick/CreateReadChat";
-
+import { customAxios } from "../../api/customAxios";
 const NavigationBar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -14,16 +14,30 @@ const NavigationBar = () => {
   const myPage = location.pathname === "/mypage";
   const peek = location.pathname === "/peek";
   const picker = location.pathname === "/";
-
+  const getRoomId = useSelector((state) => state.roomId.roomId);
   //채팅
   const isModalState = useSelector((state) => state.roomId.chatModalState);
-  const getRoomId = useSelector((state) => state.roomId.roomId);
   const test = () => {
-    console.log("isModalState", isModalState);
     console.log("getRoomId", getRoomId);
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
-  const declare = () => {};
+  const declare = () => {
+    const requestBody = {
+      roomId: getRoomId,
+    };
+
+    customAxios
+      .post("/picker/chat-end", requestBody)
+      .then(() => {
+        console.log("요청 성공:", "나가기 성공");
+        // 요청이 성공했을 때 실행할 코드 작성
+        dispatch(chatActions.callRoomID(""));
+      })
+      .catch(() => {
+        console.error("요청 실패:", "나가기 실패");
+        // 요청이 실패했을 때 실행할 코드 작성
+      });
+  };
   return (
     <>
       <div className={classes.container}>
