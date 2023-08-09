@@ -1,74 +1,77 @@
 .container {
-    position: fixed;
-    bottom: 5%;
-    width: 90%;
-    left: 5%;
-    height: auto;
-    display: inline-block;
+  position: fixed;
+  bottom: 5%;
+  width: 90%;
+  left: 5%;
+  height: auto;
+  display: inline-block;
 }
 
 .navibar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-content: center;
-    background-color: white;
-    border-radius: 5vh;
-    border: 0;
-    box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.25);
-    border-color: rgba(125, 0, 255);
-    height: auto;
-    width: 100%;
-    
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  background-color: white;
+  border-radius: 5vh;
+  border: 0;
+  box-shadow: 1px 1px 1px 1px rgba(125, 0, 255, 0.5);
+  border-color: rgba(125, 0, 255);
+  height: auto;
+  width: 100%;
+
 }
 
 .navibar div {
-    text-align: center;
-    justify-content: center;
-    padding: 5%;
-    margin: 5%;
-    text-decoration: none;
-    border-radius: 5vh;
-
+  text-align: center;
+  justify-content: center;
+  padding: 5%;
+  margin: 5%;
+  text-decoration: none;
+  border-radius: 5vh;
 }
 
-.navibar div img{
-    max-width: 100%;
-    height: auto;
+.navibar div img {
+  max-width: 100%;
+  height: auto;
 }
 
-.navibar a{
-    text-decoration: none;
+.navibar a {
+  text-decoration: none;
 }
 
-.on{
-    background-color: rgba(125,0,225);
-    color: white;
+.on {
+  background-color: rgba(125, 0, 225);
+  color: white;
 }
 
-.alert{
-    position: fixed;
-    display: grid;
-    grid-template-columns: 1fr 7fr 1fr;
-    padding: 4% 0% 9% 0%;
-    bottom: 10%;
-    width: 90%;
-    justify-items: center;
-    border: 1px solid ;
-    border-bottom: none;
-    border-color: rgba(125, 0, 225, 1);
-    border-top-left-radius: 3vh;
-    border-top-right-radius: 3vh;
-    z-index: -1;
-    background-color: white;
+.alert {
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 7fr 1fr;
+  padding: 4% 0% 9% 0%;
+  bottom: 10%;
+  width: 90%;
+  justify-items: center;
+  border: 1px solid;
+  border-bottom: none;
+  border-color: rgba(125, 0, 225, 1);
+  border-top-left-radius: 3vh;
+  border-top-right-radius: 3vh;
+  z-index: -1;
+  background-color: white;
 }
 
-
-.alert img{
-    width: 50%;
+.alert img {
+  width: 50%;
 }
 
-.alert span{
-    justify-self: start;
-    align-self: center;
+.alert span {
+  justify-self: start;
+  align-self: center;
 }
 
+.chatPull {
+  border: 1px solid black;
+  display: flex;
+  justify-content: space-around;
+}
