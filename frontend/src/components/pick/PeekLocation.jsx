@@ -67,7 +67,7 @@ const EmojiLocation = ({ findInfo }) => {
           ))}
         </div>
       ) : (
-        <div>텅</div>
+        <div className={classes.emojiArea}>텅</div>
       )}
 
       {/* 모달 */}

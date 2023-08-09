@@ -79,7 +79,7 @@ const NickNameEdit = forwardRef((props, ref) => {
       .catch((error) => {
         console.log(error)
         props.setNicknameView(false);
-        toast.error("프로필 수정 실패");
+        toast.error(" ERROR");
       })
   }
   return (

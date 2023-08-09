@@ -1,46 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
-const ModalWrite = ({ setWrite }) => {
+import classes from './ModalWrite.module.css';
+import Modal from "react-modal";
+const ModalWrite = ({ setWrite, write }) => {
   const [writeData, setWriteData] = useState("");
-
+  const [imgData, setImgData] = useState("");
+  const imageInput = useRef();
   const handleWrite = (e) => {
     setWriteData(e.target.value);
   }
-  const imgAccept=(event)=>{
-    const selectedImage = event.target.files[0];
-    if(selectedImage){
-      console.log('hi')
-    }
-  };
-
+  const handleCloseModal = () => {
+    setWrite(!write);
+  }
   const postWrite = () => {
     let f = new FormData();
     f.append("content", writeData);
     f.append("longitude", 127.0);
     f.append("latitude", 37.0);
-
+    f.append("img", imgData);
     customAxios.post("/peek/write", f)
       .then((response) => {
         console.log(response);
         console.log([...f.entries()]);
         setWrite(false);
-
       })
       .catch((response) => {
         console.log(response);
       })
   }
+  const imgAccept = (event) => {
+    const selectedImage = event.target.files[0];
+    if (selectedImage) {
+      console.log('Selected image:', selectedImage);
+      setImgData(selectedImage)
+    }
+  };
+
+  const onCickImageUpload = () => {
+    imageInput.current.click();
+  };
   return (
-    <div>
-      <div>
+    <Modal
+      isOpen={write}
+      onRequestClose={() => handleCloseModal()}
+      className={classes.modalMain}
+    >
+      <div className={classes.top}>
         <span>흔적 남기기</span>
-        <img src="img/cancel.png" alt="" />
+        <img src="img/cancel.png" alt="" onClick={handleCloseModal} />
       </div>
-      <hr />
-      <input type="text" onChange={handleWrite} />
-      <input type="file" accept="image/*" onClick={imgAccept} />
-      <button onClick={postWrite}>입력 완료</button>
-    </div>
+      <hr className={classes.hr} />
+      <div className={classes.content}>
+        <textarea onChange={handleWrite} className={classes.text} >
+        </textarea>
+      </div>
+      <div className={classes.imgthrow}>
+        <button onClick={onCickImageUpload} className={classes.btn}>이미지업로드</button>
+        <input ref={imageInput} type="file" accept="image/*" onChange={imgAccept} className={classes.imginput} />
+      </div>
+      <div className={classes.imgthrow}>
+        <button className={classes.button} onClick={postWrite}>입력 완료</button>
+      </div>
+    </Modal>
   );
 }
 
