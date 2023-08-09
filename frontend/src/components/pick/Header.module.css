@@ -99,12 +99,12 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-  margin-top: 5%;
+  margin-top: 10%;
 }
 
 .form {
-  width: 90%;
-	max-width: 90%
+  width: 100%;
+	max-width: 100%
 }
 
 .debtAmountSlider {
