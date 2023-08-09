@@ -102,7 +102,7 @@
   margin-top: 5%;
 }
 
-form {
+.form {
   width: 90%;
 	max-width: 90%
 }
@@ -232,12 +232,12 @@ form {
 	z-index: 2;
 }
 
-form:valid .debtAmountSlider input:checked + label::before {
+.form:valid .debtAmountSlider input:checked + label::before {
 	transform: translate(-50%, 45px) scale(1.1);
 	transition: all 0.15s linear;
 }
 
-form + button {
+.form + button {
 	display: block;
 	position: relative;
 	margin: 56px auto 0;
@@ -255,23 +255,23 @@ form + button {
 	cursor: pointer;
 }
 
-form + button:hover {
+.form + button:hover {
 	background: rgba(125, 0, 255, 1);
 	color: #fff;
 }
 
-form + button:active {
+.form + button:active {
 	transform: scale(0.9);
 }
 
-form + button:focus {
+.form + button:focus {
 	background: #4caf50;
 	border-color: #4caf50;
 	color: #fff;
 	pointer-events: none;
 }
 
-form + button::before {
+.form + button::before {
 	display: inline-block;
 	width: 0;
 	opacity: 0;
@@ -283,7 +283,7 @@ form + button::before {
 	animation: spin 1s linear infinite;
 }
 
-form:invalid + button {
+.form:invalid + button {
 	pointer-events: none;
 	opacity: 0.25;
 }

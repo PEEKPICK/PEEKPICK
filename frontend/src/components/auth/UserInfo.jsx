@@ -245,7 +245,7 @@ const UserInfo = () => {
         <span>회원 정보를 확인해주세요</span>
       </div>
       <div>
-        <form className={classes.form}>
+        <form className={classes.formInfo}>
           <div className={classes.box}>
             {nameIsValid()}
           </div>
