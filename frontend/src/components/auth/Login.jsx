@@ -48,7 +48,10 @@ const Login = () => {
         <button onClick={() => test(tester)}>테스트 버튼</button>
         <button onClick={() => testSignUp()}>테스트 회원가입</button>
         {/* 테스트 버튼 */}
-        <img src="img/kakao_login.png" alt="kakao" onClick={() => loginHandler('kakao')} />
+        <img
+          src="img/kakao_login.png" 
+          alt="kakao" 
+          href="https://i9b309.p.ssafy.io/api/oauth2/authorization/kakao" />
         {/* <img src="img/naver_login.png" alt="naver" onClick={() => loginHandler('naver')} /> */}
         <img src="img/naver_login.png" alt="naver" onClick={() => toast.error('개발 중인 서비스입니다.')} />
         <img src="img/google_login.png" alt="google" onClick={() => loginHandler('google')} />
