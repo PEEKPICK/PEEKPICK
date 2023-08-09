@@ -319,22 +319,12 @@
 	line-height: 120%;
 }
 
-.carousel {
-	margin-top: 10%;
-	margin-bottom: 10%;
-	height: 50vh;
-	display: flex;
+/* carousel */
+.sliderItem img {
+	height: 10%;
 }
 
-.worldMapItem {
-	margin-right: 10%;
-	counter-increment: worldMapItem;
-}
-
-.worldCell {
-	height: 100%;
-}
-
+/* 선택완료, 뒤로가기 버튼 */
 .buttonWrap {
 	display: flex;
 	flex-direction: column;

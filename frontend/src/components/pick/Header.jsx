@@ -1,6 +1,9 @@
 import { customAxios, authAxios } from '../../api/customAxios';
 
 import Modal from "react-modal";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 import classes from "./Header.module.css";
 
@@ -28,6 +31,18 @@ const Header = () => {
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
+  // 캐러셀 세팅
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    dots: false,
+    arrows: false,
+
+    afterChange: (current) => setCheckMap(current+1),
+  };
+
   // 사용자가 선택한 월드맵 받아와서 리덕스 저장
   useEffect(() => {
     customAxios.get('/member/info')
@@ -51,6 +66,7 @@ const Header = () => {
   useEffect(() => {
     authAxios.get('/member/world')
       .then(response => {
+        console.log(response.data.data)
         setWorldMapList(response.data.data)
       })
       .catch(error => {
@@ -67,12 +83,17 @@ const Header = () => {
   const checkOutHandler = () => {
     // 보낼 데이터 선택
     const dataToSend = {
-      worldId: checkMap
-    }
+      worldId: checkMap,
+    };
+    console.log(dataToSend);
     // axios
     customAxios.post('/member/world', dataToSend)
       .then(response => {
-        console.log(response.data);
+        if (response.data.code === "200") {
+          setIsWorldMap(false);
+        } else {
+          console.log('문제가 발생했습니다.')
+        }
       })
       .catch(error => {
         console.log(error);
@@ -157,18 +178,21 @@ const Header = () => {
               <span>개성넘치는 자신만의 월드를 골라보세요.</span>
               <span>숨겨진 업적을 달성하면 잠금이 풀립니다!</span>
             </div>
-            <div className={classes.worldMap}>
-              {worldMapList.map(item => (
-                <div key={item.worldId} className={classes.carousel}>
-                  <input
-                    type="radio"
-                    id={item.worldId}
-                    name="carousel[]"
-                    checked={checkMap === item.worldId}
-                    onChange={() => setCheckMap(item.worldId)}
-                  />
-                </div>
-              ))}
+            {/* 월드맵 캐러샐 */}
+            <div className={classes.sliderWrapper}>
+              <Slider {...settings} >
+                {worldMapList.map(item => (
+                  <div
+                    className={classes.sliderItem}
+                    key={item.worldId}
+                  >
+                    <img
+                      src={item.openUrl}
+                      alt=""
+                    />
+                  </div>
+                ))}
+              </Slider>
             </div>
             <div className={classes.buttonWrap}>
               <button
