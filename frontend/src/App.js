@@ -231,6 +231,7 @@ function App() {
             <>
               {/* 준형 */}
               <Route path="/" element={<Login />} />
+              <Route path="/api/oauth2/authorization/kakao" element={<Redirect />} />
               <Route path="/oauth2/redirect" element={<Redirect />} />
               <Route path="/userinfo" element={<UserInfo />} />
               <Route path="/userprofile" element={<UserProfile />} />
