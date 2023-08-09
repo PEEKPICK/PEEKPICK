@@ -302,3 +302,49 @@
 		margin-right: 12px;
 	}
 }
+
+/* 월드맵 CSS */
+.worldMapContainer {
+	display: flex;
+	flex-direction: column;
+}
+
+.worldMapContainer h1 {
+	margin-top: 5%;
+	margin-bottom: 3%;
+}
+
+.spanWrap {
+	font-size: 15px;
+	line-height: 120%;
+}
+
+.worldMap {
+	margin-top: 10%;
+	margin-bottom: 10%;
+	height: 50vh;
+}
+
+.buttonWrap {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin-top: 10%;
+}
+
+.buttonWrap button {
+	border: 0;
+	border-radius: 5px;
+	margin: 3% 0 3% 0;
+	height: 40px;
+}
+
+.selected {
+	background-color: #7d00ff;
+	color: #ffffff;
+}
+
+.back {
+	background-color: #999999;
+	color: white;
+}

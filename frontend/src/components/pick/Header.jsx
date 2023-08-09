@@ -2,10 +2,10 @@ import Modal from "react-modal";
 import classes from "./Header.module.css";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import { toast } from "react-toastify";
 
 const Header = () => {
   const [isDistance, setIsDistance] = useState(false);
+  const [isWorldMap, setIsWorldMap] = useState(false);
   const location = useLocation();
   const textToShow =
     location.pathname === "/peek"
@@ -14,16 +14,13 @@ const Header = () => {
 
   const [selectedDistance, setSelectedDistance] = useState(50);
 
-  const toggle = () => {
-    toast.isActive(false);
-  };
   return (
     <>
       <div className={classes.headerMain}>
         <button className={classes.button}>
           <img src="/img/distance.png" alt="거리조절버튼" onClick={() => setIsDistance(true)} />
         </button>
-        <button className={classes.button} onClick={() => toggle()}>
+        <button className={classes.button} onClick={() => setIsWorldMap(true)}>
           <img src="/img/aram.png" alt="알림버튼" />
         </button>
       </div>
@@ -85,6 +82,27 @@ const Header = () => {
                 <div className={classes.debtAmountPos}></div>
               </div>
             </form>
+          </div>
+        </Modal>
+      )}
+      {isWorldMap && (
+        <Modal
+        isOpen={isWorldMap}
+        onRequestClose={() => setIsWorldMap(false)} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+        >
+          <div className={classes.worldMapContainer}>
+            <h1>월드 선택</h1>
+            <div className={classes.spanWrap}>
+              <span>개성넘치는 자신만의 월드를 골라보세요.</span>
+              <span>숨겨진 업적을 달성하면 잠금이 풀립니다!</span>
+            </div>
+            <div className={classes.worldMap}>
+              월드맵 자리
+            </div>
+            <div className={classes.buttonWrap}>
+              <button className={classes.selected}>선택 완료</button>
+              <button className={classes.back}>뒤로 가기</button>
+            </div>
           </div>
         </Modal>
       )}
