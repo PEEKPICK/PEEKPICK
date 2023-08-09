@@ -16,7 +16,6 @@ const ModalWrite = ({ setWrite, write }) => {
     setImgFile("");
     setWriteData("");
     setImgData("");
-    setImgData("");
     setWrite(!write);
   }
   const postWrite = () => {
@@ -29,9 +28,15 @@ const ModalWrite = ({ setWrite, write }) => {
       .then((response) => {
         console.log(response);
         toast.success("PEEK 성공");
+        setImgFile("");
+        setWriteData("");
+        setImgData("");
         setWrite(false);
       })
       .catch((response) => {
+        setImgFile("");
+        setWriteData("");
+        setImgData("");
         console.log(response);
         toast.error("ERROR");
         setWrite(false);
@@ -47,7 +52,7 @@ const ModalWrite = ({ setWrite, write }) => {
       reader.readAsDataURL(selectedImage);
       reader.onloadend = () => {
         setImgFile(reader.result);
-        console.log(imgFile);
+        console.log(imgFile)
       };
     }
   };
