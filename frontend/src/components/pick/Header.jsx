@@ -100,8 +100,14 @@ const Header = () => {
               월드맵 자리
             </div>
             <div className={classes.buttonWrap}>
-              <button className={classes.selected}>선택 완료</button>
-              <button className={classes.back}>뒤로 가기</button>
+              <button
+                className={classes.selected}
+              >선택 완료
+              </button>
+              <button
+                className={classes.back}
+              >뒤로 가기
+              </button>
             </div>
           </div>
         </Modal>
