@@ -29,6 +29,7 @@ import { EventSourcePolyfill } from "event-source-polyfill";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastNotification from "./components/pick/ToastNotification";
+import { chatActions } from "./store/chatSlice";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -45,10 +46,6 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
-
-  // 채팅 수락 | 거절
-  // const [showChatRequest, setShowChatRequest] = useState(false);
-  // const [chatRequestId, setChatRequestId] = useState(null);
 
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
@@ -70,7 +67,7 @@ function App() {
   useEffect(() => {
     const handlePosChange = async () => {
       if (isAuthenticated && navigator.geolocation) {
-        console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
+        // console.log("isAuthenticated 인증되었습니다. 위치를 찍습니다.");
         try {
           const position = await new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
@@ -121,19 +118,19 @@ function App() {
             heartbeatTimeout: 8640000,
           });
 
-          // eventSource.onopen = async (e) => {
-          //   // 연결 시 할 일
-          //   console.log("SSE 오픈", e);
-          // };
-
-          // 받아오는 data로 할 일 1 : 수락핬을 때: 받는 쪽
-          eventSource.onmessage = (e) => {
+          eventSource.addEventListener("SSE_START", (e) => {
+            // SSE CREATED
             console.log("SSE : ", e);
+          });
+
+          eventSource.addEventListener("REQUEST", (e) => {
+            // 채팅 요청 / 응답
+            console.log("REQUEST", e);
             if (e.data.includes("senderId")) {
               const jsonData = JSON.parse(e.data);
               const senderId = jsonData.senderId;
               const requestTime = jsonData.requestTime;
-              console.log("채팅 받는 놈", jsonData);
+              console.log("채팅 받음", jsonData);
 
               // 토스트 메시지 띄우기
               const toastContent = (
@@ -147,33 +144,47 @@ function App() {
                 position: "top-right",
                 closeOnClick: true,
                 draggable: false,
-                autoClose: 15000,
+                autoClose: 20000,
                 className: "toast-message",
-                pauseOnFocusLoss: false,
               });
             }
-            // 받아오는 data로 할 일 1 : 수락핬을 때: 보낸 쪽
-            else if (e.data === "채팅이 거절되었습니다.") {
-              console.log("꺼절: ", e.data);
+            // 거절하기
+            if (e.data === "채팅이 거절되었습니다.") {
+              console.log("거절: ", e.data);
               const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
               toast(toastContent, {
                 position: "top-right",
-                autoClose: 3000,
                 closeOnClick: true,
                 draggable: false,
+                autoClose: 3000,
                 className: "toast-message",
-                pauseOnFocusLoss: false,
               });
-            } else {
-              console.log("무슨 에러인데 ", e);
             }
-          };
+          });
 
-          eventSource.onerror = (e) => {
-            // 종료 또는 에러 발생 시 할 일
-            console.log("SSE에러!!!!!!,", e);
-            eventSource.close();
-          };
+          // 수락하기
+          eventSource.addEventListener("CHAT_START", (e) => {
+            // 채팅 시작
+            console.log("CHAT_START !! :", e);
+            // 요청 수락
+            if (e.data.includes("roomId")) {
+              const jsonData = JSON.parse(e.data);
+              const roomId = jsonData.roomId;
+              console.log("수락: ", roomId);
+              dispatch(chatActions.callRoomID(roomId));
+              // dispatch(chatActions.updateConnectState(true));
+
+              const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
+              toast(toastContent, {
+                position: "top-right",
+                closeOnClick: true,
+                draggable: false,
+                autoClose: 3000,
+                className: "toast-message",
+                expireFlag: "",
+              });
+            }
+          });
         } catch (error) {
           console.log("SSE 생성 오류: ", error);
         }
@@ -181,7 +192,7 @@ function App() {
       // console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
     };
     fetchData();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, dispatch]);
 
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
@@ -197,12 +208,12 @@ function App() {
               },
             })
             .then((e) => {
-              console.log("보는중: ", e.data);
+              // console.log("보는중: ", e.data);
             });
         } else {
           // 앱이 백그라운드에 있을 때
           customAxios.get("/picker/disconnect").then((res) => {
-            console.log("안봐?!!?", res.data);
+            // console.log("안봐?!!?", res.data);
           });
         }
       }
@@ -261,7 +272,7 @@ function App() {
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
-      <ToastContainer limit={3} />
+      <ToastContainer />
     </div>
   );
 }
