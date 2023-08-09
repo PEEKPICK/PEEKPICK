@@ -90,7 +90,6 @@ const Header = () => {
                   name="debt-amount"
                   checked={selectedDistance === 50}
                   onChange={() => setSelectedDistance(50)}
-                  required
                 />
                 <label htmlFor="1" data-debt-amount="50m"></label>
                 <input
@@ -100,7 +99,6 @@ const Header = () => {
                   name="debt-amount"
                   checked={selectedDistance === 100}
                   onChange={() => setSelectedDistance(100)}
-                  required
                 />
                 <label htmlFor="2" data-debt-amount="100m"></label>
                 <input
@@ -110,7 +108,6 @@ const Header = () => {
                   name="debt-amount"
                   checked={selectedDistance === 150}
                   onChange={() => setSelectedDistance(150)}
-                  required
                 />
                 <label htmlFor="3" data-debt-amount="150m"></label>
                 <input
@@ -120,7 +117,6 @@ const Header = () => {
                   name="debt-amount"
                   checked={selectedDistance === 200}
                   onChange={() => setSelectedDistance(200)}
-                  required
                 />
                 <label htmlFor="4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
