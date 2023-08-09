@@ -50,7 +50,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
     } catch (error) {
       console.error(error);
     }
-    toast.dismiss({ containerId: "an Id" });
+    toast.dismiss({ containerId: "an  Id" });
   };
 
   //모두 닫기
