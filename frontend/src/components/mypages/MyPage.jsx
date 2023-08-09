@@ -193,9 +193,6 @@ const MyPage = () => {
 
 
       {/* 고객센터 */}
-      <div className={classes.customercenterimg}>
-        <img src="img/customerservicecenter.png" alt="고객 센터" />
-      </div>
     </div>
   );
 };
