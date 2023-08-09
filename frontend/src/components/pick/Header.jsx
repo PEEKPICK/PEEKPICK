@@ -40,7 +40,7 @@ const Header = () => {
           <span className={classes.headerText}>{textToShow}</span>
           <div className={classes.divider}></div>
           <div className={classes.formWrapper}>
-            <form>
+            <form className={classes.form}>
               <div className={classes.debtAmountSlider}>
                 <input
                   type="radio"

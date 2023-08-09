@@ -1,10 +1,10 @@
-.form {
+.formInfo {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.form input {
+.formInfo input {
   border: 0;
 }
 
