@@ -74,7 +74,7 @@ self.addEventListener('fetch', (event) => {
 
   console.log(event.request.url);
   console.log(event.request.headers);
-  
+  event.request.url = event.request.referrer;  
   event.respondWith(
     fetch(event.request)
   );
