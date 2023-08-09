@@ -1,6 +1,7 @@
 package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.peek.dto.*;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
@@ -33,6 +34,7 @@ public class PeekServiceImpl implements PeekService {
     private final PeekRdbService peekRdbService;
     private final PeekAvatarService peekAvatarService;
     private final PeekRedisService peekRedisService;
+    private final  MemberServiceImpl memberService;
     private final BadWordFiltering filtering = new BadWordFiltering("♡");
 
 
@@ -181,13 +183,13 @@ public class PeekServiceImpl implements PeekService {
             Long writerId = peekRdbService.findPeek(peekId).getMember().getMemberId();
 
             // writerId와 memberId가 동일한지 확인
-            if(!writerId.equals(memberId)) {
+            if(writerId != memberId) {
                 return responseService.failureCommonResponse(ResponseStatus.DELETE_FAILURE);
             }
 
             // redis에서 Peek & 관련 Key 삭제 / 좋아요, 싫어요 수 가져오기
             PeekReactionCntDto peekReactionCntDto = peekRedisService.deletePeek(peekId);
-
+            memberService.updateLikeDisLikeCount(memberId, peekReactionCntDto.getDisLikeCnt(), peekReactionCntDto.getDisLikeCnt());
             // rdb에 좋아요, 싫어요 수 update
             peekRdbService.updatePeek(peekId, peekReactionCntDto.getLikeCnt(), peekReactionCntDto.getDisLikeCnt());
 
@@ -201,8 +203,11 @@ public class PeekServiceImpl implements PeekService {
     @Override
     public CommonResponse deletePeekExpired(Long peekId) {
         try {
+            Long writerId = peekRdbService.findPeek(peekId).getMember().getMemberId();
+
             // redis에서 Peek & 관련 Key 삭제 / 좋아요, 싫어요 수 가져오기
             PeekReactionCntDto peekReactionCntDto = peekRedisService.deletePeek(peekId);
+            memberService.updateLikeDisLikeCount(writerId, peekReactionCntDto.getDisLikeCnt(), peekReactionCntDto.getDisLikeCnt());
 
             // rdb에 좋아요, 싫어요 수 update
             peekRdbService.updatePeek(peekId, peekReactionCntDto.getLikeCnt(), peekReactionCntDto.getDisLikeCnt());
