@@ -55,7 +55,7 @@ public class PeekController {
     public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId) {
         Long avatarId = Long.parseLong(authentication.getName());
         Long memberId = Long.parseLong(authentication.getCredentials().toString());
-        peekService.getPeek(memberId, avatarId, peekId);
+        return peekService.getPeek(memberId, avatarId, peekId);
     }
 
     // 특정 peek 삭제
@@ -67,7 +67,7 @@ public class PeekController {
 
     // 특정 peek 좋아요/싫어요
     @PostMapping("/{peekId}")
-    public CommonResponse addReaction(Authentication authentication, @PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {//@AuthenticationPrincipal Principal principal
+    public CommonResponse addReaction(Authentication authentication, @PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {
         Long memberId = Long.parseLong(authentication.getCredentials().toString());
         boolean like = Boolean.parseBoolean(reaction.get("like").toString());
         return peekService.addReaction(memberId, peekId, like);
