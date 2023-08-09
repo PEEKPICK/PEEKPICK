@@ -165,6 +165,15 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    @PostMapping("/world")
+    public CommonResponse updateWorld(Authentication authentication,
+                                      @RequestBody Map<String, Integer> param) {
+        Long avatarId = Long.valueOf(authentication.getName());
+        memberService.updateWorld(avatarId, param.get("worldId"));
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
+    }
+
     /**
      * 취향 태그 대분류 조회
      * @param categoryLarge

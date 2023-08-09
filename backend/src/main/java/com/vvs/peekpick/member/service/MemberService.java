@@ -36,4 +36,6 @@ public interface MemberService {
     void updatePickPoint(Long memberId1, Long memberId2);
 
     void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount);
+
+    void updateWorld(Long avatarId, Integer worldId);
 }

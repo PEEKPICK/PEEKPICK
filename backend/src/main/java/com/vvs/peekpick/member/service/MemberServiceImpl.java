@@ -159,6 +159,11 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.updateLikeDisLikeCountByMemberId(memberId, likeCount, disLikeCount);
     }
 
+    @Override
+    public void updateWorld(Long avatarId, Integer worldId) {
+        avatarRepository.updateWorldByAvatarId(avatarId, worldId);
+    }
+
     // 취향 태그 수정
     // 기존 태그 삭제 후 신규 태그 추가
     private void updateTaste(Avatar avatar, String type, List<Long> categoryIds) {
