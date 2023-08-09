@@ -183,13 +183,13 @@ const Header = () => {
               <Slider {...settings} >
                 {worldMapList.map(item => (
                   <div
-                    className={classes.sliderItem}
                     key={item.worldId}
                   >
                     {/* 버그 리포트 : 캐러셀을 안움직이면 기존의 값이 들어감.. 해결 방법 좀 */}
                     <img
                       src={item.openUrl}
                       alt=""
+                      className={classes.carousel}
                     />
                   </div>
                 ))}

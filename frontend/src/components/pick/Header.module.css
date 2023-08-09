@@ -320,7 +320,13 @@
 }
 
 /* carousel */
-
+.carousel {
+	margin-top: 7%;
+	border-radius: 5px;
+	border: 0;
+	width: 100%;
+	height: 55vh;
+}
 
 /* 선택완료, 뒤로가기 버튼 */
 .buttonWrap {
