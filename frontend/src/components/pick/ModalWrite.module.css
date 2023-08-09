@@ -3,7 +3,7 @@
   margin: 9rem 1.7rem;
   padding: 0.5rem;
   border-radius: 1.3rem 1.3rem 3.1rem 3.1rem;
-  height: 23rem;
+  height: 25rem;
   width: 20rem;
   box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
   font-size: 0.875rem;
@@ -57,27 +57,26 @@
   margin-left: 5%;
 }
 
-.content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.content{
+  background-color: rgba(125,0,255,0.1);
+  width: 90%;
+  margin-left: 5%;
   margin-top: 5%;
-}
-
-.text {
-  background-color: rgba(125, 0, 255, 0.1);
-  width: 80%;
-  padding: 5% 5% 40% 5%;
-  border: 0;
   border-radius: 2vh;
-  white-space: pre-wrap;
-  font-size: small;
+  height: 40%;
 }
-
+.content textarea{
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 5%;
+  height: 80%;
+  border: 0;
+  background-color: transparent;
+}
 .imgthrow {
   display: flex;
   justify-content: center;
-  margin-top: 5%;
+  margin-top: 3%;
 }
 
 label {
@@ -106,4 +105,11 @@ label {
   padding: 5% 20% 5% 20%;
   border: 0;
   border-radius: 3vh;
+}
+
+.name{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3%;
 }

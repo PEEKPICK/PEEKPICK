@@ -2,15 +2,20 @@ import React, { useState, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 import classes from './ModalWrite.module.css';
 import Modal from "react-modal";
-import { toast} from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 const ModalWrite = ({ setWrite, write }) => {
   const [writeData, setWriteData] = useState("");
   const [imgData, setImgData] = useState("");
   const imageInput = useRef();
+
+  const [imgFile, setImgFile] = useState("");
   const handleWrite = (e) => {
     setWriteData(e.target.value);
   }
   const handleCloseModal = () => {
+    setImgFile("");
+    setWriteData("");
+    setImgData("");
     setWrite(!write);
   }
   const postWrite = () => {
@@ -33,9 +38,16 @@ const ModalWrite = ({ setWrite, write }) => {
   }
   const imgAccept = (event) => {
     const selectedImage = event.target.files[0];
+    const reader = new FileReader();
+
     if (selectedImage) {
       console.log('Selected image:', selectedImage);
       setImgData(selectedImage)
+      reader.readAsDataURL(selectedImage);
+      reader.onloadend = () => {
+        setImgFile(reader.result);
+        console.log(imgFile);
+      };
     }
   };
 
@@ -54,8 +66,10 @@ const ModalWrite = ({ setWrite, write }) => {
       </div>
       <hr className={classes.hr} />
       <div className={classes.content}>
-        <textarea onChange={handleWrite} className={classes.text} >
-        </textarea>
+        <textarea onChange={handleWrite} className={classes.text} ></textarea>
+      </div>
+      <div className={classes.name}>
+        {imgData.name}
       </div>
       <div className={classes.imgthrow}>
         <button onClick={onCickImageUpload} className={classes.btn}>이미지업로드</button>
