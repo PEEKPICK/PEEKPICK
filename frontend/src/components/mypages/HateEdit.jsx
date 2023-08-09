@@ -129,7 +129,7 @@ const LikeEdit = () => {
     <div className={common.container}>
       <div>
         <div>
-          <h1>좋아해요</h1>
+          <h1>싫어해요</h1>
         </div>
         <div>
           <p>(최대 5개 선택 가능)</p>
