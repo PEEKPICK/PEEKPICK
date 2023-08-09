@@ -17,8 +17,9 @@ const MyPage = () => {
   const [signoutView, setSignoutView] = useState(false);
   const [nicknameView, setNicknameView] = useState(false);
   const [ModalOutSide, setModalOutSide] = useState(false);
-  const [pickPoint, setPickPoint] = useState("");
-  const [likeCount, setLikeCount] = useState("");
+  const [pickPoint, setPickPoint] = useState(0);
+  const [likeCount, setLikeCount] = useState(0);
+  const [chatCount, setChatCount] = useState(0);
   const userInfo = useSelector(state => state.auth);
   // 정보 확인
   const dispatch = useDispatch();
@@ -78,8 +79,10 @@ const MyPage = () => {
       if (isTokenExpired()) {
         try {
           const response = await customAxios.get("/member/info");
+          console.log(response)
           setPickPoint(response.data.data.pickPoint);
           setLikeCount(response.data.data.likeCount);
+          setChatCount(response.data.data.chatCount);
           setUseremoji(response.data.data.emoji.imageUrl);
           setBio(response.data.data.bio);
           setNickname(response.data.data.nickname);
@@ -145,7 +148,7 @@ const MyPage = () => {
   }, [dispatch,useremoji]);
   return (
     <div className={classes.mypage}>
-      {logoutView && <LogOut setLogoutView={setLogoutView} />}
+      {logoutView && <LogOut setLogoutView={setLogoutView}/>}
       {signoutView && <SignOut setSignoutView={setSignoutView} />}
       {nicknameView && <NickNameEdit setNicknameView={setNicknameView} propPrefix={setPrefix} propBio={setBio} propNickname={setNickname} nickname={nickname} bio={bio} prefix={prefix} />}
       {visible && <Settings setVisible={setVisible} setLogoutView={setLogoutView} setSignoutView={setSignoutView} />}
@@ -179,7 +182,7 @@ const MyPage = () => {
         <span>{bio}</span>
       </div>
       <div>
-        <PickAndLike likeCount={likeCount} pickPoint={pickPoint} />
+        <PickAndLike likeCount={likeCount} pickPoint={pickPoint} chatCount={chatCount} />
         {/* pick 한 횟수, 좋아요 버튼 -> components 자리 */}
       </div>
 
@@ -190,9 +193,6 @@ const MyPage = () => {
 
 
       {/* 고객센터 */}
-      <div className={classes.customercenterimg}>
-        <img src="img/customerservicecenter.png" alt="고객 센터" />
-      </div>
     </div>
   );
 };

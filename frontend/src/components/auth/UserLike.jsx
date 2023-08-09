@@ -116,7 +116,10 @@ const UserLike = () => {
                   className={`${classes.radio} ${classes.customRadio}`}
                   onChange={() => selectLargeItemHandler(item)}
                 />
-                <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
+                <label
+                  htmlFor={`radio_${index}_${middleItem.categoryId}`}
+                  className={classes.userLabel}
+                >
                   {item}
                 </label>
               </div>
@@ -137,7 +140,10 @@ const UserLike = () => {
                   onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
                   className={`${classes.checkbox} ${classes.customCheckbox}`}
                 />
-                <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
+                <label
+                  htmlFor={middleItem.categoryId}
+                  className={`${classes.checkboxLabel} ${classes.userLabel}`}
+                >
                   {middleItem.middle}
                 </label>
               </div>

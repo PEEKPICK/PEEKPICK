@@ -1,8 +1,7 @@
 .signout {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
+  top: 20%;
+  left: 10%;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -10,6 +9,21 @@
   width: 70%;
   height: 35%;
   z-index: 1015;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .signouttop{
@@ -28,7 +42,7 @@
 .explanation {
   display: flex;  
   justify-content: center;
-  height: 40%;
+  height: 35%;
   width: 90%;
   margin-left: 5%;
   margin-top: 5%;
@@ -38,7 +52,7 @@
   display: flex;
   font-size: 70%;
   justify-content: center;
-  margin-top: 8%;
+  margin-top: 10%;
   align-items: center;
 }
 

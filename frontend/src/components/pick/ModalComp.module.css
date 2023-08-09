@@ -27,9 +27,6 @@
 }
 /* 프로필이미지 */
 .profileImg {
-  border: 0.12rem solid black;
-  border-radius: 3.125rem;
-  margin-top: 0.3rem;
   width: 4rem;
   height: 4rem;
 }
@@ -38,6 +35,7 @@
 .modalHead {
   padding: 0 0.5rem;
   display: flex;
+  align-items: center;
 }
 .modalHeadText {
   width: 100%;
@@ -87,7 +85,7 @@
   line-height: 1.9rem;
 }
 .disLike {
-  margin-top: 0.5rem;
+  margin-top: 1.5rem;
   border-radius: 1rem;
   background-color: #7d00ff;
   color: #ffffff;
@@ -97,19 +95,19 @@
   line-height: 1.9rem;
 }
 
-.like + p {
-  margin-top: 1.5rem;
+.LikeWrap {
+  margin-top: 1.5%;
+  height: 50%;
+  line-height: 300%;
 }
 
-.disLike + p {
-  margin-top: 1.5rem;
-}
 .likeInfo {
   padding: 0.5rem;
   border-radius: 1rem;
   background-color: #ffffff;
   border: 0.0625rem solid #7d00ff;
   margin-right: 0.5rem;
+  white-space: normal;
 }
 /* 모달 하단  */
 

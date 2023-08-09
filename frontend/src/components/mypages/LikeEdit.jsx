@@ -5,7 +5,7 @@ import Modal from '../auth/Modal';
 
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { authActions } from '../../store/authSlice';
 import common from '../auth/style/Common.module.css';
@@ -30,29 +30,29 @@ const LikeEdit = () => {
   const [middleItem, setMiddleItem] = useState(userInfo.like);
   // 대분류 라디오 버튼 설정을 위한 상태관리
   const [selectedLargeItem, setSelectedLargeItem] = useState(null);
-  
+
   // 기본 함수 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
 
     customAxios.get('/member/info')
-    .then(response =>{
-      if (response.data.data.likes && response.data.data.likes.length > 0) {
-        const likesData = response.data.data.likes.map((item) => item.categoryId);
-        setTempMiddleList(likesData);
-      }
-    })
+      .then(response => {
+        if (response.data.data.likes && response.data.data.likes.length > 0) {
+          const likesData = response.data.data.likes.map((item) => item.categoryId);
+          setTempMiddleList(likesData);
+        }
+      })
   }, []);
 
   // axios 통신 (대분류 가져오기)
   useEffect(() => {
-    
+
     customAxios.get('/member/taste')
-    .then(response => {
-      setDataAxios(true);
-      setLikeList(response.data.data);
+      .then(response => {
+        setDataAxios(true);
+        setLikeList(response.data.data);
       })
       .catch(error => {
         console.log(error);
@@ -113,7 +113,7 @@ const LikeEdit = () => {
         dispatch(authActions.updateUserLike(changedLikes));
         toast.success("좋아요 수정 완료");
       })
-      .catch((response)=>{
+      .catch((response) => {
         toast.error("좋아요 수정 실패");
       })
   };
@@ -143,7 +143,10 @@ const LikeEdit = () => {
                   className={`${classes.radio} ${classes.customRadio}`}
                   onChange={() => selectLargeItemHandler(item)}
                 />
-                <label htmlFor={`radio_${index}_${middleItem.categoryId}`}>
+                <label
+                  htmlFor={`radio_${index}_${middleItem.categoryId}`}
+                  className={classes.userLabel}
+                >
                   {item}
                 </label>
               </div>
@@ -164,7 +167,8 @@ const LikeEdit = () => {
                   onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
                   className={`${classes.checkbox} ${classes.customCheckbox}`}
                 />
-                <label htmlFor={middleItem.categoryId} className={classes.checkboxLabel}>
+                <label htmlFor={middleItem.categoryId}
+                  className={`${classes.checkboxLabel} ${classes.userLabel}`}>
                   {middleItem.middle}
                 </label>
               </div>
@@ -177,7 +181,7 @@ const LikeEdit = () => {
         )}
       </div>
       <div>
-        {modalOpen && <Modal onClose={closeModal} check={1}/>}
+        {modalOpen && <Modal onClose={closeModal} check={1} />}
       </div>
       <div>
         <button
