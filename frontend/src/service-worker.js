@@ -70,3 +70,22 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener('fetch', (event) => {
+  const {method, headers, url} = event.request;
+  console.log("Fetch Method : ", method);
+  console.log("Fetch Headers : ",headers);
+  console.log("Fetch URL : ", url);
+
+  const oauthUrl = /api\/oauth2\/authorization\//;
+
+  if (oauthUrl.test(url)) {
+    return fetch(event.request);
+  }
+
+  event.respondWith(
+    caches.match(event.request)
+      .then(function(response) {
+        return response || fetch(event.request);
+      })
+  );
+});
