@@ -49,15 +49,6 @@ public class RedisConfig {
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
-//    @Bean
-//    public RedisTemplate<String, Object> chatRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-//            RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
-//            redisTemplate.setConnectionFactory(redisConnectionFactory);
-//            redisTemplate.setKeySerializer(new StringRedisSerializer());
-//            redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-//            return redisTemplate;
-//    }
-
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory connectionFactory){
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
@@ -93,22 +84,21 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    @Bean
+    public RedisMessageListenerContainer redisPeekListenerContainer(RedisConnectionFactory connectionFactory, MessageListener listener) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
 
-//    @Bean
-//    public RedisMessageListenerContainer redisPeekListenerContainer(RedisConnectionFactory connectionFactory, MessageListener listener) {
-//        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-//        container.setConnectionFactory(connectionFactory);
-//
-//        // 키 만료 이벤트를 수신하기 위한 패턴을 추가합니다.
-//        Topic topic = new PatternTopic("__keyevent@0__:expired");
-//        container.addMessageListener(listener, topic);
-//
-//        return container;
-//    }
-//
-//    @Bean
-//    public MessageListener listener(ApplicationEventPublisher eventPublisher) {
-//        return new PeekRedisExpirationPublisher(eventPublisher);
-//    }
+        // 키 만료 이벤트를 수신하기 위한 패턴을 추가합니다.
+        Topic topic = new PatternTopic("__keyevent@0__:expired");
+        container.addMessageListener(listener, topic);
+
+        return container;
+    }
+
+    @Bean
+    public MessageListener listener(ApplicationEventPublisher eventPublisher) {
+        return new PeekRedisExpirationPublisher(eventPublisher);
+    }
 
 }
