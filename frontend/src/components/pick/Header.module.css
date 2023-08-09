@@ -155,7 +155,7 @@
 	font-weight: 400;
 	white-space: nowrap;
 	opacity: 0.85;
-	transition: all 0.15s ease-in-out;
+	transition: all 0.3s ease-in-out;
   color: rgba(125, 0, 255, 0.5);
 }
 
@@ -174,7 +174,7 @@
 	user-select: none;
 	z-index: 1;
 	cursor: pointer;
-	transition: all 0.15s ease-in-out;
+	transition: all 0.3s ease-in-out;
   color: rgba(125, 0, 255, 1);
 }
 
@@ -234,7 +234,7 @@
 
 .form:valid .debtAmountSlider input:checked + label::before {
 	transform: translate(-50%, 45px) scale(1.1);
-	transition: all 0.15s linear;
+	transition: all 0.3s linear;
 }
 
 .form + button {
