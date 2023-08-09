@@ -1,18 +1,52 @@
+import { authAxios } from '../../api/customAxios';
+import { customAxios } from '../../api/customAxios';
+
 import Modal from "react-modal";
+
 import classes from "./Header.module.css";
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 
+import { authActions } from '../../store/authSlice';
+
 const Header = () => {
+  const userInfo = useSelector(state => state.auth);
+
   const [isDistance, setIsDistance] = useState(false);
   const [isWorldMap, setIsWorldMap] = useState(false);
+  const [worldMapList, setWorldMapList] = useState([]);
+  const [checkMap, setCheckMap] = useState(1);
+  const [selectedDistance, setSelectedDistance] = useState(50);
+
   const location = useLocation();
+  const dispatch = useDispatch();
+
   const textToShow =
     location.pathname === "/peek"
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
-  const [selectedDistance, setSelectedDistance] = useState(50);
+  useEffect(() => {
+    customAxios.get('/member/info')
+      .then(response => {
+        console.log(response.data.data.world)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [dispatch])
+
+  // useEffect(() => {
+  //   authAxios.get('/member/world')
+  //     .then(response => {
+  //       setWorldMapList(response.data.data)
+  //     })
+  //     .catch(error => {
+  //       console.log(error)
+  //     })
+  // }, [worldMapList])
 
   return (
     <>
@@ -97,7 +131,11 @@ const Header = () => {
               <span>숨겨진 업적을 달성하면 잠금이 풀립니다!</span>
             </div>
             <div className={classes.worldMap}>
-              월드맵 자리
+              {worldMapList.map(item => (
+                <div key={item.worldId} className={classes.carousel}>
+                  <input type="radio" id={item.worldId} name="carousel[]" checked={checkMap === item.worldId} />
+                </div>
+              ))}
             </div>
             <div className={classes.buttonWrap}>
               <button

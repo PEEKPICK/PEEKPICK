@@ -319,10 +319,20 @@
 	line-height: 120%;
 }
 
-.worldMap {
+.carousel {
 	margin-top: 10%;
 	margin-bottom: 10%;
 	height: 50vh;
+	display: flex;
+}
+
+.worldMapItem {
+	margin-right: 10%;
+	counter-increment: worldMapItem;
+}
+
+.worldCell {
+	height: 100%;
 }
 
 .buttonWrap {
