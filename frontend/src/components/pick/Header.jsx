@@ -1,52 +1,62 @@
-import { authAxios } from '../../api/customAxios';
-import { customAxios } from '../../api/customAxios';
+import { customAxios, authAxios } from '../../api/customAxios';
 
 import Modal from "react-modal";
 
 import classes from "./Header.module.css";
 
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 
 import { authActions } from '../../store/authSlice';
 
 const Header = () => {
-  const userInfo = useSelector(state => state.auth);
-
+  // 상태관리
   const [isDistance, setIsDistance] = useState(false);
   const [isWorldMap, setIsWorldMap] = useState(false);
   const [worldMapList, setWorldMapList] = useState([]);
   const [checkMap, setCheckMap] = useState(1);
   const [selectedDistance, setSelectedDistance] = useState(50);
 
+  // 함수 선언
   const location = useLocation();
   const dispatch = useDispatch();
 
+  // PICKER / PEEK에 따라 보는 내용 변경
   const textToShow =
     location.pathname === "/peek"
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
+  // 사용자가 선택한 월드맵 받아와서 리덕스 저장
   useEffect(() => {
     customAxios.get('/member/info')
       .then(response => {
-        console.log(response.data.data.world)
+        // 리덕스 변경
+        dispatch(authActions.updateUserMap({
+          worldId: response.data.data.world.worldId,
+          openUrl: response.data.data.world.openUrl,
+          closeUrl: response.data.data.world.closeUrl,
+        }))
+
+        // 상태갱신
+        setCheckMap(response.data.data.world.worldId)
       })
       .catch(error => {
         console.log(error)
       })
   }, [dispatch])
 
-  // useEffect(() => {
-  //   authAxios.get('/member/world')
-  //     .then(response => {
-  //       setWorldMapList(response.data.data)
-  //     })
-  //     .catch(error => {
-  //       console.log(error)
-  //     })
-  // }, [worldMapList])
+  // 페이지 렌딩 시 월드맵 선택 정보 받아옴
+  useEffect(() => {
+    authAxios.get('/member/world')
+      .then(response => {
+        setWorldMapList(response.data.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
 
   return (
     <>
