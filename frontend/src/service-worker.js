@@ -76,7 +76,7 @@ self.addEventListener('fetch', (event) => {
   console.log("Fetch Headers : ",headers);
   console.log("Fetch URL : ", url);
 
-  if (event.request.url.includes('api/oauth2/authorization/')) {
+  if (event.request.url.includes('api/oauth2/authorization/*')) {
     return fetch(event.request);
   }
 
