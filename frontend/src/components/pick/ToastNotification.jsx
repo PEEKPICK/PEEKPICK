@@ -23,7 +23,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         console.log("채팅 수락: ", response.data);
         const roomId = response.data.data.roomId;
 
-        // dispatch(chatActions.updateConnectState(true));
+        dispatch(chatActions.updateConnectState(true));
         dispatch(chatActions.callRoomID(roomId));
       });
     } catch (error) {
