@@ -133,7 +133,7 @@ public class PeekServiceImpl implements PeekService {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
-            if(peekRedisDto==null) return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
+            if(peekRedisDto==null) return responseService.failureDataResponse(ResponseStatus.PEEK_EXPIRED, null);
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
             // 해당 키에 대한 TTL 설정 (24시간)
