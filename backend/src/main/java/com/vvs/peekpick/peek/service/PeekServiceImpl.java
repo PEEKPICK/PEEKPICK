@@ -58,14 +58,15 @@ public class PeekServiceImpl implements PeekService {
                 System.out.println(peekRedisDto);
                 System.out.println(Duration.between(peekRedisDto.getWriteTime(), peekRedisDto.getFinishTime()).toMinutes());
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
-                if(peekRedisDto.isSpecial() | !isViewed) {
-                    ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                            .peekId(peekRedisDto.getPeekId())
-                            .special(peekRedisDto.isSpecial())
-                            .viewed(isViewed)
-                            .build();
-                    allPeeks.add(responsePeekListDto);
-                }
+//                if(peekRedisDto.isSpecial() | !isViewed) {
+//
+//                }
+                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                        .peekId(peekRedisDto.getPeekId())
+                        .special(peekRedisDto.isSpecial())
+                        .viewed(isViewed)
+                        .build();
+                allPeeks.add(responsePeekListDto);
             }
 
             if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
