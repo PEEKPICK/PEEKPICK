@@ -10,6 +10,7 @@ const FindPeek = () => {
   //주변 유져 정보
   const myPos = useSelector((state) => state.location.userPos);
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
+  const [check,setCheck] = useState(false);
   const emojiCall = useCallback(() => {
     customAxios.post("/peek", myPos).then((response) => {
       // console.log("PEEK", response);
@@ -34,15 +35,18 @@ const FindPeek = () => {
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
+
     const timeout = setTimeout(() => {
       emojiCall(myPos);
     }, 1000);
 
     // cleanup 함수에서 timeout 해제
     return () => {
-      clearTimeout(timeout);
+      if(write===false){
+        clearTimeout(timeout);
+      }
     };
-  }, [myPos, emojiCall]);
+  }, [myPos, emojiCall,write,check]);
 
   return (
     <>
@@ -53,7 +57,7 @@ const FindPeek = () => {
           새로고침
         </button>
       </div>
-      <PeekLocation findInfo={findInfo} />
+      <PeekLocation findInfo={findInfo} setCheck={setCheck} check={check}/>
       {/* 여기다가 글쓰기 만들장 */}
       <img src="img/pencil.png" alt="눌러" onClick={modalWriteOnOff}/>
       {<ModalWrite setWrite={setWrite} write={write}/>}

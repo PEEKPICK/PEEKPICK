@@ -5,7 +5,6 @@ import classes from "./NavigationBar.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { chatActions } from "../../store/chatSlice";
 import CreateReadChat from "../pick/CreateReadChat";
-import { customAxios } from "../../api/customAxios";
 const NavigationBar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -17,35 +16,21 @@ const NavigationBar = () => {
   const getRoomId = useSelector((state) => state.roomId.roomId);
   //채팅
   const isModalState = useSelector((state) => state.roomId.chatModalState);
-  const test = () => {
+  const chatPop = () => {
     console.log("getRoomId", getRoomId);
     dispatch(chatActions.updateChatModalState(!isModalState));
-  };
-  const declare = () => {
-    const requestBody = {
-      roomId: getRoomId,
-    };
-
-    customAxios
-      .post("/picker/chat-end", requestBody)
-      .then(() => {
-        console.log("요청 성공:", "나가기 성공");
-        // 요청이 성공했을 때 실행할 코드 작성
-        dispatch(chatActions.callRoomID(""));
-      })
-      .catch(() => {
-        console.error("요청 실패:", "나가기 실패");
-        // 요청이 실패했을 때 실행할 코드 작성
-      });
   };
   return (
     <>
       <div className={classes.container}>
         {/* 채팅 모달 */}
-        <div className={classes.chatPull}>
-          <span>채팅왔다</span>
-          <button onClick={() => test()}>볼꺼냐?</button>
-          <button onClick={() => declare()}>나가?</button>
+        <div className={classes.alert}>
+          <img src="img/infoRed.png" alt="" />
+          <span>즐거운 아메리카노</span>
+          <button onClick={() => chatPop()} className={classes.upBtn}>
+            <img src="img/up.png" alt="" />
+          </button>
+          {/* <button onClick={() => declare()}>나가?</button> */}
         </div>
         <CreateReadChat isModalState={isModalState} />
         {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}

@@ -7,14 +7,12 @@ const Announcement = () => {
   const [contentVisible, setContentVisible] = useState({});
 
   // 버튼 클릭 시 해당 공지사항 내용을 토글하는 함수입니다.
-  const [check, setCheck] = useState(false);
 
   const toggleContent = (id) => {
     setContentVisible((prevVisible) => ({
       ...prevVisible,
       [id]: !prevVisible[id]
     }));
-    setCheck(!check);
   };
 
 
@@ -32,7 +30,7 @@ const Announcement = () => {
           <span className={classes.noticedate}>2023년 8월 8일</span>
           <div className={classes.noticetextimg}>
             <p className={classes.noticetext}>중간 발표 최종.ver</p>
-            {check ?
+            {contentVisible[1] ?
               <img src="img/up.png" alt="" onClick={() => { toggleContent(1) }} /> :
               <img src="img/down.png" alt="" onClick={() => { toggleContent(1) }} />
             }
@@ -47,7 +45,7 @@ const Announcement = () => {
           <span className={classes.noticedate}>2023년 8월 9일</span>
           <div className={classes.noticetextimg}>
             <p className={classes.noticetext}>중간 발표 최종의 최종.ver</p>
-            {check ?
+            {contentVisible[2] ?
               <img src="img/up.png" alt="" onClick={() => { toggleContent(2) }} /> :
               <img src="img/down.png" alt="" onClick={() => { toggleContent(2) }} />
             }
@@ -62,7 +60,7 @@ const Announcement = () => {
           <span className={classes.noticedate}>2023년 8월 10일</span>
           <div className={classes.noticetextimg}>
             <p className={classes.noticetext}>중간 발표 최종의 최종의 최종.ver</p>
-            {check ?
+            {contentVisible[3] ?
               <img src="img/up.png" alt="" onClick={() => { toggleContent(3) }} /> :
               <img src="img/down.png" alt="" onClick={() => { toggleContent(3) }} />
             }
@@ -79,7 +77,7 @@ const Announcement = () => {
           <span className={classes.noticedate}>2023년 8월 10일</span>
           <div className={classes.noticetextimg}>
             <p className={classes.noticetext}>중간 발표 진짜 진짜 최종의 최종의 최종.ver</p>
-            {check ?
+            {contentVisible[4] ?
               <img src="img/up.png" alt="" onClick={() => { toggleContent(4) }} /> :
               <img src="img/down.png" alt="" onClick={() => { toggleContent(4) }} />
             }
