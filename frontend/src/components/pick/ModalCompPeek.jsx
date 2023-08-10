@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { customAxios } from "../../api/customAxios";
 
 const ModalComp = (view) => {
-  //유져 정보 모달용
+  // 유저 정보 모달용
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
@@ -15,6 +15,41 @@ const ModalComp = (view) => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(""); 
+  const [finishTime, setFinishTime] = useState(null);
+
+  // finishTime 설정
+  useEffect(() => {
+    if (isSelectedEmoji && !finishTime) {
+      const now = new Date();
+      setFinishTime(new Date(now.getTime() + 10 * 60 * 1000));
+    }
+  }, [isSelectedEmoji, finishTime]);
+
+  // 타이머 설정
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      console.log(finishTime);
+      console.log(now);
+      const difference = finishTime - now;
+  
+      if (difference > 0) {
+        const hours = Math.floor(difference / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
+      } else {
+        setTimeLeft("Time's up!");
+        clearInterval(timer);
+      }
+    };
+
+    const timer = setInterval(calculateTimeLeft, 1000);
+        
+    return () => clearInterval(timer);
+  }, [finishTime]);
+
   useEffect(() => {
     if (isSelectedEmoji) {
       // isSelectedEmoji가 null이 아닐 때만 업데이트
@@ -28,6 +63,8 @@ const ModalComp = (view) => {
   useEffect(() => {
     setProcessBar((likeCount / (likeCount + disLikeCount)) * 100);
   }, [likeCount, disLikeCount]);
+
+
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
@@ -99,6 +136,7 @@ const ModalComp = (view) => {
               ) : (
                 <p className={classes.intro}>내용이 없습니다.</p>
               )}
+              <span className={classes.timer}>{timeLeft}</span>
             </div>
           </div>
           <div className={classes.divider}></div>
