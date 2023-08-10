@@ -130,8 +130,21 @@ const CreateReadChat = ({ isModalState }) => {
                 <li className={classes.selfMessage}>{message.message}</li>
               ) : (
                 <>
-                  <img src={EmojiForChat} alt="나가기" className={classes.otherIcon} />
-                  <li className={classes.otherMessage}>{message.message}</li>
+                  <div className={classes.opponentMain}>
+                    {EmojiForChat !== null && (
+                      <img
+                        src={EmojiForChat.emoji.imageUrl}
+                        alt="상대방"
+                        className={classes.otherIcon}
+                      />
+                    )}
+                    {EmojiForChat !== null ? (
+                      <li className={classes.nickName}>{EmojiForChat.nickname}</li>
+                    ) : (
+                      <li className={classes.nickName}>상대방</li>
+                    )}
+                  </div>
+                  <div className={classes.otherMessage}>{message.message}</div>
                 </>
               )}
             </div>

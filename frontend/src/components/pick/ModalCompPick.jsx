@@ -13,7 +13,7 @@ const ModalComp = () => {
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
-    dispatch(chatActions.updateURL(isSelectedEmoji.emoji.imageUrl));
+    dispatch(chatActions.updateURL(isSelectedEmoji));
   };
   //채팅요청
   const plzChat = () => {

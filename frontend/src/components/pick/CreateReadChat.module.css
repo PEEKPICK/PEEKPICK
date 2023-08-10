@@ -92,33 +92,40 @@
   flex-direction: row-reverse;
   background-color: rgb(123, 0, 255, 0.55);
   padding: 0.7rem 1.3rem;
-  border-radius: 10px;
   margin-left: auto;
-  margin-bottom: 1rem;
-  margin-top: 4px;
   font-size: 1rem;
   color: #ffffff;
   width: fit-content;
+  border-radius: 1rem 0.3rem 1rem 1rem;
   word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
 }
 
 .otherMessage {
   display: flex;
   background-color: #e0e0e0;
-  padding: 8px 12px;
-  margin-top: 4px;
-  border-radius: 10px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.625rem;
   font-size: 1rem;
-  margin: 4px;
-  margin-bottom: 1rem;
   padding: 0.7rem 1.3rem;
   width: fit-content;
+  margin-left: 3.4rem;
+  border-radius: 0.3rem 1rem 1rem 1rem;
   word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
 }
 
+.opponentMain {
+  display: flex;
+}
+.nickName {
+  display: flex;
+  list-style: none;
+  font-size: 1.25rem;
+  align-items: center;
+  margin-left: 0.625rem;
+}
 .otherIcon {
   display: flex;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   width: 13%;
 }
 

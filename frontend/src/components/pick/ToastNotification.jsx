@@ -1,11 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import classes from "./ToastNotification.module.css";
 import { customAxios } from "../../api/customAxios";
 import { chatActions } from "../../store/chatSlice";
 const CustomToast = ({ message, senderId, requestTime }) => {
   const dispatch = useDispatch();
+  const getOpponent = useSelector((state) => state.roomId.opponent);
   // 수락
   const handleAccept = async () => {
     try {
@@ -18,17 +19,24 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         response: "Y",
       };
 
-      // console.log("body", body);
-      await customAxios.post("/picker/chat-response", body).then((response) => {
-        console.log("채팅 수락: ", response.data);
-        const roomId = response.data.data.roomId;
-        const opponent = response.data.data.opponent;
-        dispatch(chatActions.callRoomID(roomId));
-        dispatch(chatActions.updateOpponent(opponent));
-        dispatch(chatActions.updateConnectState(true));
-        console.log("roomId보냄", roomId);
-        console.log("opponen보냄", opponent);
-      });
+      const response1 = await customAxios.post("/picker/chat-response", body);
+      console.log("채팅 수락: ", response1.data);
+
+      const roomId = response1.data.data.roomId;
+      const opponent = response1.data.data.opponent;
+
+      dispatch(chatActions.callRoomID(roomId));
+      dispatch(chatActions.updateOpponent(opponent));
+      dispatch(chatActions.updateConnectState(true));
+      console.log("roomId보냄", roomId);
+      console.log("opponen보냄", getOpponent);
+
+      const response2 = await customAxios.get(`/member/chat/info?avatarId=${opponent}`);
+      console.log("response2", response2);
+      console.log("getOpponent", getOpponent);
+      const opponentData = response2.data.data;
+      console.log("aaaaa", opponentData);
+      dispatch(chatActions.updateURL(opponentData));
     } catch (error) {
       console.error(error);
     }
