@@ -42,7 +42,7 @@ const NavigationBar = () => {
             }} // Use navigate function
           >
             <img src={peek ? "img/heartWhite.png" : "img/heartBlack.png"} alt="" />
-            <p>이슈</p>
+            <p>피크</p>
           </div>
           <div
             className={picker ? classes.on : ""}
@@ -51,7 +51,7 @@ const NavigationBar = () => {
             }}
           >
             <img src={picker ? "img/finderWhite.png" : "img/finderBlack.png"} alt="" />
-            <p>사람</p>
+            <p>피커</p>
           </div>
           <div
             className={myPage ? classes.on : ""}

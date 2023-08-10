@@ -65,8 +65,21 @@ const Header = () => {
   useEffect(() => {
     authAxios.get('/member/world')
       .then(response => {
-        console.log(response.data.data)
         setWorldMapList(response.data.data)
+        console.log(
+          `%c          ██████╗ ███████╗███████╗██╗  ██╗██████╗ ██╗ ██████╗██╗  ██╗    
+          %c██╔══██╗██╔════╝██╔════╝██║ ██╔╝██╔══██╗██║██╔════╝██║ ██╔╝    
+          %c██████╔╝█████╗  █████╗  █████╔╝ ██████╔╝██║██║     █████╔╝     
+          %c██╔═══╝ ██╔══╝  ██╔══╝  ██╔═██╗ ██╔═══╝ ██║██║     ██╔═██╗     
+          %c██║     ███████╗███████╗██║  ██╗██║     ██║╚██████╗██║  ██╗    
+          %c╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝╚═╝  ╚═╝`, 
+          'color: #7D00FF;',
+          'color: #7D00FF;',
+          'color: #7D00FF;',
+          'color: #7D00FF;',
+          'color: #7D00FF;',
+          'color: #7D00FF;'
+          );
       })
       .catch(error => {
         console.log(error)

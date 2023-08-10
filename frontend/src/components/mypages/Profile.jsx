@@ -13,6 +13,7 @@ const Profile = (props) => {
   const [emojiId, setEmojiId] = useState("");
   const [emojiUrl, setEmojiUrl] = useState(userInfo.emojiUrl);
   const [emojiCheck, setEmojiCheck] = useState(false);
+  const [moveEmoji, setMoveEmoji] = useState("");
 
   const navigate = useNavigate();
 
@@ -25,6 +26,7 @@ const Profile = (props) => {
         // 해결
         setEmojiId(response.data.data.emojiId)
         setEmojiUrl(response.data.data.imageUrl)
+        setMoveEmoji(response.data.data.animatedImageUrl)
         setEmojiCheck(true)
       })
   }
@@ -38,6 +40,7 @@ const Profile = (props) => {
         // 리덕스에 정보 저장을 위한 데이터 생성
         const sendToMyPageData = {
           emojiUrl: emojiUrl,
+          emojiMoveUrl : moveEmoji,
         }
         const sendToProfile = {
           emojiId: emojiId,
@@ -64,7 +67,7 @@ const Profile = (props) => {
       <hr className={classes.hr} />
       <div className={classes.emoji}>
         {/* 백에서 전달하는 이모지 */}
-        {emojiCheck ? <img src={emojiUrl} alt="" /> : <img src={userInfo.emojiUrl} alt="" />}
+        {emojiCheck ? <img src={moveEmoji} alt="" /> : <img src={userInfo.emojiMoveUrl} alt="" />}
         {/* 클릭시 백에서 이모지 전달 버튼 */}
       </div>
       <div onClick={changeImg} className={classes.return}>

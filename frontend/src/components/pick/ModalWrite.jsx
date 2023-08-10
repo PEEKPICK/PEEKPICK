@@ -20,6 +20,12 @@ const ModalWrite = ({ setWrite, write }) => {
     setWrite(!write);
   }
   const postWrite = () => {
+      // textarea에 입력 값이 없는 경우
+  if (!writeData.trim()) {
+    toast.error("입력하세요");
+    return; // 여기서 함수 실행을 중단하므로 이후 코드는 실행되지 않습니다.
+  }
+  
     let f = new FormData();
     f.append("content", writeData);
     f.append("longitude", 127.0);
@@ -68,7 +74,7 @@ const ModalWrite = ({ setWrite, write }) => {
       className={classes.modalMain}
     >
       <div className={classes.top}>
-        <span>흔적 남기기</span>
+        <span>피크 남기기</span>
         <img src="img/cancel.png" alt="" onClick={handleCloseModal} />
       </div>
       <hr className={classes.hr} />

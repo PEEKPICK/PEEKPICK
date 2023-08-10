@@ -40,6 +40,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [prefix, setPrefix] = useState(userInfo.prefix);
   const [prefixId, setPrefixId] = useState(userInfo.prefixId);
+  const [moveEmoji,setMoveEmoji] = useState(userInfo.emojiMoveUrl);
 
   // 페이지 렌더링 시 작동
   useEffect(() => {
@@ -88,6 +89,7 @@ const MyPage = () => {
           setNickname(response.data.data.nickname);
           setPrefix(response.data.data.prefix.content);
           setPrefixId(response.data.data.prefix.prefixId);
+          setMoveEmoji(response.data.data.emoji.animatedImageUrl);
           // 호불호 집어넣기
           // Likes 데이터 처리
           if (response.data.data.likes && response.data.data.likes.length > 0) {
@@ -114,6 +116,7 @@ const MyPage = () => {
           }
           const sendToMyPageData = {
             emojiUrl: useremoji,
+            emojiMoveUrl: moveEmoji,
           };
           const sendToUserNicknameData = {
             bio: bio,
