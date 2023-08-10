@@ -119,11 +119,11 @@
 .otherIcon {
   display: flex;
   border-radius: 10px;
-  width: fit-content;
+  width: 13%;
 }
 
 .chat {
   height: 65vh;
   overflow: scroll;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }

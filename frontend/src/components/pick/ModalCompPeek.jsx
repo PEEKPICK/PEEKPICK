@@ -34,13 +34,15 @@ const ModalComp = (view) => {
             />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
-                {isSelectedEmoji.peekAvatarDto.prefix.content} {isSelectedEmoji.peekAvatarDto.nickname}
+                {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+                {isSelectedEmoji.peekAvatarDto.nickname}
               </span>
               <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span>
               {/* 한줄소개 넣어야함 */}
-              {isSelectedEmoji.peekAvatarDto.bio && isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
+              {isSelectedEmoji.peekAvatarDto.bio &&
+              isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
                 <p className={classes.intro}>{isSelectedEmoji.peekAvatarDto.bio}</p>
               ) : (
                 <p className={classes.intro}>내용이 없습니다.</p>
@@ -51,7 +53,8 @@ const ModalComp = (view) => {
           <div className={classes.modalBody}>
             {/* get으로 id조회해서 글 가져오기 */}
             <p>
-              {isSelectedEmoji.peekDetailDto.content && isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
+              {isSelectedEmoji.peekDetailDto.content &&
+              isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
                 <p>{isSelectedEmoji.peekDetailDto.content}</p>
               ) : (
                 <p>내용이 없습니다.</p>

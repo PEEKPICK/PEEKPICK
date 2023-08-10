@@ -22,9 +22,12 @@ const CustomToast = ({ message, senderId, requestTime }) => {
       await customAxios.post("/picker/chat-response", body).then((response) => {
         console.log("채팅 수락: ", response.data);
         const roomId = response.data.data.roomId;
-
-        dispatch(chatActions.updateConnectState(true));
+        const opponent = response.data.data.opponent;
         dispatch(chatActions.callRoomID(roomId));
+        dispatch(chatActions.updateOpponent(opponent));
+        dispatch(chatActions.updateConnectState(true));
+        console.log("roomId보냄", roomId);
+        console.log("opponen보냄", opponent);
       });
     } catch (error) {
       console.error(error);

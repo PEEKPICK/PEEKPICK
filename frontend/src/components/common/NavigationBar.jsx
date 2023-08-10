@@ -27,7 +27,7 @@ const NavigationBar = () => {
         <div className={classes.alert}>
           <img src="img/infoRed.png" alt="" />
           <span>즐거운 아메리카노</span>
-          <button onClick={() => chatPop()}>
+          <button onClick={() => chatPop()} className={classes.upBtn}>
             <img src="img/up.png" alt="" />
           </button>
           {/* <button onClick={() => declare()}>나가?</button> */}

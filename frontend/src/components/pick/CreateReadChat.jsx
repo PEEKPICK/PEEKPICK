@@ -6,18 +6,21 @@ import React, { useEffect, useState } from "react";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
-
+import { v4 as uuid } from "uuid";
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
   const newModalState = useSelector((state) => state.roomId.chatModalState);
   const getRoomId = useSelector((state) => state.roomId.roomId);
+  // const createTime = useSelector((state) => state.roomId.createTime);
+  const EmojiForChat = useSelector((state) => state.roomId.opponentURL);
+  const opponent = useSelector((state) => state.roomId.opponent);
   const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
-  const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
   const chatPop = () => {
     console.log("getRoomId", getRoomId);
-    console.log("isSelectedEmoji", isSelectedEmoji);
+    console.log("opponent", opponent);
+    console.log("EmojiForChat", EmojiForChat);
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
 
@@ -39,6 +42,7 @@ const CreateReadChat = ({ isModalState }) => {
       });
     };
     connect();
+    /* eslint-disable-next-line */
   }, [getRoomId]);
 
   useEffect(() => {
@@ -52,6 +56,10 @@ const CreateReadChat = ({ isModalState }) => {
     /* eslint-disable-next-line */
   }, []);
 
+  useEffect(() => {
+    setReceivedMessages([]); // roomId가 변경될 때마다 배열 초기화
+  }, [getRoomId]);
+
   const joinChatRoom = () => {
     if (stompClient) {
       stompClient.send(
@@ -59,19 +67,20 @@ const CreateReadChat = ({ isModalState }) => {
         {},
         JSON.stringify({
           roomId: getRoomId,
-          sender: "",
+          sender: opponent,
           message: message,
           sendTime: "",
           expireFlag: "",
         })
       );
-      console.log("joinChatRoom", message);
+      console.log("joinChatRoom", message, opponent);
       setMessage("");
     }
   };
 
   const showMessage = (message) => {
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
+    console.log("????", receivedMessages);
   };
 
   const declare = () => {
@@ -115,19 +124,14 @@ const CreateReadChat = ({ isModalState }) => {
       <div>
         <ul id="messageList" className={classes.chat}>
           {receivedMessages.map((message, index) => (
-            <div className={classes.chatBubble}>
-              {message.sender === "self" ? (
-                <>
-                  <li key={index} className={classes.selfMessage}>
-                    {message.message}
-                  </li>
-                </>
+            <div className={classes.chatBubble} key={uuid()}>
+              {/* eslint-disable-next-line */}
+              {message.sender == opponent ? (
+                <li className={classes.selfMessage}>{message.message}</li>
               ) : (
                 <>
-                  <img src="img/down.png" alt="나가기" key={index} className={classes.otherIcon} />
-                  <li key={index} className={classes.otherMessage}>
-                    {message.message}
-                  </li>
+                  <img src={EmojiForChat} alt="나가기" className={classes.otherIcon} />
+                  <li className={classes.otherMessage}>{message.message}</li>
                 </>
               )}
             </div>
@@ -135,8 +139,18 @@ const CreateReadChat = ({ isModalState }) => {
         </ul>
       </div>
       <div className={classes.sendBar}>
-        <input type="text" id="message" value={message} onChange={(e) => setMessage(e.target.value)} />
-        <button onClick={joinChatRoom} />
+        <input
+          type="text"
+          id="message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              joinChatRoom(); // 엔터 키를 눌렀을 때 메시지 전송
+            }
+          }}
+        />
+        <button onClick={() => joinChatRoom()} />
       </div>
     </Modal>
   );
