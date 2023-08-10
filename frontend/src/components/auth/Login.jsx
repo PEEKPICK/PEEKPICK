@@ -1,16 +1,23 @@
 import { toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 import classes from './style/Login.module.css';
 
 const Login = () => {
+  const navigate = useNavigate();
 
   const loginHandler = (service) => {
     console.log(service)
     window.location.href = `https://i9b309.p.ssafy.io/api/oauth2/authorization/${service}`;
   };
 
+  const goBranding = () => {
+    navigate('/branding');
+  }
+
   return (
     <div className={classes.container}>
+      <button onClick={() => goBranding()}>서비스 알아보러가기</button>
       <img
         src="img/temp_background.png"
         alt="background"
