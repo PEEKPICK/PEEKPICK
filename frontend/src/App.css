@@ -1,9 +1,7 @@
-
 .App {
   width: calc(var(--vw, 1vw) * 100);
   height: calc(var(--vh, 1vh) * 100);
 }
-
 .toast-message {
   background-color: #f4e9ff !important;
   padding: 30px 20px;
