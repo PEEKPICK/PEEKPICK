@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
 import { useState, useEffect } from "react";
-import { customAxios } from '../../api/customAxios'
-
+import { customAxios } from "../../api/customAxios";
 
 const ModalComp = (view) => {
   //유져 정보 모달용
@@ -13,11 +12,12 @@ const ModalComp = (view) => {
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
   const [likeCount, setLikeCount] = useState("");
   const [disLikeCount, setDisLikeCount] = useState("");
-  const [processBar, setProcessBar] = useState(likeCount / (likeCount + disLikeCount) * 100);
+  const [processBar, setProcessBar] = useState((likeCount / (likeCount + disLikeCount)) * 100);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
   useEffect(() => {
-    if (isSelectedEmoji) { // isSelectedEmoji가 null이 아닐 때만 업데이트
+    if (isSelectedEmoji) {
+      // isSelectedEmoji가 null이 아닐 때만 업데이트
       setLikeCount(isSelectedEmoji.peekDetailDto.likeCount);
       setDisLikeCount(isSelectedEmoji.peekDetailDto.disLikeCount);
       setCheckl(isSelectedEmoji.peekDetailDto.liked);
@@ -26,46 +26,48 @@ const ModalComp = (view) => {
   }, [isSelectedEmoji]);
 
   useEffect(() => {
-    setProcessBar(likeCount / (likeCount + disLikeCount) * 100);
-  }, [likeCount, disLikeCount])
+    setProcessBar((likeCount / (likeCount + disLikeCount)) * 100);
+  }, [likeCount, disLikeCount]);
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
   };
 
   const likeTouch = () => {
-    customAxios.post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { "like": true })
+    customAxios
+      .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: true })
       .then((res) => {
         setLikeCount(likeCount + 1);
         setCheckl(!checkl);
       })
-      .catch((res) => {
-      })
-  }
+      .catch((res) => {});
+  };
 
   const likeCancleTouch = () => {
-    customAxios.post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { "like": true })
+    customAxios
+      .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: true })
       .then((res) => {
         setLikeCount(likeCount - 1);
         setCheckl(!checkl);
       })
-      .catch((res) => {
-      })
-  }
+      .catch((res) => {});
+  };
   const hateTouch = () => {
-    customAxios.post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { "like": false })
-    .then((res)=>{
-      setDisLikeCount(disLikeCount + 1);
-      setCheckh(!checkh);
-    })
-  }
+    customAxios
+      .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: false })
+      .then((res) => {
+        setDisLikeCount(disLikeCount + 1);
+        setCheckh(!checkh);
+      });
+  };
   const hateCancleTouch = () => {
-    customAxios.post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { "like": false })
-    .then((res)=>{
-      setDisLikeCount(disLikeCount - 1);
-      setCheckh(!checkh);
-    })
-  }
+    customAxios
+      .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: false })
+      .then((res) => {
+        setDisLikeCount(disLikeCount - 1);
+        setCheckh(!checkh);
+      });
+  };
   return (
     <>
       {isModalState && isSelectedEmoji && (
@@ -88,13 +90,15 @@ const ModalComp = (view) => {
             />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
-                {isSelectedEmoji.peekAvatarDto.prefix.content} {isSelectedEmoji.peekAvatarDto.nickname}
+                {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+                {isSelectedEmoji.peekAvatarDto.nickname}
               </span>
               <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span>
               {/* 한줄소개 넣어야함 */}
-              {isSelectedEmoji.peekAvatarDto.bio && isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
+              {isSelectedEmoji.peekAvatarDto.bio &&
+              isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
                 <p className={classes.intro}>{isSelectedEmoji.peekAvatarDto.bio}</p>
               ) : (
                 <p className={classes.intro}>내용이 없습니다.</p>
@@ -105,8 +109,8 @@ const ModalComp = (view) => {
           <div className={classes.modalbodys}>
             {/* get으로 id조회해서 글 가져오기 */}
             <div className={classes.modalBodyPeek}>
-
-              {isSelectedEmoji.peekDetailDto.content && isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
+              {isSelectedEmoji.peekDetailDto.content &&
+              isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
                 <p>{isSelectedEmoji.peekDetailDto.content}</p>
               ) : (
                 <p>내용이 없습니다.</p>
@@ -118,34 +122,27 @@ const ModalComp = (view) => {
           </div>
 
           <div className={classes.likeDisLike}>
-            <div className={classes.likes} >
-              {
-                checkl
-                  ?
-                  <img src="" alt="따봉색깔찬녀석" onClick={likeCancleTouch} />
-                  :
-                  <img src="img/good.png" alt="따봉" onClick={likeTouch} />
-              }
+            <div className={classes.likes}>
+              {checkl ? (
+                <img src="" alt="따봉색깔찬녀석" onClick={likeCancleTouch} />
+              ) : (
+                <img src="img/good.png" alt="따봉" onClick={likeTouch} />
+              )}
               <span>{likeCount}</span>
             </div>
             <div className={classes.likes}>
-              {
-                checkh
-                ?
-                <img src="" alt="따봉색깔찬녀석" onClick={hateCancleTouch}/>
-                :
-                <img src="img/bad.png" alt="우우" onClick={hateTouch}/>
-              }
+              {checkh ? (
+                <img src="" alt="따봉색깔찬녀석" onClick={hateCancleTouch} />
+              ) : (
+                <img src="img/bad.png" alt="우우" onClick={hateTouch} />
+              )}
               <span>{disLikeCount}</span>
             </div>
-            {
-              likeCount || disLikeCount
-                ?
-                <progress value={processBar} min="0" max="100"></progress>
-                :
-                <span>아직 아무도 좋아요 싫어요를 하지 않았어요!</span>
-            }
-
+            {likeCount || disLikeCount ? (
+              <progress value={processBar} min="0" max="100"></progress>
+            ) : (
+              <span>아직 아무도 좋아요 싫어요를 하지 않았어요!</span>
+            )}
           </div>
         </Modal>
       )}
