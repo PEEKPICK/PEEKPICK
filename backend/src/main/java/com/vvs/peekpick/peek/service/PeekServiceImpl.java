@@ -1,6 +1,8 @@
 package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.*;
+import com.vvs.peekpick.exception.CustomException;
+import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.peek.dto.*;
 import com.vvs.peekpick.response.CommonResponse;
@@ -23,7 +25,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
     private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 30; // PEEK 기본 지속 시간
+    private final int PEEK_ORIGIN_TIME = 1; // PEEK 기본 지속 시간
     private final int PEEK_REACTION_TIME = 5; // 좋아요, 싫어요 시 증가되는 시간
 
     private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간
@@ -133,11 +135,14 @@ public class PeekServiceImpl implements PeekService {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
-            if(peekRedisDto==null) return responseService.failureDataResponse(ResponseStatus.PEEK_EXPIRED, null);
+
+            // 해당 Peek가 만료되었을 때
+            if(peekRedisDto==null)
+                throw new CustomException(ExceptionStatus.PEEK_NOT_FOUNDED);
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
             // 해당 키에 대한 TTL 설정 (24시간)
-            peekRedisService.setViewedByMember(memberId, peekId, PEEK_MAX_HOUR);
+            peekRedisService.setViewedByMember(memberId, peekId);
 
             // 현재 사용자의 해당 Peek의 좋아요 / 싫어요 여부 판별
             boolean isLiked= peekRedisService.getReactionMember(memberId, true, peekId);
@@ -224,6 +229,11 @@ public class PeekServiceImpl implements PeekService {
         try {
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
+
+            // 해당 Peek가 만료되었을 때
+            if(peekRedisDto==null)
+                throw new CustomException(ExceptionStatus.PEEK_NOT_FOUNDED);
+
             LocalDateTime updatedFinishTime = peekRedisDto.getFinishTime(); //해당 Peek의 종료 시간
             boolean special = peekRedisDto.isSpecial(); //Hot Peek 여부
 
@@ -240,7 +250,7 @@ public class PeekServiceImpl implements PeekService {
             //사용가 해당 Peek의 react를 Off -> On
             // 해당 키에 대한 TTL 설정 (24시간)
             else {
-                peekRedisService.setPeekReactionOn(memberId, like, peekId, PEEK_MAX_HOUR);
+                peekRedisService.setPeekReactionOn(memberId, like, peekId);
                 updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
                 if(like) likeCnt++;
                 else disLikeCnt++;
