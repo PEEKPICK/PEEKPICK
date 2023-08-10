@@ -103,106 +103,103 @@ function App() {
   }, [dispatch, isAuthenticated]);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
-  useEffect(() => {
-    const fetchData = async () => {
-      if (isAuthenticated) {
-        // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
-        try {
-          const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
-          const eventSource = new EventSourcePolyfill(sseURL, {
-            headers: {
-              "Content-Type": "text/event-stream",
-              "Cache-Control": "no-cache",
-              Connection: "keep-alive",
-              Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-            },
-            heartbeatTimeout: 8640000,
-          });
+  const fetchData = async () => {
+    if (isAuthenticated) {
+      // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
+      try {
+        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+        const eventSource = new EventSourcePolyfill(sseURL, {
+          headers: {
+            "Content-Type": "text/event-stream",
+            "Cache-Control": "no-cache",
+            Connection: "keep-alive",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+          },
+          heartbeatTimeout: 8640000,
+        });
 
-          eventSource.addEventListener("SSE_START", (e) => {
-            // SSE CREATED
-            console.log("SSE : ", e);
-          });
+        eventSource.addEventListener("SSE_START", (e) => {
+          // SSE CREATED
+          console.log("SSE : ", e);
+        });
 
-          eventSource.addEventListener("REQUEST", (e) => {
-            // 채팅 요청 / 응답
-            console.log("REQUEST", e);
-            if (e.data.includes("senderId")) {
-              const jsonData = JSON.parse(e.data);
-              const senderId = jsonData.senderId;
-              const requestTime = jsonData.requestTime;
-              console.log("채팅 받음", jsonData);
+        eventSource.addEventListener("REQUEST", (e) => {
+          // 채팅 요청 / 응답
+          console.log("REQUEST", e);
+          if (e.data.includes("senderId")) {
+            const jsonData = JSON.parse(e.data);
+            const senderId = jsonData.senderId;
+            const requestTime = jsonData.requestTime;
+            console.log("채팅 받음", jsonData);
 
-              // 토스트 메시지 띄우기
-              const toastContent = (
-                <ToastNotification
-                  message="채팅 요청이 왔습니다."
-                  senderId={senderId}
-                  requestTime={requestTime}
-                />
-              );
-              toast(toastContent, {
-                position: "top-right",
-                closeOnClick: true,
-                draggable: false,
-                autoClose: 20000,
-                className: "toast-message",
-              });
-            }
-            // 거절하기
-            if (e.data === "채팅이 거절되었습니다.") {
-              console.log("거절: ", e.data);
-              const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
-              toast(toastContent, {
-                position: "top-right",
-                closeOnClick: true,
-                draggable: false,
-                autoClose: 3000,
-                className: "toast-message",
-              });
-            }
-          });
+            // 토스트 메시지 띄우기
+            const toastContent = (
+              <ToastNotification
+                message="채팅 요청이 왔습니다."
+                senderId={senderId}
+                requestTime={requestTime}
+              />
+            );
+            toast(toastContent, {
+              position: "top-right",
+              closeOnClick: true,
+              draggable: false,
+              autoClose: 20000,
+              className: "toast-message",
+            });
+          }
+          // 거절하기
+          if (e.data === "채팅이 거절되었습니다.") {
+            console.log("거절: ", e.data);
+            const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
+            toast(toastContent, {
+              position: "top-right",
+              closeOnClick: true,
+              draggable: false,
+              autoClose: 3000,
+              className: "toast-message",
+            });
+          }
+        });
 
-          // 수락하기
-          eventSource.addEventListener("CHAT_START", (e) => {
-            // 채팅 시작
-            console.log("CHAT_START !! :", e);
-            // 요청 수락
-            if (e.data.includes("roomId")) {
-              const jsonData = JSON.parse(e.data);
-              const roomId = jsonData.roomId;
-              const opponent = jsonData.opponent;
-              console.log("수락roomId보냄: ", roomId);
-              console.log("수락opponent보냄: ", opponent);
-              dispatch(chatActions.callRoomID(roomId));
-              dispatch(chatActions.updateConnectState(true));
-              dispatch(chatActions.updateOpponent(opponent));
-              customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-                console.log("response2", res);
-                const opponentData = res.data.data;
-                console.log("aaaaa", opponentData);
-                dispatch(chatActions.updateURL(opponentData));
-              });
+        // 수락하기
+        eventSource.addEventListener("CHAT_START", (e) => {
+          // 채팅 시작
+          console.log("CHAT_START !! :", e);
+          // 요청 수락
+          if (e.data.includes("roomId")) {
+            const jsonData = JSON.parse(e.data);
+            const roomId = jsonData.roomId;
+            const opponent = jsonData.opponent;
+            console.log("수락roomId보냄: ", roomId);
+            console.log("수락opponent보냄: ", opponent);
+            dispatch(chatActions.callRoomID(roomId));
+            dispatch(chatActions.updateConnectState(true));
+            dispatch(chatActions.updateOpponent(opponent));
+            customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
+              console.log("response2", res);
+              const opponentData = res.data.data;
+              console.log("aaaaa", opponentData);
+              dispatch(chatActions.updateURL(opponentData));
+            });
 
-              const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
-              toast(toastContent, {
-                position: "top-right",
-                closeOnClick: true,
-                draggable: false,
-                autoClose: 3000,
-                className: "toast-message",
-                expireFlag: "",
-              });
-            }
-          });
-        } catch (error) {
-          console.log("SSE 생성 오류: ", error);
-        }
+            const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
+            toast(toastContent, {
+              position: "top-right",
+              closeOnClick: true,
+              draggable: false,
+              autoClose: 3000,
+              className: "toast-message",
+              expireFlag: "",
+            });
+          }
+        });
+      } catch (error) {
+        console.log("SSE 생성 오류: ", error);
       }
-      // console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
-    };
-    fetchData();
-  }, [isAuthenticated, dispatch]);
+    }
+    // console.log("isAuthenticated이 없습니다. sse를 시도하지 않습니다.");
+  };
 
   //보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!보는 중이니!!?!?!?!?!?!
   useEffect(() => {
@@ -219,6 +216,7 @@ function App() {
             })
             .then((e) => {
               console.log("보는중: ", e.data);
+              fetchData();
             });
         } else {
           // 앱이 백그라운드에 있을 때
@@ -238,7 +236,8 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [isAuthenticated, getPosX, getPosY]);
+    // eslint-disable-next-line
+  }, [isAuthenticated, getPosX, getPosY, document.visibilityState]);
 
   return (
     <div className="App">

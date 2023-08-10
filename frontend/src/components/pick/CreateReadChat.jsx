@@ -7,6 +7,7 @@ import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
+
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
   const newModalState = useSelector((state) => state.roomId.chatModalState);
@@ -45,16 +46,16 @@ const CreateReadChat = ({ isModalState }) => {
     /* eslint-disable-next-line */
   }, [getRoomId]);
 
-  useEffect(() => {
-    const disconnect = () => {
-      if (stompClient !== null) {
-        stompClient.disconnect();
-        setReceivedMessages([]);
-      }
-    };
-    disconnect();
-    /* eslint-disable-next-line */
-  }, []);
+  // useEffect(() => {
+  //   const disconnect = () => {
+  //     if (stompClient !== null) {
+  //       stompClient.disconnect();
+  //       setReceivedMessages([]);
+  //     }
+  //   };
+  //   disconnect();
+  //   /* eslint-disable-next-line */
+  // }, []);
 
   useEffect(() => {
     setReceivedMessages([]); // roomId가 변경될 때마다 배열 초기화
@@ -87,6 +88,40 @@ const CreateReadChat = ({ isModalState }) => {
     const requestBody = {
       roomId: getRoomId,
     };
+
+    // 상대에게 메시지 만료시켜서 보냄 (ExpireFlag : Y)
+    const exitChatRoom = () => {
+      if (stompClient !== null) {
+        console.log("나가요!!!");
+        stompClient.send(
+          "/pub/chat/publish",
+          {},
+          JSON.stringify({
+            roomId: getRoomId,
+            sender: opponent,
+            message: "",
+            sendTime: "",
+            expireFlag: "Y",
+          })
+        );
+      } else {
+        console.log("STOMP 연결이 없거나 이미 연결이 종료되었습니다.");
+      }
+    };
+
+    exitChatRoom();
+
+    // StompClient 종료시킴 (상대의 메시지 받을 수 없도록)
+    const disconnect = () => {
+      if (stompClient !== null) {
+        setStompClient(null);
+        setReceivedMessages([]);
+      } else {
+        console.log("STOMP 연결이 없거나 이미 연결이 종료되었습니다.");
+      }
+    };
+
+    disconnect();
 
     customAxios
       .post("/picker/chat-end", requestBody)
