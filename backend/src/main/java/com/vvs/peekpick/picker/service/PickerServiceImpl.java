@@ -168,6 +168,7 @@ public class PickerServiceImpl implements PickerService {
                             .opponent(chatResponseDto.getRequestSenderId())
                             .roomId(roomId)
                             .createTime(now)
+                            .endTime(now.plusMinutes(10))
                             .build();
 
                     // 응답자 + 채팅방 정보 ( 요청자에게 전송 )
@@ -175,6 +176,7 @@ public class PickerServiceImpl implements PickerService {
                             .opponent(chatResponseDto.getRequestReceiverId())
                             .roomId(roomId)
                             .createTime(now)
+                            .endTime(now.plusMinutes(10))
                             .build();
                     sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification, CHAT_START);
                     return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED, senderNotification);
