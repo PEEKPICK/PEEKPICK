@@ -1,9 +1,10 @@
 /* mypage 전체 */
 
 .mypage {
+    display: inline;
     background-color: white;
     justify-content: center;
-    background-size: cover;
+    overflow : scroll;
 }
 
 /* mypage 상단 */
