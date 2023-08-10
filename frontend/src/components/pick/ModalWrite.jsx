@@ -22,8 +22,10 @@ const ModalWrite = ({ setWrite, write }) => {
   const postWrite = () => {
       // textarea에 입력 값이 없는 경우
   if (!writeData.trim()) {
-    toast.error("입력하세요");
-    return; // 여기서 함수 실행을 중단하므로 이후 코드는 실행되지 않습니다.
+  toast.error("입력하세요", {
+    id: 'textareaIsEmpty'  
+  });
+    return;  
   }
   
     let f = new FormData();
