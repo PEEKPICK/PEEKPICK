@@ -18,24 +18,31 @@ const CreateReadChat = ({ isModalState }) => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
 
-  const connect = () => {
-    const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
-    const client = Stomp.over(socket);
+  useEffect(() => {
+    const connect = () => {
+      const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
+      const client = Stomp.over(socket);
 
-    client.connect({}, (frame) => {
-      setStompClient(client);
-      client.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
-        console.log("니가 보낸거!!!!!!!!!!!!", JSON.parse(chatMessage.body));
-        showMessage(JSON.parse(chatMessage.body));
+      client.connect({}, (frame) => {
+        setStompClient(client);
+        client.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
+          console.log("니가 보낸거!!!!!!!!!!!!", JSON.parse(chatMessage.body));
+          showMessage(JSON.parse(chatMessage.body));
+        });
       });
-    });
-  };
+    };
+    connect();
+  }, [getRoomId]);
 
-  const disconnect = () => {
-    if (stompClient !== null) {
-      stompClient.disconnect();
-    }
-  };
+  useEffect(() => {
+    const disconnect = () => {
+      if (stompClient !== null) {
+        stompClient.disconnect();
+      }
+    };
+    disconnect();
+    /* eslint-disable-next-line */
+  }, []);
 
   const joinChatRoom = () => {
     if (stompClient) {
@@ -59,11 +66,10 @@ const CreateReadChat = ({ isModalState }) => {
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
   };
 
-  useEffect(() => {
-    connect();
-    return () => disconnect();
-    /* eslint-disable-next-line */
-  }, []);
+  // useEffect(() => {
+  //   connect();
+  //   return () => disconnect();
+  // }, [disconnect]);
 
   return (
     <Modal
