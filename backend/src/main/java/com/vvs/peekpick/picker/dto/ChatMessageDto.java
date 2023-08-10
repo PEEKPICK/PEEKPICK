@@ -31,4 +31,8 @@ public class ChatMessageDto {
     public void expireMessage(){
         this.expireFlag = EXPIRED;
     }
+
+    public void messageFiltering(String filteredMessage) {
+        this.message = filteredMessage;
+    }
 }

@@ -45,6 +45,10 @@ public class PickerServiceImpl implements PickerService {
     private final String REQUEST_REJECTED = "채팅이 거절되었습니다.";
     private final String REQUEST_ACCEPTED = "채팅이 수락되었습니다.";
 
+    private static final String CHAT_REQUEST = "REQUEST";
+    private static final String CHAT_START = "CHAT_START";
+    private static final String SSE_START = "SSE_START";
+
     // 주변 최대 Picker 수
     private final int MAX_PICKER_COUNT = 15;
     private final Random random = new Random();
@@ -86,7 +90,7 @@ public class PickerServiceImpl implements PickerService {
     public SseEmitter connectSseSession(Long avatarId) {
         SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
-        sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
+        sendToClient(avatarId, avatarId + " : [SSE Emitter Created]", SSE_START);
         return emitter;
     }
 
@@ -127,7 +131,7 @@ public class PickerServiceImpl implements PickerService {
         ChatRequestDto chatRequestDto = ChatRequestDto.builder()
                 .senderId(senderAvatarId)
                 .requestTime(LocalDateTime.now()).build();
-        sendToClient(targetId, chatRequestDto);
+        sendToClient(targetId, chatRequestDto, CHAT_REQUEST);
         return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_SUCCESS);
     }
 
@@ -141,7 +145,7 @@ public class PickerServiceImpl implements PickerService {
     public DataResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
         // 거절
         if ("N".equals(chatResponseDto.getResponse())) {
-            sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED);
+            sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED, CHAT_REQUEST);
             return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_REJECTED, null);
         }
         // 수락
@@ -169,7 +173,7 @@ public class PickerServiceImpl implements PickerService {
                             .opponent(chatResponseDto.getRequestReceiverId())
                             .roomId(roomId)
                             .build();
-                    sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification);
+                    sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification, CHAT_START);
                     return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED, senderNotification);
                 }
             }
@@ -252,13 +256,13 @@ public class PickerServiceImpl implements PickerService {
      * @param targetId - SSE를 받는 대상 ID
      * @param data     - Event 내용
      */
-    private void sendToClient(Long targetId, Object data) {
+    private void sendToClient(Long targetId, Object data, String name) {
         SseEmitter emitter = sseEmitterRepository.get(targetId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED)
         );
 
         try {
-            emitter.send(SseEmitter.event().id(String.valueOf(targetId)).data(data));
+            emitter.send(SseEmitter.event().name(name).id(String.valueOf(targetId)).data(data));
         } catch (Exception e) {
             sseEmitterRepository.remove(targetId);
             emitter.completeWithError(e);

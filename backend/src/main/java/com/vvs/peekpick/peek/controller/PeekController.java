@@ -55,7 +55,7 @@ public class PeekController {
     public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId) {
         Long avatarId = Long.parseLong(authentication.getName());
         Long memberId = Long.parseLong(authentication.getCredentials().toString());
-        return peekService.getPeek(memberId, avatarId, peekId);
+        return peekService.getPeek(memberId, peekId);
     }
 
     // 특정 peek 삭제

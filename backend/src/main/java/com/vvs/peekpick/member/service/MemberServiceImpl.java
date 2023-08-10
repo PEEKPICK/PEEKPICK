@@ -154,9 +154,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // Peek 좋아요, 싫어요 업데이트
-    @Override
     public void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount) {
         memberRepository.updateLikeDisLikeCountByMemberId(memberId, likeCount, disLikeCount);
+    }
+
+    // World 변경
+    public void updateWorld(Long avatarId, Long worldId) {
+            avatarRepository.updateWorldByAvatarId(avatarId, worldId);
     }
 
     // 취향 태그 수정
