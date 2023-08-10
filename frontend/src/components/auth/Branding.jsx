@@ -8,6 +8,14 @@ const Branding = () => {
         <div className={classes.line}></div>
       </div>
       <div className={classes.content}>
+        <div>
+          <span>사람은 누구나 좋아하고, 싫어하는 것이 있다!</span>
+          <br />
+          <br />
+          <span>타인의 취향을 엿보고</span>
+          <br />
+          <span>골라서 마음껏 소통하세요!</span>
+        </div>
         <div className={classes.emoji}>
           <div className={classes.item}>
             <img
@@ -49,6 +57,9 @@ const Branding = () => {
             />
             <p>위치 기반</p>
           </div>
+        </div>
+        <div>
+          <span>위치기반 익명 채팅 서비스 PEEK? PICK!</span>
         </div>
       </div>
     </div>
