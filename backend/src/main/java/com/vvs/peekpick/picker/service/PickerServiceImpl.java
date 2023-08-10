@@ -157,7 +157,8 @@ public class PickerServiceImpl implements PickerService {
                 if (point == null) { // 상대가 접속중이지 않을 때
                     throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
                 } else { // 상대가 접속중일 때
-                    String roomId = chatService.createChatRoom(chatResponseDto.getRequestSenderId(), chatResponseDto.getRequestReceiverId());
+                    LocalDateTime now = LocalDateTime.now();
+                    String roomId = chatService.createChatRoom(chatResponseDto.getRequestSenderId(), chatResponseDto.getRequestReceiverId(), now);
 
                     // PICK Point 증가
                     memberService.updatePickPoint(chatResponseDto.getRequestReceiverId(), chatResponseDto.getRequestSenderId());
@@ -166,12 +167,14 @@ public class PickerServiceImpl implements PickerService {
                     ChatNotificationDto senderNotification = ChatNotificationDto.builder()
                             .opponent(chatResponseDto.getRequestSenderId())
                             .roomId(roomId)
+                            .createTime(now)
                             .build();
 
                     // 응답자 + 채팅방 정보 ( 요청자에게 전송 )
                     ChatNotificationDto receiverNotification = ChatNotificationDto.builder()
                             .opponent(chatResponseDto.getRequestReceiverId())
                             .roomId(roomId)
+                            .createTime(now)
                             .build();
                     sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification, CHAT_START);
                     return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED, senderNotification);
