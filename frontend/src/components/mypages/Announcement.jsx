@@ -86,6 +86,7 @@ const Announcement = () => {
         {contentVisible[4] && <div className={classes.content}>
           제발 제발 제발 제발 에러만 뜨지 말아주세요 제발!!! 제발요 ㅠㅠㅠㅠㅠㅠㅠㅠ
         </div>}
+        
       </div>
     </div>
   );

@@ -11,9 +11,9 @@ const ModalComp = (view) => {
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
-  const [likeCount, setLikeCount] = useState("");
-  const [disLikeCount, setDisLikeCount] = useState("");
-  const [processBar, setProcessBar] = useState(likeCount / (likeCount + disLikeCount) * 100);
+  const [likeCount, setLikeCount] = useState(0);
+  const [disLikeCount, setDisLikeCount] = useState(0);
+  const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
   useEffect(() => {
@@ -24,7 +24,7 @@ const ModalComp = (view) => {
       setCheckh(isSelectedEmoji.peekDetailDto.disLiked);
     }
   }, [isSelectedEmoji]);
-
+  console.log(isSelectedEmoji)
   useEffect(() => {
     setProcessBar(likeCount / (likeCount + disLikeCount) * 100);
   }, [likeCount, disLikeCount])
@@ -54,17 +54,17 @@ const ModalComp = (view) => {
   }
   const hateTouch = () => {
     customAxios.post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { "like": false })
-    .then((res)=>{
-      setDisLikeCount(disLikeCount + 1);
-      setCheckh(!checkh);
-    })
+      .then((res) => {
+        setDisLikeCount(disLikeCount + 1);
+        setCheckh(!checkh);
+      })
   }
   const hateCancleTouch = () => {
     customAxios.post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { "like": false })
-    .then((res)=>{
-      setDisLikeCount(disLikeCount - 1);
-      setCheckh(!checkh);
-    })
+      .then((res) => {
+        setDisLikeCount(disLikeCount - 1);
+        setCheckh(!checkh);
+      })
   }
   return (
     <>
@@ -78,11 +78,7 @@ const ModalComp = (view) => {
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
             <img
-              src={
-                view
-                  ? "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
-                  : "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Red+Heart.png"
-              }
+              src={isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
               alt="프로필"
               className={classes.profileImg}
             />
@@ -103,6 +99,13 @@ const ModalComp = (view) => {
           </div>
           <div className={classes.divider}></div>
           <div className={classes.modalbodys}>
+            {
+              isSelectedEmoji.peekDetailDto.imageUrl
+              &&
+              <div className={classes.peekImg}>
+                <img src={isSelectedEmoji.peekDetailDto.imageUrl} alt="" />
+              </div>
+            }
             {/* get으로 id조회해서 글 가져오기 */}
             <div className={classes.modalBodyPeek}>
 
@@ -112,9 +115,6 @@ const ModalComp = (view) => {
                 <p>내용이 없습니다.</p>
               )}
             </div>
-            <div className={classes.peekImg}>
-              <img src={isSelectedEmoji.peekDetailDto.imageUrl} alt="" />
-            </div>
           </div>
 
           <div className={classes.likeDisLike}>
@@ -122,30 +122,32 @@ const ModalComp = (view) => {
               {
                 checkl
                   ?
-                  <img src="" alt="따봉색깔찬녀석" onClick={likeCancleTouch} />
+                  <img src="img/Like_On.png" alt="따봉색깔찬녀석" onClick={likeCancleTouch} />
                   :
-                  <img src="img/good.png" alt="따봉" onClick={likeTouch} />
+                  <img src="img/Like_Off.png" alt="따봉" onClick={likeTouch} />
               }
               <span>{likeCount}</span>
             </div>
             <div className={classes.likes}>
               {
                 checkh
-                ?
-                <img src="" alt="따봉색깔찬녀석" onClick={hateCancleTouch}/>
-                :
-                <img src="img/bad.png" alt="우우" onClick={hateTouch}/>
+                  ?
+                  <img src="img/DisLike_On.png" alt="따봉색깔찬녀석" onClick={hateCancleTouch} />
+                  :
+                  <img src="img/DisLike_Off.png" alt="우우" onClick={hateTouch} />
               }
               <span>{disLikeCount}</span>
             </div>
+
+          </div>
+          <div className={classes.progressdiv}>
             {
               likeCount || disLikeCount
                 ?
-                <progress value={processBar} min="0" max="100"></progress>
+                <progress value={processBar} min="0" max="100" className={classes.progress}>{processBar}%</progress>
                 :
                 <span>아직 아무도 좋아요 싫어요를 하지 않았어요!</span>
             }
-
           </div>
         </Modal>
       )}
