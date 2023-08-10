@@ -100,6 +100,7 @@ public class PeekServiceImpl implements PeekService {
                     .writeTime(LocalDateTime.now())
                     .build();
 
+
             //RDB에 Peek 저장 후 id 값 받아옴
             Long peekId = peekRdbService.savePeek(peek);
 
@@ -116,7 +117,8 @@ public class PeekServiceImpl implements PeekService {
                     .special(false)
                     .viewed(false)
                     .build();
-
+            log.info("현재 시간 {}" ,peekRedisDto.getWriteTime());
+            log.info("만료 시간 {}" ,peekRedisDto.getFinishTime());
             //redis에 Peek Location 값 저장 & ttl 설정
             peekRedisService.setPeekLocation(requestPeekDto.getLongitude(), requestPeekDto.getLatitude(), peekId);
             //redis에 Peek 저장 & ttl 설정
