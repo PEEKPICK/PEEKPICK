@@ -1,0 +1,59 @@
+.line1 {
+  width: 60%;
+  border-radius: 10px 0 0 10px;
+  background-color: #7d00ff;
+}
+
+.line2 {
+  width: 40%;
+  border-radius:0 10px 10px 0;
+  background-color: lightgray;
+}
+
+.allWrap {
+  margin-top: 10vh;
+}
+
+.prefixWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 1vh;
+  margin-bottom: 5vh;
+}
+
+.prefix {
+  text-align: left;
+  width: 80%;
+  height: 4.5vh;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 3%;
+}
+
+.nickname {
+  margin-bottom: 1vh;
+}
+
+.nicknameInput {
+  height: 4.5vh;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  width: 100%;
+  padding-left: 3%;
+}
+
+.reload {
+  border: 0;
+  border-radius: 5px;
+  background-color: #7d00ff;
+  width: 60px;
+  height: 4.5vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: 5%;
+}

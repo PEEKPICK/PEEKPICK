@@ -1,0 +1,253 @@
+/* 메인 모달 */
+.modalMain {
+  background-color: white;
+  margin: 9rem 1.7rem;
+  padding: 0.5rem;
+  border-radius: 1.3rem 1.3rem 3.1rem 3.1rem;
+  height: 27rem;
+  width: 20rem;
+  box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
+  font-size: 0.875rem;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+
+  85% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 프로필이미지 */
+.profileImg {
+  width: 4rem;
+  height: 4rem;
+}
+
+/* 모달 상단 */
+.modalHead {
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.modalHeadText {
+  width: 100%;
+  margin-left: 1rem;
+  margin-top: 0.8rem;
+}
+
+.nickname {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-right: 1rem;
+}
+
+.intro {
+  font-size: 0.75rem;
+  width: 12.3125rem;
+  height: 2.875rem;
+  margin-top: 0.625rem;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  padding-left: 0.4rem;
+  background-color: rgba(125, 0, 255, 0.1);
+}
+
+/* 모달 중간선  */
+.divider {
+  margin: 0.5rem 1rem;
+  height: 0.06rem;
+  background-color: #7d00ff;
+}
+
+/* 모달 메인 */
+.modalBody {
+  position: relative;
+  padding: 0.8rem 0.5rem;
+  font-size: 0.75rem;
+  height: 13rem;
+}
+
+.modalBody>div {
+  height: 5.5rem;
+}
+
+.like {
+  border-radius: 1rem;
+  background-color: #7d00ff;
+  color: #ffffff;
+  width: 3rem;
+  text-align: center;
+  height: 1.7rem;
+  line-height: 1.9rem;
+}
+
+.disLike {
+  margin-top: 1.5rem;
+  border-radius: 1rem;
+  background-color: #7d00ff;
+  color: #ffffff;
+  width: 3rem;
+  text-align: center;
+  height: 1.7rem;
+  line-height: 1.9rem;
+}
+
+.LikeWrap {
+  margin-top: 1.5%;
+  height: 50%;
+  line-height: 300%;
+}
+
+.likeInfo {
+  padding: 0.5rem;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  border: 0.0625rem solid #7d00ff;
+  margin-right: 0.5rem;
+  white-space: normal;
+}
+
+/* 모달 하단  */
+
+.pick {
+  font-size: 1.0625rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 13.9375rem;
+  height: 3.125rem;
+  border-radius: 1.5rem;
+  background-color: #7d00ff;
+  color: #ffffff;
+  margin-left: 3rem;
+  margin-top: 1rem;
+  border: none;
+}
+
+.pick:hover {
+  background-color: #ffffff;
+}
+
+
+.modalbodys {
+  display: flex;
+}
+
+.modalBodyPeek {
+  display: flex;
+  padding: 0.8rem 0.5rem;
+  position: relative;
+  font-size: 0.75rem;
+  height: 10rem;
+  width: 85%;
+  background-color: rgba(125, 0, 255, 0.1);
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 5%;
+}
+
+
+.peekImg {
+  display: flex;
+  width: 35%;
+  height: 10rem;
+  margin-left: 5%;
+  align-self: center;
+  justify-content: center;
+}
+
+.peekImg img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.likeDisLike {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 6rem;
+  width: 100%;
+}
+
+.likes {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.likes span{
+  margin-top: 5%;
+}
+
+.likes img{
+  width: 20px;
+  height: 20px;
+}
+
+.progressdiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+progress {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80%;
+
+}
+
+::-webkit-progress-bar {
+  background-color: lightgray;
+  border-radius: 5px;
+}
+
+::-webkit-progress-value {
+  background-color: #7d00ff;
+  border-radius: 5px;
+}
+
+.likehate {
+  display: flex;
+  margin-bottom: 2%;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.items {
+  font-size: 14px;
+  border: 0.5px solid;
+  border-color: rgba(125, 0, 225);
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  margin: 0.7vh;
+  /* width: 12vh; */
+  padding: 0.5vh;
+  /* height: 3vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.itemWrap {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-bottom: 2%;
+}

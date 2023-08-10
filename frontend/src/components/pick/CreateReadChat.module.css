@@ -1,0 +1,141 @@
+.chatMain {
+  background-color: white;
+  margin: 5vh 3%;
+  padding: 10% 1.3rem;
+  border-radius: 2rem 2rem 2rem 2rem;
+  height: 83%;
+  box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
+  font-size: 0.875rem;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* 상단 정보 부분 */
+.chatHeader {
+  color: #7d00ff;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.chatHeader button {
+  background-color: #ffffff;
+  border: none;
+}
+.time {
+  width: 30px;
+  display: inline-block;
+  width: 12rem;
+  text-align: center;
+  padding-left: 3.5rem;
+  border: none;
+}
+.siren {
+  margin-right: 1.1rem;
+  border: 1px solid black;
+}
+/* 모달 중간선  */
+.divider {
+  margin: 1.7rem 0;
+  height: 0.06rem;
+  background-color: #7d00ff;
+}
+.message {
+  color: black;
+}
+/* 채팅 보내기 */
+.sendBar {
+  position: fixed;
+  bottom: 5%;
+  left: 7%;
+  height: 4.5%;
+  width: 85%;
+  display: flex;
+  padding: 1%;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: rgb(213, 213, 213);
+}
+
+.sendBar input {
+  font-size: 1rem;
+  flex: 1;
+  padding: 5px;
+  margin-left: 3%;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(213, 213, 213);
+  outline: none;
+  /* border: 1px solid black; */
+}
+
+.sendBar button {
+  background-image: url("/public/img/send.png");
+  background-size: 1.25rem 1.25rem;
+  background-repeat: no-repeat;
+  background-position: 0.625rem center;
+  padding-left: 2.5rem;
+  height: 2rem;
+  border: none;
+  background-color: rgb(213, 213, 213);
+}
+/* 메시지 버블 */
+.selfMessage {
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: rgb(123, 0, 255, 0.55);
+  padding: 0.7rem 1.3rem;
+  margin-left: auto;
+  font-size: 1rem;
+  color: #ffffff;
+  width: fit-content;
+  border-radius: 1rem 0.3rem 1rem 1rem;
+  word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
+}
+
+.otherMessage {
+  display: flex;
+  background-color: #e0e0e0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.625rem;
+  font-size: 1rem;
+  padding: 0.7rem 1.3rem;
+  width: fit-content;
+  margin-left: 3.4rem;
+  border-radius: 0.3rem 1rem 1rem 1rem;
+  word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
+}
+
+.opponentMain {
+  display: flex;
+}
+.nickName {
+  display: flex;
+  list-style: none;
+  font-size: 1.25rem;
+  align-items: center;
+  margin-left: 0.625rem;
+}
+.otherIcon {
+  display: flex;
+  border-radius: 0.625rem;
+  width: 13%;
+}
+
+.chat {
+  height: 65vh;
+  overflow: scroll;
+  /* border: 1px solid black; */
+}
