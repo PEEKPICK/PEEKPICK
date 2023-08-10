@@ -17,7 +17,6 @@ const Login = () => {
 
   return (
     <div className={classes.container}>
-      <button onClick={() => goBranding()}>서비스 알아보러가기</button>
       <img
         src="img/temp_background.png"
         alt="background"
@@ -28,6 +27,7 @@ const Login = () => {
         {/* <img src="img/naver_login.png" alt="naver" onClick={() => loginHandler('naver')} /> */}
         <img src="img/naver_login.png" alt="naver" onClick={() => toast.error('개발 중인 서비스입니다.')} />
         <img src="img/google_login.png" alt="google" onClick={() => loginHandler('google')} />
+        <img src="img/service_information.png" alt="service" onClick={() => goBranding()} />
       </div>
     </div>
   );
