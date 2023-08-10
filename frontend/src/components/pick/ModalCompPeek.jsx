@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 
 const ModalComp = (view) => {
@@ -17,6 +17,8 @@ const ModalComp = (view) => {
   const [checkh, setCheckh] = useState(false);
   const [timeLeft, setTimeLeft] = useState(""); 
   const [finishTime, setFinishTime] = useState(null);
+  const previousTimeLeft = useRef();
+
 
   // finishTime 설정
   useEffect(() => {
@@ -30,26 +32,33 @@ const ModalComp = (view) => {
 
   // 타이머 설정
   useEffect(() => {
-    if (!finishTime) return; // finishTime이 없으면 아무 것도 실행하지 않음
-    const calculateTimeLeft = () => {
-      const now = new Date(); 
-      const difference = finishTime - now;
-  
-      if (difference > 0) {
-        const hours = Math.floor(difference / (1000 * 60 * 60));
-        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
-      } else {
-        setTimeLeft("Time's up!");
-        clearInterval(timer);
+    if (finishTime) {
+      if (previousTimeLeft.current) {
+        setTimeLeft('');
       }
-    };
   
-    const timer = setInterval(calculateTimeLeft, 1000);
+      const calculateTimeLeft = () => {
+        const now = new Date(); 
+        const difference = finishTime - now;
+  
+        if (difference > 0) {
+          const hours = Math.floor(difference / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          previousTimeLeft.current = `${hours}h ${minutes}m ${seconds}s`;
+          setTimeLeft(previousTimeLeft.current);
+        } else {
+          setTimeLeft("Time's up!");
+          clearInterval(timer);
+        }
+      };
     
-    return () => clearInterval(timer);
+      const timer = setInterval(calculateTimeLeft, 1000);
+  
+      return () => clearInterval(timer);
+    }
   }, [finishTime]);
+  
 
 
   useEffect(() => {
