@@ -25,10 +25,10 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
     private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 1440; // PEEK 기본 지속 시간
-    private final int PEEK_REACTION_TIME = 5; // 좋아요, 싫어요 시 증가되는 시간
+    private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
+    private final int PEEK_REACTION_TIME = 10; // 좋아요, 싫어요 시 증가되는 시간 (분)
 
-    private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간
+    private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
     private final Random random = new Random();
 
     private final ResponseService responseService;
