@@ -73,6 +73,10 @@
   border: 0;
   background-color: transparent;
 }
+textarea:focus {
+  outline: none;
+}
+
 .imgthrow {
   display: flex;
   justify-content: center;

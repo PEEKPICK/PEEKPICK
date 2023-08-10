@@ -7,7 +7,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const loginHandler = (service) => {
-    console.log(service)
     window.location.href = `https://i9b309.p.ssafy.io/api/oauth2/authorization/${service}`;
   };
 
