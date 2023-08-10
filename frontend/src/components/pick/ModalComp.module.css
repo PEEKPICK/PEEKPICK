@@ -221,3 +221,33 @@ progress {
   background-color: #7d00ff;
   border-radius: 5px;
 }
+
+.likehate {
+  display: flex;
+  margin-bottom: 2%;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.items {
+  font-size: 14px;
+  border: 0.5px solid;
+  border-color: rgba(125, 0, 225);
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  margin: 0.7vh;
+  /* width: 12vh; */
+  padding: 0.5vh;
+  /* height: 3vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.itemWrap {
+  display: flex;
+  flex-wrap: wrap;
+
+  margin-bottom: 2%;
+}

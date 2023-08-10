@@ -28,7 +28,7 @@ const LikeAndHate = ({ ModalOutSide, like, hate, likes, hates }) => {
           <button>수정</button>
         )}
       </div>
-      <div className={classes.center}>
+      <div>
         {{ like }.length === 0 ? (
           <></>
         ) : (
