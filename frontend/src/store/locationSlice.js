@@ -11,7 +11,7 @@ const locationSlice = createSlice({
         y: 0,
       },
       distance: 0,
-    }
+    },
   },
   reducers: {
     updateLoc: (state, action) => {
