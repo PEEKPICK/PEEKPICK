@@ -60,7 +60,7 @@ const FindPeek = () => {
       <PeekLocation findInfo={findInfo} setCheck={setCheck} check={check}/>
       {/* 여기다가 글쓰기 만들장 */}
       <div className={classes.writeposition}>
-      <img src="img/writeimg.png" alt="눌러" onClick={modalWriteOnOff}/>
+      <img src="img/writeheart.png" alt="눌러" onClick={modalWriteOnOff}/>
       </div>
       {<ModalWrite setWrite={setWrite} write={write}/>}
     </>
