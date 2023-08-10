@@ -20,17 +20,18 @@ const ModalComp = (view) => {
 
   // finishTime 설정
   useEffect(() => {
-    if (isSelectedEmoji && !finishTime) {
-      const now = new Date();
-      setFinishTime(new Date(now.getTime() + 10 * 60 * 1000));
+    if (isSelectedEmoji && !finishTime) { 
+      const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
+      koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
+      setFinishTime(koreaTime);
     }
   }, [isSelectedEmoji, finishTime]);
 
   // 타이머 설정
   useEffect(() => {
+    if (!finishTime) return; // finishTime이 없으면 아무 것도 실행하지 않음
     const calculateTimeLeft = () => {
       const now = new Date();
-      console.log(finishTime);
       console.log(now);
       const difference = finishTime - now;
   
@@ -44,11 +45,12 @@ const ModalComp = (view) => {
         clearInterval(timer);
       }
     };
-
+  
     const timer = setInterval(calculateTimeLeft, 1000);
-        
+    
     return () => clearInterval(timer);
   }, [finishTime]);
+
 
   useEffect(() => {
     if (isSelectedEmoji) {
