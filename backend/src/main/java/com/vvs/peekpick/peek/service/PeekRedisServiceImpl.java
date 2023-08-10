@@ -91,6 +91,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
             return null;
         }
     }
+
     @Override
     public void setPeekLocation(double lon, double lat, Long peekId) {
         try {
