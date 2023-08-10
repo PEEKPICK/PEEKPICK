@@ -3,63 +3,20 @@ import classes from './style/Branding.module.css';
 const Branding = () => {
   return (
     <div className={classes.container}>
-      <div className={classes.title}>
-        <h1>PEEK PICK이란?</h1>
-        <div className={classes.line}></div>
+      <div className={classes.mainImg}>
+        <img src="img/branding_img.png" alt="branding_img" />
       </div>
-      <div className={classes.content}>
-        <div>
-          <span>사람은 누구나 좋아하고, 싫어하는 것이 있다!</span>
-          <br />
-          <br />
-          <span>타인의 취향을 엿보고</span>
-          <br />
-          <span>골라서 마음껏 소통하세요!</span>
+      <div className={classes.titleContainer}>
+        <div className={classes.title}>
+          <div className={classes.titleItem}>취향을 선택하고</div>
+          <div>이야기를 나눠보세요.</div>
         </div>
-        <div className={classes.emoji}>
-          <div className={classes.item}>
-            <img
-              src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Stopwatch.png"
-              alt="Stopwatch"
-              width="75"
-              height="75"
-              id='1'
-            />
-            <p>휘발성</p>
-          </div>
-          <div className={classes.item}>
-            <img
-              src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Bust%20in%20Silhouette.png"
-              alt="Bust in Silhouette"
-              width="75"
-              height="75"
-              id='2'
-            />
-            <p>익명성</p>
-          </div>
-          <div className={classes.item}>
-            <img  
-              src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Thumbs.png"
-              alt="Thumbs"
-              width="75"
-              height="75"
-              id='3'
-            />
-            <p>취향</p>
-          </div>
-          <div className={classes.item}>
-            <img
-              src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Compass.png"
-              alt="Compass"
-              width="75"
-              height="75"
-              id='4'
-            />
-            <p>위치 기반</p>
-          </div>
+        <div className={classes.subTitle}>
+          <div className={classes.subtitleItem}>위치를 기반으로 익명의 사용자와 이야기를 나눠보세요.</div>
+          <div>다양한 취향의 사람들과 각자의 취향에 대해 이야기해보세요.</div>
         </div>
-        <div>
-          <span>위치기반 익명 채팅 서비스 PEEK? PICK!</span>
+        <div className={classes.buttonWrap}>
+          <div className={classes.go}>함께 하기</div>
         </div>
       </div>
     </div>
