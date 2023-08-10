@@ -53,14 +53,19 @@ public class PeekServiceImpl implements PeekService {
             List<ResponsePeekListDto> allPeeks = new ArrayList<>();
             for (String nearPeekId : nearPeekIds) {
                 Long peekId = Long.parseLong(nearPeekId);
+
                 PeekRedisDto peekRedisDto = peekRedisService.getPeekValueOps(peekId);
+                System.out.println(peekRedisDto);
+                System.out.println(Duration.between(peekRedisDto.getWriteTime(), peekRedisDto.getFinishTime()).toMinutes());
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
-                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                        .peekId(peekRedisDto.getPeekId())
-                        .special(peekRedisDto.isSpecial())
-                        .viewed(isViewed)
-                        .build();
-                allPeeks.add(responsePeekListDto);
+                if(peekRedisDto.isSpecial() | !isViewed) {
+                    ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                            .peekId(peekRedisDto.getPeekId())
+                            .special(peekRedisDto.isSpecial())
+                            .viewed(isViewed)
+                            .build();
+                    allPeeks.add(responsePeekListDto);
+                }
             }
 
             if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
@@ -117,9 +122,8 @@ public class PeekServiceImpl implements PeekService {
                     .special(false)
                     .viewed(false)
                     .build();
-            log.info("현재 시간 {}" ,peekRedisDto.getWriteTime());
-            log.info("만료 시간 {}" ,peekRedisDto.getFinishTime());
-            //redis에 Peek Location 값 저장 & ttl 설정
+
+            //redis에 Peek Location 값 저장
             peekRedisService.setPeekLocation(requestPeekDto.getLongitude(), requestPeekDto.getLatitude(), peekId);
             //redis에 Peek 저장 & ttl 설정
             peekRedisService.setPeek(peekRedisDto, peekId, PEEK_ORIGIN_TIME);
@@ -143,7 +147,6 @@ public class PeekServiceImpl implements PeekService {
 
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
-            // 해당 키에 대한 TTL 설정 (24시간)
             peekRedisService.setViewedByMember(memberId, peekId);
 
             // 현재 사용자의 해당 Peek의 좋아요 / 싫어요 여부 판별
@@ -249,7 +252,6 @@ public class PeekServiceImpl implements PeekService {
                 else disLikeCnt--;
             }
             //사용가 해당 Peek의 react를 Off -> On
-            // 해당 키에 대한 TTL 설정 (24시간)
             else {
                 peekRedisService.setPeekReactionOn(memberId, like, peekId);
                 updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
@@ -257,10 +259,19 @@ public class PeekServiceImpl implements PeekService {
                 else disLikeCnt++;
             }
 
-            // Peek 지속시간을 24시간으로 제한, 24시간 설정된 Peek은 Hot Peek으로
-            if (special || Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
-                updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
+//            // (원래 기획) Peek 지속시간을 24시간으로 제한, 24시간 설정된 Peek은 Hot Peek으로
+//            if (special || Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
+//                updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
+//                special = true;
+//            }
+
+            // (임시) Peek 지속시간을 24시간으로 제한,
+            // 지속 시간 80분으로(좋아요 싫어요 총 2개 이상) 설정된 Peek은 Hot Peek으로
+            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
                 special = true;
+            }
+            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
+                updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
             }
 
             //Redis에 Peek Update
@@ -270,10 +281,11 @@ public class PeekServiceImpl implements PeekService {
                     .finishTime(updatedFinishTime)
                     .special(special)
                     .build();
-            peekRedisService.setPeekValueOps(peekId, updatedPeekRedisDto);
-
-            //peekRdbService.updatePeek(peekRedisDto.getPeekId(), likeCnt, disLikeCnt);
-
+            Long ttl = peekRedisService.getPeekTtl(peekId);  // 기존 TTL 가져오기
+            if (ttl != null && ttl > 0) {
+                ttl += 60*PEEK_REACTION_TIME;  //초 단위로 변경
+            }
+            peekRedisService.setPeekValueOps(peekId, updatedPeekRedisDto, ttl);
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } catch (Exception e) {
             return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
