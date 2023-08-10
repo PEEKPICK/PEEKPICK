@@ -3,7 +3,7 @@
 <img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/9024a597-ed3a-4e9a-a674-2b6247cef849"/>
 </p>
 
-## 📌소개
+# 📌소개
 ### 📃개요 
 <b> 위치 기반 익명 채팅 서비스 </b></br>
 PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한``` 유휴시간을 ```재미있게``` 보내기 위한 위치 기반의 익명 채팅 서비스입니다. 
@@ -99,9 +99,9 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 - ```Redux``` : 8.1.1 <br/>
 - ```npm``` : 9.6.7 <br/>
 - ```Axios``` : 1.4.0 <br/>
-</details> <br/>
+</details> <br/><br/>
 
-## 📺서비스 상세 내용 
+# 📺서비스 상세 내용 
 <details>
 <summary> 📲주요 기능(임시 이미지)</summary>
 <br/>
@@ -120,14 +120,16 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 
 </details>
 
-## 📚산출물
+<br/><br/>
+
+# 📚산출물
 ### 📗시스템 구성도
 <p align="center">
 <img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/076ecb66-a532-4523-aa3b-9924fadd1a77"> </p>
 
 ### 📘ER Diagram
 <p align="center">
-<img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/25b8d308-1b0a-457e-939c-6f99ff4cd6c7"> </p>
+<img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/e6f76d60-499a-4623-a3f6-61927cc551bc"> </p>
 
 ### 📙[API 명세](https://warm-care-7c5.notion.site/PeekPick-API-42f409b269504938bc89b940f62580dd)
 
@@ -135,7 +137,9 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 
 ### 📕[요구사항 정의서](https://warm-care-7c5.notion.site/PeekPick-fd95c4cce9164def86c0aa69f43148af?pvs=4)
 
-## 🤝협업
+<br/>
+
+# 🤝협업
 ### 🔏Notion
 <p align="center">
 <img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/b01ddfbd-460f-48dc-b29c-a960fe08be4c"> </p>
