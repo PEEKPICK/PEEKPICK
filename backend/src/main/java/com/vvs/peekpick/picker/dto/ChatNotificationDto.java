@@ -11,5 +11,6 @@ import java.time.LocalDateTime;
 public class ChatNotificationDto {
     private String roomId;
     private LocalDateTime createTime;
+    private LocalDateTime endTime;
     private Long opponent;
 }
