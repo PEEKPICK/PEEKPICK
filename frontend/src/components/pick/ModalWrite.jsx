@@ -3,6 +3,7 @@ import { customAxios } from "../../api/customAxios";
 import classes from './ModalWrite.module.css';
 import Modal from "react-modal";
 import { toast } from 'react-hot-toast';
+
 const ModalWrite = ({ setWrite, write }) => {
   const [writeData, setWriteData] = useState("");
   const [imgData, setImgData] = useState("");
