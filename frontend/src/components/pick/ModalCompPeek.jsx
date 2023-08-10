@@ -40,7 +40,7 @@ const ModalComp = (view) => {
         setLikeCount(likeCount + 1);
         setCheckl(!checkl);
       })
-      .catch((res) => {});
+      .catch((res) => { });
   };
 
   const likeCancleTouch = () => {
@@ -50,7 +50,7 @@ const ModalComp = (view) => {
         setLikeCount(likeCount - 1);
         setCheckl(!checkl);
       })
-      .catch((res) => {});
+      .catch((res) => { });
   };
   const hateTouch = () => {
     customAxios
@@ -80,11 +80,7 @@ const ModalComp = (view) => {
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
             <img
-              src={
-                view
-                  ? "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
-                  : "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Red+Heart.png"
-              }
+              src={isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
               alt="프로필"
               className={classes.profileImg}
             />
@@ -98,7 +94,7 @@ const ModalComp = (view) => {
               <span style={{ marginLeft: "0.2rem" }}>회</span>
               {/* 한줄소개 넣어야함 */}
               {isSelectedEmoji.peekAvatarDto.bio &&
-              isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
+                isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
                 <p className={classes.intro}>{isSelectedEmoji.peekAvatarDto.bio}</p>
               ) : (
                 <p className={classes.intro}>내용이 없습니다.</p>
@@ -107,17 +103,21 @@ const ModalComp = (view) => {
           </div>
           <div className={classes.divider}></div>
           <div className={classes.modalbodys}>
+            {
+              isSelectedEmoji.peekDetailDto.imageUrl
+              &&
+              <div className={classes.peekImg}>
+                <img src={isSelectedEmoji.peekDetailDto.imageUrl} alt="" />
+              </div>
+            }
             {/* get으로 id조회해서 글 가져오기 */}
             <div className={classes.modalBodyPeek}>
               {isSelectedEmoji.peekDetailDto.content &&
-              isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
+                isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
                 <p>{isSelectedEmoji.peekDetailDto.content}</p>
               ) : (
                 <p>내용이 없습니다.</p>
               )}
-            </div>
-            <div className={classes.peekImg}>
-              <img src={isSelectedEmoji.peekDetailDto.imageUrl} alt="" />
             </div>
           </div>
 
