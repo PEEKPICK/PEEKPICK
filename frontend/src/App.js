@@ -15,6 +15,7 @@ import UserHate from "./components/auth/UserHate";
 import Welcome from "./components/auth/Welcome";
 import UserLikeHate from "./components/auth/UserLikeHate";
 import Redirect from "./components/auth/Redirect";
+import Branding from "./components/auth/Branding";
 // 용범
 import MyPage from "./components/mypages/MyPage";
 import Announcement from "./components/mypages/Announcement";
@@ -46,6 +47,7 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
+  // const getOpponent = useSelector((state) => state.roomId.opponent);
 
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
@@ -170,9 +172,18 @@ function App() {
             if (e.data.includes("roomId")) {
               const jsonData = JSON.parse(e.data);
               const roomId = jsonData.roomId;
-              console.log("수락: ", roomId);
+              const opponent = jsonData.opponent;
+              console.log("수락roomId보냄: ", roomId);
+              console.log("수락opponent보냄: ", opponent);
               dispatch(chatActions.callRoomID(roomId));
               dispatch(chatActions.updateConnectState(true));
+              dispatch(chatActions.updateOpponent(opponent));
+              customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
+                console.log("response2", res);
+                const opponentData = res.data.data;
+                console.log("aaaaa", opponentData);
+                dispatch(chatActions.updateURL(opponentData));
+              });
 
               const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
               toast(toastContent, {
@@ -250,6 +261,7 @@ function App() {
               <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
+              <Route path="/branding" element={<Branding />} />
               <Route path="/*" element={<AlreadyLogin />} />
             </>
           )}

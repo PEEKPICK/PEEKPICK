@@ -1,6 +1,7 @@
 import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
+import { chatActions } from "../../store/chatSlice";
 import classes from "./ModalComp.module.css";
 import { customAxios } from "../../api/customAxios";
 
@@ -9,8 +10,10 @@ const ModalComp = () => {
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
+
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
+    dispatch(chatActions.updateURL(isSelectedEmoji));
   };
   //채팅요청
   const plzChat = () => {

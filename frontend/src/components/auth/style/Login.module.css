@@ -7,6 +7,14 @@
   position: relative;
 }
 
+.question {
+  width: 5%;
+  opacity: 45%;
+  position: absolute;
+  right: 3%;
+  margin-top: 3%;
+}
+
 .background {
   margin-top: 20%;
 }
