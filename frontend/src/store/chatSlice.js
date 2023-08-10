@@ -38,6 +38,15 @@ const chatSlice = createSlice({
     updateOpponentNickName: (state, action) => {
       state.nickName = action.payload;
     },
+    resetState: (state) => {
+      state.roomId = null;
+      state.opponent = null;
+      state.createTime = null;
+      state.connectState = false;
+      state.opponentURL = null;
+      state.opponentId = null;
+      state.nickName = null;
+    },
   },
 });
 
