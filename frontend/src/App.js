@@ -15,6 +15,7 @@ import UserHate from "./components/auth/UserHate";
 import Welcome from "./components/auth/Welcome";
 import UserLikeHate from "./components/auth/UserLikeHate";
 import Redirect from "./components/auth/Redirect";
+import Branding from "./components/auth/Branding";
 // 용범
 import MyPage from "./components/mypages/MyPage";
 import Announcement from "./components/mypages/Announcement";
@@ -260,6 +261,7 @@ function App() {
               <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
+              <Route path="/branding" element={<Branding />} />
               <Route path="/*" element={<AlreadyLogin />} />
             </>
           )}
