@@ -1,3 +1,5 @@
+import classes from './style/Branding.module.css';
+
 const Branding = () => {
   return (
     <div className={classes.container}>
