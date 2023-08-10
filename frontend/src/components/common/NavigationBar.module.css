@@ -61,7 +61,12 @@
   z-index: -1;
   background-color: rgba(255, 255, 255, 0.8);
 }
-
+.upBtn {
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 2rem;
+  margin-right: 100%;
+  border: none;
+}
 .alert img {
   width: 50%;
 }
