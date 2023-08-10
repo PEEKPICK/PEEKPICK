@@ -150,11 +150,13 @@
 .modalBodyPeek {
   display: flex;
   padding: 0.8rem 0.5rem;
+  position: relative;
   font-size: 0.75rem;
   height: 10rem;
-  width: 50%;
+  width: 85%;
   background-color: rgba(125, 0, 255, 0.1);
   margin-left: 5%;
+  margin-right: 5%;
   border-radius: 5%;
 }
 
@@ -163,6 +165,7 @@
   display: flex;
   width: 35%;
   height: 10rem;
+  margin-left: 5%;
   align-self: center;
   justify-content: center;
 }
@@ -175,7 +178,8 @@
 .likeDisLike {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  height: 8rem;
+  height: 6rem;
+  width: 100%;
 }
 
 .likes {
@@ -188,4 +192,32 @@
 
 .likes span{
   margin-top: 5%;
+}
+
+.likes img{
+  width: 20px;
+  height: 20px;
+}
+
+.progressdiv{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+progress {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 80%;
+
+}
+
+::-webkit-progress-bar {
+  background-color: lightgray;
+  border-radius: 5px;
+}
+
+::-webkit-progress-value {
+  background-color: #7d00ff;
+  border-radius: 5px;
 }
