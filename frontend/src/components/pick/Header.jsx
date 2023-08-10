@@ -37,8 +37,7 @@ const Header = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    dots: false,
-    arrows: false,
+    initialSlide: checkMap-1,
 
     beforeChange: (slide, newSlide) => setCheckMap(newSlide+1),
   };
