@@ -10,6 +10,7 @@ const chatSlice = createSlice({
     connectState: false,
     opponentURL: null,
     opponentId: null,
+    nickName: null,
   },
   reducers: {
     callRoomID: (state, action) => {
@@ -33,6 +34,9 @@ const chatSlice = createSlice({
     },
     updateOpponentId: (state, action) => {
       state.opponentId = action.payload;
+    },
+    updateOpponentNickName: (state, action) => {
+      state.nickName = action.payload;
     },
   },
 });

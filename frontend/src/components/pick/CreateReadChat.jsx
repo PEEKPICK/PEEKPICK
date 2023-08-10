@@ -28,6 +28,13 @@ const CreateReadChat = ({ isModalState }) => {
   const handleCloseModal = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
+  // useEffect(() => {
+  //   if (getRoomId !== null) {
+  //     setNickName(EmojiForChat.nickName);
+  //   } else {
+  //     setNickName(null);
+  //   }
+  // }, [getRoomId, EmojiForChat]);
 
   useEffect(() => {
     const connect = () => {
@@ -85,6 +92,7 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const declare = () => {
+    dispatch(chatActions.updateChatModalState(!isModalState));
     const requestBody = {
       roomId: getRoomId,
     };
@@ -167,14 +175,12 @@ const CreateReadChat = ({ isModalState }) => {
                 <>
                   <div className={classes.opponentMain}>
                     {EmojiForChat !== null && (
-                      <img
-                        src={EmojiForChat.emoji.imageUrl}
-                        alt="상대방"
-                        className={classes.otherIcon}
-                      />
+                      <img src={EmojiForChat.emoji.imageUrl} alt="상대방" className={classes.otherIcon} />
                     )}
                     {EmojiForChat !== null ? (
-                      <li className={classes.nickName}>{EmojiForChat.nickname}</li>
+                      <li className={classes.nickName}>
+                        {EmojiForChat.prefix} {EmojiForChat.nickname}
+                      </li>
                     ) : (
                       <li className={classes.nickName}>상대방</li>
                     )}
@@ -188,6 +194,7 @@ const CreateReadChat = ({ isModalState }) => {
       </div>
       <div className={classes.sendBar}>
         <input
+          className={classes.inputBox}
           type="text"
           id="message"
           value={message}

@@ -134,11 +134,7 @@ function App() {
 
             // 토스트 메시지 띄우기
             const toastContent = (
-              <ToastNotification
-                message="채팅 요청이 왔습니다."
-                senderId={senderId}
-                requestTime={requestTime}
-              />
+              <ToastNotification message="채팅 요청이 왔습니다." senderId={senderId} requestTime={requestTime} />
             );
             toast(toastContent, {
               position: "top-right",
@@ -179,8 +175,10 @@ function App() {
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
               console.log("response2", res);
               const opponentData = res.data.data;
-              console.log("aaaaa", opponentData);
+              console.log("상대 정보: ", opponentData);
+              const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
               dispatch(chatActions.updateURL(opponentData));
+              dispatch(chatActions.updateOpponentNickName(nickNameSum));
             });
 
             const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
