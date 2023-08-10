@@ -38,4 +38,6 @@ public interface MemberService {
     void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount);
 
     void updateWorld(Long avatarId, Long worldId);
+
+    AvatarDto getOtherMemberInfo(Long avatarId);
 }

@@ -91,6 +91,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
             return null;
         }
     }
+
     @Override
     public void setPeekLocation(double lon, double lat, Long peekId) {
         try {
@@ -121,14 +122,12 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setViewedByMember(Long memberId, Long peekId, int time) {
+    public void setViewedByMember(Long memberId, Long peekId) {
         if(!peekExist(peekId)) {
             log.warn("Peek:{} does not exist.", peekId);
             return;
         }
         setOps.add("Peek_Viewed:" + peekId, String.valueOf(memberId));
-//        setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
-//        peekTemplate.expire("member:" + memberId + ":viewed", Duration.ofHours(time));
     }
     @Override
     public boolean getViewdByMember(Long memberId, Long peekId) {
@@ -139,7 +138,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setPeekReactionOn(Long memberId, boolean like, Long peekId, int time) {
+    public void setPeekReactionOn(Long memberId, boolean like, Long peekId) {
         if(!peekTemplate.hasKey(PEEK_REDIS + peekId)) return;
         if(like) {
             setOps.add("Peek_Liked:" + peekId, String.valueOf(memberId));

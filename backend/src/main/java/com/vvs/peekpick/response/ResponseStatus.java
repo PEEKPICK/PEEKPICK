@@ -30,6 +30,7 @@ public enum ResponseStatus {
     DELETE_SUCCESS("2004", "PEEK 삭제 완료"),
     ADD_REACTION_SUCCESS("2005", "PEEK 반응 추가 완료"),
     PEEK_FAILURE("4000", "Fail"),
+    PEEK_EXPIRED("4001", "Peek 지속 시간 만료"),
     DELETE_FAILURE("4003", "PEEK 작성자가 아닙니다."),
 
     /* Report */
