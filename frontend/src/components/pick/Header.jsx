@@ -84,12 +84,16 @@ const Header = () => {
     const dataToSend = {
       worldId: checkMap,
     };
-    console.log(dataToSend);
     // axios
     customAxios.post('/member/world', dataToSend)
       .then(response => {
         if (response.data.code === "200") {
-          setIsWorldMap(false);
+          if (location.pathname === "/peek") {
+            window.location.replace("/peek");
+          } else {
+            window.location.replace("/");
+          }
+
         } else {
           console.log('문제가 발생했습니다.')
         }
