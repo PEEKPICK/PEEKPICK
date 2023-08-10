@@ -14,9 +14,10 @@ public interface PeekRedisService {
     void setPeek(PeekRedisDto peekRedisDto, Long peekId, int time);
     PeekReactionCntDto deletePeek(Long peekId);
     PeekRedisDto getPeek(Long peekId);
+    Long getPeekTtl(Long peekId);
     void setPeekLocation(double lon, double lat, Long peekId);
     List<String> getNearLocation(Point point, double distance);
-    void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto);
+    void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto, Long ttl);
     PeekRedisDto getPeekValueOps(Long peekId);
     void setViewedByMember(Long memberId, Long peekId);
     boolean getViewdByMember(Long memberId, Long peekId);

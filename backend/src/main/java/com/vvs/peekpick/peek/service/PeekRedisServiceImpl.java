@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -93,6 +94,11 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
+    public Long getPeekTtl(Long peekId) {
+        return peekTemplate.getExpire(PEEK_REDIS + peekId);
+    }
+
+    @Override
     public void setPeekLocation(double lon, double lat, Long peekId) {
         try {
             geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
@@ -112,8 +118,8 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto) {
-        valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto);
+    public void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto, Long ttl) {
+        valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto, ttl, TimeUnit.SECONDS);
     }
 
     @Override
