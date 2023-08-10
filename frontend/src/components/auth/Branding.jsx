@@ -1,6 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+
 import classes from './style/Branding.module.css';
 
 const Branding = () => {
+  const navigate = useNavigate();
+
+  const moveToLogin = () => {
+    navigate('/');
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.mainImg}>
@@ -16,7 +24,11 @@ const Branding = () => {
           <div>다양한 취향의 사람들과 각자의 취향에 대해 이야기해보세요.</div>
         </div>
         <div className={classes.buttonWrap}>
-          <div className={classes.go}>함께 하기</div>
+          <div
+            className={classes.go}
+            onClick={() => moveToLogin()}
+          >함께 하기
+          </div>
         </div>
       </div>
     </div>
