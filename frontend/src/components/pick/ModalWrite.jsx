@@ -26,6 +26,14 @@ const ModalWrite = ({emojiCall}) => {
     dispatch(modalsActions.closeModal())
   }
   const postWrite = () => {
+      // textarea에 입력 값이 없는 경우
+  if (!writeData.trim()) {
+  toast.error("입력하세요", {
+    id: 'textareaIsEmpty'  
+  });
+    return;  
+  }
+  
     let f = new FormData();
     f.append("content", writeData);
     f.append("longitude", 127.0);
@@ -69,6 +77,7 @@ const ModalWrite = ({emojiCall}) => {
     imageInput.current.click();
   };
   return (
+
     <>
 
         <Modal
@@ -97,6 +106,7 @@ const ModalWrite = ({emojiCall}) => {
           </div>
         </Modal>
     </>
+
   );
 }
 

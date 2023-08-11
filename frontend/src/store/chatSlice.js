@@ -3,13 +3,14 @@ import { createSlice } from "@reduxjs/toolkit";
 const chatSlice = createSlice({
   name: "roomId",
   initialState: {
-    roomId: "",
+    roomId: null,
     opponent: null,
     createTime: null,
     chatModalState: false,
     connectState: false,
     opponentURL: null,
     opponentId: null,
+    nickName: null,
   },
   reducers: {
     callRoomID: (state, action) => {
@@ -33,6 +34,18 @@ const chatSlice = createSlice({
     },
     updateOpponentId: (state, action) => {
       state.opponentId = action.payload;
+    },
+    updateOpponentNickName: (state, action) => {
+      state.nickName = action.payload;
+    },
+    resetState: (state) => {
+      state.roomId = null;
+      state.opponent = null;
+      state.createTime = null;
+      state.connectState = false;
+      state.opponentURL = null;
+      state.opponentId = null;
+      state.nickName = null;
     },
   },
 });

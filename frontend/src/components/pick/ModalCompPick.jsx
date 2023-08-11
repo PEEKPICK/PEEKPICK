@@ -32,11 +32,7 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img
-              src={isSelectedEmoji.emoji.animatedImageUrl}
-              alt="프로필"
-              className={classes.profileImg}
-            />
+            <img src={isSelectedEmoji.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
@@ -50,7 +46,6 @@ const ModalComp = () => {
                 <p className={classes.intro}>내용이 없습니다.</p>
               )}
             </div>
-            <p>{isSelectedEmoji.avatarId}</p>
           </div>
           <div className={classes.divider}></div>
           <div className={classes.modalBody}>
@@ -75,9 +70,11 @@ const ModalComp = () => {
               </p>
             </div>
           </div>
-          <button className={classes.pick} onClick={() => plzChat()}>
-            PICK
-          </button>
+          <div className={classes.pickWrap}>
+            <button className={classes.pick} onClick={() => plzChat()}>
+              PICK
+            </button>
+          </div>
         </Modal>
       )}
     </>

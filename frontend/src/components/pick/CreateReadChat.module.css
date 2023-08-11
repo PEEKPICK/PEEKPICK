@@ -59,21 +59,26 @@
   position: fixed;
   bottom: 5%;
   left: 7%;
-  width: 80%;
+  height: 4.5%;
+  width: 85%;
   display: flex;
+  padding: 1%;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-radius: 3rem;
+  border-radius: 1rem;
   background-color: rgb(213, 213, 213);
 }
 
 .sendBar input {
+  font-size: 1rem;
   flex: 1;
   padding: 5px;
+  margin-left: 3%;
   border: none;
   border-radius: 5px;
   background-color: rgb(213, 213, 213);
+  outline: none;
+  /* border: 1px solid black; */
 }
 
 .sendBar button {
@@ -93,7 +98,8 @@
   background-color: rgb(123, 0, 255, 0.55);
   padding: 0.7rem 1.3rem;
   margin-left: auto;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
   color: #ffffff;
   width: fit-content;
   border-radius: 1rem 0.3rem 1rem 1rem;
@@ -103,12 +109,11 @@
 .otherMessage {
   display: flex;
   background-color: #e0e0e0;
-  padding: 0.5rem 0.75rem;
   border-radius: 0.625rem;
-  font-size: 1rem;
+  font-size: 0.8rem;
   padding: 0.7rem 1.3rem;
   width: fit-content;
-  margin-left: 3.4rem;
+  margin-left: 2rem;
   border-radius: 0.3rem 1rem 1rem 1rem;
   word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
 }
@@ -119,18 +124,24 @@
 .nickName {
   display: flex;
   list-style: none;
-  font-size: 1.25rem;
+  font-size: 1rem;
   align-items: center;
-  margin-left: 0.625rem;
+  margin-left: 0.5rem;
 }
 .otherIcon {
   display: flex;
   border-radius: 0.625rem;
-  width: 13%;
+  width: 9%;
 }
 
 .chat {
   height: 65vh;
   overflow: scroll;
-  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  & > :first-child {
+    margin-top: auto;
+  }
 }

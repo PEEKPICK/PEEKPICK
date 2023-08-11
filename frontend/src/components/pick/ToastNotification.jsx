@@ -18,7 +18,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         requestTime: requestTime,
         response: "Y",
       };
-
+      console.log(body);
       const response1 = await customAxios.post("/picker/chat-response", body);
       console.log("채팅 수락: ", response1.data);
 
@@ -35,8 +35,10 @@ const CustomToast = ({ message, senderId, requestTime }) => {
       console.log("response2", response2);
       console.log("getOpponent", getOpponent);
       const opponentData = response2.data.data;
-      console.log("aaaaa", opponentData);
+      console.log("상대정보: ", opponentData);
+      const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
       dispatch(chatActions.updateURL(opponentData));
+      dispatch(chatActions.updateOpponentNickName(nickNameSum));
     } catch (error) {
       console.error(error);
     }
@@ -64,35 +66,18 @@ const CustomToast = ({ message, senderId, requestTime }) => {
     toast.dismiss({ containerId: "an  Id" });
   };
 
-  //모두 닫기
-  const handleRejectAll = async () => {
-    try {
-      const res = await customAxios.get("/member/info");
-      const receiverID = res.data.data.avatarId;
-      const body = {
-        requestSenderId: senderId,
-        requestReceiverId: receiverID,
-        requestTime: requestTime,
-        response: "N",
-      };
-
-      // console.log("body", body);
-      const response = await customAxios.post("/picker/chat-response", body);
-      console.log("채팅 거절", response.data);
-    } catch (error) {
-      console.error(error);
-    }
-    toast.dismiss({ containerId: "an Id" });
-  };
   return (
     <div className={classes.toastMain}>
-      <div>{message}</div>
-      <div>{senderId}</div>
+      <img src="/img/infoRed.png" alt="" className={classes.icon} />
+      <div className={classes.message}>{message}</div>
       {senderId && requestTime && (
         <>
-          <button onClick={handleAccept}>수락</button>
-          <button onClick={handleReject}>거절</button>
-          <button onClick={handleRejectAll}>모두거절</button>
+          <button onClick={handleAccept} className={classes.accept}>
+            <img src="/img/checkmark.png" alt="" />
+          </button>
+          <button onClick={handleReject} className={classes.reject}>
+            <img src="/img/cancel.png" alt="" />
+          </button>
         </>
       )}
     </div>
