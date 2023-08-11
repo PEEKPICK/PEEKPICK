@@ -1,26 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./PeekLocation.module.css";
 import ModalCompPeek from "./ModalCompPeek";
 import { customAxios } from "../../api/customAxios";
-import { useEffect } from "react";
+import { findPeekActions } from "../../store/findPeekSlice";
 
-const EmojiLocation = ({ findInfo,setCheck,check }) => {
+const EmojiLocation = ({ findInfo }) => {
   const dispatch = useDispatch();
-  const [view, SetView] = useState(false);
   const handleOpenPeekModal = (current) => {
     const peekId = current.peekId;
-    SetView(current.viewed);
-    console.log("peekId", peekId);
     customAxios.get(`/peek/${peekId}`).then((res) => {
-      console.log(res.data.data.peekDetailDto)
+      console.log(res.data.data)
       dispatch(modalActions.openPeekModal(res.data.data));
-    });
-  };
-  useEffect(()=>{
+      dispatch(findPeekActions.toggleViewed(peekId));
 
-  },[view])
+    })
+  };
+
+
   const gridSize = 4; // 격자 크기 (4x4)
   const grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(false));
 
@@ -39,9 +37,6 @@ const EmojiLocation = ({ findInfo,setCheck,check }) => {
     };
   };
 
-  const changeHeart=()=>{
-    setCheck(!check);
-  }
   return (
     <>
       {findInfo.length > 0 ? (
@@ -66,18 +61,18 @@ const EmojiLocation = ({ findInfo,setCheck,check }) => {
                   src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Red+Heart.png"
                   alt={current.peekId}
                   className={classes.EmojiImg}
-                  onClick={changeHeart}
                 />
               )}
             </button>
           ))}
         </div>
       ) : (
-        <div  className={classes.emojiArea}>텅</div>
+        <div className={classes.emojiArea}>텅</div>
       )}
 
       {/* 모달 */}
-      <ModalCompPeek view={view} />
+
+      <ModalCompPeek />
     </>
   );
 };

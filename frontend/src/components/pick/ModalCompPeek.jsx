@@ -5,16 +5,29 @@ import classes from "./ModalComp.module.css";
 import { useState, useEffect, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 
-const ModalComp = (view) => {
-  // 유저 정보 모달용
+
+const ModalComp = () => {
+  //유져 정보 모달용
+
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
+
+
+
+
+
+  // 이 함수들은 좋아요, 싫어요 버튼을 클릭했을 때, 바로 반응되도록 만들어짐
   const [likeCount, setLikeCount] = useState(0);
   const [disLikeCount, setDisLikeCount] = useState(0);
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
+
+  
+
+  
+
   const [timeLeft, setTimeLeft] = useState(""); 
   const [finishTime, setFinishTime] = useState(null);
   const previousTimeLeft = useRef();
@@ -63,6 +76,7 @@ const ModalComp = (view) => {
   
 
 
+
   useEffect(() => {
     if (isSelectedEmoji) {
       // isSelectedEmoji가 null이 아닐 때만 업데이트
@@ -73,6 +87,8 @@ const ModalComp = (view) => {
     }
   }, [isSelectedEmoji]);
 
+
+  // 퍼센트 창이 바로 반응하도록, 마운트 추가
   useEffect(() => {
     setProcessBar((likeCount / (likeCount + disLikeCount)) * 100);
   }, [likeCount, disLikeCount]);
