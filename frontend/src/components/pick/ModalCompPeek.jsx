@@ -40,6 +40,8 @@ const ModalComp = (view) => {
       const calculateTimeLeft = () => {
         const now = new Date(); 
         const difference = finishTime - now;
+        console.log(now)
+        console.log(finishTime)
   
         if (difference > 0) {
           const hours = Math.floor(difference / (1000 * 60 * 60));

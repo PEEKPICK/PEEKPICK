@@ -1,5 +1,30 @@
 .toastMain {
   color: #000000;
-  font-size: 2vh;
+  font-size: 1.7vh;
   display: flex;
+}
+.message {
+  margin-left: 0.4rem;
+  display: flex;
+  align-items: center;
+}
+.accept {
+  background: none;
+  border: none;
+  margin-left: 1rem;
+}
+.accept img {
+  height: 1rem;
+}
+.reject {
+  background: none;
+  border: none;
+  margin-left: 1rem;
+}
+.reject img {
+  height: 1rem;
+}
+.icon {
+  width: 5%;
+  height: 5%;
 }

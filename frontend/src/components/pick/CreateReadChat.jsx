@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import classes from "./CreateReadChat.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { chatActions } from "../../store/chatSlice";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
@@ -15,9 +15,13 @@ const CreateReadChat = ({ isModalState }) => {
   // const createTime = useSelector((state) => state.roomId.createTime);
   const EmojiForChat = useSelector((state) => state.roomId.opponentURL);
   const opponent = useSelector((state) => state.roomId.opponent);
+  const getNickName = useSelector((state) => state.roomId.nickName);
   const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
+  //채팅 내리기
+  const messagesEndRef = useRef(null);
+
   const chatPop = () => {
     console.log("getRoomId", getRoomId);
     console.log("opponent", opponent);
@@ -39,13 +43,34 @@ const CreateReadChat = ({ isModalState }) => {
   useEffect(() => {
     const connect = () => {
       const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
-      const client = Stomp.over(socket);
+      const factory = Stomp.over(socket); // Create a factory
+      factory.reconnect_delay = 2000; // Set reconnect delay if needed
 
-      client.connect({}, (frame) => {
-        setStompClient(client);
-        client.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
-          console.log("니가 보낸거!!!!!!!!!!!!", JSON.parse(chatMessage.body));
-          showMessage(JSON.parse(chatMessage.body));
+      factory.connect({}, (frame) => {
+        setStompClient(factory); // Use the factory as StompClient
+        factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
+          const parseMessage = JSON.parse(chatMessage.body);
+          console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
+          if (parseMessage.expireFlag === "Y") {
+            customAxios
+              .post("/picker/chat-end", getRoomId)
+              .then(() => {
+                console.log("요청 성공:", "나가기 성공");
+                // 요청이 성공했을 때 실행할 코드 작성
+                dispatch(chatActions.callRoomID(""));
+              })
+              .catch(() => {
+                console.error("요청 실패:", "나가기 실패");
+                // 요청이 실패했을 때 실행할 코드 작성
+              });
+            handleExpireMessage();
+            setReceivedMessages((prevMessages) => [
+              ...prevMessages,
+              { sender: "system", message: "상대방이 대화를 나갔습니다." },
+            ]);
+          } else {
+            showMessage(parseMessage);
+          }
         });
       });
     };
@@ -64,6 +89,10 @@ const CreateReadChat = ({ isModalState }) => {
   //   /* eslint-disable-next-line */
   // }, []);
 
+  const handleExpireMessage = () => {
+    dispatch(chatActions.resetState());
+  };
+
   useEffect(() => {
     setReceivedMessages([]); // roomId가 변경될 때마다 배열 초기화
   }, [getRoomId]);
@@ -81,14 +110,17 @@ const CreateReadChat = ({ isModalState }) => {
           expireFlag: "",
         })
       );
-      console.log("joinChatRoom", message, opponent);
       setMessage("");
     }
   };
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  scrollToBottom();
 
   const showMessage = (message) => {
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
-    console.log("????", receivedMessages);
   };
 
   const declare = () => {
@@ -142,6 +174,7 @@ const CreateReadChat = ({ isModalState }) => {
         console.error("요청 실패:", "나가기 실패");
         // 요청이 실패했을 때 실행할 코드 작성
       });
+    dispatch(chatActions.updateOpponentNickName());
   };
 
   return (
@@ -178,8 +211,8 @@ const CreateReadChat = ({ isModalState }) => {
                       <img src={EmojiForChat.emoji.imageUrl} alt="상대방" className={classes.otherIcon} />
                     )}
                     {EmojiForChat !== null ? (
-                      <li className={classes.nickName}>
-                        {EmojiForChat.prefix} {EmojiForChat.nickname}
+                      <li className={classes.nickName} key={uuid()}>
+                        {getNickName}
                       </li>
                     ) : (
                       <li className={classes.nickName}>상대방</li>
@@ -190,6 +223,7 @@ const CreateReadChat = ({ isModalState }) => {
               )}
             </div>
           ))}
+          <div ref={messagesEndRef} />
         </ul>
       </div>
       <div className={classes.sendBar}>
