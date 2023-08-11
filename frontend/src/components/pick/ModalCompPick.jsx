@@ -70,9 +70,11 @@ const ModalComp = () => {
               </p>
             </div>
           </div>
-          <button className={classes.pick} onClick={() => plzChat()}>
-            PICK
-          </button>
+          <div className={classes.pickWrap}>
+            <button className={classes.pick} onClick={() => plzChat()}>
+              PICK
+            </button>
+          </div>
         </Modal>
       )}
     </>
