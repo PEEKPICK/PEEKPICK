@@ -15,7 +15,7 @@
   background-color: white;
   border-radius: 5vh;
   border: 0;
-  box-shadow: 1px 1px 1px 1px rgba(72, 72, 72, 0.25);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-color: rgba(125, 0, 255);
   height: auto;
   width: 100%;
@@ -42,7 +42,7 @@
 
 .on {
   background-color: rgba(125, 0, 225);
-  box-shadow: 1px 1px 1px 1px rgba(72, 72, 72, 0.25);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   color: white;
 }
 
