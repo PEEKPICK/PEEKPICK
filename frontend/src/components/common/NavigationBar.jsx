@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import classes from "./NavigationBar.module.css";
 //채팅
@@ -16,17 +16,19 @@ const NavigationBar = () => {
   const getRoomId = useSelector((state) => state.roomId.roomId);
   //채팅
   const isModalState = useSelector((state) => state.roomId.chatModalState);
+  const getNickName = useSelector((state) => state.roomId.nickName);
   const chatPop = () => {
     console.log("getRoomId", getRoomId);
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
+  useEffect(() => {});
   return (
     <>
       <div className={classes.container}>
         {/* 채팅 모달 */}
         <div className={classes.alert}>
-          <img src="img/infoRed.png" alt="" />
-          <span>즐거운 아메리카노</span>
+          {getRoomId ? <img src="img/infoRed.png" alt="" /> : <img src="img/infoBlue.png" alt="" />}
+          <span>{getNickName ? getNickName : "피크를 신청해보세요!"}</span>
           <button onClick={() => chatPop()} className={classes.upBtn}>
             <img src="img/up.png" alt="" />
           </button>

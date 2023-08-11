@@ -4,8 +4,9 @@
 }
 .toast-message {
   background-color: #f4e9ff !important;
-  padding: 30px 20px;
   border-radius: 1.3rem 1.3rem !important;
-  margin: 0.5vh;
+  margin-top: 1%;
+  margin-left: 3%;
+  margin-right: 3%;
   display: flex;
 }
