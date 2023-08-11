@@ -153,7 +153,7 @@ function App() {
                 position: "top-right",
                 closeOnClick: true,
                 draggable: false,
-                autoClose: 20000,
+                autoClose: 15000,
                 className: "toast-message",
               });
             });
@@ -166,7 +166,7 @@ function App() {
               position: "top-right",
               closeOnClick: true,
               draggable: false,
-              autoClose: 3000,
+              autoClose: 1500,
               className: "toast-message",
             });
           }
@@ -200,9 +200,10 @@ function App() {
               position: "top-right",
               closeOnClick: true,
               draggable: false,
-              autoClose: 1000,
+              autoClose: 1500,
               className: "toast-message",
               expireFlag: "",
+              hideProgressBar: true,
             });
           }
         });
