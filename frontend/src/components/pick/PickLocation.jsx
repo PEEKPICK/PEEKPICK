@@ -50,7 +50,7 @@ const EmojiLocation = ({ findInfo }) => {
           ))}
         </div>
       ) : (
-        <div>텅</div>
+        <div>사용자가 없어요!</div>
       )}
       {/* 모달 */}
       <ModalCompPick findInfo={findInfo} />

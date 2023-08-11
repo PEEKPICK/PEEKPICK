@@ -73,7 +73,7 @@ const EmojiLocation = ({ findInfo,setCheck,check }) => {
           ))}
         </div>
       ) : (
-        <div  className={classes.emojiArea}>텅</div>
+        <div  className={classes.emojiArea}>피크가 다 떨어졌어요!</div>
       )}
 
       {/* 모달 */}
