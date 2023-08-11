@@ -322,11 +322,12 @@
 
 /* carousel */
 .carousel {
-  margin-top: 7%;
+  margin: 0 auto;
   border-radius: 5px;
   border: 0;
-  width: 100%;
+  width: 90%;
   height: 55vh;
+  margin-top: 7%;
 }
 
 /* 선택완료, 뒤로가기 버튼 */
@@ -334,7 +335,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 10%;
+  margin-top: 10%
 }
 
 .buttonWrap button {
@@ -353,4 +354,11 @@
 .back {
   background-color: #999999;
   color: white;
+}
+
+
+.content_box {
+  /* width: 300px;
+  height: 300px;
+  padding: 30px; */
 }
