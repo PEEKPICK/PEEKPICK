@@ -5,13 +5,10 @@ import classes from "./ModalComp.module.css";
 import { useState, useEffect, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 
-<<<<<<<<< Temporary merge branch 1
-const ModalComp = (view) => {
-  // 유저 정보 모달용
-=========
+
+
 const ModalComp = () => {
   //유져 정보 모달용
->>>>>>>>> Temporary merge branch 2
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
@@ -26,7 +23,7 @@ const ModalComp = () => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
-<<<<<<<<< Temporary merge branch 1
+
   const [timeLeft, setTimeLeft] = useState(""); 
   const [finishTime, setFinishTime] = useState(null);
   const previousTimeLeft = useRef();
@@ -75,11 +72,10 @@ const ModalComp = () => {
   
 
 
-=========
   
 
   
->>>>>>>>> Temporary merge branch 2
+
   useEffect(() => {
     if (isSelectedEmoji) {
       // isSelectedEmoji가 null이 아닐 때만 업데이트
