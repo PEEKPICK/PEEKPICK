@@ -10,7 +10,6 @@ const ModalComp = () => {
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
-
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
     dispatch(chatActions.updateURL(isSelectedEmoji));

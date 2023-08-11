@@ -182,12 +182,19 @@ function App() {
             const roomId = jsonData.roomId;
             const opponent = jsonData.opponent;
             console.log("수락roomId보냄: ", roomId);
+            const createTime = jsonData.createTime;
+            const endTime = jsonData.endTime;
+            console.log("createTime",createTime);
+            console.log("endTime",endTime);
             console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
+            dispatch(chatActions.updateEndTime(endTime))
+            dispatch(chatActions.updateTime(createTime))
+
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-              // console.log("response2", res);
+              console.log("response2", res);
               const opponentData = res.data.data;
               console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
