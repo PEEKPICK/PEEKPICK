@@ -123,7 +123,7 @@
   position: absolute;
   height: 2px;
   width: 100%;
-  width: calc(100% * (4 / 5));
+  width: calc(100% * (5 / 7));
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
