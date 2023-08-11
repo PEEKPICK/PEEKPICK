@@ -24,7 +24,7 @@ const ModalComp = (view) => {
   useEffect(() => {
     if (isSelectedEmoji) { 
       const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
-      //koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
+      koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
       setFinishTime(koreaTime);
       setTimeLeft(''); // 초기 상태 설정 
     }
