@@ -343,7 +343,7 @@
   border-radius: 5px;
   margin: 3% 0 3% 0;
   height: 40px;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }
 
 .selected {
