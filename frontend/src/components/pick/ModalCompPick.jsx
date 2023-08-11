@@ -50,7 +50,11 @@ const ModalComp = () => {
           <div className={classes.divider}></div>
           <div className={classes.modalBody}>
             <div>
-              <p className={classes.like}>좋아!</p>
+              <img
+                src="img/good.png"
+                alt="good"
+                className={classes.like}
+              />
               <p className={classes.itemWrap}>
                 {isSelectedEmoji.likes.map((like, index) => (
                   <div key={index} className={classes.items}>
@@ -60,7 +64,11 @@ const ModalComp = () => {
               </p>
             </div>
             <div>
-              <p className={classes.disLike}>싫어!</p>
+              <img
+                src="img/DisLike_Off.png"
+                alt="hate"
+                className={classes.disLike}
+              />
               <p className={classes.itemWrap}>
                 {isSelectedEmoji.disLikes.map((disLikes, index) => (
                   <span key={index} className={classes.items}>

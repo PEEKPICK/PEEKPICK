@@ -87,25 +87,18 @@
 }
 
 .like {
-  border-radius: 1rem;
-  background-color: #7d00ff;
-  color: #ffffff;
-  width: 3rem;
-  text-align: center;
-  height: 1.7rem;
-  line-height: 1.9rem;
+  padding: 2px 10px;
+  border: 1px solid #7d00ff;
+  border-radius: 10px;
+  width: 10%;
   margin-left: 3%;
 }
 
 .disLike {
-  margin-top: 5%;
-  border-radius: 1rem;
-  background-color: #7d00ff;
-  color: #ffffff;
-  width: 3rem;
-  text-align: center;
-  height: 1.7rem;
-  line-height: 1.9rem;
+  padding: 2px 10px;
+  border: 1px solid #7d00ff;
+  border-radius: 10px;
+  width: 10%;
   margin-left: 3%;
 }
 
