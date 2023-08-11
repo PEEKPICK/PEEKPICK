@@ -95,7 +95,7 @@ public class PeekServiceImpl implements PeekService {
         try {
             Member writer = peekMemberService.findMember(memberId);
             String afterFiltering = filtering.changeAll(requestPeekDto.getContent());
-
+            LocalDateTime time = LocalDateTime.now();
             //RDB에 저장하기 위한 Peek 객체
             Peek peek = Peek.builder()
                     .member(writer)
@@ -103,12 +103,13 @@ public class PeekServiceImpl implements PeekService {
                     .disLikeCount(0)
                     .likeCount(0)
                     .imageUrl(imageUrl)
-                    .writeTime(LocalDateTime.now())
+                    .writeTime(time)
                     .build();
 
 
             //RDB에 Peek 저장 후 id 값 받아옴
             Long peekId = peekRdbService.savePeek(peek);
+
 
             //redis에 저장하기 위한 Peek 객체 생성
             PeekRedisDto peekRedisDto = PeekRedisDto.builder()
@@ -118,12 +119,12 @@ public class PeekServiceImpl implements PeekService {
                     .imageUrl(imageUrl)
                     .likeCount(0)
                     .disLikeCount(0)
-                    .writeTime(LocalDateTime.now())
-                    .finishTime(LocalDateTime.now().plusMinutes(PEEK_ORIGIN_TIME))
+                    .writeTime(time)
+                    .finishTime(time.plusMinutes(PEEK_ORIGIN_TIME))
                     .special(false)
                     .viewed(false)
                     .build();
-
+            log.info("작성 시간 : {}", time);
             //redis에 Peek Location 값 저장
             peekRedisService.setPeekLocation(requestPeekDto.getLongitude(), requestPeekDto.getLatitude(), peekId);
             //redis에 Peek 저장 & ttl 설정
