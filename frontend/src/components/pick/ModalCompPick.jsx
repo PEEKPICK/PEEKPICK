@@ -4,6 +4,8 @@ import { modalActions } from "../../store/modalSlice";
 import { chatActions } from "../../store/chatSlice";
 import classes from "./ModalComp.module.css";
 import { customAxios } from "../../api/customAxios";
+import ToastNotification from "./ToastNotification";
+import { toast } from "react-toastify";
 
 const ModalComp = () => {
   //유져 정보 모달용
@@ -19,6 +21,19 @@ const ModalComp = () => {
   const plzChat = () => {
     customAxios.get(`/picker/chat-request/${isSelectedEmoji.avatarId}`).then((response) => {
       console.log(response.data.message);
+      console.log("aaa", isSelectedEmoji);
+      const nickNameSum = `${isSelectedEmoji.prefix.content} ${isSelectedEmoji.nickname}`;
+      const toastContent = (
+        <ToastNotification message={`${nickNameSum}님 에게 채팅을 요청했습니다.`} />
+      );
+      toast(toastContent, {
+        position: "top-right",
+        closeOnClick: true,
+        draggable: false,
+        autoClose: 1500,
+        className: "toast-message",
+        hideProgressBar: true,
+      });
     });
   };
   return (
@@ -32,7 +47,11 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img src={isSelectedEmoji.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
+            <img
+              src={isSelectedEmoji.emoji.animatedImageUrl}
+              alt="프로필"
+              className={classes.profileImg}
+            />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
@@ -75,6 +94,7 @@ const ModalComp = () => {
           </button>
         </Modal>
       )}
+      <ToastNotification />
     </>
   );
 };

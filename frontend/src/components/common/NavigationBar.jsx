@@ -2,38 +2,25 @@ import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom"; // Import useNavigate
 import classes from "./NavigationBar.module.css";
 //채팅
-import { useSelector, useDispatch } from "react-redux";
-import { chatActions } from "../../store/chatSlice";
+import { useSelector } from "react-redux";
 import CreateReadChat from "../pick/CreateReadChat";
+import ChatPop from "./ChatPop";
 const NavigationBar = () => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
 
   const myPage = location.pathname === "/mypage";
   const peek = location.pathname === "/peek";
   const picker = location.pathname === "/";
-  const getRoomId = useSelector((state) => state.roomId.roomId);
   //채팅
   const isModalState = useSelector((state) => state.roomId.chatModalState);
-  const getNickName = useSelector((state) => state.roomId.nickName);
-  const chatPop = () => {
-    console.log("getRoomId", getRoomId);
-    dispatch(chatActions.updateChatModalState(!isModalState));
-  };
+
   useEffect(() => {});
   return (
     <>
       <div className={classes.container}>
         {/* 채팅 모달 */}
-        <div className={classes.alert}>
-          {getRoomId ? <img src="img/infoRed.png" alt="" /> : <img src="img/infoBlue.png" alt="" />}
-          <span>{getNickName ? getNickName : "피크를 신청해보세요!"}</span>
-          <button onClick={() => chatPop()} className={classes.upBtn}>
-            <img src="img/up.png" alt="" />
-          </button>
-          {/* <button onClick={() => declare()}>나가?</button> */}
-        </div>
+        <ChatPop />
         <CreateReadChat isModalState={isModalState} />
         {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
         <nav className={classes.navibar}>
