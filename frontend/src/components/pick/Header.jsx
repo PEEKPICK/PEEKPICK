@@ -198,7 +198,7 @@ const Header = () => {
             <div className={classes.sliderWrapper}>
               <Slider {...settings} >
                 {worldMapList.map(item => (
-                  <div
+                  <div className={classes.content_box}
                     key={item.worldId}
                   >
                     {/* 버그 리포트 : 캐러셀을 안움직이면 기존의 값이 들어감.. 해결 방법 좀 */}
