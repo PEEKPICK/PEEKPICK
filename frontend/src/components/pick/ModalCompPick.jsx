@@ -12,7 +12,7 @@ const ModalComp = () => {
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
-
+  
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
     dispatch(chatActions.updateURL(isSelectedEmoji));
@@ -57,7 +57,7 @@ const ModalComp = () => {
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
               </span>
               <span style={{ marginRight: "0.2rem" }}>PICK</span>
-              <span style={{ color: "#7d00ff", fontWeight: "700" }}>100</span>
+              <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.chatCount}</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span>
               {isSelectedEmoji.bio && isSelectedEmoji.bio.trim() !== "" ? (
                 <p className={classes.intro}>{isSelectedEmoji.bio}</p>
@@ -69,7 +69,11 @@ const ModalComp = () => {
           <div className={classes.divider}></div>
           <div className={classes.modalBody}>
             <div>
-              <p className={classes.like}>좋아!</p>
+              <img
+                src="img/good.png"
+                alt="good"
+                className={classes.like}
+              />
               <p className={classes.itemWrap}>
                 {isSelectedEmoji.likes.map((like, index) => (
                   <div key={index} className={classes.items}>
@@ -79,7 +83,11 @@ const ModalComp = () => {
               </p>
             </div>
             <div>
-              <p className={classes.disLike}>싫어!</p>
+              <img
+                src="img/DisLike_Off.png"
+                alt="hate"
+                className={classes.disLike}
+              />
               <p className={classes.itemWrap}>
                 {isSelectedEmoji.disLikes.map((disLikes, index) => (
                   <span key={index} className={classes.items}>
@@ -89,9 +97,11 @@ const ModalComp = () => {
               </p>
             </div>
           </div>
-          <button className={classes.pick} onClick={() => plzChat()}>
-            PICK
-          </button>
+          <div className={classes.pickWrap}>
+            <button className={classes.pick} onClick={() => plzChat()}>
+              PICK
+            </button>
+          </div>
         </Modal>
       )}
       <ToastNotification />
