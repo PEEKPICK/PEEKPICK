@@ -21,7 +21,11 @@ const CreateReadChat = ({ isModalState }) => {
   const [receivedMessages, setReceivedMessages] = useState([]);
   //채팅 내리기
   const messagesEndRef = useRef(null);
-
+  //나가기
+  const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
+  useEffect(() => {
+    setShowExitConfirmationModal(false);
+  }, []);
   const chatPop = () => {
     console.log("getRoomId", getRoomId);
     console.log("opponent", opponent);
@@ -32,6 +36,7 @@ const CreateReadChat = ({ isModalState }) => {
   const handleCloseModal = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
+
   // useEffect(() => {
   //   if (getRoomId !== null) {
   //     setNickName(EmojiForChat.nickName);
@@ -39,6 +44,10 @@ const CreateReadChat = ({ isModalState }) => {
   //     setNickName(null);
   //   }
   // }, [getRoomId, EmojiForChat]);
+
+  const handleExitConfirmation = () => {
+    setShowExitConfirmationModal(true); // 모달을 열기 위해 상태를 업데이트
+  };
 
   useEffect(() => {
     const connect = () => {
@@ -178,76 +187,82 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   return (
-    <Modal
-      isOpen={newModalState}
-      onRequestClose={() => handleCloseModal()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
-      contentLabel="Selected Emoji Modal"
-      className={classes.chatMain}
-    >
-      <div className={classes.chatHeader}>
-        <button onClick={() => declare()}>
-          <img src="img/cancel.png" alt="나가기" />
-        </button>
-        <h4 className={classes.time}>9:49</h4>
-        <div className={classes.headerRight}>
-          <button className={classes.siren}>
-            <img src="img/siren.png" alt="신고" />
+    <>
+      <Modal
+        isOpen={newModalState}
+        onRequestClose={() => handleCloseModal()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+        contentLabel="Selected Emoji Modal"
+        className={classes.chatMain}
+      >
+        <div className={classes.chatHeader}>
+          <button onClick={() => handleExitConfirmation()} disabled={showExitConfirmationModal}>
+            <img src="img/cancel.png" alt="나가기" />
           </button>
-          <button onClick={() => chatPop()} className={classes.downBtn}>
-            <img src="img/down.png" alt="내리기" />
-          </button>
+          <h4 className={classes.time}>9:49</h4>
+          <div className={classes.headerRight}>
+            <button className={classes.siren} disabled={showExitConfirmationModal}>
+              <img src="img/siren.png" alt="신고" />
+            </button>
+            <button onClick={() => chatPop()} className={classes.downBtn} disabled={showExitConfirmationModal}>
+              <img src="img/down.png" alt="내리기" />
+            </button>
+          </div>
         </div>
-      </div>
-      <div className={classes.divider} />
-      <div>
-        <ul id="messageList" className={classes.chat}>
-          {receivedMessages.map((message, index) => (
-            <div className={classes.chatBubble} key={uuid()}>
-              {/* eslint-disable-next-line */}
-              {message.sender == opponent ? (
-                <li className={classes.selfMessage}>{message.message}</li>
-              ) : (
-                <>
-                  <div className={classes.opponentMain}>
-                    {EmojiForChat !== null && (
-                      <img
-                        src={EmojiForChat.emoji.imageUrl}
-                        alt="상대방"
-                        className={classes.otherIcon}
-                      />
-                    )}
-                    {EmojiForChat !== null ? (
-                      <li className={classes.nickName} key={uuid()}>
-                        {getNickName}
-                      </li>
-                    ) : (
-                      <li className={classes.nickName}>상대방</li>
-                    )}
-                  </div>
-                  <div className={classes.otherMessage}>{message.message}</div>
-                </>
-              )}
-            </div>
-          ))}
-          <div ref={messagesEndRef} />
-        </ul>
-      </div>
-      <div className={classes.sendBar}>
-        <input
-          className={classes.inputBox}
-          type="text"
-          id="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              joinChatRoom(); // 엔터 키를 눌렀을 때 메시지 전송
-            }
-          }}
-        />
-        <button onClick={() => joinChatRoom()} />
-      </div>
-    </Modal>
+        <div className={classes.divider} />
+        <div>
+          <ul id="messageList" className={classes.chat}>
+            {receivedMessages.map((message, index) => (
+              <div className={classes.chatBubble} key={uuid()}>
+                {/* eslint-disable-next-line */}
+                {message.sender == opponent ? (
+                  <li className={classes.selfMessage}>{message.message}</li>
+                ) : (
+                  <>
+                    <div className={classes.opponentMain}>
+                      {EmojiForChat !== null && (
+                        <img src={EmojiForChat.emoji.imageUrl} alt="상대방" className={classes.otherIcon} />
+                      )}
+                      {EmojiForChat !== null ? (
+                        <li className={classes.nickName} key={uuid()}>
+                          {getNickName}
+                        </li>
+                      ) : (
+                        <li className={classes.nickName}>상대방</li>
+                      )}
+                    </div>
+                    <div className={classes.otherMessage}>{message.message}</div>
+                  </>
+                )}
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </ul>
+        </div>
+        <div className={classes.sendBar}>
+          <input
+            className={classes.inputBox}
+            type="text"
+            id="message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                joinChatRoom(); // 엔터 키를 눌렀을 때 메시지 전송
+              }
+            }}
+            disabled={showExitConfirmationModal}
+          />
+          <button onClick={() => joinChatRoom()} />
+        </div>
+        {/* {showExitConfirmationModal && (
+          <div className={classes.exitConfirmationModal}>
+            <p>정말로 나가시겠습니까?</p>
+            <button onClick={() => declare()}>나가기</button>
+            <button onClick={() => setShowExitConfirmationModal(false)}>취소</button>
+          </div>
+        )} */}
+      </Modal>
+    </>
   );
 };
 
