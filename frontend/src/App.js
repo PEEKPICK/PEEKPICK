@@ -48,6 +48,7 @@ function App() {
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
+  const getNickName = useSelector((state) => state.roomId.nickName);
 
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
@@ -119,10 +120,10 @@ function App() {
           heartbeatTimeout: 8640000,
         });
 
-        eventSource.addEventListener("SSE_START", (e) => {
-          // SSE CREATED
-          console.log("SSE : ", e);
-        });
+        // eventSource.addEventListener("SSE_START", (e) => {
+        //   // SSE CREATED
+        //   console.log("SSE : ", e);
+        // });
 
         eventSource.addEventListener("REQUEST", (e) => {
           // 채팅 요청 / 응답
@@ -132,17 +133,29 @@ function App() {
             const senderId = jsonData.senderId;
             const requestTime = jsonData.requestTime;
             console.log("채팅 받음", jsonData);
-
-            // 토스트 메시지 띄우기
-            const toastContent = (
-              <ToastNotification message="채팅 요청이 왔습니다." senderId={senderId} requestTime={requestTime} />
-            );
-            toast(toastContent, {
-              position: "top-right",
-              closeOnClick: true,
-              draggable: false,
-              autoClose: 20000,
-              className: "toast-message",
+            customAxios.get(`/member/chat/info?avatarId=${senderId}`).then((res) => {
+              // console.log("response2", res);
+              const opponentData = res.data.data;
+              console.log("상대 정보: ", opponentData);
+              const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
+              dispatch(chatActions.updateURL(opponentData));
+              dispatch(chatActions.updateOpponentNickName(nickNameSum));
+              console.log("getNickNameeeee", getNickName);
+              // 토스트 메시지 띄우기
+              const toastContent = (
+                <ToastNotification
+                  message={`${nickNameSum} 님이 채팅을 요청했어요.`}
+                  senderId={senderId}
+                  requestTime={requestTime}
+                />
+              );
+              toast(toastContent, {
+                position: "top-right",
+                closeOnClick: true,
+                draggable: false,
+                autoClose: 20000,
+                className: "toast-message",
+              });
             });
           }
           // 거절하기
@@ -174,20 +187,20 @@ function App() {
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-              console.log("response2", res);
+              // console.log("response2", res);
               const opponentData = res.data.data;
               console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
               dispatch(chatActions.updateURL(opponentData));
               dispatch(chatActions.updateOpponentNickName(nickNameSum));
+              console.log("getNickNameeeee", getNickName);
             });
-
             const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
             toast(toastContent, {
               position: "top-right",
               closeOnClick: true,
               draggable: false,
-              autoClose: 3000,
+              autoClose: 1000,
               className: "toast-message",
               expireFlag: "",
             });

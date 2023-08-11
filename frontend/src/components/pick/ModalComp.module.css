@@ -81,7 +81,7 @@
   height: 13rem;
 }
 
-.modalBody>div {
+.modalBody > div {
   height: 5.5rem;
 }
 
@@ -136,17 +136,17 @@
   margin-left: 3rem;
   margin-top: 1rem;
   border: none;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.55);
 }
 
-.pick:hover {
-  background-color: #ffffff;
+.pick:active {
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  color: rgba(255, 255, 255, 0.5);
 }
-
 
 .modalbodys {
   display: flex;
 }
-
 .modalBodyPeek {
   display: flex;
   padding: 0.8rem 0.5rem;
@@ -159,7 +159,6 @@
   margin-right: 5%;
   border-radius: 5%;
 }
-
 
 .peekImg {
   display: flex;
@@ -183,23 +182,23 @@
 }
 
 .likes {
-  display:flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0;
 }
 
-.likes span{
+.likes span {
   margin-top: 5%;
 }
 
-.likes img{
+.likes img {
   width: 20px;
   height: 20px;
 }
 
-.progressdiv{
+.progressdiv {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -209,7 +208,6 @@ progress {
   -webkit-appearance: none;
   appearance: none;
   width: 80%;
-
 }
 
 ::-webkit-progress-bar {

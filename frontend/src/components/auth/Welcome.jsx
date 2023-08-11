@@ -14,7 +14,6 @@ const Welcome = () => {
       }
     })
       .then(response => {
-        console.log(response.data)
         if (response.data.code === "200") {
           window.location.replace("/");
         }
