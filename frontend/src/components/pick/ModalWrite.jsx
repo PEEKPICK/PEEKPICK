@@ -77,7 +77,6 @@ const ModalWrite = ({emojiCall}) => {
     imageInput.current.click();
   };
   return (
-
     <>
 
         <Modal
@@ -106,7 +105,6 @@ const ModalWrite = ({emojiCall}) => {
           </div>
         </Modal>
     </>
-
   );
 }
 

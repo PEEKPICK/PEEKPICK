@@ -6,9 +6,9 @@ import { useState, useEffect, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 
 
+
 const ModalComp = () => {
   //유져 정보 모달용
-
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
@@ -23,10 +23,6 @@ const ModalComp = () => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
-
-  
-
-  
 
   const [timeLeft, setTimeLeft] = useState(""); 
   const [finishTime, setFinishTime] = useState(null);
@@ -76,6 +72,9 @@ const ModalComp = () => {
   
 
 
+  
+
+  
 
   useEffect(() => {
     if (isSelectedEmoji) {
