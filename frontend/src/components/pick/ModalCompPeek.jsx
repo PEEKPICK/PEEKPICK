@@ -2,11 +2,11 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { customAxios } from "../../api/customAxios";
 
 const ModalComp = (view) => {
-  //유져 정보 모달용
+  // 유저 정보 모달용
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
@@ -15,6 +15,52 @@ const ModalComp = (view) => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(""); 
+  const [finishTime, setFinishTime] = useState(null);
+  const previousTimeLeft = useRef();
+
+
+  // finishTime 설정
+  useEffect(() => {
+    if (isSelectedEmoji) { 
+      const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
+      //koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
+      setFinishTime(koreaTime);
+      setTimeLeft(''); // 초기 상태 설정 
+    }
+  }, [isSelectedEmoji]);
+
+  // 타이머 설정
+  useEffect(() => {
+    if (finishTime) {
+      if (previousTimeLeft.current) { 
+        setTimeLeft('');
+      }
+  
+      const calculateTimeLeft = () => {
+        const now = new Date(); 
+        const difference = finishTime - now;
+  
+        if (difference > 0) {
+          const hours = Math.floor(difference / (1000 * 60 * 60));
+          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+          previousTimeLeft.current = `${hours}h ${minutes}m ${seconds}s`;
+          setTimeLeft(previousTimeLeft.current);
+        } else {
+          setTimeLeft("Time's up!");
+          clearInterval(timer);
+        }
+      };
+    
+      const timer = setInterval(calculateTimeLeft, 1000);
+  
+      return () => clearInterval(timer);
+    }
+  }, [finishTime]);
+  
+
+
   useEffect(() => {
     if (isSelectedEmoji) {
       // isSelectedEmoji가 null이 아닐 때만 업데이트
@@ -28,6 +74,8 @@ const ModalComp = (view) => {
   useEffect(() => {
     setProcessBar((likeCount / (likeCount + disLikeCount)) * 100);
   }, [likeCount, disLikeCount]);
+
+
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
@@ -99,6 +147,7 @@ const ModalComp = (view) => {
               ) : (
                 <p className={classes.intro}>내용이 없습니다.</p>
               )}
+              <span className={classes.timer}>{timeLeft}</span>
             </div>
           </div>
           <div className={classes.divider}></div>
