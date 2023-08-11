@@ -123,21 +123,26 @@
 }
 
 /* 모달 하단  */
+.pickWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5%;
+}
 
 .pick {
-  font-size: 1.0625rem;
+  font-size: 17px;
+  font-weight: 600;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 13.9375rem;
-  height: 3.125rem;
+  width: 60%;
+  height: 40px;
   border-radius: 1.5rem;
   background-color: #7d00ff;
   color: #ffffff;
-  margin-left: 3rem;
-  margin-top: 1rem;
   border: none;
-  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.55);
+  box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
 
 .pick:active {
