@@ -115,7 +115,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     @Override
     public List<String> getNearLocation(Point point, double distance) { //GeoResults<RedisGeoCommands.GeoLocation<String>>
         List<String> nearPeekIds = new ArrayList<>();
-        GeoResults<RedisGeoCommands.GeoLocation<String>> allLocations = geoOps.radius(PEEK_LOCATION_REDIS, new Circle(new Point(point.getX(), point.getY()), new Distance(distance, RedisGeoCommands.DistanceUnit.METERS)));
+        GeoResults<RedisGeoCommands.GeoLocation<String>> allLocations = geoOps.radius(PEEK_LOCATION_REDIS, new Circle(new Point(point.getX(), point.getY()), new Distance(distance)));
         allLocations.forEach(location -> {
             nearPeekIds.add(location.getContent().getName());
         });
