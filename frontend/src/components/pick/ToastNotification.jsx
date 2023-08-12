@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import classes from "./ToastNotification.module.css";
 import { customAxios } from "../../api/customAxios";
 import { chatActions } from "../../store/chatSlice";
-import { modalActions } from "../../store/modalSlice";
+// import { modalActions } from "../../store/modalSlice";
 const CustomToast = ({ message, senderId, requestTime }) => {
   const dispatch = useDispatch();
   const getOpponent = useSelector((state) => state.roomId.opponent);

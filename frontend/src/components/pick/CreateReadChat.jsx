@@ -7,6 +7,7 @@ import * as SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
+import { toast } from "react-hot-toast";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -60,26 +61,28 @@ const CreateReadChat = ({ isModalState }) => {
         factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
           const parseMessage = JSON.parse(chatMessage.body);
           console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
-          if (parseMessage.expireFlag === "Y") {
-            customAxios
-              .post("/picker/chat-end", getRoomId)
-              .then(() => {
-                console.log("요청 성공:", "나가기 성공");
-                // 요청이 성공했을 때 실행할 코드 작성
-                dispatch(chatActions.callRoomID(""));
-              })
-              .catch(() => {
-                console.error("요청 실패:", "나가기 실패");
-                // 요청이 실패했을 때 실행할 코드 작성
-              });
-            handleExpireMessage();
-            setReceivedMessages((prevMessages) => [
-              ...prevMessages,
-              { sender: "system", message: "상대방이 대화를 나갔습니다." },
-            ]);
-          } else {
-            showMessage(parseMessage);
-          }
+          // if (parseMessage.expireFlag === "Y") {
+          //   try {
+          //     showMessage(parseMessage);
+          //     customAxios
+          //       .post("/picker/chat-end", getRoomId)
+          //       .then(() => {
+          //         console.log("요청 성공:", "나가기 성공");
+          //         // 요청이 성공했을 때 실행할 코드 작성
+          //         dispatch(chatActions.callRoomID(""));
+          //       })
+          //       .catch(() => {
+          //         console.error("요청 실패:", "나가기 실패");
+          //         // 요청이 실패했을 때 실행할 코드 작성
+          //       });
+          //     handleExpireMessage();
+          //   } catch {
+          //     return;
+          //   }
+          // }
+          // else {
+          showMessage(parseMessage);
+          // }
         });
       });
     };
@@ -107,7 +110,7 @@ const CreateReadChat = ({ isModalState }) => {
   }, [getRoomId]);
 
   const joinChatRoom = () => {
-    if (stompClient) {
+    if (stompClient && getRoomId !== null) {
       stompClient.send(
         "/pub/chat/publish",
         {},
@@ -133,6 +136,7 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const declare = () => {
+    // setShowExitConfirmationModal(false);
     dispatch(chatActions.updateChatModalState(!isModalState));
     const requestBody = {
       roomId: getRoomId,
@@ -141,18 +145,18 @@ const CreateReadChat = ({ isModalState }) => {
     // 상대에게 메시지 만료시켜서 보냄 (ExpireFlag : Y)
     const exitChatRoom = () => {
       if (stompClient !== null) {
-        console.log("나가요!!!");
         stompClient.send(
           "/pub/chat/publish",
           {},
           JSON.stringify({
             roomId: getRoomId,
-            sender: opponent,
-            message: "",
+            sender: "System",
+            message: "상대방이 채팅방을 나갔습니다.",
             sendTime: "",
             expireFlag: "Y",
           })
         );
+        console.log("나가요!!!");
       } else {
         console.log("STOMP 연결이 없거나 이미 연결이 종료되었습니다.");
       }
@@ -195,15 +199,15 @@ const CreateReadChat = ({ isModalState }) => {
         className={classes.chatMain}
       >
         <div className={classes.chatHeader}>
-          <button onClick={() => handleExitConfirmation()} disabled={showExitConfirmationModal}>
+          <button onClick={() => declare()}>
             <img src="img/cancel.png" alt="나가기" />
           </button>
           <h4 className={classes.time}>9:49</h4>
           <div className={classes.headerRight}>
-            <button className={classes.siren} disabled={showExitConfirmationModal}>
+            <button className={classes.siren}>
               <img src="img/siren.png" alt="신고" />
             </button>
-            <button onClick={() => chatPop()} className={classes.downBtn} disabled={showExitConfirmationModal}>
+            <button onClick={() => chatPop()} className={classes.downBtn}>
               <img src="img/down.png" alt="내리기" />
             </button>
           </div>
@@ -224,12 +228,13 @@ const CreateReadChat = ({ isModalState }) => {
                       )}
                       {EmojiForChat !== null ? (
                         <li className={classes.nickName} key={uuid()}>
-                          {getNickName}
+                          {message.sender === "System" ? "관리자" : getNickName}
                         </li>
                       ) : (
-                        <li className={classes.nickName}>상대방</li>
+                        <li className={classes.nickName}>{message.sender === "System" ? "관리자" : "상대방"}</li>
                       )}
                     </div>
+
                     <div className={classes.otherMessage}>{message.message}</div>
                   </>
                 )}
@@ -247,10 +252,16 @@ const CreateReadChat = ({ isModalState }) => {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                joinChatRoom(); // 엔터 키를 눌렀을 때 메시지 전송
+                if (!message.trim()) {
+                  toast.error("입력하세요", {
+                    id: "textareaIsEmpty",
+                  });
+                } else {
+                  joinChatRoom(); // 엔터 키를 눌렀을 때 메시지 전송
+                }
               }
             }}
-            disabled={showExitConfirmationModal}
+            // disabled={showExitConfirmationModal}
           />
           <button onClick={() => joinChatRoom()} />
         </div>
