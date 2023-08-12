@@ -98,15 +98,16 @@ const Header = () => {
       .catch(error => {
         console.log(error)
       })
+  }, []);
 
-    // 로컬스토리지에서 사용자가 설정한 거리 가져오기
+  // 로컬스토리지에서 사용자가 설정한 거리 가져오기
+  useEffect(() => {
     const localDist = localStorage.getItem('distance')
     if (localDist === null) {
       localStorage.setItem('distance', 50)
     } else {
       setSelectedDistance(parseInt(localDist));
     }
-
   }, [selectedDistance]);
 
   // 뒤로가기 버튼
