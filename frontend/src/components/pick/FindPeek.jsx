@@ -50,7 +50,7 @@ const FindPeek = () => {
       <div className={classes.ParentreloadBtn}>
         {/* 버튼 클릭 시 handleEmojiCall 함수를 호출 */}
         <button className={classes.reloadBtn} onClick={() => emojiCall(myPos)}>
-          <img src="./img/reloadBlue.png" alt="새로고침" />
+          <img src="./img/redheart.png" alt="새로고침" />
           피크 찾기
         </button>
       </div>

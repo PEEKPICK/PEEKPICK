@@ -89,7 +89,7 @@ const ModalComp = () => {
 
   // 퍼센트 창이 바로 반응하도록, 마운트 추가
   useEffect(() => {
-    setProcessBar((likeCount / (likeCount + disLikeCount)) * 100);
+    setProcessBar(Math.floor((likeCount / (likeCount + disLikeCount)) * 100));
   }, [likeCount, disLikeCount]);
 
 
@@ -196,7 +196,7 @@ const ModalComp = () => {
                   :
                   <img src="img/Like_Off.png" alt="따봉" onClick={likeTouch} />
               }
-              <span>{likeCount}</span>
+
             </div>
             <div className={classes.likes}>
               {
@@ -206,7 +206,7 @@ const ModalComp = () => {
                   :
                   <img src="img/DisLike_Off.png" alt="우우" onClick={hateTouch} />
               }
-              <span>{disLikeCount}</span>
+
             </div>
 
           </div>
@@ -214,9 +214,13 @@ const ModalComp = () => {
             {
               likeCount || disLikeCount
                 ?
-                <progress value={processBar} min="0" max="100" className={classes.progress}>{processBar}%</progress>
+                <div className={classes.bottomvalue}>
+                  <span>{processBar}%</span>
+                <progress value={processBar} min="0" max="100" className={classes.progress}></progress>
+                </div>
                 :
                 <span>아직 아무도 좋아요 싫어요를 하지 않았어요!</span>
+
             }
           </div>
         </Modal>
