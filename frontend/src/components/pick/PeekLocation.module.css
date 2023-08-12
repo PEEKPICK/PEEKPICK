@@ -1,0 +1,59 @@
+.emojiArea {
+  margin-top: 8rem;
+  margin-left: 2rem;
+  height: 20rem;
+  width: 20rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 7x7 격자 생성 */
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+  transform: rotate(30deg); /* 다이아몬드 회전 */
+  /* border: 1px solid black */
+}
+
+.EmojiBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* 버튼을 격자 칸에 꽉 채우도록 설정 */
+  height: 100%;
+  border: none;
+  cursor: pointer;
+  background: none;
+  transform: rotate(-30deg); /* 다이아몬드 회전 */
+}
+
+.EmojiImg {
+  object-fit: contain;
+  transition: transform 0.3s ease;
+  width: 4em;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  65% {
+    opacity: 0.65;
+    transform: scale(1.01);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* 이미지 위에 마우스를 올렸을 때 크기 변화 적용 */
+.EmojiImg:hover {
+  transform: scale(1.5); /* 1.2배 크기로 확대 */
+}
+
+/* 마우스가 이미지 위에서 나갔을 때 원래 크기로 돌아가기 */
+.EmojiImg:not(:hover) {
+  transform: scale(1); /* 원래 크기로 설정 */
+}

@@ -1,0 +1,178 @@
+.chatMain {
+  background-color: rgb(243, 235, 255);
+  position: relative;
+  margin: 10% 3%;
+  padding: 5% 4%;
+  height: 88vh;
+  border-radius: 2rem 2rem 2rem 2rem;
+  overflow: scroll;
+  box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
+  font-size: 0.875rem;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* 상단 정보 부분 */
+.chatHeader {
+  color: #7d00ff;
+  font-size: 1.3rem;
+  font-weight: 700;
+  display: flex;
+  padding: 0 3%;
+}
+
+.chatHeader button {
+  border: none;
+  background-color: rgb(243, 235, 255);
+}
+.chatHeader * {
+  background-color: rgb(243, 235, 255);
+}
+.time {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: none;
+  margin-left: 30%;
+}
+.headerRight {
+  display: flex;
+  width: 50%;
+}
+.siren {
+  margin-left: 50%;
+}
+
+.downBtn {
+  margin-left: 10%;
+}
+/* 모달 중간선  */
+.divider {
+  margin-top: 3%;
+  display: block;
+  height: 0.2rem;
+  width: 100%;
+  background-color: #7d00ff;
+}
+/* 채팅 보내기 */
+.message {
+  color: black;
+}
+.sendBar {
+  position: relative;
+  bottom: 0;
+  left: 4%;
+  height: 4.5%;
+  width: 90%;
+  display: flex;
+  padding: 1%;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 1rem;
+  background-color: rgb(255, 255, 255);
+}
+
+.sendBar input {
+  font-size: 1rem;
+  flex: 1;
+  padding: 5px;
+  width: 100%;
+  margin-left: 3%;
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(255, 255, 255);
+  outline: none;
+  /* border: 1px solid black; */
+}
+
+.sendBar button {
+  background-image: url("/public/img/send.png");
+  background-repeat: no-repeat;
+  background-position: 50% center;
+  margin-right: 1vh;
+  padding-right: 5vh;
+  padding-top: 4vh;
+  border: none;
+  background-color: rgb(255, 255, 255);
+}
+/* 메시지 버블 */
+.selfMessage {
+  display: flex;
+  flex-direction: row-reverse;
+  background-color: rgb(123, 0, 255, 0.55);
+  padding: 0.7rem 1.3rem;
+  margin-left: auto;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  background-color: #ffffff;
+
+  width: fit-content;
+  border-radius: 1rem 0.3rem 1rem 1rem;
+  word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
+}
+
+.otherMessage {
+  display: flex;
+  background-color: #e0e0e0;
+  border-radius: 0.625rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.3rem;
+  padding: 0.7rem 1.3rem;
+  width: fit-content;
+  margin-left: 2rem;
+  border-radius: 0.3rem 1rem 1rem 1rem;
+  word-wrap: break-word; /* 긴 메시지가 풍선을 벗어나지 않도록 줄 바꿈 설정 */
+}
+
+.opponentMain {
+  display: flex;
+}
+.nickName {
+  display: flex;
+  list-style: none;
+  font-size: 1rem;
+  align-items: center;
+  margin-left: 0.5rem;
+  margin-bottom: -0.5rem;
+}
+.otherIcon {
+  display: flex;
+  border-radius: 0.625rem;
+  width: 9%;
+}
+
+.chat {
+  margin-top: 4%;
+  margin-bottom: 7%;
+  height: 74vh;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* 나갈꺼야? */
+.exitConfirmationModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}

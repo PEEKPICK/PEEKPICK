@@ -1,0 +1,77 @@
+.container {
+  /* position: fixed; */
+  width: 90%;
+  height: auto;
+  display: inline-block;
+  z-index: 99;
+  
+}
+
+.navibar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  background-color: white;
+  border-radius: 5vh;
+  border: 0;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
+  border-color: rgba(125, 0, 255);
+  height: auto;
+  width: 100%;
+  z-index: 10;
+}
+
+.navibar div {
+  text-align: center;
+  justify-content: center;
+  padding: 5%;
+  margin: 5%;
+  text-decoration: none;
+  border-radius: 5vh;
+}
+
+.navibar div img {
+  max-width: 100%;
+  height: auto;
+}
+
+.navibar a {
+  text-decoration: none;
+}
+
+.on {
+  background-color: rgba(125, 0, 225);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
+  color: white;
+}
+
+.alert {
+  position: fixed;
+  display: grid;
+  grid-template-columns: 1fr 7fr 1fr;
+  padding: 4% 0% 9% 0%;
+  bottom: 10%;
+  width: 90%;
+  justify-items: center;
+  border: 1px solid;
+  border-bottom: none;
+  border-color: rgba(125, 0, 225, 1);
+  border-top-left-radius: 3vh;
+  border-top-right-radius: 3vh;
+  z-index: -1;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.upBtn {
+  background-color: rgba(255, 255, 255, 0.1);
+  width: 2rem;
+  margin-right: 100%;
+  border: none;
+}
+.alert img {
+  width: 50%;
+}
+
+.alert span {
+  justify-self: start;
+  align-self: center;
+}
