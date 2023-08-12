@@ -23,10 +23,15 @@ const CreateReadChat = ({ isModalState }) => {
   //채팅 내리기
   const messagesEndRef = useRef(null);
   //나가기
-  const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
+  // const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
   useEffect(() => {
-    setShowExitConfirmationModal(false);
+    // setShowExitConfirmationModal(false);
   }, []);
+  // 채팅 시간
+  const [timeLeft, setTimeLeft] = useState(0);
+  const createTime = useSelector((state) => state.roomId.createTime);
+  const endTime = useSelector((state) => state.roomId.endTime);
+
   const chatPop = () => {
     console.log("getRoomId", getRoomId);
     console.log("opponent", opponent);
@@ -38,24 +43,18 @@ const CreateReadChat = ({ isModalState }) => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
 
-  const [timeLeft, setTimeLeft] = useState(0);
-  const createTime = useSelector((state) => state.roomId.createTime);
-  const endTime = useSelector((state) => state.roomId.endTime);
-
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
-    const sec = seconds % 60;
+    const sec = Math.floor(seconds % 60);
     return `${minutes}:${sec}`;
   };
 
   useEffect(() => {
-    console.log(createTime)
-    console.log(
-      
-    )
+    console.log(createTime);
+    console.log();
     if (createTime && endTime) {
       const koreaTime = new Date(endTime);
-      koreaTime.setHours(koreaTime.getHours() + 9); 
+      koreaTime.setHours(koreaTime.getHours() + 9);
       setTimeLeft((koreaTime - new Date()) / 1000);
     }
   }, [createTime, endTime]);
@@ -67,8 +66,7 @@ const CreateReadChat = ({ isModalState }) => {
       }, 1000);
 
       return () => clearInterval(timerId);
-    }
-    else if (timeLeft === 0) {
+    } else if (timeLeft === 0) {
       setTimeLeft("Time's up!");
     }
   }, [timeLeft]);
@@ -81,9 +79,9 @@ const CreateReadChat = ({ isModalState }) => {
   //   }
   // }, [getRoomId, EmojiForChat]);
 
-  const handleExitConfirmation = () => {
-    setShowExitConfirmationModal(true); // 모달을 열기 위해 상태를 업데이트
-  };
+  // const handleExitConfirmation = () => {
+  // setShowExitConfirmationModal(true); // 모달을 열기 위해 상태를 업데이트
+  // };
 
   useEffect(() => {
     const connect = () => {
@@ -136,9 +134,9 @@ const CreateReadChat = ({ isModalState }) => {
   //   /* eslint-disable-next-line */
   // }, []);
 
-  const handleExpireMessage = () => {
-    dispatch(chatActions.resetState());
-  };
+  // const handleExpireMessage = () => {
+  //   dispatch(chatActions.resetState());
+  // };
 
   useEffect(() => {
     setReceivedMessages([]); // roomId가 변경될 때마다 배열 초기화
@@ -171,6 +169,7 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const declare = () => {
+    setTimeLeft(0);
     // setShowExitConfirmationModal(false);
     dispatch(chatActions.updateChatModalState(!isModalState));
     const requestBody = {
@@ -233,18 +232,18 @@ const CreateReadChat = ({ isModalState }) => {
         contentLabel="Selected Emoji Modal"
         className={classes.chatMain}
       >
-       <div className={classes.chatHeader}>
-        <button onClick={() => declare()}>
-          <img src="img/cancel.png" alt="나가기" />
-        </button>
-        <h4 className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</h4>
-        <button className={classes.siren}>
-          <img src="img/siren.png" alt="신고" />
-        </button>
-        <button onClick={() => chatPop()}>
-          <img src="img/down.png" alt="내리기" />
-        </button>
-      </div>
+        <div className={classes.chatHeader}>
+          <button onClick={() => declare()}>
+            <img src="img/cancel.png" alt="나가기" />
+          </button>
+          <p className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</p>
+          <button className={classes.siren}>
+            <img src="img/siren.png" alt="신고" />
+          </button>
+          <button onClick={() => chatPop()}>
+            <img src="img/down.png" alt="내리기" />
+          </button>
+        </div>
         <div className={classes.divider} />
         <div>
           <ul id="messageList" className={classes.chat}>
