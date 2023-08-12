@@ -40,8 +40,9 @@ const ModalWrite = ({emojiCall}) => {
     f.append("longitude",userPos.point.x );
     f.append("latitude", userPos.point.y);
     f.append("img", imgData);
-    // console.log("글쓴 X위치",userPos.point.x);
-    customAxios.post("/peek/write", f)
+    
+    setTimeout(() => {
+      customAxios.post("/peek/write", f)
       .then((response) => {
         console.log(response);
         toast.success("PEEK 성공");
@@ -59,6 +60,8 @@ const ModalWrite = ({emojiCall}) => {
         toast.error("ERROR");
         dispatch(modalsActions.closeModal())
       })
+    }, 1000);
+   
   }
   const imgAccept = (event) => {
     const selectedImage = event.target.files[0];
