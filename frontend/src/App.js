@@ -45,7 +45,7 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
-  const distanceValue = useSelector((state) => state.location.distance);
+  const distanceValue = useSelector((state) => state.location.userPos.distance);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
   const getNickName = useSelector((state) => state.roomId.nickName);
 
