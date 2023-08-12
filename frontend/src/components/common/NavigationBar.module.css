@@ -1,11 +1,10 @@
 .container {
-  position: fixed;
-  bottom: 5%;
+  /* position: fixed; */
   width: 90%;
-  left: 5%;
   height: auto;
   display: inline-block;
   z-index: 99;
+  
 }
 
 .navibar {
