@@ -29,6 +29,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastNotification from "./components/pick/ToastNotification";
 import { chatActions } from "./store/chatSlice";
+import { modalActions } from "./store/modalSlice";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -211,6 +212,8 @@ function App() {
               expireFlag: "",
               hideProgressBar: true,
             });
+            dispatch(chatActions.updateChatModalState(true));
+            dispatch(modalActions.closeModal());
           }
         });
       } catch (error) {
