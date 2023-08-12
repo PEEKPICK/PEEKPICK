@@ -145,7 +145,7 @@ const Header = () => {
           <img src="/img/distance.png" alt="거리조절버튼" onClick={() => setIsDistance(true)} />
         </button>
         <button className={classes.button} onClick={() => setIsWorldMap(true)}>
-          <img src="/img/aram.png" alt="알림버튼" />
+          <img src="/img/earth.png" alt="알림버튼" />
         </button>
       </div>
       {isDistance && (

@@ -221,11 +221,15 @@ progress {
   -webkit-appearance: none;
   appearance: none;
   width: 80%;
+  color: white;
+  margin-bottom: 5%;
 }
 
 ::-webkit-progress-bar {
   background-color: lightgray;
   border-radius: 5px;
+  overflow: hidden;
+  height: 15px;
 }
 
 ::-webkit-progress-value {
@@ -258,4 +262,12 @@ progress {
   display: flex;
   flex-wrap: wrap;
   margin-left: 1.5%;
+}
+
+.bottomvalue{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

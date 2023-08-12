@@ -38,6 +38,7 @@
 
 .reloadBtn img {
   margin-right: 0.5rem;
+  width: 1.3rem;
 }
 .reloadBtn:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
