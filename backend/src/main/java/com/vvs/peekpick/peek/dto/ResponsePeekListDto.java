@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ResponsePeekListDto {
     private Long peekId;
+    private Double distance;
     private boolean special;
     private boolean viewed;
 }

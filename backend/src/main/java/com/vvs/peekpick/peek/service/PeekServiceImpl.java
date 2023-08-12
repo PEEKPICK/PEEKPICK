@@ -47,22 +47,22 @@ public class PeekServiceImpl implements PeekService {
             Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
 
             // 해당 원 안에 위치하는 PeekLocation 값들
-            List<String> nearPeekIds = peekRedisService.getNearLocation(circle.getCenter(), circle.getRadius().getValue());
+            List<PeekNearSearchDto> nearPeeks = peekRedisService.getNearLocation(circle.getCenter(), circle.getRadius().getValue());
 
             // 모든 값 가져온 뒤
             List<ResponsePeekListDto> allPeeks = new ArrayList<>();
-            for (String nearPeekId : nearPeekIds) {
-                Long peekId = Long.parseLong(nearPeekId);
-
+            for (PeekNearSearchDto nearPeek: nearPeeks) {
+                Long peekId = Long.parseLong(nearPeek.getPeekId());
+                Double distance = nearPeek.getDistance();
                 PeekRedisDto peekRedisDto = peekRedisService.getPeekValueOps(peekId);
-                System.out.println(peekRedisDto);
-                System.out.println(Duration.between(peekRedisDto.getWriteTime(), peekRedisDto.getFinishTime()).toMinutes());
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
+                // 개발 완료 시 아래 로직을 여기 감싸줄 예정
 //                if(peekRedisDto.isSpecial() | !isViewed) {
 //
 //                }
                 ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
                         .peekId(peekRedisDto.getPeekId())
+                        .distance(distance)
                         .special(peekRedisDto.isSpecial())
                         .viewed(isViewed)
                         .build();

@@ -1,5 +1,6 @@
 package com.vvs.peekpick.peek.service;
 
+import com.vvs.peekpick.peek.dto.PeekNearSearchDto;
 import com.vvs.peekpick.peek.dto.PeekReactionCntDto;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import org.springframework.data.geo.Circle;
@@ -16,7 +17,7 @@ public interface PeekRedisService {
     PeekRedisDto getPeek(Long peekId);
     Long getPeekTtl(Long peekId);
     void setPeekLocation(double lon, double lat, Long peekId);
-    List<String> getNearLocation(Point point, double distance);
+    List<PeekNearSearchDto> getNearLocation(Point point, double distance);
     void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto, Long ttl);
     PeekRedisDto getPeekValueOps(Long peekId);
     void setViewedByMember(Long memberId, Long peekId);

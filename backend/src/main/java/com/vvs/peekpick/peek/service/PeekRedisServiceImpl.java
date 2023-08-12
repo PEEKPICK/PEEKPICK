@@ -1,6 +1,7 @@
 package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.Peek;
+import com.vvs.peekpick.peek.dto.PeekNearSearchDto;
 import com.vvs.peekpick.peek.dto.PeekReactionCntDto;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import lombok.RequiredArgsConstructor;
@@ -113,13 +114,27 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public List<String> getNearLocation(Point point, double distance) { //GeoResults<RedisGeoCommands.GeoLocation<String>>
-        List<String> nearPeekIds = new ArrayList<>();
-        GeoResults<RedisGeoCommands.GeoLocation<String>> allLocations = geoOps.radius(PEEK_LOCATION_REDIS, new Circle(new Point(point.getX(), point.getY()), new Distance(distance, RedisGeoCommands.DistanceUnit.METERS)));
+    public List<PeekNearSearchDto> getNearLocation(Point point, double distance) { //GeoResults<RedisGeoCommands.GeoLocation<String>>
+        //List<String> nearPeekIds = new ArrayList<>();
+        List<PeekNearSearchDto> peekNearSearchDtoList = new ArrayList<>();
+        RedisGeoCommands.GeoRadiusCommandArgs commandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs()
+                .includeCoordinates().includeDistance().sortAscending(); // .includeDistance()를 사용하여 WITHDIST 옵션을 추가
+
+        GeoResults<RedisGeoCommands.GeoLocation<String>> allLocations = geoOps.radius(
+                PEEK_LOCATION_REDIS,
+                new Circle(new Point(point.getX(), point.getY()), new Distance(distance, RedisGeoCommands.DistanceUnit.METERS)),
+                commandArgs
+        );
+
         allLocations.forEach(location -> {
-            nearPeekIds.add(location.getContent().getName());
+            PeekNearSearchDto peekNearSearchDto = PeekNearSearchDto
+                    .builder()
+                    .peekId(location.getContent().getName())
+                    .distance(location.getDistance().getValue())
+                    .build();
+            peekNearSearchDtoList.add(peekNearSearchDto);
         });
-        return nearPeekIds;
+        return peekNearSearchDtoList;
     }
 
     @Override

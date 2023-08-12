@@ -199,7 +199,6 @@ public class PickerServiceImpl implements PickerService {
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
         // 현재위치로부터 반경 Distance(m)에 있는 Picker 리스트 조회
         GeoResults<RedisGeoCommands.GeoLocation<String>> radius = geoOperations.radius(CONNECT_SESSION, new Circle(picker.getPoint(), picker.getDistance()));
-
         HashSet<String> pickerList = new HashSet<>();
 
         // 반경 이내에 있는 Picker 인원 수
