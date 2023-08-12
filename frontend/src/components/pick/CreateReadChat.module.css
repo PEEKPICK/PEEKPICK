@@ -175,6 +175,8 @@
 /* 나갈꺼야? */
 .exitConfirmationModal {
   position: fixed;
+  width: 60%;
+  height: 20%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

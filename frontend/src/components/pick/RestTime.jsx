@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 
 const RestTime = () => {
   const [timeLeft, setTimeLeft] = useState(0);
+
+  // Mock values for createTime and endTime
   const createTime = useSelector((state) => state.roomId.createTime);
   const endTime = useSelector((state) => state.roomId.endTime);
 
@@ -36,7 +38,7 @@ const RestTime = () => {
 
   return (
     <>
-      <div>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div>
+      <p>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</p>
     </>
   );
 };

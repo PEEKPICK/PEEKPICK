@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
@@ -12,6 +13,7 @@ const ModalComp = () => {
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
+  const [isPickButtonDisabled, setPickButtonDisabled] = useState(false); // 버튼 활성화 여부 상태 추가
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
@@ -19,6 +21,12 @@ const ModalComp = () => {
   };
   //채팅요청
   const plzChat = () => {
+    if (!isPickButtonDisabled) {
+      setPickButtonDisabled(true); // 버튼 비활성화
+      setTimeout(() => {
+        setPickButtonDisabled(false); // 일정 시간(15초) 후에 버튼 다시 활성화
+      }, 15000); // 15초
+    }
     customAxios.get(`/picker/chat-request/${isSelectedEmoji.avatarId}`).then((response) => {
       console.log(response.data.message);
       console.log("aaa", isSelectedEmoji);
@@ -28,7 +36,7 @@ const ModalComp = () => {
         position: "top-right",
         closeOnClick: true,
         draggable: false,
-        autoClose: 1500,
+        autoClose: 1650,
         className: "toast-message",
         hideProgressBar: true,
       });
@@ -84,9 +92,15 @@ const ModalComp = () => {
             </div>
           </div>
           <div className={classes.pickWrap}>
-            <button className={classes.pick} onClick={() => plzChat()}>
-              PICK
-            </button>
+            {isPickButtonDisabled ? (
+              <div className={classes.pickwaiting}>
+                <div className={classes.waiting}> </div>
+              </div>
+            ) : (
+              <button className={classes.pick} onClick={plzChat} disabled={isPickButtonDisabled}>
+                PICK
+              </button>
+            )}
           </div>
         </Modal>
       )}

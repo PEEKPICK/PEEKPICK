@@ -27,10 +27,11 @@ const CustomToast = ({ message, senderId, requestTime }) => {
       const opponent = response1.data.data.opponent;
       const createTime = response1.data.data.createTime;
       const endTime = response1.data.data.endTime;
-
+      console.log("createTime", createTime);
+      console.log("endTime", endTime);
       dispatch(chatActions.callRoomID(roomId));
-      dispatch(chatActions.updateOpponent(opponent));
       dispatch(chatActions.updateConnectState(true));
+      dispatch(chatActions.updateOpponent(opponent));
       dispatch(chatActions.updateEndTime(endTime));
       dispatch(chatActions.updateTime(createTime));
       console.log("roomId보냄", roomId);
