@@ -40,7 +40,7 @@ const Header = () => {
       distance: dist,
     };
 
-    dispatch(locationActions.updateLoc(sendToData));
+    dispatch(locationActions.updateDist(sendToData));
   };
 
   // 캐러셀 세팅
