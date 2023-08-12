@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import classes from "./ToastNotification.module.css";
 import { customAxios } from "../../api/customAxios";
 import { chatActions } from "../../store/chatSlice";
+// import { modalActions } from "../../store/modalSlice";
 const CustomToast = ({ message, senderId, requestTime }) => {
   const dispatch = useDispatch();
   const getOpponent = useSelector((state) => state.roomId.opponent);
@@ -24,10 +25,14 @@ const CustomToast = ({ message, senderId, requestTime }) => {
 
       const roomId = response1.data.data.roomId;
       const opponent = response1.data.data.opponent;
+      const createTime = response1.data.data.createTime;
+      const endTime = response1.data.data.endTime;
 
       dispatch(chatActions.callRoomID(roomId));
       dispatch(chatActions.updateOpponent(opponent));
       dispatch(chatActions.updateConnectState(true));
+      dispatch(chatActions.updateEndTime(endTime));
+      dispatch(chatActions.updateTime(createTime));
       console.log("roomId보냄", roomId);
       console.log("opponen보냄", getOpponent);
 
@@ -43,6 +48,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
       console.error(error);
     }
     toast.dismiss({ containerId: "an Id" });
+    dispatch(chatActions.updateChatModalState(true));
   };
   // 거절
   const handleReject = async () => {
