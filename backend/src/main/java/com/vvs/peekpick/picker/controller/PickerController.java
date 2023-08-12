@@ -1,39 +1,110 @@
 package com.vvs.peekpick.picker.controller;
 
+import com.vvs.peekpick.picker.dto.ChatRequestDto;
+import com.vvs.peekpick.picker.dto.ChatResponseDto;
 import com.vvs.peekpick.picker.dto.ConnectingPickerDto;
 import com.vvs.peekpick.picker.dto.SearchPickerDto;
+import com.vvs.peekpick.picker.service.ChatService;
 import com.vvs.peekpick.picker.service.PickerService;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/picker")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class PickerController {
 
     private final PickerService pickerServiceImpl;
+    private final ChatService chatServiceImpl;
 
-    /* 접속시 서버 세션에 내 정보 추가 */
-    @PostMapping("/connect")
-    public CommonResponse connectSession(@RequestBody ConnectingPickerDto picker){
+    /**
+     * 접속시 세션에 내 위치정보 저장
+     * @return CommonResponse
+     */
+    @PostMapping(value = "/connect")
+    public CommonResponse connectSession(@RequestBody ConnectingPickerDto picker, Authentication authentication){
+        picker.setAvatarId(Long.parseLong(authentication.getName()));
         return pickerServiceImpl.connectSession(picker);
     }
 
-    /* 접속 종료(종료, 홈으로 이동)시 세션에서 내 정보 제거 */
-    @PostMapping("/disconnect")
-    public CommonResponse disconnectSession(@RequestBody ConnectingPickerDto picker) {
-        return pickerServiceImpl.disconnectSession(picker);
+    /**
+     * 서버푸시를 위한 SSE Emitter 수신
+     * @Return SSE Emitter
+     */
+    @GetMapping(value = "/sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public SseEmitter sseConnect(Authentication authentication, HttpServletResponse response){
+        response.setHeader("X-Accel-Buffering", "no");
+        return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
     }
 
-    /* 내 위치로부터 설정한 거리 이내 PICKER 조회 */
+//    /**
+//     * 서버푸시 SSE Emitter 삭제
+//     * @return CommonResponse
+//     */
+//    @GetMapping("/sse/disconnect")
+//    public CommonResponse sseDisconnect(Authentication authentication){
+//        return pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
+//    }
+
+    /**
+     * 종료하거나 홈으로 이동시 세션에서 내 정보 제거 + SSE Emitter 제거
+     * @return CommonResponse
+     */
+    @Transactional
+    @GetMapping("/disconnect")
+    public CommonResponse disconnectSession(Authentication authentication) {
+        pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
+        return pickerServiceImpl.disconnectSession(Long.parseLong(authentication.getName()));
+    }
+
+    /**
+     * 내 위치로부터 설정한 거리 이내의 PICKER LIST 조회
+     * @return DataResponse<List>
+     */
     @PostMapping
-    public DataResponse<List> getPickerListByDistance(@RequestBody SearchPickerDto picker) {
+    public DataResponse<List> getPickerListByDistance(@RequestBody SearchPickerDto picker, Authentication authentication) {
+        picker.setAvatarId(Long.parseLong(authentication.getName()));
         return pickerServiceImpl.getPickerListByDistance(picker);
+    }
+
+    /**
+     * 채팅 요청 전송
+     * @return CommonResponse
+     */
+    @GetMapping("chat-request/{targetId}")
+    public CommonResponse chatRequestSend(@PathVariable Long targetId, Authentication authentication){
+        return pickerServiceImpl.chatRequestSend(targetId, Long.parseLong(authentication.getName()));
+    }
+
+    /**
+     * 채팅 요청 수락 또는 거절
+     * @Return CommonResponse
+     */
+    @PostMapping("chat-response")
+    public DataResponse<?> chatResponseReceive(@RequestBody ChatResponseDto chatResponseDto){
+        return pickerServiceImpl.chatResponseReceive(chatResponseDto);
+    }
+
+    /**
+     * 채팅방 나가기
+     *
+     * @param roomId - 나간 채팅방 ID
+     * @return CommonResponse
+     */
+    @PostMapping("chat-end")
+    public CommonResponse exitChatRoom(@RequestBody String roomId) {
+        return chatServiceImpl.exitChatRoom(roomId);
     }
 }

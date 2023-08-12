@@ -1,0 +1,54 @@
+.likehate {
+  display: flex;
+  margin-bottom: 2%;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.likehate a button{
+  /* margin 하면 빈공간에도 클릭이 된다 이거 내일 해보자 */
+  color: white;
+  background-color: rgba(125, 0, 225);
+  width: 100%;
+  border:0;
+  padding:0.4vh 0.6vh 0.4vh 0.6vh;
+  border-radius: 0.3vh;
+}
+
+.likehate button{
+  color: white;
+  background-color: rgba(125, 0, 225);
+  border:0;
+  padding:0.4vh 0.6vh 0.4vh 0.6vh;
+  border-radius: 0.3vh;
+}
+
+.likehate span{
+  margin-right: 3%;
+}
+
+.list{
+  width: 100%;
+}
+
+.itemWrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 5%;
+
+}
+
+.items {
+  font-size: small;
+  border: 0.5px solid;
+  border-color: rgba(125, 0, 225);
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  margin: 1vh;
+  width: 12vh;
+  height: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
