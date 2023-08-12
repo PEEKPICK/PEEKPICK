@@ -8,6 +8,7 @@ import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-hot-toast";
+import RestTime from "./RestTime";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -42,35 +43,6 @@ const CreateReadChat = ({ isModalState }) => {
   const handleCloseModal = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${minutes}:${sec}`;
-  };
-
-  useEffect(() => {
-    console.log(createTime);
-    console.log();
-    if (createTime && endTime) {
-      const koreaTime = new Date(endTime);
-      koreaTime.setHours(koreaTime.getHours() + 9);
-      setTimeLeft((koreaTime - new Date()) / 1000);
-    }
-  }, [createTime, endTime]);
-
-  useEffect(() => {
-    if (timeLeft > 0) {
-      const timerId = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-      }, 1000);
-
-      return () => clearInterval(timerId);
-    } else if (timeLeft === 0) {
-      setTimeLeft("Time's up!");
-    }
-  }, [timeLeft]);
-
   // useEffect(() => {
   //   if (getRoomId !== null) {
   //     setNickName(EmojiForChat.nickName);
@@ -233,20 +205,24 @@ const CreateReadChat = ({ isModalState }) => {
         className={classes.chatMain}
       >
         <div className={classes.chatHeader}>
-          <button onClick={() => declare()}>
+          <button onClick={() => declare()} className={classes.cancel}>
             <img src="img/cancel.png" alt="나가기" />
           </button>
-          <p className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</p>
-          <button className={classes.siren}>
-            <img src="img/siren.png" alt="신고" />
-          </button>
-          <button onClick={() => chatPop()}>
-            <img src="img/down.png" alt="내리기" />
-          </button>
+          {/* <div className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div> */}
+          {/* <p>Rest Time: {restTime}</p> */}
+          <RestTime />
+          <div className={classes.headerRight}>
+            <button className={classes.siren}>
+              <img src="img/siren.png" alt="신고" />
+            </button>
+            <button onClick={() => chatPop()} className={classes.downBtn}>
+              <img src="img/down.png" alt="내리기" />
+            </button>
+          </div>
         </div>
         <div className={classes.divider} />
-        <div>
-          <ul id="messageList" className={classes.chat}>
+        <div className={classes.chat}>
+          <ul id="messageList">
             {receivedMessages.map((message, index) => (
               <div className={classes.chatBubble} key={uuid()}>
                 {/* eslint-disable-next-line */}
@@ -295,7 +271,17 @@ const CreateReadChat = ({ isModalState }) => {
             }}
             // disabled={showExitConfirmationModal}
           />
-          <button onClick={() => joinChatRoom()} />
+          <button
+            onClick={() => {
+              if (message.trim()) {
+                joinChatRoom();
+              } else {
+                toast.error("입력하세요", {
+                  id: "textareaIsEmpty",
+                });
+              }
+            }}
+          />
         </div>
         {/* {showExitConfirmationModal && (
           <div className={classes.exitConfirmationModal}>

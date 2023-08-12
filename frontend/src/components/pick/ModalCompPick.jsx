@@ -12,7 +12,7 @@ const ModalComp = () => {
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
-  
+
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
     dispatch(chatActions.updateURL(isSelectedEmoji));
@@ -23,9 +23,7 @@ const ModalComp = () => {
       console.log(response.data.message);
       console.log("aaa", isSelectedEmoji);
       const nickNameSum = `${isSelectedEmoji.prefix.content} ${isSelectedEmoji.nickname}`;
-      const toastContent = (
-        <ToastNotification message={`${nickNameSum}님 에게 채팅을 요청했습니다.`} />
-      );
+      const toastContent = <ToastNotification message={`${nickNameSum}님 에게 채팅을 요청했습니다.`} />;
       toast(toastContent, {
         position: "top-right",
         closeOnClick: true,
@@ -47,11 +45,7 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img
-              src={isSelectedEmoji.emoji.animatedImageUrl}
-              alt="프로필"
-              className={classes.profileImg}
-            />
+            <img src={isSelectedEmoji.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
