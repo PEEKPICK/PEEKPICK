@@ -64,17 +64,22 @@ function App() {
       return token !== null;
     };
     setIsAuthenticated(checkTokenInLocalStorage());
-
-    // 이미지 우클릭 방지
+    
+    // 새로고침 방지 및 이미지 우클릭 방지
+    const preventReload = (e) => e.preventDefault();
     const preventImageContextMenu = (event) => {
       if (event.target.tagName === 'IMG') {
         event.preventDefault();
       }
     };
     window.addEventListener('contextmenu', preventImageContextMenu);
+    window.addEventListener("touchmove", preventReload, { passive: false })
     return () => {
       window.removeEventListener('contextmenu', preventImageContextMenu);
+      window.removeEventListener("touchmove", preventReload);
     }
+
+    
   }, []);
 
   //위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!
