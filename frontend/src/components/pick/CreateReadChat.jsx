@@ -220,6 +220,7 @@ const CreateReadChat = ({ isModalState }) => {
       contentLabel="Selected Emoji Modal"
       className={classes.chatMain}
     >
+
       <div className={classes.chatHeader}>
         <button onClick={() => declare()}>
           <img src="img/cancel.png" alt="나가기" />
@@ -244,7 +245,11 @@ const CreateReadChat = ({ isModalState }) => {
                 <>
                   <div className={classes.opponentMain}>
                     {EmojiForChat !== null && (
-                      <img src={EmojiForChat.emoji.imageUrl} alt="상대방" className={classes.otherIcon} />
+                      <img
+                        src={EmojiForChat.emoji.imageUrl}
+                        alt="상대방"
+                        className={classes.otherIcon}
+                      />
                     )}
                     {EmojiForChat !== null ? (
                       <li className={classes.nickName} key={uuid()}>

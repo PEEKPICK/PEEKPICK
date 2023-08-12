@@ -68,7 +68,6 @@ const CustomToast = ({ message, senderId, requestTime }) => {
 
   return (
     <div className={classes.toastMain}>
-      <img src="/img/infoRed.png" alt="" className={classes.icon} />
       <div className={classes.message}>{message}</div>
       {senderId && requestTime && (
         <>

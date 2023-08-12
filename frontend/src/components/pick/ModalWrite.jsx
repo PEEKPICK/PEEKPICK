@@ -3,8 +3,14 @@ import { customAxios } from "../../api/customAxios";
 import classes from './ModalWrite.module.css';
 import Modal from "react-modal";
 import { toast } from 'react-hot-toast';
+import { useSelector,useDispatch } from "react-redux";
+import { modalsActions } from "../../store/modalsSlice";
 
-const ModalWrite = ({ setWrite, write }) => {
+const ModalWrite = ({emojiCall}) => {
+  const isModalState = useSelector((state) => state.modals.isOpen);
+  const dispatch = useDispatch();
+  // 글 작성에 필요한 데이터
+  // 그냥 창을 닫았을 경우, 이 작업을 해주지 않으면, 다시 글 작성을 할 때, 데이터가 남아 있음.
   const [writeData, setWriteData] = useState("");
   const [imgData, setImgData] = useState("");
   const imageInput = useRef();
@@ -17,7 +23,7 @@ const ModalWrite = ({ setWrite, write }) => {
     setImgFile("");
     setWriteData("");
     setImgData("");
-    setWrite(!write);
+    dispatch(modalsActions.closeModal())
   }
   const postWrite = () => {
       // textarea에 입력 값이 없는 경우
@@ -40,7 +46,8 @@ const ModalWrite = ({ setWrite, write }) => {
         setImgFile("");
         setWriteData("");
         setImgData("");
-        setWrite(false);
+        dispatch(modalsActions.closeModal())
+        emojiCall();
       })
       .catch((response) => {
         setImgFile("");
@@ -48,7 +55,7 @@ const ModalWrite = ({ setWrite, write }) => {
         setImgData("");
         console.log(response);
         toast.error("ERROR");
-        setWrite(false);
+        dispatch(modalsActions.closeModal())
       })
   }
   const imgAccept = (event) => {
@@ -70,30 +77,34 @@ const ModalWrite = ({ setWrite, write }) => {
     imageInput.current.click();
   };
   return (
-    <Modal
-      isOpen={write}
-      onRequestClose={() => handleCloseModal()}
-      className={classes.modalMain}
-    >
-      <div className={classes.top}>
-        <span>피크 남기기</span>
-        <img src="img/cancel.png" alt="" onClick={handleCloseModal} />
-      </div>
-      <hr className={classes.hr} />
-      <div className={classes.content}>
-        <textarea onChange={handleWrite} className={classes.text} ></textarea>
-      </div>
-      <div className={classes.name}>
-        {imgData.name}
-      </div>
-      <div className={classes.imgthrow}>
-        <button onClick={onCickImageUpload} className={classes.btn}>이미지업로드</button>
-        <input ref={imageInput} type="file" accept="image/*" onChange={imgAccept} className={classes.imginput} />
-      </div>
-      <div className={classes.imgthrow}>
-        <button className={classes.button} onClick={postWrite}>입력 완료</button>
-      </div>
-    </Modal>
+    <>
+
+        <Modal
+          isOpen={isModalState}
+          onRequestClose={() => handleCloseModal()}
+          className={classes.modalMain}
+
+        >
+          <div className={classes.top}>
+            <span>흔적 남기기</span>
+            <img src="img/cancel.png" alt="" onClick={handleCloseModal} />
+          </div>
+          <hr className={classes.hr} />
+          <div className={classes.content}>
+            <textarea onChange={handleWrite} className={classes.text} ></textarea>
+          </div>
+          <div className={classes.name}>
+            {imgData.name}
+          </div>
+          <div className={classes.imgthrow}>
+            <button onClick={onCickImageUpload} className={classes.btn}>이미지업로드</button>
+            <input ref={imageInput} type="file" accept="image/*" onChange={imgAccept} className={classes.imginput} />
+          </div>
+          <div className={classes.imgthrow}>
+            <button className={classes.button} onClick={postWrite}>입력 완료</button>
+          </div>
+        </Modal>
+    </>
   );
 }
 

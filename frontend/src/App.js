@@ -2,8 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
-// import { useSelector } from "react-redux";
-
 // router import
 // 준형
 import Login from "./components/auth/Login";
@@ -47,6 +45,7 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
+  const distanceValue = useSelector((state) => state.location.distance);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
   const getNickName = useSelector((state) => state.roomId.nickName);
 
@@ -80,7 +79,7 @@ function App() {
               x: position.coords.longitude,
               y: position.coords.latitude,
             },
-            distance: 100000000,
+            distance: distanceValue,
           };
           // 위치 정보를 스토어에 저장
           dispatch(
@@ -102,7 +101,7 @@ function App() {
     };
     //초기 실행
     handlePosChange();
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, isAuthenticated, distanceValue]);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   const fetchData = async () => {
@@ -153,7 +152,7 @@ function App() {
                 position: "top-right",
                 closeOnClick: true,
                 draggable: false,
-                autoClose: 20000,
+                autoClose: 15000,
                 className: "toast-message",
               });
             });
@@ -166,7 +165,7 @@ function App() {
               position: "top-right",
               closeOnClick: true,
               draggable: false,
-              autoClose: 3000,
+              autoClose: 1500,
               className: "toast-message",
             });
           }
@@ -207,9 +206,10 @@ function App() {
               position: "top-right",
               closeOnClick: true,
               draggable: false,
-              autoClose: 1000,
+              autoClose: 1500,
               className: "toast-message",
               expireFlag: "",
+              hideProgressBar: true,
             });
           }
         });
