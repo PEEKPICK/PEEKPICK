@@ -44,7 +44,7 @@ public class PeekServiceImpl implements PeekService {
     public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
         try {
             // 반경 m로 원 생성
-            Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance(), RedisGeoCommands.DistanceUnit.METERS));
+            Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance()));
 
             // 해당 원 안에 위치하는 PeekLocation 값들
             List<PeekNearSearchDto> nearPeeks = peekRedisService.getNearLocation(circle.getCenter(), circle.getRadius().getValue());
@@ -125,6 +125,8 @@ public class PeekServiceImpl implements PeekService {
                     .viewed(false)
                     .build();
             log.info("작성 시간 : {}", time);
+            log.info("위도 {}", requestPeekDto.getLongitude());
+            log.info("경도 {}",requestPeekDto.getLatitude());
             //redis에 Peek Location 값 저장
             peekRedisService.setPeekLocation(requestPeekDto.getLongitude(), requestPeekDto.getLatitude(), peekId);
             //redis에 Peek 저장 & ttl 설정

@@ -65,7 +65,7 @@ pipeline {
         stage("be container run") {
             steps {
                 script {
-                    sh "docker run -d -p 8081:8081 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE}"
+                    sh "docker run -d -p 8081:8081 --name ${CONTAINER_NAME_BE} ${IMAGE_NAME_BE} -e TZ=Asia/Seoul"
                 }
             }
         }
