@@ -29,6 +29,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastNotification from "./components/pick/ToastNotification";
 import { chatActions } from "./store/chatSlice";
+import { modalActions } from "./store/modalSlice";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -45,7 +46,7 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
-  const distanceValue = useSelector((state) => state.location.distance);
+  const distanceValue = useSelector((state) => state.location.userPos.distance);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
   const getNickName = useSelector((state) => state.roomId.nickName);
 
@@ -181,12 +182,19 @@ function App() {
             const roomId = jsonData.roomId;
             const opponent = jsonData.opponent;
             console.log("수락roomId보냄: ", roomId);
+            const createTime = jsonData.createTime;
+            const endTime = jsonData.endTime;
+            console.log("createTime",createTime);
+            console.log("endTime",endTime);
             console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
+            dispatch(chatActions.updateEndTime(endTime))
+            dispatch(chatActions.updateTime(createTime))
+
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-              // console.log("response2", res);
+              console.log("response2", res);
               const opponentData = res.data.data;
               console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
@@ -204,6 +212,8 @@ function App() {
               expireFlag: "",
               hideProgressBar: true,
             });
+            dispatch(chatActions.updateChatModalState(true));
+            dispatch(modalActions.closeModal());
           }
         });
       } catch (error) {

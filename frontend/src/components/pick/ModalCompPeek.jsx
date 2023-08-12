@@ -2,7 +2,7 @@ import Modal from "react-modal";
 import { useSelector, useDispatch } from "react-redux";
 import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { customAxios } from "../../api/customAxios";
 
 
@@ -23,53 +23,46 @@ const ModalComp = () => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
-
-  const [timeLeft, setTimeLeft] = useState(""); 
+ 
   const [finishTime, setFinishTime] = useState(null);
-  const previousTimeLeft = useRef();
-
-
-  // finishTime 설정
+  const [timeLeft, setTimeLeft] = useState(0); // 초기값은 0으로 설정
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const sec = seconds % 60;
+    return `${hours}h ${minutes}m ${sec}s`;
+  };
+  
   useEffect(() => {
-    if (isSelectedEmoji) { 
-      const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
-      koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
-      setFinishTime(koreaTime);
-      setTimeLeft(''); // 초기 상태 설정 
-    }
-  }, [isSelectedEmoji]);
-
-  // 타이머 설정
-  useEffect(() => {
-    if (finishTime) {
-      if (previousTimeLeft.current) { 
-        setTimeLeft('');
+      if (isSelectedEmoji) { 
+          const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
+          koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
+          setFinishTime(koreaTime);
       }
+  }, [isSelectedEmoji]);
   
-      const calculateTimeLeft = () => {
-        const now = new Date(); 
-        const difference = finishTime - now;
-        console.log(now)
-        console.log(finishTime)
-  
-        if (difference > 0) {
-          const hours = Math.floor(difference / (1000 * 60 * 60));
-          const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-          previousTimeLeft.current = `${hours}h ${minutes}m ${seconds}s`;
-          setTimeLeft(previousTimeLeft.current);
-        } else {
-          setTimeLeft("Time's up!");
-          clearInterval(timer);
-        }
-      };
-    
-      const timer = setInterval(calculateTimeLeft, 1000);
-  
-      return () => clearInterval(timer);
-    }
+  useEffect(() => {
+      if (finishTime) {
+          const now = new Date();
+          const difference = finishTime - now;
+          const secondsLeft = Math.floor(difference / 1000);
+          
+          setTimeLeft(secondsLeft);
+      }
   }, [finishTime]);
   
+  useEffect(() => {
+      if (timeLeft > 0) {
+          const timerId = setInterval(() => {
+              setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+          }, 1000);
+  
+          return () => clearInterval(timerId); // 컴포넌트 unmount 시 타이머 제거
+      }
+      else if (timeLeft === 0) {
+          setTimeLeft("Time's up!");
+      }
+  }, [timeLeft]);
 
 
   
@@ -164,7 +157,9 @@ const ModalComp = () => {
               ) : (
                 <p className={classes.intro}>내용이 없습니다.</p>
               )}
-              <span className={classes.timer}>{timeLeft}</span>
+            <span className={classes.timer}>
+                {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
+            </span>
             </div>
           </div>
           <div className={classes.divider}></div>
