@@ -1,6 +1,6 @@
 # 부담없는 취향 공유 공간! PEEKPICK 👀
 <p align="center">
-<img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/9024a597-ed3a-4e9a-a674-2b6247cef849"/>
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/4084997a-567b-4812-96cd-54e1bced4a4c"/>
 </p>
 
 # 📌소개
@@ -125,11 +125,11 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 # 📚산출물
 ### 📗시스템 구성도
 <p align="center">
-<img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/076ecb66-a532-4523-aa3b-9924fadd1a77"> </p>
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/d9a927b6-7d1b-41de-81b9-400385444969"> </p>
 
 ### 📘ER Diagram
 <p align="center">
-<img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/e6f76d60-499a-4623-a3f6-61927cc551bc"> </p>
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/071b83cd-9b4b-45b9-a1e2-6d29f4bb6c93"> </p>
 
 ### 📙[API 명세](https://warm-care-7c5.notion.site/PeekPick-API-42f409b269504938bc89b940f62580dd)
 
@@ -142,7 +142,7 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 # 🤝협업
 ### 🔏Notion
 <p align="center">
-<img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/b01ddfbd-460f-48dc-b29c-a960fe08be4c"> </p>
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/05fe75df-e345-418e-8250-9748789e9ede"> </p>
 
 ### 🔑Commit Comvention 
 |태그|설명|예시|
