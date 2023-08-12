@@ -251,7 +251,7 @@ public class PeekServiceImpl implements PeekService {
             if (peekRedisService.getReactionMember(memberId, like, peekId)) {
                 peekRedisService.setPeekReactionOff(memberId, like, peekId);
                 if (peekRedisDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME).isAfter(LocalDateTime.now())) {
-                    updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
+                    updatedFinishTime = peekRedisDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME);
                 }
                 if(like) likeCnt--;
                 else disLikeCnt--;
