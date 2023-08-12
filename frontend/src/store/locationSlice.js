@@ -10,7 +10,7 @@ const locationSlice = createSlice({
         x: 0,
         y: 0,
       },
-      distance: 0,
+      distance: 50,
     },
   },
   reducers: {
