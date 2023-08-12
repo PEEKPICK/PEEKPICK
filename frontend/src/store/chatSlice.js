@@ -6,6 +6,7 @@ const chatSlice = createSlice({
     roomId: null,
     opponent: null,
     createTime: null,
+    endTime: null,
     chatModalState: false,
     connectState: false,
     opponentURL: null,
@@ -22,6 +23,9 @@ const chatSlice = createSlice({
     },
     updateTime: (state, action) => {
       state.createTime = action.payload;
+    },
+    updateEndTime: (state, action) => {
+      state.endTime = action.payload;
     },
     updateChatModalState: (state, action) => {
       state.chatModalState = action.payload;

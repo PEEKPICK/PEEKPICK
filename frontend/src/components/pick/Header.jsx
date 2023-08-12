@@ -11,7 +11,8 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import { authActions } from "../../store/authSlice";
+import { authActions } from '../../store/authSlice';
+import { locationActions } from '../../store/locationSlice';
 
 const Header = () => {
   // 상태관리
@@ -30,6 +31,17 @@ const Header = () => {
     location.pathname === "/peek"
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
+
+  // 거리조절 리덕스 변경
+  const changeDistance = (dist) => {
+    setSelectedDistance(dist);
+
+    const sendToData = {
+      distance: dist,
+    };
+    
+    dispatch(locationActions.updateDist(sendToData));
+  };
 
   // 캐러셀 세팅
   const settings = {
@@ -156,7 +168,7 @@ const Header = () => {
                   value="50"
                   name="debt-amount"
                   checked={selectedDistance === 50}
-                  onChange={() => setSelectedDistance(50)}
+                  onChange={() => changeDistance(50)}
                 />
                 <label htmlFor="1" data-debt-amount="50m"></label>
                 <input
@@ -165,7 +177,7 @@ const Header = () => {
                   value="100"
                   name="debt-amount"
                   checked={selectedDistance === 100}
-                  onChange={() => setSelectedDistance(100)}
+                  onChange={() => changeDistance(100)}
                 />
                 <label htmlFor="2" data-debt-amount="100m"></label>
                 <input
@@ -174,7 +186,7 @@ const Header = () => {
                   value="150"
                   name="debt-amount"
                   checked={selectedDistance === 150}
-                  onChange={() => setSelectedDistance(150)}
+                  onChange={() => changeDistance(150)}
                 />
                 <label htmlFor="3" data-debt-amount="150m"></label>
                 <input
@@ -183,7 +195,7 @@ const Header = () => {
                   value="200"
                   name="debt-amount"
                   checked={selectedDistance === 200}
-                  onChange={() => setSelectedDistance(200)}
+                  onChange={() => changeDistance(200)}
                 />
                 <label htmlFor="4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
