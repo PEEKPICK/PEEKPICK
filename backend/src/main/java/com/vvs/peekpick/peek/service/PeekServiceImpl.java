@@ -250,13 +250,16 @@ public class PeekServiceImpl implements PeekService {
             //사용가 해당 Peek의 react를 On -> Off
             if (peekRedisService.getReactionMember(memberId, like, peekId)) {
                 peekRedisService.setPeekReactionOff(memberId, like, peekId);
+                if (peekRedisDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME).isAfter(LocalDateTime.now())) {
+                    updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
+                }
                 if(like) likeCnt--;
                 else disLikeCnt--;
             }
             //사용가 해당 Peek의 react를 Off -> On
             else {
                 peekRedisService.setPeekReactionOn(memberId, like, peekId);
-                updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
+                    updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
                 if(like) likeCnt++;
                 else disLikeCnt++;
             }
