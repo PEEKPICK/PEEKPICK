@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from "react-router-dom";
 
 import { authActions } from '../../store/authSlice';
+import { locationActions } from '../../store/locationSlice';
 
 const Header = () => {
   // 상태관리
@@ -33,8 +34,6 @@ const Header = () => {
 
   // 거리조절 리덕스 변경
   const changeDistance = (dist) => {
-    localStorage.setItem('distance', dist);
-
     setSelectedDistance(dist);
 
     const sendToData = {
@@ -97,16 +96,7 @@ const Header = () => {
       .catch(error => {
         console.log(error)
       })
-
-    // 로컬스토리지에서 사용자가 설정한 거리 가져오기
-    const localDist = localStorage.getItem('distance')
-    if (localDist === null) {
-      localStorage.setItem('distance', 50)
-    } else {
-      setSelectedDistance(parseInt(localDist));
-    }
-
-  }, [selectedDistance]);
+  }, []);
 
   // 뒤로가기 버튼
   const moveBackHandler = () => {
@@ -169,7 +159,7 @@ const Header = () => {
                   value="50"
                   name="debt-amount"
                   checked={selectedDistance === 50}
-                  onChange={() => setSelectedDistance(50)}
+                  onChange={() => changeDistance(50)}
                 />
                 <label htmlFor="1" data-debt-amount="50m"></label>
                 <input
@@ -178,7 +168,7 @@ const Header = () => {
                   value="100"
                   name="debt-amount"
                   checked={selectedDistance === 100}
-                  onChange={() => setSelectedDistance(100)}
+                  onChange={() => changeDistance(100)}
                 />
                 <label htmlFor="2" data-debt-amount="100m"></label>
                 <input
@@ -187,7 +177,7 @@ const Header = () => {
                   value="150"
                   name="debt-amount"
                   checked={selectedDistance === 150}
-                  onChange={() => setSelectedDistance(150)}
+                  onChange={() => changeDistance(150)}
                 />
                 <label htmlFor="3" data-debt-amount="150m"></label>
                 <input
@@ -196,7 +186,7 @@ const Header = () => {
                   value="200"
                   name="debt-amount"
                   checked={selectedDistance === 200}
-                  onChange={() => setSelectedDistance(200)}
+                  onChange={() => changeDistance(200)}
                 />
                 <label htmlFor="4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
