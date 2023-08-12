@@ -40,7 +40,7 @@ const ModalWrite = ({emojiCall}) => {
     f.append("longitude",userPos.point.x );
     f.append("latitude", userPos.point.y);
     f.append("img", imgData);
-    
+
     setTimeout(() => {
       customAxios.post("/peek/write", f)
       .then((response) => {
@@ -60,7 +60,7 @@ const ModalWrite = ({emojiCall}) => {
         toast.error("ERROR");
         dispatch(modalsActions.closeModal())
       })
-    }, 1000);
+    }, 2000);
    
   }
   const imgAccept = (event) => {
