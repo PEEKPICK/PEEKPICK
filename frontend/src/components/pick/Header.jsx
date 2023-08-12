@@ -31,6 +31,19 @@ const Header = () => {
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
+  // 거리조절 리덕스 변경
+  const changeDistance = (dist) => {
+    localStorage.setItem('distance', dist);
+
+    setSelectedDistance(dist);
+
+    const sendToData = {
+      distance: dist,
+    };
+    
+    dispatch(locationActions.updateDist(sendToData));
+  };
+
   // 캐러셀 세팅
   const settings = {
     infinite: true,
@@ -84,7 +97,16 @@ const Header = () => {
       .catch(error => {
         console.log(error)
       })
-  }, []);
+
+    // 로컬스토리지에서 사용자가 설정한 거리 가져오기
+    const localDist = localStorage.getItem('distance')
+    if (localDist === null) {
+      localStorage.setItem('distance', 50)
+    } else {
+      setSelectedDistance(parseInt(localDist));
+    }
+
+  }, [selectedDistance]);
 
   // 뒤로가기 버튼
   const moveBackHandler = () => {
