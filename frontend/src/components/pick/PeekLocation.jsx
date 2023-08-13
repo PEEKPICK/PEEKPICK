@@ -8,16 +8,30 @@ import { customAxios } from "../../api/customAxios";
 
 const EmojiLocation = ({ findInfo }) => {
   const dispatch = useDispatch();
+  // const handleOpenPeekModal = (current, index) => {
+  //   const peekId = current.peekId;
+  //   document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
+
+
+  //   customAxios.get(`/peek/${peekId}?distance=${current.distance}`).then((res) => {
+  //     dispatch(modalActions.openPeekModal(res.data.data));
+  //     // dispatch(findPeekActions.toggleViewed(peekId));
+  //   })
+  // };
+
   const handleOpenPeekModal = (current, index) => {
     const peekId = current.peekId;
-    document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
-
-
+    
+    if (!current.admin) {
+      document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
+    }
+    
     customAxios.get(`/peek/${peekId}?distance=${current.distance}`).then((res) => {
       dispatch(modalActions.openPeekModal(res.data.data));
       // dispatch(findPeekActions.toggleViewed(peekId));
-    })
+    });
   };
+  
 
   const gridSize = 4; // 격자 크기 (4x4)
   const grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(false));
