@@ -22,7 +22,7 @@ const ChatPop = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
   return (
-    <div className={`${classes.alert} ${showChatPop ? classes.show : classes.hide}`}>
+    <div className={`${classes.alert} ${classes.show}`}>
       {getRoomId ? (
         <img src="img/infoRed.png" alt="" className={classes.infoPin} />
       ) : (

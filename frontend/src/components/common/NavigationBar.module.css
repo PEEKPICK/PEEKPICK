@@ -1,5 +1,8 @@
 .container {
   z-index: -1;
+  width: 95vw;
+  margin-left: 2vw;
+  max-width: 415px;
 }
 
 .navibar {
@@ -11,6 +14,7 @@
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-color: rgba(125, 0, 255);
   height: 4rem;
+  margin-left: 0.75vh;
 }
 
 .navibar div {
