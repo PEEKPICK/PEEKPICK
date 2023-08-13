@@ -6,9 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import common from './style/Common.module.css';
 import classes from './style/UserLikeOrHate.module.css';
 
+import { useState } from 'react';
+
 const UserLikeHate = () => {
   // 사용자 정보 불러오기
   const userInfo = useSelector(state => state.auth);
+  const [phone, setPhone] = useState('010-0000-0000');
 
   // 함수 정의
   const navigate = useNavigate();
@@ -25,12 +28,16 @@ const UserLikeHate = () => {
 
   // 백엔드로 정보 넘기고, welcome으로 이동
   const moveToWelcome = () => {
+    if (userInfo.phone !== '') {
+      setPhone(userInfo.phone);
+    }
+
     const dataToSend = {
       memberId: userInfo.memberId,
       email: userInfo.email,
       name: userInfo.name,
       gender: userInfo.gender,
-      phone: userInfo.phone,
+      phone: phone,
       birthday: userInfo.birthday,
       emojiId: userInfo.emojiId,
       prefixId: userInfo.prefixId,

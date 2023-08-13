@@ -23,4 +23,5 @@
   width: 9vh;
   height: 3.5vh;
   margin-top: 20%;
+  box-shadow: 0.1rem 0.1rem 0.15rem rgba(0, 0, 0, 0.25);
 }

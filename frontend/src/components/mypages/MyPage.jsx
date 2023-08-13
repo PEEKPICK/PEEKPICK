@@ -40,7 +40,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState(userInfo.nickname);
   const [prefix, setPrefix] = useState(userInfo.prefix);
   const [prefixId, setPrefixId] = useState(userInfo.prefixId);
-  const [moveEmoji,setMoveEmoji] = useState(userInfo.emojiMoveUrl);
+  const [moveEmoji, setMoveEmoji] = useState(userInfo.emojiMoveUrl);
 
   // 페이지 렌더링 시 작동
   useEffect(() => {
@@ -148,10 +148,10 @@ const MyPage = () => {
 
     fetchData(); // useEffect 내부에서 async 함수 호출
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch,useremoji]);
+  }, [dispatch, useremoji]);
   return (
     <div className={classes.mypage}>
-      {logoutView && <LogOut setLogoutView={setLogoutView}/>}
+      {logoutView && <LogOut setLogoutView={setLogoutView} />}
       {signoutView && <SignOut setSignoutView={setSignoutView} />}
       {nicknameView && <NickNameEdit setNicknameView={setNicknameView} propPrefix={setPrefix} propBio={setBio} propNickname={setNickname} nickname={nickname} bio={bio} prefix={prefix} />}
       {visible && <Settings setVisible={setVisible} setLogoutView={setLogoutView} setSignoutView={setSignoutView} />}
@@ -160,18 +160,19 @@ const MyPage = () => {
           <span>마이페이지</span>
           {/* 설정 버튼 components 제작 고려중 or 클릭시 components 이동 */}
           {ModalOutSide ?
-            <img src="img/setting.png" alt="클릭해라" className={classes.settingimg} /> :
-            <img src="img/setting.png" alt="클릭해라" onClick={onSettings} className={classes.settingimg} />}
+            <img src="img/setting.png" alt="클릭해라" /> :
+            <img src="img/setting.png" alt="클릭해라" onClick={onSettings} />}
         </div>
         <div className={classes.profileimg}>
           {/* 프로필 사진 클릭시 components // props로 이미지 가져오기 생각중 */}
-          {ModalOutSide ?
-            <img src={useremoji} alt="" />
-            :
-            <Link to="/profile">
-              <img src={useremoji} alt="" />
-            </Link>}
+
+          <img src={useremoji} alt="" className={classes.emoji}/>
+          <Link to="/profile" className={classes.refresh}>
+          <img src="img/refresh.png" alt=""/>
+          </Link>
         </div>
+      </div>
+      <div className={classes.text}>
       </div>
       <div className={classes.profilename}>
         {/* 닉네임 ex)귀티나는 지각생 // props로 가져올 듯 */}

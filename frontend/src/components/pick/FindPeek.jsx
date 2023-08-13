@@ -24,7 +24,7 @@ const FindPeek = () => {
         const maxEmojisToShow = 10;
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        console.log("넘어온 limitedUserArray: ", limitedUserArray);
         dispatch(findPeekActions.updatePeekInfo(limitedUserArray));
       }
     });
@@ -57,7 +57,7 @@ const FindPeek = () => {
       <PeekLocation findInfo={findInfo}/>
       {/* 여기다가 글쓰기 만들장 */}
       <div className={classes.writeposition}>
-        <img src="img/writeheart.png" alt="눌러" onClick={() => handleOpenWriteModal()} />
+        <img src="img/writeheart.svg" alt="눌러" onClick={() => handleOpenWriteModal()} />
       </div>
       <ModalWrite emojiCall={emojiCall}/>
     </>

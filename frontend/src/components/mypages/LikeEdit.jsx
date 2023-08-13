@@ -129,7 +129,7 @@ const LikeEdit = () => {
         </div>
       </div>
       <div className={common.defaultLine}></div>
-      <div>
+      <div className={common.listmaker}>
         {dataAxios ? (
           <div className={common.largelist}>
             {likeList.map((item, index) => (
