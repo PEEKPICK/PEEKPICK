@@ -106,7 +106,6 @@ function App() {
           alert([...updatedPos]);
         } catch (error) {
           console.error("위치 못가져왔는디:", error);
-          alert("GPS가 꺼져있습니다. 위치 정보를 사용하려면 GPS를 활성화해주세요.");
         }
       }
     };
