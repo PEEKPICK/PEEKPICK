@@ -1,59 +1,14 @@
 /* 브랜딩 페이지 CSS */
 .container {
-  display: flex;
-  flex-direction: column;
+  height: 80vh;
+}
+
+.container button {
   width: 100%;
-  align-items: center;
-}
-
-.container img {
-  width: 80%;
-  margin-top: 30%;
-}
-
-.mainImg {
-  text-align: center;
-}
-
-.titleContainer {
-  display: flex;
-  flex-direction: column;
-  margin-top: 20%;
-  width: 80%;
-}
-
-.title {
-  font-size: 25px;
-  font-weight: 600;
-}
-
-.titleItem {
-  margin-bottom: 2%;
-}
-
-.subTitle {
-  margin-top: 5%;
-  font-size: 12px;
-}
-
-.subtitleItem {
-  margin-bottom: 1%;
-}
-
-.buttonWrap {
-  bottom: 10%;
-  text-align: center;
-  margin-top: 50%;
-  line-height: 300%;
-}
-
-.go {
-  width: 100%;
-  border: 0;
-  border-radius: 5px;
-  color: white;
-  background-color: #7d00ff;
-  font-size: 20px;
   height: 45px;
-  box-shadow: 2px 2px 2px 2px rgba(153, 153, 153, 0.2);
+  border: 0;
+  background-color: #7d00ff;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
 }
