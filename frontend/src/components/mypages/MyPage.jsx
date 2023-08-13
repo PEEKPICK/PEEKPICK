@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import Settings from './Settings';
-import classes from './MyPage.module.css';
-import LogOut from './LogOut';
-import SignOut from './SignOut';
-import PickAndLike from './PickAndLike';
-import NickNameEdit from './NickNameEdit';
-import { customAxios } from '../../api/customAxios';
-import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../../store/authSlice';
-import LikeAndHate from './LikeAndHate';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Settings from "./Settings";
+import classes from "./MyPage.module.css";
+import LogOut from "./LogOut";
+import SignOut from "./SignOut";
+import PickAndLike from "./PickAndLike";
+import NickNameEdit from "./NickNameEdit";
+import { customAxios } from "../../api/customAxios";
+import { useDispatch, useSelector } from "react-redux";
+import { authActions } from "../../store/authSlice";
+import LikeAndHate from "./LikeAndHate";
 const MyPage = () => {
   // 상태관리
   const [visible, setVisible] = useState(false);
@@ -20,7 +20,7 @@ const MyPage = () => {
   const [pickPoint, setPickPoint] = useState(0);
   const [likeCount, setLikeCount] = useState(0);
   const [chatCount, setChatCount] = useState(0);
-  const userInfo = useSelector(state => state.auth);
+  const userInfo = useSelector((state) => state.auth);
   // 정보 확인
   const dispatch = useDispatch();
 
@@ -60,17 +60,17 @@ const MyPage = () => {
   // 함수 정의
   const onSettings = () => {
     setVisible(!visible);
-  }
+  };
   const onNicknameEdit = () => {
     setNicknameView(!nicknameView);
-  }
+  };
 
   // api통신
   useEffect(() => {
-    const jwtToken = localStorage.getItem('jwtToken');
+    const jwtToken = localStorage.getItem("jwtToken");
     function isTokenExpired() {
       if (!jwtToken) return true;
-      const decodedToken = JSON.parse(atob(jwtToken.split('.')[1]));
+      const decodedToken = JSON.parse(atob(jwtToken.split(".")[1]));
       const decoded = decodedToken.exp;
       const currentTime = Date.now() / 1000;
       return decoded > currentTime;
@@ -80,7 +80,7 @@ const MyPage = () => {
       if (isTokenExpired()) {
         try {
           const response = await customAxios.get("/member/info");
-          console.log(response)
+          console.log(response);
           setPickPoint(response.data.data.pickPoint);
           setLikeCount(response.data.data.likeCount);
           setChatCount(response.data.data.chatCount);
@@ -123,18 +123,18 @@ const MyPage = () => {
             nickname: nickname,
             prefix: prefix,
             prefixId: prefixId,
-          }
+          };
           dispatch(authActions.updateMyPageProfile(sendToMyPageData));
           dispatch(authActions.updateUserNickname(sendToUserNicknameData));
 
           const sendToUserLikeData = {
             likes: likes,
             like: like,
-          }
+          };
           const sendToUserHateData = {
             disLikes: disLikes,
             hate: hate,
-          }
+          };
           dispatch(authActions.updateUserLike(sendToUserLikeData));
           dispatch(authActions.updateUserHate(sendToUserHateData));
         } catch (error) {
@@ -153,48 +153,62 @@ const MyPage = () => {
     <div className={classes.mypage}>
       {logoutView && <LogOut setLogoutView={setLogoutView} />}
       {signoutView && <SignOut setSignoutView={setSignoutView} />}
-      {nicknameView && <NickNameEdit setNicknameView={setNicknameView} propPrefix={setPrefix} propBio={setBio} propNickname={setNickname} nickname={nickname} bio={bio} prefix={prefix} />}
+      {nicknameView && (
+        <NickNameEdit
+          setNicknameView={setNicknameView}
+          propPrefix={setPrefix}
+          propBio={setBio}
+          propNickname={setNickname}
+          nickname={nickname}
+          bio={bio}
+          prefix={prefix}
+        />
+      )}
       {visible && <Settings setVisible={setVisible} setLogoutView={setLogoutView} setSignoutView={setSignoutView} />}
       <div className={classes.mypagetopbackgroundcolor}>
         <div className={classes.mypagetop}>
           <span>마이페이지</span>
           {/* 설정 버튼 components 제작 고려중 or 클릭시 components 이동 */}
-          {ModalOutSide ?
-            <img src="img/setting.png" alt="클릭해라" /> :
-            <img src="img/setting.png" alt="클릭해라" onClick={onSettings} />}
+          {ModalOutSide ? (
+            <img src="img/setting.png" alt="클릭해라" />
+          ) : (
+            <img src="img/setting.png" alt="클릭해라" onClick={onSettings} />
+          )}
         </div>
         <div className={classes.profileimg}>
           {/* 프로필 사진 클릭시 components // props로 이미지 가져오기 생각중 */}
 
-          <img src={useremoji} alt="" className={classes.emoji}/>
+          <img src={useremoji} alt="" className={classes.emoji} />
           <Link to="/profile" className={classes.refresh}>
-          <img src="img/refresh.png" alt=""/>
+            <img src="img/refresh.png" alt="" />
           </Link>
         </div>
       </div>
-      <div className={classes.text}>
-      </div>
-      <div className={classes.profilename}>
-        {/* 닉네임 ex)귀티나는 지각생 // props로 가져올 듯 */}
-        <span>{prefix + " " + nickname}</span>
-        {/* 프로필 수정 버튼 -> 컴포넌트 이동 */}
-        {ModalOutSide ? <img src="img/pencil.png" alt="" /> :
-          <img src="img/pencil.png" alt="" onClick={onNicknameEdit} />
-        }
-      </div>
-      <div className={classes.oneline}>
-        <span>{bio}</span>
-      </div>
-      <div>
-        <PickAndLike likeCount={likeCount} pickPoint={pickPoint} chatCount={chatCount} />
-        {/* pick 한 횟수, 좋아요 버튼 -> components 자리 */}
-      </div>
+      <div classes={classes.bodyMain}>
+        <div className={classes.text}></div>
+        <div className={classes.profilename}>
+          {/* 닉네임 ex)귀티나는 지각생 // props로 가져올 듯 */}
+          <span>{prefix + " " + nickname}</span>
+          {/* 프로필 수정 버튼 -> 컴포넌트 이동 */}
+          {ModalOutSide ? (
+            <img src="img/pencil.png" alt="" />
+          ) : (
+            <img src="img/pencil.png" alt="" onClick={onNicknameEdit} />
+          )}
+        </div>
+        <div className={classes.oneline}>
+          <span>{bio}</span>
+        </div>
+        <div>
+          <PickAndLike likeCount={likeCount} pickPoint={pickPoint} chatCount={chatCount} />
+          {/* pick 한 횟수, 좋아요 버튼 -> components 자리 */}
+        </div>
 
-      <hr className={classes.hr} />
-      <LikeAndHate ModalOutSide={ModalOutSide} like={like} hate={hate} likes={likes} disLikes={disLikes} />
+        <hr className={classes.hr} />
+        <LikeAndHate ModalOutSide={ModalOutSide} like={like} hate={hate} likes={likes} disLikes={disLikes} />
 
-      <hr className={classes.hr2} />
-
+        <hr className={classes.hr2} />
+      </div>
 
       {/* 고객센터 */}
     </div>

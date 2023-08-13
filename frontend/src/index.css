@@ -27,3 +27,6 @@
   -ms-user-select: none;
   user-select: none;
 }
+html {
+  background-color: #98c7fc;
+}

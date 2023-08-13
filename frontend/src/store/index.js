@@ -8,6 +8,8 @@ import findUserSlice from "./findUserSlice";
 import findPeekSlice from "./findPeekSlice";
 import chatSlice from "./chatSlice";
 import modalsSlice from "./modalsSlice";
+import changeMapSlice from "./changeMapSlice";
+
 const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -17,6 +19,7 @@ const store = configureStore({
     findPeek: findPeekSlice,
     roomId: chatSlice,
     modals: modalsSlice,
+    changeMap: changeMapSlice,
   },
 });
 
