@@ -29,6 +29,7 @@ const RestTime = () => {
     } else if (timeLeft <= 0) {
       setTimeLeft("Time's up!");
     }
+    // eslint-disable-next-line
   }, [timeLeft]);
 
   // -----------------------------------------------------------

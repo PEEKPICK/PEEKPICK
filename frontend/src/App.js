@@ -67,16 +67,14 @@ function App() {
 
     // 이미지 우클릭 방지
     const preventImageContextMenu = (event) => {
-      if (event.target.tagName === 'IMG') {
+      if (event.target.tagName === "IMG") {
         event.preventDefault();
       }
     };
-    window.addEventListener('contextmenu', preventImageContextMenu);
+    window.addEventListener("contextmenu", preventImageContextMenu);
     return () => {
-      window.removeEventListener('contextmenu', preventImageContextMenu);
-    }
-
-    
+      window.removeEventListener("contextmenu", preventImageContextMenu);
+    };
   }, []);
 
   //위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!
@@ -105,13 +103,12 @@ function App() {
               distance: updatedPos.distance,
             })
           );
+          alert([...updatedPos]);
         } catch (error) {
           console.error("위치 못가져왔는디:", error);
+          alert("GPS가 꺼져있습니다. 위치 정보를 사용하려면 GPS를 활성화해주세요.");
         }
       }
-      // else {
-      //   console.log("위치 또는 토큰이 인증되지 않았습니다.");
-      // }
     };
     //초기 실행
     handlePosChange();
@@ -197,14 +194,14 @@ function App() {
             console.log("수락roomId보냄: ", roomId);
             const createTime = jsonData.createTime;
             const endTime = jsonData.endTime;
-            console.log("createTime",createTime);
-            console.log("endTime",endTime);
+            console.log("createTime", createTime);
+            console.log("endTime", endTime);
             console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
-            dispatch(chatActions.updateEndTime(endTime))
-            dispatch(chatActions.updateTime(createTime))
+            dispatch(chatActions.updateEndTime(endTime));
+            dispatch(chatActions.updateTime(createTime));
 
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
               console.log("response2", res);
