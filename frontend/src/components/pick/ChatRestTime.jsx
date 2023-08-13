@@ -26,9 +26,6 @@ const CreateReadChat = () => {
       }, 1000);
 
       return () => clearInterval(timerId);
-    } else if (timeLeft <= 0) {
-      setTimeLeft("Time's up!");
-      return;
     }
     // eslint-disable-next-line
   }, [timeLeft]);
@@ -37,7 +34,7 @@ const CreateReadChat = () => {
 
   return (
     <>
-      <div className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div>
+      <div className={classes.time}>{timeLeft <= 0 ? "Time's up!" : formatTime(timeLeft)}</div>
     </>
   );
 };
