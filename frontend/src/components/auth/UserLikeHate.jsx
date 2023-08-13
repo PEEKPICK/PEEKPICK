@@ -6,12 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import common from './style/Common.module.css';
 import classes from './style/UserLikeOrHate.module.css';
 
-import { useState } from 'react';
-
 const UserLikeHate = () => {
   // 사용자 정보 불러오기
   const userInfo = useSelector(state => state.auth);
-  const [phone, setPhone] = useState('010-0000-0000');
 
   // 함수 정의
   const navigate = useNavigate();
@@ -28,25 +25,22 @@ const UserLikeHate = () => {
 
   // 백엔드로 정보 넘기고, welcome으로 이동
   const moveToWelcome = () => {
-    if (userInfo.phone !== '') {
-      setPhone(userInfo.phone);
-    }
+    if (userInfo.phone !== '1') {
+      const dataToSend = {
+        memberId: userInfo.memberId,
+        email: userInfo.email,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        phone: userInfo.phone,
+        birthday: userInfo.birthday,
+        emojiId: userInfo.emojiId,
+        prefixId: userInfo.prefixId,
+        nickname: userInfo.nickname,
+        likes: userInfo.likes,
+        disLikes: userInfo.disLikes,
+      };
 
-    const dataToSend = {
-      memberId: userInfo.memberId,
-      email: userInfo.email,
-      name: userInfo.name,
-      gender: userInfo.gender,
-      phone: phone,
-      birthday: userInfo.birthday,
-      emojiId: userInfo.emojiId,
-      prefixId: userInfo.prefixId,
-      nickname: userInfo.nickname,
-      likes: userInfo.likes,
-      disLikes: userInfo.disLikes,
-    }
-  
-    authAxios.post('/member/signup', dataToSend)
+      authAxios.post('/member/signup', dataToSend)
       .then(response => {
         if (response.data.code === "201") {
           const accessToken = response.data.data;
@@ -58,7 +52,37 @@ const UserLikeHate = () => {
       .catch(error => {
         console.log(error)
       })
-    navigate('/welcome')
+      navigate('/welcome');
+
+    } else {
+      const dataToSend = {
+        memberId: userInfo.memberId,
+        email: userInfo.email,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        phone: '010-0000-0000',
+        birthday: userInfo.birthday,
+        emojiId: userInfo.emojiId,
+        prefixId: userInfo.prefixId,
+        nickname: userInfo.nickname,
+        likes: userInfo.likes,
+        disLikes: userInfo.disLikes,
+      };
+
+      authAxios.post('/member/signup', dataToSend)
+      .then(response => {
+        if (response.data.code === "201") {
+          const accessToken = response.data.data;
+          localStorage.setItem('jwtToken', accessToken);
+        } else {
+          console.log(response)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      navigate('/welcome');
+    }
   };
 
   return (
