@@ -16,7 +16,7 @@ const Branding = () => {
     <div className={classes.container}>
       <div>
         <img
-          src={`img/branding_${checkIMG}.png`}
+          src={`img/branding_${checkIMG}.svg`}
           alt="branding"
         />
       </div>
