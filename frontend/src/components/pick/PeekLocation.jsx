@@ -52,7 +52,7 @@ const EmojiLocation = ({ findInfo }) => {
               {current.viewed ? current.special ?
                 <img
                   key={index}
-                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
+                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling_Heart_grey.gif"
                   alt={current.peekId}
                   className={classes.EmojiImg}
                   id={index}
