@@ -5,6 +5,7 @@ import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.peek.dto.*;
+import com.vvs.peekpick.peek.repository.PeekRepository;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
@@ -19,18 +20,22 @@ import org.springframework.stereotype.Service;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.vvs.peekpick.peek.service.DistanceCalService.calculateDistance;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
-    private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
+    private final int MAX_PEEK = 8; // 화면 단에 전닿해주는 Peek 수 (이벤트 코드)
+    //private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
+    private final int PEEK_ORIGIN_TIME = 1440; // PEEK 기본 지속 시간 (분) (이벤트 코드)
+    //private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
     private final int PEEK_REACTION_TIME = 10; // 좋아요, 싫어요 시 증가되는 시간 (분)
-
-    private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
+    private final int PEEK_MAX_HOUR = 72; // Peek 최대 지속 시간 (시간) (이벤트 코드)
+    //private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
     private final Random random = new Random();
-
     private final ResponseService responseService;
     private final PeekMemberService peekMemberService;
     private final PeekRdbService peekRdbService;
@@ -38,7 +43,6 @@ public class PeekServiceImpl implements PeekService {
     private final PeekRedisService peekRedisService;
     private final  MemberServiceImpl memberService;
     private final BadWordFiltering filtering = new BadWordFiltering("♡");
-
 
     @Override
     public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
@@ -65,27 +69,62 @@ public class PeekServiceImpl implements PeekService {
                         .distance(distance)
                         .special(peekRedisDto.isSpecial())
                         .viewed(isViewed)
+                        .admin(peekRedisDto.getMemberId()==1L)
                         .build();
                 allPeeks.add(responsePeekListDto);
             }
-
+            System.out.println(allPeeks);
             if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
 
+
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
-            List<ResponsePeekListDto> randomPeeks;
-            if(allPeeks.size() <= MAX_PEEK){
-                randomPeeks = allPeeks;
-            } else {
-                randomPeeks = new ArrayList<>();
-                for (int i = 0; i < MAX_PEEK; i++) {
-                    int randomIndex = random.nextInt(allPeeks.size());
-                    randomPeeks.add(allPeeks.get(randomIndex));
-                    allPeeks.remove(randomIndex);
-                }
+            List<ResponsePeekListDto> randomPeeks = new ArrayList<>();
+
+            // 관리자 이벤트 Peek 3개 무조건 추가 (이벤트 코드)
+            List<Peek> adminPeeks = peekRdbService.findPeeksByMemberId(1L);
+            for(Peek peek : adminPeeks) {
+                Point peekPoint = peekRedisService.getPeekLocation(peek.getPeekId());
+                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                        .peekId(peek.getPeekId())
+                        .distance(1)//(int) calculateDistance(peekPoint.getX(), peekPoint.getY(), requestSearchPeekDto.getPoint().getX(), requestSearchPeekDto.getPoint().getY()))
+                        .special(false)
+                        .viewed(false)
+                        .admin(true)
+                        .build();
+                randomPeeks.add(responsePeekListDto);
             }
+
+            // allPeeks에서 관리자가 작성자가 아닌 것들만 필터링하고 랜덤으로 섞기
+            List<ResponsePeekListDto> nonAdminPeeks = allPeeks.stream()
+                    .filter(peek -> !peek.isAdmin())
+                    .collect(Collectors.toList());
+            Collections.shuffle(nonAdminPeeks);
+
+            // randomPeeks에 추가할 수 있는 남은 개수 계산
+            int remainingPeeks = MAX_PEEK - randomPeeks.size();
+
+            // 남은 개수만큼 randomPeeks에 추가
+            for (int i = 0; i < Math.min(remainingPeeks, nonAdminPeeks.size()); i++) {
+                randomPeeks.add(nonAdminPeeks.get(i));
+            }
+
+//            if(allPeeks.size() <= MAX_PEEK){
+//                randomPeeks = allPeeks;
+//            } else {
+//                randomPeeks = new ArrayList<>();
+//                for (int i = 0; i < MAX_PEEK; i++) {
+//                    int randomIndex = random.nextInt(allPeeks.size());
+//                    randomPeeks.add(allPeeks.get(randomIndex));
+//                    allPeeks.remove(randomIndex);
+//                }
+//            }
+
+
+            System.out.println(randomPeeks);
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
+            log.info("내 주변 Peek 예외 처리 : {}", e);
             return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
     }
@@ -135,6 +174,7 @@ public class PeekServiceImpl implements PeekService {
             return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
         }
         catch (Exception e) {
+            log.info("입력 예외 처리 : {}", e.getMessage());
             return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
         }
     }

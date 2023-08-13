@@ -138,6 +138,20 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
+    public Point getPeekLocation(Long peekId) {
+        try {
+            List<Point> points = geoOps.position(PEEK_LOCATION_REDIS, String.valueOf(peekId));
+            if (points != null && !points.isEmpty()) {
+                return points.get(0);
+            }
+            return null;
+        } catch (DataAccessException e) {
+            log.error("Error getting location from Redis: ", e);
+            return null;
+        }
+    }
+
+    @Override
     public void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto, Long ttl) {
         valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto, ttl, TimeUnit.SECONDS);
     }

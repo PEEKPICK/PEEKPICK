@@ -18,6 +18,7 @@ public interface PeekRedisService {
     Long getPeekTtl(Long peekId);
     void setPeekLocation(double lon, double lat, Long peekId);
     List<PeekNearSearchDto> getNearLocation(Point point, double distance);
+    Point getPeekLocation(Long peekId);
     void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto, Long ttl);
     PeekRedisDto getPeekValueOps(Long peekId);
     void setViewedByMember(Long memberId, Long peekId);
