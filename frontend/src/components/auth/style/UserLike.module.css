@@ -22,7 +22,7 @@
 
 .userLabel {
   display: flex;
-  width: 100%;
+  width: 95%;
   height: 2vh;
   color: lightgray;
   font-size: 10px;
@@ -49,10 +49,13 @@ input.customRadio:checked + label {
   justify-content: center;
   width: 10vh;
   height: 3vh;
-  margin: 0.5vh 0 0.5vh 0;
 }
 
 input.customCheckbox:checked + .checkboxLabel {
   border: 1px solid #7d00ff;
   color: #7d00ff;
+}
+
+.itemWrap {
+  margin: 2%;
 }
