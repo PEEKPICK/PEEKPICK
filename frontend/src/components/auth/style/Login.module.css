@@ -14,10 +14,11 @@
 .info {
   font-size: 10px;
   color: lightgray;
+  margin-bottom: 5%;
 }
 
 .info a {
-  color: lightgray;
+  color: #7d00ff;
 }
 
 .buttons {
