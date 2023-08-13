@@ -24,7 +24,7 @@ const FindPeek = () => {
         const maxEmojisToShow = 10;
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        console.log("넘어온 limitedUserArray: ", limitedUserArray);
         dispatch(findPeekActions.updatePeekInfo(limitedUserArray));
       }
     });

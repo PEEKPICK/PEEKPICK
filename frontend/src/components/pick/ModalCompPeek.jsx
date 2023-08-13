@@ -160,6 +160,9 @@ const ModalComp = () => {
             <span className={classes.timer}>
                 {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
             </span>
+            <span>
+              {isSelectedEmoji.peekDetailDto.distance} m 
+            </span>
             </div>
           </div>
           <div className={classes.divider}></div>

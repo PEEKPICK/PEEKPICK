@@ -12,11 +12,12 @@ const EmojiLocation = ({ findInfo }) => {
     const peekId = current.peekId;
     document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
 
-    customAxios.get(`/peek/${peekId}`).then((res) => {
+
+    customAxios.get(`/peek/${peekId}?distance=${current.distance}`).then((res) => {
       dispatch(modalActions.openPeekModal(res.data.data));
       // dispatch(findPeekActions.toggleViewed(peekId));
-
     })
+    
   };
 
   const gridSize = 4; // 격자 크기 (4x4)
@@ -41,12 +42,13 @@ const EmojiLocation = ({ findInfo }) => {
       {findInfo.length > 0 ? (
         <div className={classes.emojiArea}>
           {findInfo.map((current, index) => (
+            <>
             <button
               key={index}
               className={classes.EmojiBtn}
               onClick={() => handleOpenPeekModal(current, index)}
               style={randomPosition()}
-            >
+              > 
               {current.viewed ? current.special ?
                 <img
                   key={index}
@@ -79,6 +81,7 @@ const EmojiLocation = ({ findInfo }) => {
 
               }
             </button>
+          </>
           ))}
         </div>
       ) : (
