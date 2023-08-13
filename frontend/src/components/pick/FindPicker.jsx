@@ -24,8 +24,8 @@ const FindPicker = () => {
         // 길이 0이면 Toast 알림
         // eslint-disable-next-line
         if (limitedUserArray.length == 0) {
-          toast('주변에 아무도 없어요 😭', {
-            icon: '😭',
+          toast("주변에 아무도 없어요 😭", {
+            icon: "😭",
           });
         }
         dispatch(findUserActions.updateUserInfo(limitedUserArray));
@@ -37,16 +37,16 @@ const FindPicker = () => {
   const [emojiFlag, setEmojiFlag] = useState(false);
 
   const emojiCallWithDelay = useCallback(() => {
-      if (emojiFlag) return;
-      setEmojiFlag(true);
+    if (emojiFlag) return;
+    setEmojiFlag(true);
 
-      emojiCall(myPos);
+    emojiCall(myPos);
 
-      setTimeout(() => {
-        setEmojiFlag(false);
-      }, 2000);
-      // eslint-disable-next-line
-    }, [emojiFlag, emojiCall]);
+    setTimeout(() => {
+      setEmojiFlag(false);
+    }, 2000);
+    // eslint-disable-next-line
+  }, [emojiFlag, emojiCall]);
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
