@@ -92,6 +92,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }
 
 .taste {
