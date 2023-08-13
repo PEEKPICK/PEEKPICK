@@ -48,7 +48,7 @@ const CreateReadChat = ({ isModalState }) => {
 
   useEffect(() => {
     const connect = () => {
-      const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
+      const socket = new SockJS(`https://peekpick.online/ws`);
       const factory = Stomp.over(socket);
       factory.reconnect_delay = 2000;
 
