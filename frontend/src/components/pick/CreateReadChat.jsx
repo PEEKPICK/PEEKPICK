@@ -93,7 +93,6 @@ const CreateReadChat = ({ isModalState }) => {
       );
       setMessage("");
     }
-    scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
   };
 
   const scrollToBottom = () => {
@@ -157,8 +156,8 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const sirenHandler = () => {
-    toast('신고가 완료됐습니다! 🚨', {
-      icon: '🚨',
+    toast("신고가 완료됐습니다! 🚨", {
+      icon: "🚨",
     });
     handleExitConfirmation();
   };
@@ -170,6 +169,7 @@ const CreateReadChat = ({ isModalState }) => {
         onRequestClose={() => handleCloseModal()}
         contentLabel="Selected Emoji Modal"
         className={classes.chatMain}
+        id="chatMain"
       >
         <div className={classes.chatHeader}>
           <button
@@ -184,11 +184,7 @@ const CreateReadChat = ({ isModalState }) => {
           <ChatRestTime />
           <div className={classes.headerRight}>
             <button className={classes.siren} disabled={showExitConfirmationModal}>
-              <img
-                src="img/siren.png"
-                alt="신고"
-                onClick={() => sirenHandler()}
-              />
+              <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
             </button>
             <button onClick={() => chatPop()} className={classes.downBtn} disabled={showExitConfirmationModal}>
               <img src="img/down.png" alt="내리기" />
@@ -242,6 +238,7 @@ const CreateReadChat = ({ isModalState }) => {
                   });
                 } else {
                   joinChatRoom();
+                  scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
                 }
                 if (stompClient === null) {
                   toast.error("대화 상대가 없습니다.", {
@@ -260,6 +257,7 @@ const CreateReadChat = ({ isModalState }) => {
                 });
               } else {
                 joinChatRoom();
+                scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
               }
               if (stompClient === null) {
                 toast.error("대화 상대가 없습니다.", {
