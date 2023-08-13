@@ -8,6 +8,7 @@ import { modalsActions } from "../../store/modalsSlice";
 
 const ModalWrite = ({emojiCall}) => {
   const isModalState = useSelector((state) => state.modals.isOpen);
+  const userPos = useSelector((state) => state.location.userPos);
   const dispatch = useDispatch();
   // 글 작성에 필요한 데이터
   // 그냥 창을 닫았을 경우, 이 작업을 해주지 않으면, 다시 글 작성을 할 때, 데이터가 남아 있음.
@@ -36,10 +37,12 @@ const ModalWrite = ({emojiCall}) => {
   
     let f = new FormData();
     f.append("content", writeData);
-    f.append("longitude", 127.0);
-    f.append("latitude", 37.0);
+    f.append("longitude",userPos.point.x );
+    f.append("latitude", userPos.point.y);
     f.append("img", imgData);
-    customAxios.post("/peek/write", f)
+
+    setTimeout(() => {
+      customAxios.post("/peek/write", f)
       .then((response) => {
         console.log(response);
         toast.success("PEEK 성공");
@@ -57,6 +60,8 @@ const ModalWrite = ({emojiCall}) => {
         toast.error("ERROR");
         dispatch(modalsActions.closeModal())
       })
+    }, 2000);
+   
   }
   const imgAccept = (event) => {
     const selectedImage = event.target.files[0];

@@ -64,6 +64,19 @@ function App() {
       return token !== null;
     };
     setIsAuthenticated(checkTokenInLocalStorage());
+
+    // 이미지 우클릭 방지
+    const preventImageContextMenu = (event) => {
+      if (event.target.tagName === 'IMG') {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener('contextmenu', preventImageContextMenu);
+    return () => {
+      window.removeEventListener('contextmenu', preventImageContextMenu);
+    }
+
+    
   }, []);
 
   //위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!

@@ -1,6 +1,13 @@
 .App {
   width: calc(var(--vw, 1vw) * 100);
   height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  flex-direction: column;
+  justify-content: center ;
+  align-items: center; 
+  width: 400px;
+  height: auto;
+  margin: auto;
 }
 .toast-message {
   background-color: #f4e9ff !important;
