@@ -13,7 +13,7 @@ const ModalComp = () => {
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
 
-
+  console.log(isSelectedEmoji);
 
 
 
@@ -136,14 +136,14 @@ const ModalComp = () => {
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
           <img
-              src={isSelectedEmoji.peekAvatarDto.avatarId === 61 ? "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png" : isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
+              src={isSelectedEmoji.peekAvatarDto.writerId === 1 ? "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png" : isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
               alt="프로필"
               className={classes.profileImg}
             />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
-              {isSelectedEmoji.peekAvatarDto.avatarId === 61 ? "PeekPick" : isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
-              {isSelectedEmoji.peekAvatarDto.avatarId === 61 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
+              {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "PEEKPICK" : isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+              {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
                 {/* {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
                 {isSelectedEmoji.peekAvatarDto.nickname} */}
               </span>
