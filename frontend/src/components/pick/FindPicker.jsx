@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
 import PickLocation from "./PickLocation";
+import { toast } from "react-hot-toast";
 
 const FindPicker = () => {
   const dispatch = useDispatch();
@@ -16,14 +17,36 @@ const FindPicker = () => {
       const userArrayOrigin = response.data.data;
       if (Array.isArray(userArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
-        const maxEmojisToShow = 100;
+        const maxEmojisToShow = 8;
         //정보 저장
         const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
         // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // 길이 0이면 Toast 알림
+        // eslint-disable-next-line
+        if (limitedUserArray.length == 0) {
+          toast("주변에 아무도 없어요 😭", {
+            icon: "😭",
+          });
+        }
         dispatch(findUserActions.updateUserInfo(limitedUserArray));
       }
     });
-  }, [myPos, dispatch]);
+    // eslint-disable-next-line
+  }, [myPos]);
+
+  const [emojiFlag, setEmojiFlag] = useState(false);
+
+  const emojiCallWithDelay = useCallback(() => {
+    if (emojiFlag) return;
+    setEmojiFlag(true);
+
+    emojiCall(myPos);
+
+    setTimeout(() => {
+      setEmojiFlag(false);
+    }, 2000);
+    // eslint-disable-next-line
+  }, [emojiFlag, emojiCall]);
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
@@ -41,7 +64,7 @@ const FindPicker = () => {
     <>
       <div className={classes.ParentreloadBtn}>
         {/* 버튼 클릭 시 handleEmojiCall 함수를 호출 */}
-        <button className={classes.reloadBtn} onClick={() => emojiCall(myPos)}>
+        <button className={classes.reloadBtn} onClick={() => emojiCallWithDelay(myPos)}>
           <img src="./img/human.png" alt="새로고침" />
           피커 찾기
         </button>

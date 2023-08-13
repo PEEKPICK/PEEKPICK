@@ -58,9 +58,15 @@ const ModalComp = () => {
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
               </span>
-              <span style={{ marginRight: "0.2rem" }}>PICK</span>
-              <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.chatCount}</span>
-              <span style={{ marginLeft: "0.2rem" }}>회</span>
+              <div>
+                <span style={{ marginRight: "0.2rem" }}>PICK</span>
+                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.chatCount}</span>
+                <span style={{ marginLeft: "0.2rem" }} className={classes.pickItem}>회</span>
+                {/* <span style={{ marginRight: "0.2rem" }}>따봉</span> */}
+                <img src="img/goodFill.png" alt="goodFill" className={classes.goodImg} />
+                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.likeCount}</span>
+                <span style={{ marginLeft: "0.2rem" }}>회</span>
+              </div>
               {isSelectedEmoji.bio && isSelectedEmoji.bio.trim() !== "" ? (
                 <p className={classes.intro}>{isSelectedEmoji.bio}</p>
               ) : (
@@ -71,7 +77,7 @@ const ModalComp = () => {
           <div className={classes.divider}></div>
           <div className={classes.modalBody}>
             <div className={classes.likeWrap}>
-              <p className={classes.like}>좋아!</p>
+              <p className={classes.like}>좋아해요</p>
               <p className={classes.itemWrap}>
                 {isSelectedEmoji.likes.map((like, index) => (
                   <div key={index} className={classes.items}>
@@ -81,7 +87,7 @@ const ModalComp = () => {
               </p>
             </div>
             <div>
-              <p className={classes.disLike}>싫어!</p>
+              <p className={classes.disLike}>싫어해요</p>
               <p className={classes.itemWrap}>
                 {isSelectedEmoji.disLikes.map((disLikes, index) => (
                   <span key={index} className={classes.items}>

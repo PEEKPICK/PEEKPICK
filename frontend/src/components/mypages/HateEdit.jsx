@@ -118,10 +118,10 @@ const LikeEdit = () => {
       .then((response) => {
         navigate('/mypage');
         dispatch(authActions.updateUserHate(changedDisLikes))
-        toast.success("싫어요 수정 성공");
+        toast.success("싫어해요 수정 완료");
         // console.log(response)
       }).catch((response) => {
-        toast.error("싫어요 수정 실패");
+        toast.error("수정 실패");
       })
   };
 
@@ -196,7 +196,7 @@ const LikeEdit = () => {
         <button
           onClick={selectedFinish}
           className={common.next}
-        >선택완료</button>
+        >수정 완료</button>
       </div>
     </div>
   );

@@ -12,18 +12,23 @@
 }
 
 .EmojiBtn {
-  display: flex;
+  border: none;
+  display: inline-block;
   justify-content: center;
   align-items: center;
   width: 100%; /* 버튼을 격자 칸에 꽉 채우도록 설정 */
   height: 100%;
-  border: none;
   cursor: pointer;
   background: none;
   transform: rotate(-30deg); /* 다이아몬드 회전 */
 }
-
+.meter {
+  background-color: #ffffff;
+  display: block;
+  border-radius: 3rem;
+}
 .EmojiImg {
+  display: inline-block;
   object-fit: contain;
   transition: transform 0.3s ease;
   width: 4em;

@@ -25,21 +25,22 @@ const UserLikeHate = () => {
 
   // 백엔드로 정보 넘기고, welcome으로 이동
   const moveToWelcome = () => {
-    const dataToSend = {
-      memberId: userInfo.memberId,
-      email: userInfo.email,
-      name: userInfo.name,
-      gender: userInfo.gender,
-      phone: userInfo.phone,
-      birthday: userInfo.birthday,
-      emojiId: userInfo.emojiId,
-      prefixId: userInfo.prefixId,
-      nickname: userInfo.nickname,
-      likes: userInfo.likes,
-      disLikes: userInfo.disLikes,
-    }
-  
-    authAxios.post('/member/signup', dataToSend)
+    if (userInfo.phone !== '1') {
+      const dataToSend = {
+        memberId: userInfo.memberId,
+        email: userInfo.email,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        phone: userInfo.phone,
+        birthday: userInfo.birthday,
+        emojiId: userInfo.emojiId,
+        prefixId: userInfo.prefixId,
+        nickname: userInfo.nickname,
+        likes: userInfo.likes,
+        disLikes: userInfo.disLikes,
+      };
+
+      authAxios.post('/member/signup', dataToSend)
       .then(response => {
         if (response.data.code === "201") {
           const accessToken = response.data.data;
@@ -51,7 +52,37 @@ const UserLikeHate = () => {
       .catch(error => {
         console.log(error)
       })
-    navigate('/welcome')
+      navigate('/welcome');
+
+    } else {
+      const dataToSend = {
+        memberId: userInfo.memberId,
+        email: userInfo.email,
+        name: userInfo.name,
+        gender: userInfo.gender,
+        phone: '010-0000-0000',
+        birthday: userInfo.birthday,
+        emojiId: userInfo.emojiId,
+        prefixId: userInfo.prefixId,
+        nickname: userInfo.nickname,
+        likes: userInfo.likes,
+        disLikes: userInfo.disLikes,
+      };
+
+      authAxios.post('/member/signup', dataToSend)
+      .then(response => {
+        if (response.data.code === "201") {
+          const accessToken = response.data.data;
+          localStorage.setItem('jwtToken', accessToken);
+        } else {
+          console.log(response)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      navigate('/welcome');
+    }
   };
 
   return (

@@ -1,12 +1,12 @@
 .logout{
-  position: absolute;
-  top: 20%;
-  left: 10%;
+  position: fixed;
+  margin-left: 34px;
+  margin-top: 150px;
+  width: 280px;
   background-color: #fff;
   padding: 20px;
   border-radius: 2vh;
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
-  width: 70%;
   height: 35%;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;

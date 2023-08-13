@@ -181,12 +181,63 @@
 .exitConfirmationModal {
   position: fixed;
   width: 60%;
-  height: 20%;
-  top: 50%;
+  height: 18%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: white;
   border-radius: 8px;
   padding: 20px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.exitConfirmationModal p {
+  line-height: 180%;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.caution {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.modal_divider {
+  width: 99%;
+  height: 2px;
+  margin: 3% 0 10% 0;
+  background-color: #7d00ff;
+}
+
+.button_area {
+  display: flex;
+  margin: 10% 0 0 0;
+  justify-content: space-between;
+}
+
+.exit_button {
+  border: none;
+  width: 80px;
+  padding: 8px 0 8px 0;
+  background-color: #7d00ff;
+  border-radius: 8px 8px 8px 8px;
+  color: #ffffff;
+  font-size: 10px;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
+}
+
+/* 
+font-size : 15px // 10 ~ 12px
+*/
+
+.cancel_button {
+  border: none;
+  width: 80px;
+  padding: 8px 0 8px 0;
+  border-radius: 8px 8px 8px 8px;
+  background-color: gray;
+  color: #ffffff;
+  font-size: 10px;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }

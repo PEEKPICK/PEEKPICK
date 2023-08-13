@@ -65,9 +65,6 @@ const ModalComp = () => {
   }, [timeLeft]);
 
 
-  
-
-  
 
   useEffect(() => {
     if (isSelectedEmoji) {
@@ -126,6 +123,7 @@ const ModalComp = () => {
         setCheckh(!checkh);
       });
   };
+  
   return (
     <>
       {isModalState && isSelectedEmoji && (
@@ -147,19 +145,24 @@ const ModalComp = () => {
                 {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
                 {isSelectedEmoji.peekAvatarDto.nickname}
               </span>
-              <span style={{ marginRight: "0.2rem" }}>PICK</span>
+              {/* <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
-              <span style={{ marginLeft: "0.2rem" }}>회</span>
+              <span style={{ marginLeft: "0.2rem" }}>회</span> */}
               {/* 한줄소개 넣어야함 */}
-              {isSelectedEmoji.peekAvatarDto.bio &&
-                isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
-                <p className={classes.intro}>{isSelectedEmoji.peekAvatarDto.bio}</p>
-              ) : (
-                <p className={classes.intro}>내용이 없습니다.</p>
-              )}
-            <span className={classes.timer}>
-                {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
-            </span>
+  
+              <p className={classes.intro}>            
+                  <span className={classes.timer} style={{ marginRight: '20px' }}>
+                      <img src="img/timer.png" alt="Peek timer" className="timer-img" />
+                      {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
+                  </span>
+
+                  <span className={classes.distance}>
+                      <img src="img/peek_distance.png" alt="Peek distance" className="distance-img" />
+                      {isSelectedEmoji.peekDetailDto.distance} m 
+                  </span>
+              </p>
+
+          
             </div>
           </div>
           <div className={classes.divider}></div>
@@ -211,13 +214,14 @@ const ModalComp = () => {
                 ?
                 <div className={classes.bottomvalue}>
                   <span>{processBar}%</span>
-                <progress value={processBar} min="0" max="100" className={classes.progress}></progress>
+                  <progress value={processBar} min="0" max="100" className={classes.progress}></progress>
+                  <span>{100 - processBar}% </span>
                 </div>
                 :
-                <span>아직 아무도 좋아요 싫어요를 하지 않았어요!</span>
-
+                <span></span>
             }
           </div>
+
         </Modal>
       )}
     </>

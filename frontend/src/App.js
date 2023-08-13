@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import Modal from "react-modal";
 
 // router import
 // 준형
@@ -64,6 +65,17 @@ function App() {
       return token !== null;
     };
     setIsAuthenticated(checkTokenInLocalStorage());
+
+    // 이미지 우클릭 방지
+    const preventImageContextMenu = (event) => {
+      if (event.target.tagName === "IMG") {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("contextmenu", preventImageContextMenu);
+    return () => {
+      window.removeEventListener("contextmenu", preventImageContextMenu);
+    };
   }, []);
 
   //위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!
@@ -96,9 +108,6 @@ function App() {
           console.error("위치 못가져왔는디:", error);
         }
       }
-      // else {
-      //   console.log("위치 또는 토큰이 인증되지 않았습니다.");
-      // }
     };
     //초기 실행
     handlePosChange();
@@ -109,7 +118,7 @@ function App() {
     if (isAuthenticated) {
       // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
       try {
-        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+        const sseURL = "https://peekpick.online/api/picker/sse";
         const eventSource = new EventSourcePolyfill(sseURL, {
           headers: {
             "Content-Type": "text/event-stream",
@@ -171,7 +180,7 @@ function App() {
             });
           }
         });
-
+        Modal.setAppElement('#root')
         // 수락하기
         eventSource.addEventListener("CHAT_START", (e) => {
           // 채팅 시작
@@ -184,14 +193,14 @@ function App() {
             console.log("수락roomId보냄: ", roomId);
             const createTime = jsonData.createTime;
             const endTime = jsonData.endTime;
-            console.log("createTime",createTime);
-            console.log("endTime",endTime);
+            console.log("createTime", createTime);
+            console.log("endTime", endTime);
             console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
-            dispatch(chatActions.updateEndTime(endTime))
-            dispatch(chatActions.updateTime(createTime))
+            dispatch(chatActions.updateEndTime(endTime));
+            dispatch(chatActions.updateTime(createTime));
 
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
               console.log("response2", res);

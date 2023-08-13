@@ -1,13 +1,12 @@
 .nicknameedit {
   position: fixed;
-  top: 20%;
-  left: 5%;
+  margin-left: 34px;
+  margin-top: 150px;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  border: 3px solid;
-  border-color: #7d00ff;
-  width: 80%;
+  box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
+  width: 280px;
   height: 40%;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;
