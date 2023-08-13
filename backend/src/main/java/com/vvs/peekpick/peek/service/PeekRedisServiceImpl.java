@@ -130,7 +130,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
             PeekNearSearchDto peekNearSearchDto = PeekNearSearchDto
                     .builder()
                     .peekId(location.getContent().getName())
-                    .distance(location.getDistance().getValue())
+                    .distance((int) location.getDistance().getValue())
                     .build();
             peekNearSearchDtoList.add(peekNearSearchDto);
         });

@@ -53,7 +53,7 @@ public class PeekServiceImpl implements PeekService {
             List<ResponsePeekListDto> allPeeks = new ArrayList<>();
             for (PeekNearSearchDto nearPeek: nearPeeks) {
                 Long peekId = Long.parseLong(nearPeek.getPeekId());
-                Double distance = nearPeek.getDistance();
+                int distance = nearPeek.getDistance();
                 PeekRedisDto peekRedisDto = peekRedisService.getPeekValueOps(peekId);
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
                 // 개발 완료 시 아래 로직을 여기 감싸줄 예정
@@ -141,7 +141,7 @@ public class PeekServiceImpl implements PeekService {
 
 
     @Override
-    public DataResponse getPeek(Long memberId, Long peekId) {
+    public DataResponse getPeek(Long memberId, Long peekId, int distance) {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
@@ -167,6 +167,7 @@ public class PeekServiceImpl implements PeekService {
                     .finishTime(peekRedisDto.getFinishTime())
                     .liked(isLiked)
                     .disLiked(isDisLiked)
+                    .distance(distance)
                     .build();
             Member writer = peekMemberService.findMember(peekRedisDto.getMemberId());
 

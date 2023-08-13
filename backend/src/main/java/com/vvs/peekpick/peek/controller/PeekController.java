@@ -51,12 +51,21 @@ public class PeekController {
     }
 
     // 특정 peek 세부 내용 가져오기
+//    @GetMapping("/{peekId}")
+//    public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId) {
+//        Long avatarId = Long.parseLong(authentication.getName());
+//        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+//        return peekService.getPeek(memberId, peekId);
+//    }
+
     @GetMapping("/{peekId}")
-    public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId) {
+    public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId, @RequestParam String distance) {
         Long avatarId = Long.parseLong(authentication.getName());
         Long memberId = Long.parseLong(authentication.getCredentials().toString());
-        return peekService.getPeek(memberId, peekId);
+        int dist = Integer.parseInt(distance);
+        return peekService.getPeek(memberId, peekId, dist);
     }
+
 
     // 특정 peek 삭제
     @DeleteMapping("/{peekId}")

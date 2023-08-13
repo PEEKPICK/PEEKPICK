@@ -11,7 +11,7 @@ import java.util.List;
 public interface PeekService {
     DataResponse<List> findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto); //내 주변 Peek 찾기 & Peek 로딩 시
     CommonResponse addPeek(Long memberId, RequestPeekDto requestPeekDto, String imageUrl); //Peek 작성
-    DataResponse getPeek(Long memberId, Long peekId); //id로 Peek 찾기
+    DataResponse getPeek(Long memberId, Long peekId, int distance); //id로 Peek 찾기
     CommonResponse deletePeek(Long memberId, Long peekId); //Peek 삭제
     CommonResponse deletePeekExpired(Long peekId); //Peek 삭제
     CommonResponse addReaction(Long memberId, Long peekId, boolean like); //Peek 반응 추가
