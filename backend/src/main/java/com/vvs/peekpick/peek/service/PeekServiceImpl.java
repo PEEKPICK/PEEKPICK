@@ -14,15 +14,11 @@ import com.vvs.peekpick.wordFilter.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.*;
-import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.vvs.peekpick.peek.service.DistanceCalService.calculateDistance;
 
 @Slf4j
 @Service
@@ -30,7 +26,7 @@ import static com.vvs.peekpick.peek.service.DistanceCalService.calculateDistance
 public class PeekServiceImpl implements PeekService {
     private final int MAX_PEEK = 8; // 화면 단에 전닿해주는 Peek 수 (이벤트 코드)
     //private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 1440; // PEEK 기본 지속 시간 (분) (이벤트 코드)
+    private final int PEEK_ORIGIN_TIME = 1440*2; // PEEK 기본 지속 시간 (분) (이벤트 코드)
     //private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
     private final int PEEK_REACTION_TIME = 10; // 좋아요, 싫어요 시 증가되는 시간 (분)
     private final int PEEK_MAX_HOUR = 72; // Peek 최대 지속 시간 (시간) (이벤트 코드)
@@ -76,57 +72,18 @@ public class PeekServiceImpl implements PeekService {
             System.out.println(allPeeks);
             if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
 
-
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
-            List<ResponsePeekListDto> randomPeeks = new ArrayList<>();
-
-            // 관리자 이벤트 Peek 3개 무조건 추가 (이벤트 코드)
-            List<Peek> adminPeeks = peekRdbService.findPeeksByMemberId(1L);
-            for(Peek peek : adminPeeks) {
-                Point peekPoint = peekRedisService.getPeekLocation(peek.getPeekId());
-                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                        .peekId(peek.getPeekId())
-                        .distance(1)//(int) calculateDistance(peekPoint.getX(), peekPoint.getY(), requestSearchPeekDto.getPoint().getX(), requestSearchPeekDto.getPoint().getY()))
-                        .special(false)
-                        .viewed(false)
-                        .admin(true)
-                        .build();
-                randomPeeks.add(responsePeekListDto);
-            }
-
-            while(randomPeeks.size()==MAX_PEEK) {
-                int randomIndex = random.nextInt(allPeeks.size());
-                if(peekRedisService.getPeek(allPeeks.get(randomIndex).getPeekId()).getMemberId()!=1L)
-                {
+            List<ResponsePeekListDto> randomPeeks;
+            if(allPeeks.size() <= MAX_PEEK){
+                randomPeeks = allPeeks;
+            } else {
+                randomPeeks = new ArrayList<>();
+                for (int i = 0; i < MAX_PEEK; i++) {
+                    int randomIndex = random.nextInt(allPeeks.size());
                     randomPeeks.add(allPeeks.get(randomIndex));
                     allPeeks.remove(randomIndex);
                 }
             }
-
-            // allPeeks에서 관리자가 작성자가 아닌 것들만 필터링하고 랜덤으로 섞기
-//            List<ResponsePeekListDto> nonAdminPeeks = allPeeks.stream()
-//                    .filter(peek -> !peek.isAdmin())
-//                    .collect(Collectors.toList());
-//            Collections.shuffle(nonAdminPeeks);
-//
-//            // randomPeeks에 추가할 수 있는 남은 개수 계산
-//            int remainingPeeks = MAX_PEEK - randomPeeks.size();
-//
-//            // 남은 개수만큼 randomPeeks에 추가
-//            for (int i = 0; i < Math.min(remainingPeeks, nonAdminPeeks.size()); i++) {
-//                randomPeeks.add(nonAdminPeeks.get(i));
-//            }
-
-//            if(allPeeks.size() <= MAX_PEEK){
-//                randomPeeks = allPeeks;
-//            } else {
-//                randomPeeks = new ArrayList<>();
-//                for (int i = 0; i < MAX_PEEK; i++) {
-//                    int randomIndex = random.nextInt(allPeeks.size());
-//                    randomPeeks.add(allPeeks.get(randomIndex));
-//                    allPeeks.remove(randomIndex);
-//                }
-//            }
 
 
             System.out.println(randomPeeks);
@@ -154,10 +111,8 @@ public class PeekServiceImpl implements PeekService {
                     .writeTime(time)
                     .build();
 
-
             //RDB에 Peek 저장 후 id 값 받아옴
             Long peekId = peekRdbService.savePeek(peek);
-
 
             //redis에 저장하기 위한 Peek 객체 생성
             PeekRedisDto peekRedisDto = PeekRedisDto.builder()
@@ -197,7 +152,6 @@ public class PeekServiceImpl implements PeekService {
 
             // 해당 Peek가 만료되었을 때
             if(peekRedisDto==null) return responseService.failureDataResponse(ResponseStatus.PEEK_EXPIRED, null);
-
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
             peekRedisService.setViewedByMember(memberId, peekId);
@@ -325,9 +279,10 @@ public class PeekServiceImpl implements PeekService {
 
             // (임시) Peek 지속시간을 24시간으로 제한,
             // 지속 시간 80분으로(좋아요 싫어요 총 2개 이상) 설정된 Peek은 Hot Peek으로
-            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
-                special = true;
-            }
+//            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
+//                special = true;
+//            }
+            if(peekRedisDto.getDisLikeCount()+peekRedisDto.getLikeCount() >= 2) special = true;
             if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
                 updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
             }
