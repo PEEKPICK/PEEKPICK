@@ -1,0 +1,54 @@
+.checkpick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 5vh;
+  background-color: rgba(125, 0,225, 0.25);
+  width: 85%;
+  margin-left: 7.5%;
+  border-radius: 3vh;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+
+.pickpoint{
+  margin-top: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30%;
+  margin-right: 30%;
+  padding: 1% 0 1% 0;
+  border-radius: 3vh;
+  color: white;
+  background-color: rgba(125, 0,225,0.25);
+
+}
+.pick {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+}
+
+.hr{
+  width: 2%;
+  height: 50%;
+  background-color: rgba(125, 0,225);
+  border: none;
+  border-radius: 1vh;
+}
+
+.peek {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  width:50%;
+
+  .img{
+    max-width: 15%;
+    max-height: 50%;
+    padding: 5%;
+  }
+}

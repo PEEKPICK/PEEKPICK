@@ -1,0 +1,81 @@
+.likehate {
+  display: flex;
+  margin-bottom: 2%;
+  align-items: center;
+  margin-left: 5%;
+}
+
+.like {
+  padding: 1% 3%;
+  border-radius: 10px;
+  width: 20%;
+  margin-left: 3%;
+  color: white;
+  background-color: #7d00ff;
+  text-align: center;
+  line-height: 150%;
+  font-size: 15px;
+}
+
+.disLike {
+  padding: 1% 3%;
+  border-radius: 10px;
+  width: 20%;
+  margin-left: 3%;
+  color: white;
+  background-color: rgba(125, 0, 255, 0.5);
+  text-align: center;
+  line-height: 150%;
+  font-size: 15px;
+}
+
+.likehate a button{
+  /* margin 하면 빈공간에도 클릭이 된다 이거 내일 해보자 */
+  color: white;
+  background-color: rgba(125, 0, 225);
+  width: 100%;
+  border:0;
+  padding:0.4vh 0.6vh 0.4vh 0.6vh;
+  border-radius: 0.3vh;
+  font-size: xx-small;
+}
+
+.likehate button{
+  color: black; 
+  background-color: lightgray;
+  border:0;
+  padding:0.5vh 0.8vh 0.5vh 0.8vh;
+  border-radius: 0.3vh;
+  font-size: xx-small;
+}
+
+.likehate span{
+  margin-right: 3%;
+}
+
+.list{
+  width: 100%;
+}
+
+.itemWrap {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 5%;
+  margin-bottom: 2%;
+}
+
+.items {
+  font-size: 11px;
+  border: 0.5px solid;
+  border-color: rgba(125, 0, 225);
+  border-radius: 10px;
+  background-color: white;
+  color: black;
+  margin: 0.7vh;
+  /* width: 12vh; */
+  padding: 0.5vh;
+  /* height: 3vh; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,94 @@
+.signout {
+  position: fixed;
+  margin-left: 34px;
+  margin-top: 150px;
+  width: 280px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
+  height: 35%;
+  z-index: 1015;
+  animation: 0.2s ease-in-out loadEffect1;
+}
+@keyframes loadEffect1 {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  85% {
+    opacity: 0.85;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.signouttop{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5%;
+}
+
+.signouttop img{
+  position: absolute;
+  right: 5%;
+  top:5%;
+}
+
+.explanation {
+  /* display: flex;   */
+  /* justify-content: center; */
+  height: 35%;
+  width: 90%;
+  margin-left: 5%;
+  margin-top: 5%;
+}
+.explanation span{
+  display: block;
+}
+.agree{
+  display: flex;
+  font-size: 70%;
+  justify-content: center;
+  margin-top: 10%;
+  align-items: center;
+}
+
+.agree span{
+  margin-left: 2.5%;
+}
+
+.btnbasic{
+  background-color: gray;
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  color: white;
+  border-radius: 1vh;
+}
+
+.btnclick{
+  background-color: rgba(125,0,225);
+  text-decoration: none;
+  margin-top: 8%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5%;
+  color: white;
+  border-radius: 1vh;
+}
+
+.hr{
+  width: 100%;
+  border: 1px solid;
+  border-color: rgba(125, 0, 225);
+  margin-top: 2%;
+  margin-bottom: 5%;
+}

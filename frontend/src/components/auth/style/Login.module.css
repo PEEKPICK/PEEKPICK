@@ -1,19 +1,38 @@
 .container {
   height: 100vh;
-  background-image: url('../../../../public/img/background.png');
-  background-size: cover;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* background-repeat: no-repeat; */
+  position: relative;
+}
+
+.background {
+  margin-top: 30%;
+}
+
+.info {
+  font-size: 10px;
+  color: lightgray;
+  margin-bottom: 5%;
+}
+
+.info a {
+  color: #7d00ff;
 }
 
 .buttons {
+  z-index: 2;
+  margin-top: auto;
+  margin-bottom: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.buttons button {
-  border: 1px solid black;
+.buttons img {
+  width: 100%;
+  margin: 1vh 0 1vh 0;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
 }

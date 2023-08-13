@@ -1,18 +1,26 @@
 import React from 'react';
+import classes from './PickandLike.module.css';
+// import { customAxios } from '../../api/customAxios';
+const PickAndLike = (prop) => {
 
-const PickAndLike = () => {
-  // 얘는 리덕스에서 값 받아올듯?
   return (
     <div>
-      <div>
-        {/* 가져온 정보 {} 안에 넣기 */}
-        <h4>PICK { } 회</h4>
-        {/* PICK과 Like 사이 가로막 */}
-        <img src="" alt="" />
-        {/* 따봉 이미지 */}
-        <img src="" alt="" />
-        {/* 가져온 정보 {} 안에 넣기 */}
-        <h4>{ } 회</h4>
+      <div className={classes.pickpoint}>
+        <span>POINT {prop.pickPoint} 점</span>
+      </div>
+      <div className={classes.checkpick}>
+        <div className={classes.pick}>
+          {/* 가져온 정보 {} 안에 넣기 */}
+          <span>PICK {prop.chatCount} 회</span>
+          {/* PICK과 Like 사이 가로막 */}
+        </div>
+        <hr className={classes.hr} />
+        <div className={classes.peek}>
+          {/* 따봉 이미지 */}
+          <img src="img/goodFill.png" alt="" className={classes.img} />
+          {/* 가져온 정보 {} 안에 넣기 */}
+          <span>{prop.likeCount} 회</span>
+        </div>
       </div>
     </div>
   );
