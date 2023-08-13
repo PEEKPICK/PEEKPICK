@@ -142,8 +142,10 @@ const ModalComp = () => {
             />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
-                {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
-                {isSelectedEmoji.peekAvatarDto.nickname}
+              {isSelectedEmoji.peekAvatarDto.avatarId === 61 ? "PeekPick" : isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+              {isSelectedEmoji.peekAvatarDto.avatarId === 61 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
+                {/* {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+                {isSelectedEmoji.peekAvatarDto.nickname} */}
               </span>
               {/* <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
