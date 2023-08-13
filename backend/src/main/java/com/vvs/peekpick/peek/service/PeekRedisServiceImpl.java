@@ -1,9 +1,15 @@
 package com.vvs.peekpick.peek.service;
 
+import com.vvs.peekpick.entity.Peek;
+import com.vvs.peekpick.peek.dto.PeekNearSearchDto;
+import com.vvs.peekpick.peek.dto.PeekReactionCntDto;
 import com.vvs.peekpick.peek.dto.PeekRedisDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.geo.Circle;
+import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.GeoResults;
 import org.springframework.data.geo.Point;
 import org.springframework.data.redis.connection.RedisGeoCommands;
@@ -14,8 +20,13 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.lang.reflect.Type;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PeekRedisServiceImpl implements PeekRedisService{
@@ -23,11 +34,16 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     public static final String PEEK_REDIS = "Peek:"; //(key) Peek:peek의 id / (value) Peek
     public static final String PEEK_LOCATION_REDIS = "Peek_Location"; //(key) Peek_Location:peek의 id / (value) Peek의 값
 
+    public static final String PEEK_VIEWED = "Peek_Viewed:";
+
+    public static final String PEEK_LIKED = "Peek_Liked:";
+    public static final String PEEK_DISLIKED = "Peek_DisLiked:";
+
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
-    @Qualifier("commonRedisTemplate")
-    private final RedisTemplate<String, Object> locationTemplate;
-    private GeoOperations<String, Object> geoOps;
+
+    private final RedisTemplate<String, String> locationTemplate;
+    private GeoOperations<String, String> geoOps;
     private ValueOperations<String, Object> valueOps;
     private SetOperations<String, Object> setOps;
 
@@ -38,38 +54,106 @@ public class PeekRedisServiceImpl implements PeekRedisService{
         setOps = peekTemplate.opsForSet();
     }
 
+    public boolean peekExist(Long peekId) {
+        if(!peekTemplate.hasKey(PEEK_REDIS + peekId)) {
+            log.warn("Peek:{} does not exist.", peekId);
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void setPeek(PeekRedisDto peekRedisDto, Long peekId, int time) {
         peekTemplate.opsForValue().set(PEEK_REDIS + peekId, peekRedisDto, Duration.ofMinutes(time));
     }
 
     @Override
-    public void deletePeek(Long peekId) {
-        peekTemplate.delete(PEEK_REDIS + peekId);
+    public PeekReactionCntDto deletePeek(Long peekId) {
+        try {
+            peekTemplate.delete(PEEK_REDIS + peekId);
+            geoOps.remove(PEEK_LOCATION_REDIS, String.valueOf(peekId));
+            PeekReactionCntDto peekReactionCntDto = PeekReactionCntDto.builder()
+                    .likeCnt(setOps.size(PEEK_LIKED + peekId).intValue())
+                    .disLikeCnt(setOps.size(PEEK_DISLIKED + peekId).intValue())
+                    .build();
+            peekTemplate.delete(PEEK_VIEWED+ peekId);
+            peekTemplate.delete(PEEK_LIKED + peekId);
+            peekTemplate.delete(PEEK_DISLIKED+ peekId);
+
+            return peekReactionCntDto;
+        }
+        catch (DataAccessException e) {
+            log.error("Error get from Redis: ", e);
+            return null;
+        }
     }
 
     @Override
     public PeekRedisDto getPeek(Long peekId) {
-        return (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
-    }
-    @Override
-    public void setPeekLocation(double lon, double lat, Long peekId, int time) {
-        geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
-    }
-
-    @Override
-    public void deletePeekLocation(Long peekId) {
-        geoOps.remove(PEEK_LOCATION_REDIS, peekId.toString());
+        try {
+            return (PeekRedisDto) peekTemplate.opsForValue().get(PEEK_REDIS + peekId);
+        }
+        catch (DataAccessException e) {
+            log.error("Error get from Redis: ", e);
+            return null;
+        }
     }
 
     @Override
-    public GeoResults<RedisGeoCommands.GeoLocation<Object>> getNearLoaction(Circle circle) {
-        return geoOps.geoRadius(PEEK_LOCATION_REDIS, circle);
+    public Long getPeekTtl(Long peekId) {
+        return peekTemplate.getExpire(PEEK_REDIS + peekId);
     }
 
     @Override
-    public void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto) {
-        valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto);
+    public void setPeekLocation(double lon, double lat, Long peekId) {
+        try {
+            geoOps.add(PEEK_LOCATION_REDIS, new Point(lon, lat), peekId.toString());
+        } catch (Exception e) {
+            log.error("Error while adding to geoOps: ", e);
+        }
+    }
+
+    @Override
+    public List<PeekNearSearchDto> getNearLocation(Point point, double distance) { //GeoResults<RedisGeoCommands.GeoLocation<String>>
+        //List<String> nearPeekIds = new ArrayList<>();
+        List<PeekNearSearchDto> peekNearSearchDtoList = new ArrayList<>();
+        RedisGeoCommands.GeoRadiusCommandArgs commandArgs = RedisGeoCommands.GeoRadiusCommandArgs.newGeoRadiusArgs()
+                .includeCoordinates().includeDistance().sortAscending(); // .includeDistance()를 사용하여 WITHDIST 옵션을 추가
+
+        GeoResults<RedisGeoCommands.GeoLocation<String>> allLocations = geoOps.radius(
+                PEEK_LOCATION_REDIS,
+                new Circle(new Point(point.getX(), point.getY()), new Distance(distance, RedisGeoCommands.DistanceUnit.METERS)),
+                commandArgs
+        );
+
+        allLocations.forEach(location -> {
+            PeekNearSearchDto peekNearSearchDto = PeekNearSearchDto
+                    .builder()
+                    .peekId(location.getContent().getName())
+                    .distance((int) location.getDistance().getValue())
+                    .build();
+            peekNearSearchDtoList.add(peekNearSearchDto);
+        });
+        return peekNearSearchDtoList;
+    }
+
+    @Override
+    public Point getPeekLocation(Long peekId) {
+        try {
+            List<Point> points = geoOps.position(PEEK_LOCATION_REDIS, String.valueOf(peekId));
+            if (points != null && !points.isEmpty()) {
+                return points.get(0);
+            }
+            return null;
+        } catch (DataAccessException e) {
+            log.error("Error getting location from Redis: ", e);
+            return null;
+        }
+    }
+
+    @Override
+    public void setPeekValueOps(Long peekId, PeekRedisDto updatedPeekRedisDto, Long ttl) {
+        valueOps.set(PEEK_REDIS + peekId, updatedPeekRedisDto, ttl, TimeUnit.SECONDS);
     }
 
     @Override
@@ -78,38 +162,47 @@ public class PeekRedisServiceImpl implements PeekRedisService{
     }
 
     @Override
-    public void setViewedByMember(Long memberId, Long peekId, int time) {
-        setOps.add("member:" + memberId + ":viewed", String.valueOf(peekId));
-        peekTemplate.expire("member:" + memberId + ":viewed", Duration.ofHours(time));
+    public void setViewedByMember(Long memberId, Long peekId) {
+        if(!peekExist(peekId)) {
+            log.warn("Peek:{} does not exist.", peekId);
+            return;
+        }
+        setOps.add(PEEK_VIEWED+ peekId, String.valueOf(memberId));
     }
     @Override
     public boolean getViewdByMember(Long memberId, Long peekId) {
-        return setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
+        if(!peekTemplate.hasKey(PEEK_REDIS + peekId)) return false;
+
+        return setOps.isMember(PEEK_VIEWED + peekId, String.valueOf(memberId));
+        //return setOps.isMember("member:" + memberId + ":viewed", String.valueOf(peekId));
     }
 
     @Override
-    public void setPeekReactionOn(Long memberId, boolean like, Long peekId, int time) {
+    public void setPeekReactionOn(Long memberId, boolean like, Long peekId) {
+        if(!peekTemplate.hasKey(PEEK_REDIS + peekId)) return;
         if(like) {
-            setOps.add("member:" + memberId + ":liked", String.valueOf(peekId));
-            peekTemplate.expire("member:" + memberId + ":liked", Duration.ofHours(time));
+            setOps.add(PEEK_LIKED + peekId, String.valueOf(memberId));
         }
         else {
-            setOps.add("member:" + memberId + ":disLiked", String.valueOf(peekId));
-            peekTemplate.expire("member:" + memberId + ":disLiked", Duration.ofHours(time));
+            setOps.add(PEEK_DISLIKED + peekId, String.valueOf(memberId));
         }
     }
 
     @Override
     public void setPeekReactionOff(Long memberId, boolean like, Long peekId) {
-        if(like) setOps.remove("member:" + memberId + ":liked", String.valueOf(peekId));
-        else setOps.remove("member:" + memberId + ":disLiked", String.valueOf(peekId));
+        if(!peekTemplate.hasKey(PEEK_REDIS + peekId)) return;
+        if(like) setOps.remove(PEEK_LIKED + peekId, String.valueOf(memberId));
+        else setOps.remove(PEEK_DISLIKED+ peekId, String.valueOf(memberId));
     }
 
 
     @Override
     public boolean getReactionMember(Long memberId, boolean like, Long peekId) {
-        if(like) return setOps.isMember("member:" + memberId + ":liked", String.valueOf(peekId));
-        else return setOps.isMember("member:" + memberId + ":disLiked", String.valueOf(peekId));
+        if(!peekTemplate.hasKey(PEEK_REDIS + peekId)) return false;
+        if(like) return setOps.isMember(PEEK_LIKED+ peekId, String.valueOf(memberId));
+        else return setOps.isMember(PEEK_DISLIKED + peekId, String.valueOf(memberId));
     }
+
+
 
 }

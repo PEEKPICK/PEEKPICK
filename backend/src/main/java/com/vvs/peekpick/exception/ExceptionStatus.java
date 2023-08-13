@@ -12,6 +12,7 @@ public enum ExceptionStatus {
 
     /* 피커 */
     PICKER_NOT_FOUNDED("-3000", "대상이 미접속 상태입니다."),
+
     
     /* 회원 */
     NOT_FOUND_USER("-400", "존재하지 않는 사용자입니다"),

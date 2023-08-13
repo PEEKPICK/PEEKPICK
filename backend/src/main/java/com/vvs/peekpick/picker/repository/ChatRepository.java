@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatRepository {
 
     // 채팅방에 발행되는 메시지를 처리할 Listener
+    @Qualifier("redisMessageListenerContainer")
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     // 발행/구독 서비스
     private final ChatSubscriber chatSubscriber;
@@ -46,11 +47,11 @@ public class ChatRepository {
         opsListChat = redisTemplate.opsForList();
     }
 
-    public String createChatRoom() {
+    public String createChatRoom(LocalDateTime now) {
         String roomId = UUID.randomUUID().toString();
         ChannelTopic topic = new ChannelTopic(roomId);
         ChatRoomDto chatRoomDto = ChatRoomDto.builder()
-                .createTime(LocalDateTime.now())
+                .createTime(now)
                 .channelTopic(topic)
                 .build();
         redisMessageListenerContainer.addMessageListener(chatSubscriber, topic);

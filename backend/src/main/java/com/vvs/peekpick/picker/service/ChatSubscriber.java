@@ -30,8 +30,9 @@ public class ChatSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             String publishedMessage = (String) redisTemplate.getStringSerializer().deserialize(message.getBody());
-            String afterFiltering = filtering.changeAll(publishedMessage);
-            ChatMessageDto messageDto = objectMapper.readValue(afterFiltering, ChatMessageDto.class);
+            ChatMessageDto messageDto = objectMapper.readValue(publishedMessage, ChatMessageDto.class);
+            String afterFiltering = filtering.changeAll(messageDto.getMessage());
+            messageDto.messageFiltering(afterFiltering);
             messagingTemplate.convertAndSend("/sub/chat/room/"+messageDto.getRoomId(), messageDto);
         } catch (Exception e) {
             throw new RuntimeException(e);

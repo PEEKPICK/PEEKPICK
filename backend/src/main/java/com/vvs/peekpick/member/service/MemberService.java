@@ -32,4 +32,12 @@ public interface MemberService {
     void updateAvatarLikes(Long avatarId, List<Long> likes);
     void updateAvatarDisLikes(Long avatarId, List<Long> disLikes);
     void logout(Long avatarId);
+
+    void updatePickPoint(Long memberId1, Long memberId2);
+
+    void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount);
+
+    void updateWorld(Long avatarId, Long worldId);
+
+    AvatarDto getOtherMemberInfo(Long avatarId);
 }

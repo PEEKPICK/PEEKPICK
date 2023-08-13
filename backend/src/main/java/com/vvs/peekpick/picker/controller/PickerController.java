@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -48,22 +49,23 @@ public class PickerController {
         return pickerServiceImpl.connectSseSession(Long.parseLong(authentication.getName()));
     }
 
+//    /**
+//     * 서버푸시 SSE Emitter 삭제
+//     * @return CommonResponse
+//     */
+//    @GetMapping("/sse/disconnect")
+//    public CommonResponse sseDisconnect(Authentication authentication){
+//        return pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
+//    }
+
     /**
-     * 서버푸시 SSE Emitter 삭제
+     * 종료하거나 홈으로 이동시 세션에서 내 정보 제거 + SSE Emitter 제거
      * @return CommonResponse
      */
-    @GetMapping("/sse/disconnect")
-    public CommonResponse sseDisconnect(Authentication authentication){
-        return pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
-    }
-
-
-    /**
-     * 종료하거나 홈으로 이동시 세션에서 내 정보 제거
-     * @return CommonResponse
-     */
+    @Transactional
     @GetMapping("/disconnect")
     public CommonResponse disconnectSession(Authentication authentication) {
+        pickerServiceImpl.disconnectSseSession(Long.parseLong(authentication.getName()));
         return pickerServiceImpl.disconnectSession(Long.parseLong(authentication.getName()));
     }
 

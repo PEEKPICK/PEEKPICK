@@ -18,5 +18,6 @@ public class PeekDetailDto {
     private LocalDateTime finishTime;
     private boolean liked;
     private boolean disLiked;
+    private int distance;
 
 }

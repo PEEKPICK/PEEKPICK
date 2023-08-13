@@ -18,7 +18,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOidcUserService extends AbstractOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
-    public CustomOidcUserService(MemberRepository memberRepository, MemberService memberService, ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter, ResponseService responseService) {
+    public CustomOidcUserService(MemberRepository memberRepository, MemberService memberService,
+                                 ProviderUserConverter<ProviderUserRequest, ProviderUser> providerUserConverter,
+                                 ResponseService responseService) {
         super(memberRepository, memberService, providerUserConverter, responseService);
     }
 

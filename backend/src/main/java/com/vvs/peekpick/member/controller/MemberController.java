@@ -165,6 +165,15 @@ public class MemberController {
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
     }
 
+    @PostMapping("/world")
+    public CommonResponse updateWorld(Authentication authentication,
+                                      @RequestBody Map<String, Long> param) {
+        Long avatarId = Long.valueOf(authentication.getName());
+        memberService.updateWorld(avatarId, param.get("worldId"));
+
+        return responseService.successCommonResponse(ResponseStatus.RESPONSE_OK);
+    }
+
     /**
      * 취향 태그 대분류 조회
      * @param categoryLarge
@@ -201,5 +210,18 @@ public class MemberController {
                                             .build();
 
         return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, result);
+    }
+
+    /**
+     * 채팅 상대방 값 조회
+     * @param avatarId
+     * @return
+     */
+    @GetMapping("/chat/info")
+    public DataResponse OtherMemberInfo(@RequestParam("avatarId") Long avatarId) {
+
+        AvatarDto avatarDto = memberService.getOtherMemberInfo(avatarId);
+
+        return responseService.successDataResponse(ResponseStatus.RESPONSE_OK, avatarDto);
     }
 }
