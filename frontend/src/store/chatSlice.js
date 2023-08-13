@@ -7,6 +7,7 @@ const chatSlice = createSlice({
     opponent: null,
     createTime: null,
     endTime: null,
+    restTime: "10:00",
     chatModalState: false,
     connectState: false,
     opponentURL: null,
@@ -50,6 +51,9 @@ const chatSlice = createSlice({
       state.opponentURL = null;
       state.opponentId = null;
       state.nickName = null;
+    },
+    updateRestTime: (state, action) => {
+      state.restTime = action.payload;
     },
   },
 });
