@@ -22,7 +22,7 @@ const CreateReadChat = ({ isModalState }) => {
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
   const scrollRef = useRef();
-
+  const createTime = useSelector((state) => state.roomId.createTime);
   const chatPop = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
@@ -47,6 +47,7 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   useEffect(() => {
+    scrollToBottom();
     const connect = () => {
       const socket = new SockJS(`https://peekpick.online/ws`);
       const factory = Stomp.over(socket);
@@ -60,6 +61,8 @@ const CreateReadChat = ({ isModalState }) => {
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
             scrollToBottom();
+            dispatch(chatActions.updateEndTime(createTime));
+            // dispatch(chatActions.resetState());
             if (stompClient !== null) {
               setStompClient(null);
             }
@@ -67,14 +70,18 @@ const CreateReadChat = ({ isModalState }) => {
             showMessage(parseMessage);
             scrollToBottom();
           }
+          scrollToBottom();
         });
+        scrollToBottom();
       });
+      scrollToBottom();
     };
     connect();
     // eslint-disable-next-line
   }, [getRoomId]);
 
   useEffect(() => {
+    scrollToBottom();
     setReceivedMessages([]);
   }, [getRoomId]);
 
@@ -92,8 +99,9 @@ const CreateReadChat = ({ isModalState }) => {
         })
       );
       setMessage("");
+      scrollToBottom();
     }
-    scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
+    scrollToBottom();
   };
 
   const scrollToBottom = () => {
@@ -103,6 +111,7 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const showMessage = (message) => {
+    scrollToBottom();
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
   };
 
@@ -124,6 +133,7 @@ const CreateReadChat = ({ isModalState }) => {
             sendTime: "",
             expireFlag: "Y",
           })
+          
         );
         console.log("나가요!!!");
       }
@@ -157,8 +167,8 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const sirenHandler = () => {
-    toast('신고가 완료됐습니다! 🚨', {
-      icon: '🚨',
+    toast("신고가 완료됐습니다! 🚨", {
+      icon: "🚨",
     });
     handleExitConfirmation();
   };
@@ -170,6 +180,7 @@ const CreateReadChat = ({ isModalState }) => {
         onRequestClose={() => handleCloseModal()}
         contentLabel="Selected Emoji Modal"
         className={classes.chatMain}
+        id="chatMain"
       >
         <div className={classes.chatHeader}>
           <button
@@ -179,16 +190,10 @@ const CreateReadChat = ({ isModalState }) => {
           >
             <img src="img/cancel.png" alt="나가기" />
           </button>
-          {/* <div className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div> */}
-          {/* <p>Rest Time: {restTime}</p> */}
           <ChatRestTime />
           <div className={classes.headerRight}>
             <button className={classes.siren} disabled={showExitConfirmationModal}>
-              <img
-                src="img/siren.png"
-                alt="신고"
-                onClick={() => sirenHandler()}
-              />
+              <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
             </button>
             <button onClick={() => chatPop()} className={classes.downBtn} disabled={showExitConfirmationModal}>
               <img src="img/down.png" alt="내리기" />
@@ -223,8 +228,8 @@ const CreateReadChat = ({ isModalState }) => {
                 )}
               </div>
             ))}
-            <div id="box" className={classes.box} ref={scrollRef} />
           </ul>
+            <div id="box" className={classes.box} ref={scrollRef} />
         </div>
         <div className={classes.sendBar}>
           <input
@@ -242,6 +247,7 @@ const CreateReadChat = ({ isModalState }) => {
                   });
                 } else {
                   joinChatRoom();
+                  scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
                 }
                 if (stompClient === null) {
                   toast.error("대화 상대가 없습니다.", {
@@ -260,6 +266,7 @@ const CreateReadChat = ({ isModalState }) => {
                 });
               } else {
                 joinChatRoom();
+                scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
               }
               if (stompClient === null) {
                 toast.error("대화 상대가 없습니다.", {
