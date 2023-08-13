@@ -1,6 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import Modal from "react-modal";
 
 // router import
 // 준형
@@ -179,7 +180,7 @@ function App() {
             });
           }
         });
-
+        Modal.setAppElement('#root')
         // 수락하기
         eventSource.addEventListener("CHAT_START", (e) => {
           // 채팅 시작

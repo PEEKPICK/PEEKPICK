@@ -19,4 +19,5 @@
   color: white;
   font-size: 15px;
   font-weight: 600;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }

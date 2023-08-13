@@ -233,6 +233,7 @@ const Header = () => {
         <Modal
           isOpen={isWorldMap}
           onRequestClose={() => setIsWorldMap(false)} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+          className={classes.worldMapModal}
         >
           <div className={classes.worldMapContainer}>
             <h1>월드 선택</h1>

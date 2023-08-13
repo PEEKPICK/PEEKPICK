@@ -8,7 +8,7 @@
   border-radius: 1.3rem 1.3rem 1.3rem 1.3rem;
   box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
   font-size: 0.875rem;
-  width: 80%;
+  width: 312px;
   transform: translate(-50%, -50%) scale(1);
   overflow: auto;
   animation: 0.2s ease-in-out loadEffect1;
@@ -50,6 +50,15 @@
   margin-top: 0.8rem;
 }
 
+.pickItem {
+  margin-right: 10px;
+}
+
+.goodImg {
+  width: 15px;
+  margin-right: 2px;
+}
+
 .nickname {
   margin-top: 5%;
   font-size: 18px;
@@ -66,7 +75,7 @@
   display: flex;
   align-items: center;
   padding-left: 3%;
-  /* background-color: rgba(125, 0, 255, 0.1); */
+  background-color: rgba(125, 0, 255, 0.1);
 }
 
 .intro img {

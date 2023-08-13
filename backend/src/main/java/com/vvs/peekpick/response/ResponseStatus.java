@@ -13,6 +13,7 @@ public enum ResponseStatus {
     CONNECTING_SUCCESS("3000", "접속되었습니다."),
     DISCONNECT_SUCCESS("3001", "접속 종료되었습니다."),
     CONNECTION_LIST_SEARCH_SUCCESS("3002", "주변 PICK들이 조회되었습니다."),
+    CHAT_REQUEST_SUCCESS("3004", "채팅 요청이 송신되었습니다."),
 
     RESPONSE_OK("200", "SUCCESS"),
     RESPONSE_CREATE("201", "SUCCESS"),
