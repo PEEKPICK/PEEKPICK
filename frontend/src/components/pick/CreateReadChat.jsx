@@ -8,60 +8,22 @@ import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-hot-toast";
+import RestTime from "./RestTime";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
   const newModalState = useSelector((state) => state.roomId.chatModalState);
   const getRoomId = useSelector((state) => state.roomId.roomId);
-  // const createTime = useSelector((state) => state.roomId.createTime);
   const EmojiForChat = useSelector((state) => state.roomId.opponentURL);
   const opponent = useSelector((state) => state.roomId.opponent);
   const getNickName = useSelector((state) => state.roomId.nickName);
   const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
-  //채팅 내리기
-  const messagesEndRef = useRef(null);
-  //나가기
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
-
-  // 채팅 시간
-  const [timeLeft, setTimeLeft] = useState(0);
-  const createTime = useSelector((state) => state.roomId.createTime);
-  const endTime = useSelector((state) => state.roomId.endTime);
-
-  const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const sec = Math.floor(seconds % 60);
-    return `${minutes}:${sec}`;
-  };
-  // -----------------------------------------------------------
-  useEffect(() => {
-    console.log(createTime);
-    if (createTime && endTime) {
-      const koreaTime = new Date(endTime);
-      koreaTime.setHours(koreaTime.getHours() + 9);
-      setTimeLeft((koreaTime - new Date()) / 1000);
-    }
-  }, [createTime, endTime]);
-
-  useEffect(() => {
-    if (timeLeft > 0) {
-      const timerId = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-      }, 1000);
-
-      return () => clearInterval(timerId);
-    } else if (timeLeft <= 0) {
-      setTimeLeft("Time's up!");
-    }
-  }, [timeLeft]);
-  // -----------------------------------------------------------
+  const scrollRef = useRef();
 
   const chatPop = () => {
-    console.log("getRoomId", getRoomId);
-    console.log("opponent", opponent);
-    console.log("EmojiForChat", EmojiForChat);
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
 
@@ -71,15 +33,14 @@ const CreateReadChat = ({ isModalState }) => {
     }
   };
 
-  //나가기 눌렀을 때
   const handleExitConfirmation = () => {
     setShowExitConfirmationModal(true);
   };
-  //나가기 취소 눌렀을 때
+
   const closeExitConfirmationModal = () => {
     setShowExitConfirmationModal(false);
   };
-  // 한번더 나가기 눌렀을 때
+
   const exitChat = () => {
     declare();
     closeExitConfirmationModal();
@@ -88,28 +49,23 @@ const CreateReadChat = ({ isModalState }) => {
   useEffect(() => {
     const connect = () => {
       const socket = new SockJS(`https://i9b309.p.ssafy.io/ws`);
-      const factory = Stomp.over(socket); // Create a factory
-      factory.reconnect_delay = 2000; // Set reconnect delay if needed
+      const factory = Stomp.over(socket);
+      factory.reconnect_delay = 2000;
 
       factory.connect({}, (frame) => {
-        setStompClient(factory); // Use the factory as StompClient
+        setStompClient(factory);
         factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
           const parseMessage = JSON.parse(chatMessage.body);
           console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
-            try {
-              if (stompClient !== null) {
-                setStompClient(null);
-              } else {
-                console.log("STOMP 연결이 없거나 이미 연결이 종료되었습니다.");
-              }
-            } catch {
-              return;
+            scrollToBottom();
+            if (stompClient !== null) {
+              setStompClient(null);
             }
-            setTimeLeft("Time's up!"); // 추가된 부분
           } else {
             showMessage(parseMessage);
+            scrollToBottom();
           }
         });
       });
@@ -117,23 +73,8 @@ const CreateReadChat = ({ isModalState }) => {
     connect();
   }, [getRoomId]);
 
-  // useEffect(() => {
-  //   const disconnect = () => {
-  //     if (stompClient !== null) {
-  //       stompClient.disconnect();
-  //       setReceivedMessages([]);
-  //     }
-  //   };
-  //   disconnect();
-  //   /* eslint-disable-next-line */
-  // }, []);
-
-  // const handleExpireMessage = () => {
-  //   dispatch(chatActions.resetState());
-  // };
-
   useEffect(() => {
-    setReceivedMessages([]); // roomId가 변경될 때마다 배열 초기화
+    setReceivedMessages([]);
   }, [getRoomId]);
 
   const joinChatRoom = () => {
@@ -151,25 +92,25 @@ const CreateReadChat = ({ isModalState }) => {
       );
       setMessage("");
     }
-  };
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
   };
 
-  scrollToBottom();
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const showMessage = (message) => {
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
   };
 
   const declare = () => {
-    setTimeLeft(0);
     dispatch(chatActions.updateChatModalState(!isModalState));
     const requestBody = {
       roomId: getRoomId,
     };
 
-    // 상대에게 메시지 만료시켜서 보냄 (ExpireFlag : Y)
     const exitChatRoom = () => {
       if (stompClient !== null) {
         stompClient.send(
@@ -184,20 +125,15 @@ const CreateReadChat = ({ isModalState }) => {
           })
         );
         console.log("나가요!!!");
-      } else {
-        console.log("STOMP 연결이 없거나 이미 연결이 종료되었습니다.");
       }
     };
 
     exitChatRoom();
 
-    // StompClient 종료시킴 (상대의 메시지 받을 수 없도록)
     const disconnect = () => {
       if (stompClient !== null) {
         setStompClient(null);
         setReceivedMessages([]);
-      } else {
-        console.log("STOMP 연결이 없거나 이미 연결이 종료되었습니다.");
       }
     };
 
@@ -207,21 +143,23 @@ const CreateReadChat = ({ isModalState }) => {
       .post("/picker/chat-end", requestBody)
       .then(() => {
         console.log("요청 성공:", "나가기 성공");
-        // 요청이 성공했을 때 실행할 코드 작성
         dispatch(chatActions.callRoomID(""));
       })
       .catch(() => {
         console.error("요청 실패:", "나가기 실패");
-        // 요청이 실패했을 때 실행할 코드 작성
       });
     dispatch(chatActions.updateOpponentNickName());
+  };
+
+  const handleInputMessageChange = (e) => {
+    setMessage(e.target.value);
   };
 
   return (
     <>
       <Modal
         isOpen={newModalState}
-        onRequestClose={() => handleCloseModal()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+        onRequestClose={() => handleCloseModal()}
         contentLabel="Selected Emoji Modal"
         className={classes.chatMain}
       >
@@ -233,9 +171,9 @@ const CreateReadChat = ({ isModalState }) => {
           >
             <img src="img/cancel.png" alt="나가기" />
           </button>
-          <div className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div>
+          {/* <div className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div> */}
           {/* <p>Rest Time: {restTime}</p> */}
-          {/* <RestTime /> */}
+          <RestTime />
           <div className={classes.headerRight}>
             <button className={classes.siren} disabled={showExitConfirmationModal}>
               <img src="img/siren.png" alt="신고" />
@@ -245,12 +183,11 @@ const CreateReadChat = ({ isModalState }) => {
             </button>
           </div>
         </div>
-        <div className={classes.divider} />
+        <div className={classes.divider} />{" "}
         <div className={classes.chat}>
           <ul id="messageList">
-            {receivedMessages.map((message, index) => (
+            {receivedMessages.map((message) => (
               <div className={classes.chatBubble} key={uuid()}>
-                {/* eslint-disable-next-line */}
                 {message.sender == opponent ? (
                   <li className={classes.selfMessage}>{message.message}</li>
                 ) : (
@@ -273,7 +210,9 @@ const CreateReadChat = ({ isModalState }) => {
                 )}
               </div>
             ))}
-            <div ref={messagesEndRef} />
+            <div id="box" className={classes.box} ref={scrollRef}>
+              a
+            </div>
           </ul>
         </div>
         <div className={classes.sendBar}>
@@ -283,7 +222,7 @@ const CreateReadChat = ({ isModalState }) => {
             type="text"
             id="message"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={handleInputMessageChange}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 if (!message.trim()) {
@@ -291,7 +230,7 @@ const CreateReadChat = ({ isModalState }) => {
                     id: "textareaIsEmpty",
                   });
                 } else {
-                  joinChatRoom(); // 엔터 키를 눌렀을 때 메시지 전송
+                  joinChatRoom();
                 }
                 if (stompClient === null) {
                   toast.error("대화 상대가 없습니다.", {
@@ -304,12 +243,12 @@ const CreateReadChat = ({ isModalState }) => {
           <button
             disabled={showExitConfirmationModal}
             onClick={() => {
-              if (message.trim()) {
-                joinChatRoom();
-              } else {
+              if (!message.trim()) {
                 toast.error("입력하세요", {
                   id: "textareaIsEmpty",
                 });
+              } else {
+                joinChatRoom();
               }
               if (stompClient === null) {
                 toast.error("대화 상대가 없습니다.", {
