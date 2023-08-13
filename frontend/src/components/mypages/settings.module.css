@@ -1,8 +1,9 @@
 .settings{
-  position: absolute;
-  width: 240px;
-  margin-left: 80px;
-  top:7vh;
+  position: fixed;
+  top: 16.4vh;
+  left: 50%;
+  width: 280px;
+  transform: translate(-50%, -50%) scale(1);
   background-color: white;
   padding: 20px;
   border-top-left-radius: 3vh;
@@ -16,20 +17,18 @@
 @keyframes loadEffect1 {
   0% {
     opacity: 0;
-    transform: scale(0.7);
+    transform: translate(-50%, -50%) scale(0.7);
   }
+
   85% {
     opacity: 0.85;
-    transform: scale(1.01);
+    transform: translate(-50%, -50%) scale(1.01);
   }
+
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform:translate(-50%, -50%) scale(1);
   }
-}
-
-.settings div div {
-  margin: 5%;
 }
 
 .hr{
