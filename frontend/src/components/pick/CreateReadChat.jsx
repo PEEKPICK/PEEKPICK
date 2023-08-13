@@ -156,6 +156,13 @@ const CreateReadChat = ({ isModalState }) => {
     setMessage(e.target.value);
   };
 
+  const sirenHandler = () => {
+    toast('신고가 완료됐습니다! 🚨', {
+      icon: '🚨',
+    });
+    handleExitConfirmation();
+  };
+
   return (
     <>
       <Modal
@@ -177,7 +184,11 @@ const CreateReadChat = ({ isModalState }) => {
           <ChatRestTime />
           <div className={classes.headerRight}>
             <button className={classes.siren} disabled={showExitConfirmationModal}>
-              <img src="img/siren.png" alt="신고" />
+              <img
+                src="img/siren.png"
+                alt="신고"
+                onClick={() => sirenHandler()}
+              />
             </button>
             <button onClick={() => chatPop()} className={classes.downBtn} disabled={showExitConfirmationModal}>
               <img src="img/down.png" alt="내리기" />
