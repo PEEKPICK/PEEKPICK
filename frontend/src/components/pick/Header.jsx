@@ -144,9 +144,9 @@ const Header = () => {
     <>
       <div className={classes.headerMain}>
         <button className={classes.button}>
-          <img src="/img/distance.svg" alt="거리조절버튼" onClick={() => setIsDistance(true)} />
+          <img src="/img/distance.svg" alt="거리조절버튼" onClick={() => {setIsDistance(true); setIsWorldMap(false);}} />
         </button>
-        <button className={classes.button} onClick={() => setIsWorldMap(true)}>
+        <button className={classes.button} onClick={() => {setIsWorldMap(true); setIsDistance(false);}}>
           <img src="/img/worldmap.svg" alt="알림버튼" />
         </button>
       </div>
