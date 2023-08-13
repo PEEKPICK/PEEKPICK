@@ -30,7 +30,7 @@
   border: none;
   cursor: pointer;
   background-color: transparent;
-  z-index: 1000000;
+  z-index: 0;
 }
 .button img{
   width: 40px;

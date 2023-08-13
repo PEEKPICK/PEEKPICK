@@ -8,7 +8,7 @@ import { Stomp } from "@stomp/stompjs";
 import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-hot-toast";
-import RestTime from "./RestTime";
+import ChatRestTime from "./ChatRestTime";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -71,6 +71,7 @@ const CreateReadChat = ({ isModalState }) => {
       });
     };
     connect();
+    // eslint-disable-next-line
   }, [getRoomId]);
 
   useEffect(() => {
@@ -173,7 +174,7 @@ const CreateReadChat = ({ isModalState }) => {
           </button>
           {/* <div className={classes.time}>{typeof timeLeft === "string" ? timeLeft : formatTime(timeLeft)}</div> */}
           {/* <p>Rest Time: {restTime}</p> */}
-          <RestTime />
+          <ChatRestTime />
           <div className={classes.headerRight}>
             <button className={classes.siren} disabled={showExitConfirmationModal}>
               <img src="img/siren.png" alt="신고" />
@@ -188,6 +189,7 @@ const CreateReadChat = ({ isModalState }) => {
           <ul id="messageList">
             {receivedMessages.map((message) => (
               <div className={classes.chatBubble} key={uuid()}>
+                {/* eslint-disable-next-line */}
                 {message.sender == opponent ? (
                   <li className={classes.selfMessage}>{message.message}</li>
                 ) : (
@@ -210,9 +212,7 @@ const CreateReadChat = ({ isModalState }) => {
                 )}
               </div>
             ))}
-            <div id="box" className={classes.box} ref={scrollRef}>
-              a
-            </div>
+            <div id="box" className={classes.box} ref={scrollRef} />
           </ul>
         </div>
         <div className={classes.sendBar}>
@@ -260,10 +260,21 @@ const CreateReadChat = ({ isModalState }) => {
         </div>
         {showExitConfirmationModal && (
           <div className={classes.exitConfirmationModal}>
+            <div className={classes.caution}>CAUTION</div>
+
+            <div className={classes.modal_divider}></div>
+
             <p>정말로 나가시겠습니까?</p>
             <p>모든 대화의 내용이 삭제됩니다.</p>
-            <button onClick={() => exitChat()}>나가기</button>
-            <button onClick={() => closeExitConfirmationModal()}>취소</button>
+
+            <div className={classes.button_area}>
+              <button onClick={() => exitChat()} className={classes.exit_button}>
+                나가기
+              </button>
+              <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
+                취소
+              </button>
+            </div>
           </div>
         )}
       </Modal>

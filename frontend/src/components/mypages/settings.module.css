@@ -1,10 +1,10 @@
 .settings{
   position: absolute;
-  width: 70%;
-  right: 10%;
-  top:8vh;
+  width: 240px;
+  margin-left: 80px;
+  top:7vh;
   background-color: white;
-  padding: 5%;
+  padding: 20px;
   border-top-left-radius: 3vh;
   border-bottom-left-radius:3vh ;
   border-bottom-right-radius:3vh ;

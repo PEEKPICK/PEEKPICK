@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
 import classes from "./CreateReadChat.module.css";
 
-const RestTime = () => {
+const CreateReadChat = () => {
   // 채팅 시간
   const [timeLeft, setTimeLeft] = useState(0);
   const createTime = useSelector((state) => state.roomId.createTime);
@@ -29,6 +29,7 @@ const RestTime = () => {
     } else if (timeLeft <= 0) {
       setTimeLeft("Time's up!");
     }
+    // eslint-disable-next-line
   }, [timeLeft]);
 
   // -----------------------------------------------------------
@@ -40,4 +41,4 @@ const RestTime = () => {
   );
 };
 
-export default RestTime;
+export default CreateReadChat;
