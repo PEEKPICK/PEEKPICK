@@ -65,9 +65,6 @@ const ModalComp = () => {
   }, [timeLeft]);
 
 
-  
-
-  
 
   useEffect(() => {
     if (isSelectedEmoji) {
