@@ -1,42 +1,46 @@
 .signout {
   position: fixed;
-  margin-left: 34px;
-  margin-top: 150px;
+  top: 40%;
+  left: 50%;
   width: 280px;
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%) scale(1);
   height: 35%;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;
 }
+
 @keyframes loadEffect1 {
   0% {
     opacity: 0;
-    transform: scale(0.7);
+    transform: translate(-50%, -50%) scale(0.7);
   }
+
   85% {
     opacity: 0.85;
-    transform: scale(1.01);
+    transform: translate(-50%, -50%) scale(1.01);
   }
+
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
-.signouttop{
+.signouttop {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 5%;
 }
 
-.signouttop img{
+.signouttop img {
   position: absolute;
   right: 5%;
-  top:5%;
+  top: 5%;
 }
 
 .explanation {
@@ -47,10 +51,12 @@
   margin-left: 5%;
   margin-top: 5%;
 }
-.explanation span{
+
+.explanation span {
   display: block;
 }
-.agree{
+
+.agree {
   display: flex;
   font-size: 70%;
   justify-content: center;
@@ -58,11 +64,11 @@
   align-items: center;
 }
 
-.agree span{
+.agree span {
   margin-left: 2.5%;
 }
 
-.btnbasic{
+.btnbasic {
   background-color: gray;
   margin-top: 40px;
   display: flex;
@@ -73,8 +79,8 @@
   border-radius: 1vh;
 }
 
-.btnclick{
-  background-color: rgba(125,0,225);
+.btnclick {
+  background-color: rgba(125, 0, 225);
   text-decoration: none;
   margin-top: 8%;
   display: flex;
@@ -85,7 +91,7 @@
   border-radius: 1vh;
 }
 
-.hr{
+.hr {
   width: 100%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);

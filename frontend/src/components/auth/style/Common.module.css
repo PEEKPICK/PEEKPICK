@@ -51,7 +51,7 @@
 }
 
 .listmaker{
-  overflow-x: hidden;
+  overflow-x: scroll;
 }
 
 .listmaker::-webkit-scrollbar {
