@@ -4,6 +4,7 @@ import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
 import PickLocation from "./PickLocation";
+import { toast } from "react-hot-toast";
 
 const FindPicker = () => {
   const dispatch = useDispatch();
@@ -16,10 +17,16 @@ const FindPicker = () => {
       const userArrayOrigin = response.data.data;
       if (Array.isArray(userArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
-        const maxEmojisToShow = 100;
+        const maxEmojisToShow = 8;
         //정보 저장
         const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
         // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // 길이 0이면 Toast 알림
+        if (limitedUserArray.length == 0) {
+          toast('주변에 아무도 없어요 😭', {
+            icon: '😭',
+          });
+        }
         dispatch(findUserActions.updateUserInfo(limitedUserArray));
       }
     });
