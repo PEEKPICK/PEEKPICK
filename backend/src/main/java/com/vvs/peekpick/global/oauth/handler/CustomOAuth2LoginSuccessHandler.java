@@ -54,13 +54,13 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                             .build();
 
             Member signupMember = memberRepository.save(newMember);
-            redirectUrl = "https://i9b309.p.ssafy.io/userInfo?id=" + signupMember.getMemberId();
+            redirectUrl = "https://peekpick.online/userInfo?id=" + signupMember.getMemberId();
         } else {
             Member findMember = member.get();
             // 가회원 상태 = 회원가입 리다이렉션
             if(findMember.getAvatar() == null) {
                 log.info("NO Avatar");
-                redirectUrl = "https://i9b309.p.ssafy.io/userInfo?id=" + findMember.getMemberId();
+                redirectUrl = "https://peekpick.online/userInfo?id=" + findMember.getMemberId();
             }
 
             // 회원 상태 = Token 발급 및 로그인 처리
@@ -88,7 +88,7 @@ public class CustomOAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSucc
                 response.addCookie(cookie);
 
                 // accessToken 은 파라미터에 임시, 맘에 안든다
-                redirectUrl = "https://i9b309.p.ssafy.io/oauth2/redirect?token=" + accessToken;
+                redirectUrl = "https://peekpick.online/oauth2/redirect?token=" + accessToken;
             }
         }
         // 신규 회원이면 회원정보 return
