@@ -141,7 +141,7 @@ const UserInfo = () => {
 
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
-    if (userInfo.phone) {
+    if (userInfo.phone !== '1') {
       return (
         <div>
           {phone}
