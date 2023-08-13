@@ -63,7 +63,7 @@ public class PeekController {
         Long avatarId = Long.parseLong(authentication.getName());
         Long memberId = Long.parseLong(authentication.getCredentials().toString());
         int dist = Integer.parseInt(distance);
-        return peekService.getPeek(memberId, peekId, dist);
+        return peekService.getPeek(avatarId, memberId, peekId, dist);
     }
 
 

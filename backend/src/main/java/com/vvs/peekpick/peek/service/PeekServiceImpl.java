@@ -190,7 +190,7 @@ public class PeekServiceImpl implements PeekService {
 
 
     @Override
-    public DataResponse getPeek(Long memberId, Long peekId, int distance) {
+    public DataResponse getPeek(Long avatarId, Long memberId, Long peekId, int distance) {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
@@ -222,6 +222,7 @@ public class PeekServiceImpl implements PeekService {
 
             Avatar avatar = peekAvatarService.findAvatar(writer.getAvatar().getAvatarId());
             PeekAvatarDto peekAvatarDto = PeekAvatarDto.builder()
+                    .avatarId(avatarId)
                     .nickname(avatar.getNickname())
                     .bio(avatar.getBio())
                     .emoji(avatar.getEmoji())
