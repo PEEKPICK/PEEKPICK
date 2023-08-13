@@ -20,7 +20,7 @@ const LikeAndHate = ({ ModalOutSide, like, hate, likes, hates }) => {
     <div>
       <img src="" alt="" />
       <div className={classes.likehate}>
-        <span>좋아하는 것</span>
+        <span className={classes.like}>좋아해요</span>
         {/* 좋아요 수정 컴포넌트 */}
         {!ModalOutSide ? (
           <button onClick={handleLikeEdit}>수정</button>
@@ -46,7 +46,7 @@ const LikeAndHate = ({ ModalOutSide, like, hate, likes, hates }) => {
       </div>
 
       <div className={classes.likehate}>
-        <span>싫어하는 것</span>
+        <span className={classes.disLike}>싫어해요</span>
         {/* 싫어요 수정 컴포넌트 */}
         {!ModalOutSide ? (
           <button onClick={handleHateEdit}>수정</button>
