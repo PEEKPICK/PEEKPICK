@@ -58,11 +58,17 @@ const ModalComp = () => {
               <span className={classes.nickname}>
                 {isSelectedEmoji.prefix.content} {isSelectedEmoji.nickname}
               </span>
-              <div className={classes.pickCount}>
-                <span style={{ marginRight: "0.2rem" }}>PICK</span>
-                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.chatCount}</span>
-                <span style={{ marginLeft: "0.2rem" }}>회</span>
-              </div>
+
+              <span style={{ marginRight: "0.2rem" }}>PICK</span>
+              <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.chatCount}</span>
+              <span style={{ marginLeft: "0.2rem" }}>회</span>
+
+
+              <span style={{ marginRight: "0.2rem" }}>따봉</span>
+              <span style={{ color: "#7d00ff", fontWeight: "700" }}>{isSelectedEmoji.likeCount}</span>
+              <span style={{ marginLeft: "0.2rem" }}>회</span>
+
+
               {isSelectedEmoji.bio && isSelectedEmoji.bio.trim() !== "" ? (
                 <p className={classes.intro}>{isSelectedEmoji.bio}</p>
               ) : (
