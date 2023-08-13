@@ -278,23 +278,7 @@ function App() {
       {/* 라우터 */}
       <Routes>
         <>
-          {!isAuthenticated && (
-            <>
-              {/* 준형 */}
-              <Route path="/" element={<Login />} />
-              <Route path="/oauth2/redirect" element={<Redirect />} />
-              <Route path="/userinfo" element={<UserInfo />} />
-              <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/usernickname" element={<UserNickname />} />
-              <Route path="/userlike" element={<UserLike />} />
-              <Route path="/UserLikeHate" element={<UserLikeHate />} />
-              <Route path="/userhate" element={<UserHate />} />
-              <Route path="/welcome" element={<Welcome />} />
-              <Route path="/branding" element={<Branding />} />
-              <Route path="/*" element={<AlreadyLogin />} />
-            </>
-          )}
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Picker />} />
@@ -309,7 +293,24 @@ function App() {
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>
-          )}
+          )
+            :
+            (
+              <>
+                {/* 준형 */}
+                <Route path="/" element={<Login />} />
+                <Route path="/oauth2/redirect" element={<Redirect />} />
+                <Route path="/userinfo" element={<UserInfo />} />
+                <Route path="/userprofile" element={<UserProfile />} />
+                <Route path="/usernickname" element={<UserNickname />} />
+                <Route path="/userlike" element={<UserLike />} />
+                <Route path="/UserLikeHate" element={<UserLikeHate />} />
+                <Route path="/userhate" element={<UserHate />} />
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/branding" element={<Branding />} />
+                <Route path="/*" element={<AlreadyLogin />} />
+              </>
+            )}
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
