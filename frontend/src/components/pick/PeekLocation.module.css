@@ -3,6 +3,7 @@
   margin-left: 4vh;
   max-width: 330px;
   width: 80vw;
+  max-height: 600px;
   height: 35vh;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 7x7 격자 생성 */
@@ -33,7 +34,7 @@
   object-fit: contain;
   transition: transform 0.3s ease;
   min-width: 3em;
-  width: 5.5vh;
+  width: 100%;
   animation: 0.2s ease-in-out loadEffect1;
 }
 

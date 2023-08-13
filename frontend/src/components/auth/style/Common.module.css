@@ -1,3 +1,8 @@
+.side{
+  background-color: white;
+  height: 100vh;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -5,7 +10,6 @@
   width: 80%;
   height: 100vh;
   margin: 0 auto;
-
 }
 
 .container h1 {
@@ -47,7 +51,7 @@
 }
 
 .listmaker{
-  overflow-x: scroll;
+  overflow-x: hidden;
 }
 
 .listmaker::-webkit-scrollbar {
@@ -97,7 +101,7 @@
   background-color: #7d00ff;
   color: white;
   margin: 1vh;
-  width: 20vw;
+  width: 26vw;
   height: 3vh;
   display: flex;
   justify-content: center;

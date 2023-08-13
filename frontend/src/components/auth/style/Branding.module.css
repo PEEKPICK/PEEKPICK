@@ -6,12 +6,12 @@
 }
 
 .container img {
-  width: 400px;
-  height: 700px;
+  min-width: 70vw;
+  max-width: 75vw;
 }
 
 .container button {
-  width: 320px;
+  width: 70vw;
   height: 55px;
   border: 0;
   border-radius: 10px;
