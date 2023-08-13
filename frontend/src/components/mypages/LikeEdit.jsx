@@ -111,10 +111,10 @@ const LikeEdit = () => {
       .then((response) => {
         navigate('/mypage');
         dispatch(authActions.updateUserLike(changedLikes));
-        toast.success("좋아요 수정 완료");
+        toast.success("좋아해요 수정 완료");
       })
       .catch((response) => {
-        toast.error("좋아요 수정 실패");
+        toast.error("수정 실패");
       })
   };
 
@@ -129,7 +129,7 @@ const LikeEdit = () => {
         </div>
       </div>
       <div className={common.defaultLine}></div>
-      <div>
+      <div className={common.listmaker}>
         {dataAxios ? (
           <div className={common.largelist}>
             {likeList.map((item, index) => (
@@ -187,7 +187,7 @@ const LikeEdit = () => {
         <button
           onClick={selectedFinish}
           className={common.next}
-        >선택완료</button>
+        >수정 완료</button>
       </div>
     </div>
   );

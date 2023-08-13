@@ -25,7 +25,7 @@ const UserInfo = () => {
   // redux, router 설정
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
+
   // 자동하이픈을 위한 useRef함수
   const phoneRef = useRef();
   const birthRef = useRef();
@@ -120,8 +120,8 @@ const UserInfo = () => {
     let result;
     result = "";
 
-    for (let i=0; i<value.length && i<phoneLength; i++) {
-      switch(i) {
+    for (let i = 0; i < value.length && i < phoneLength; i++) {
+      switch (i) {
         case 3:
           result += "-";
           break;
@@ -141,7 +141,7 @@ const UserInfo = () => {
 
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
-    if (userInfo.phone) {
+    if (userInfo.phone !== '1') {
       return (
         <div>
           {phone}
@@ -153,7 +153,7 @@ const UserInfo = () => {
           type="tel"
           name="user-phone"
           ref={phoneRef}
-          placeholder="전화번호 (ex. 010-1234-5678)"
+          placeholder="(선택) 전화번호(ex. 010-1234-5678)"
           onChange={autoHypenPhone}
         />
       );
@@ -168,8 +168,8 @@ const UserInfo = () => {
     let result;
     result = "";
 
-    for (let i=0; i<value.length && i<birthLength; i++) {
-      switch(i) {
+    for (let i = 0; i < value.length && i < birthLength; i++) {
+      switch (i) {
         case 4:
           result += "-";
           break;
@@ -210,7 +210,7 @@ const UserInfo = () => {
 
   // 모달검사 함수 (하나라도 정보가 없다면 모달을 보여줌)
   const isAnyFieldEmpty = () => {
-    return !(username && email && phone && birthday);
+    return !(username && email && birthday);
   };
 
   // 모달종료 함수
@@ -237,37 +237,39 @@ const UserInfo = () => {
   };
 
   return (
-    <div className={common.container}>
-      <div>
-        <h1>회원가입</h1>
+    <div className={common.side}>
+      <div className={common.container}>
+        <div>
+          <h1>회원가입</h1>
+        </div>
+        <div className={classes.span}>
+          <span>회원 정보를 확인해주세요</span>
+        </div>
+        <div>
+          <form className={classes.formInfo}>
+            <div className={classes.box}>
+              {nameIsValid()}
+            </div>
+            <div className={classes.box}>
+              {emailIsValid()}
+            </div>
+            <div className={classes.box}>
+              {phoneIsValid()}
+            </div>
+            <div className={classes.box}>
+              {birthdayIsValid()}
+            </div>
+            <div className={classes.switch}>
+              <input type="radio" id="radio-one" name="switch-one" value="M" checked={gender === 'M'} onChange={() => setGender('M')} />
+              <label htmlFor="radio-one">남자</label>
+              <input type="radio" id="radio-two" name="switch-one" value="F" checked={gender === 'F'} onChange={() => setGender('F')} />
+              <label htmlFor="radio-two">여자</label>
+            </div>
+            <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
+          </form>
+        </div>
+        {showModal && <Modal onClose={closeModal} check={2} />}
       </div>
-      <div className={classes.span}>
-        <span>회원 정보를 확인해주세요</span>
-      </div>
-      <div>
-        <form className={classes.formInfo}>
-          <div className={classes.box}>
-            {nameIsValid()}
-          </div>
-          <div className={classes.box}>
-            {emailIsValid()}
-          </div>
-          <div className={classes.box}>
-            {phoneIsValid()}
-          </div>
-          <div className={classes.box}>
-            {birthdayIsValid()}
-          </div>
-          <div className={classes.switch}>
-            <input type="radio" id="radio-one" name="switch-one" value="M" checked={gender === 'M'} onChange={() => setGender('M')}/>
-            <label htmlFor="radio-one">남자</label>
-            <input type="radio" id="radio-two" name="switch-one" value="F" checked={gender === 'F'} onChange={() => setGender('F')}/>
-            <label htmlFor="radio-two">여자</label>
-          </div>
-          <input type="button" value="다음으로" onClick={moveToUserProfile} className={common.next} />
-        </form>
-      </div>
-      {showModal && <Modal onClose={closeModal} check={2} />}
     </div>
   );
 }

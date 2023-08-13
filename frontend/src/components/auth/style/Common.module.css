@@ -1,3 +1,8 @@
+.side{
+  background-color: white;
+  height: 100vh;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -45,7 +50,16 @@
   border: 1px solid #7d00ff;
 }
 
+.listmaker{
+  overflow-x: hidden;
+}
+
+.listmaker::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
 .largelist {
+
+  width: 200%;
   margin-top: 3vh;
   padding: 0;
   display: flex;
@@ -56,10 +70,10 @@
 
 .middlelist {
   padding: 0;
-  width: 12vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap:1vh;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .next {
@@ -72,6 +86,7 @@
   font-weight: 600;
   position: absolute;
   bottom: 10%;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }
 
 .itemWrap {
@@ -86,11 +101,12 @@
   background-color: #7d00ff;
   color: white;
   margin: 1vh;
-  width: 12vh;
+  width: 26vw;
   height: 3vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }
 
 .taste {

@@ -1,6 +1,14 @@
 .App {
   width: calc(var(--vw, 1vw) * 100);
   height: calc(var(--vh, 1vh) * 100);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  width: 100vw;
+  height: 100vh;
+  max-width: 414px;
+  margin: auto;
 }
 .toast-message {
   background-color: #f4e9ff !important;
@@ -9,4 +17,8 @@
   margin-left: 3%;
   margin-right: 3%;
   display: flex;
+}
+::-webkit-scrollbar {
+  /* 크롬, 사파리, 오페라, 엣지 */
+  display: none;
 }

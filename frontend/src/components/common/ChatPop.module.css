@@ -1,40 +1,27 @@
-.container {
-  position: fixed;
-  bottom: 5%;
-  width: 90%;
-  left: 5%;
-  height: auto;
-  display: inline-block;
-  z-index: 99;
-}
 .alert {
-  position: fixed;
+  position: relative;
+  top: 0.5rem;
   display: grid;
+  height: 4rem;
   grid-template-columns: 1fr 7fr 1fr;
-  padding: 4% 0% 9% 0%;
-  bottom: 10%;
-  width: 90%;
   justify-items: center;
-  border: 0.0625rem solid;
+  align-items: center;
   border-bottom: none;
   border-color: rgba(125, 0, 225, 1);
   border-top-left-radius: 3vh;
   border-top-right-radius: 3vh;
-  z-index: -1;
   background-color: rgba(255, 255, 255, 0.8);
   /* 추가: 초기 위치를 아래로 설정하고 애니메이션 적용 */
-  transform: translateY(50%) scale(0.7);
-  opacity: 0;
+  transform: translateY(50%) scale(0.93);
+  opacity: 1;
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 .alert.show {
-  /* 애니메이션이 적용될 때의 스타일 */
-  transform: translateY(0) scale(1);
+  transform: translateY(0) scale(0.93);
   opacity: 1;
 }
 .alert.hide {
-  /* 애니메이션이 적용될 때의 스타일 */
-  transform: translateY(100%) scale(0.7);
+  transform: translateY(100%) scale(0.5);
   opacity: 0;
 }
 .upBtn {

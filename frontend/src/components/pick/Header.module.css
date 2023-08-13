@@ -1,46 +1,37 @@
+/* 테스트용 주석 */
+
 .headerMain {
-  margin-left: 5%;
-  margin-right: 5%;
-  margin-top: 10%;
+  margin: 0 5% 0 5%;
   display: flex;
   justify-content: space-between;
   z-index: 1;
   animation: 0.2s ease-in-out loadEffect1;
+  padding-top: 10%;
 }
 
-@keyframes loadEffect1 {
-  0% {
-    opacity: 0;
-    transform: scale(0.7);
-  }
-  65% {
-    opacity: 0.65;
-    transform: scale(1.01);
-  }
-  85% {
-    opacity: 0.85;
-    transform: scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
 .button {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  z-index: 1000000;
+  z-index: 0;
+}
+
+.button img {
+  width: 40px;
+  height: 40px;
 }
 
 /* 거리설정 모달 */
 .distanceMain {
+  position: fixed;
   background-color: #ffffff;
   border: none;
-  width: 78%;
-  height: 20%;
-  margin: 20% 5%;
+  width: 304px;
+  height: 168px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -150%) scale(1);
   border-radius: 0 1rem 1rem 1rem;
   padding: 1.5rem 1.4rem;
   animation: 0.2s ease-in-out loadEffect1;
@@ -49,15 +40,20 @@
 @keyframes loadEffect1 {
   0% {
     opacity: 0;
-    transform: scale(0.7);
+    transform: translate(-50%, -150%) scale(0.7);
+    /* 애니메이션 시작 시 위치와 변환 변경 */
   }
+
   85% {
     opacity: 0.85;
-    transform: scale(1.01);
+    transform: translate(-50%, -150%) scale(1.01);
+    /* 중간 시점 위치와 변환 변경 */
   }
+
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -150%) scale(1);
+    /* 애니메이션 종료 시 위치와 변환 변경 */
   }
 }
 
@@ -123,7 +119,7 @@
   position: absolute;
   height: 2px;
   width: 100%;
-  width: calc(100% * (4 / 5));
+  width: calc(100% * (5 / 7));
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -187,34 +183,34 @@
   display: none;
 }
 
-.debtAmountSlider input:checked + label::before {
+.debtAmountSlider input:checked+label::before {
   font-weight: 800;
   opacity: 1;
 }
 
-.debtAmountSlider input:checked + label::after {
+.debtAmountSlider input:checked+label::after {
   border-width: 4px;
   transform: translate(-50%, -50%) scale(0.75);
 }
 
-.debtAmountSlider input:checked ~ .debtAmountPos {
+.debtAmountSlider input:checked~.debtAmountPos {
   opacity: 1;
 }
 
 /* 선택된 버튼 중간에 생기는 포인트 */
-.debtAmountSlider input:nth-child(1):checked ~ .debtAmountPos {
+.debtAmountSlider input:nth-child(1):checked~.debtAmountPos {
   left: 12.5%;
 }
 
-.debtAmountSlider input:nth-child(3):checked ~ .debtAmountPos {
+.debtAmountSlider input:nth-child(3):checked~.debtAmountPos {
   left: 37.5%;
 }
 
-.debtAmountSlider input:nth-child(5):checked ~ .debtAmountPos {
+.debtAmountSlider input:nth-child(5):checked~.debtAmountPos {
   left: 62.5%;
 }
 
-.debtAmountSlider input:nth-child(7):checked ~ .debtAmountPos {
+.debtAmountSlider input:nth-child(7):checked~.debtAmountPos {
   left: 87.5%;
 }
 
@@ -233,12 +229,12 @@
   z-index: 2;
 }
 
-.form:valid .debtAmountSlider input:checked + label::before {
+.form:valid .debtAmountSlider input:checked+label::before {
   transform: translate(-50%, 45px) scale(1.1);
   transition: all 0.3s linear;
 }
 
-.form + button {
+.form+button {
   display: block;
   position: relative;
   margin: 56px auto 0;
@@ -256,23 +252,23 @@
   cursor: pointer;
 }
 
-.form + button:hover {
+.form+button:hover {
   background: rgba(125, 0, 255, 1);
   color: #fff;
 }
 
-.form + button:active {
+.form+button:active {
   transform: scale(0.9);
 }
 
-.form + button:focus {
+.form+button:focus {
   background: #4caf50;
   border-color: #4caf50;
   color: #fff;
   pointer-events: none;
 }
 
-.form + button::before {
+.form+button::before {
   display: inline-block;
   width: 0;
   opacity: 0;
@@ -284,7 +280,7 @@
   animation: spin 1s linear infinite;
 }
 
-.form:invalid + button {
+.form:invalid+button {
   pointer-events: none;
   opacity: 0.25;
 }
@@ -296,6 +292,7 @@
     opacity: 1;
     margin-right: 12px;
   }
+
   to {
     transform: rotate(360deg);
     width: 24px;
@@ -310,9 +307,11 @@
   flex-direction: column;
 }
 
+
+
 .worldMapContainer h1 {
-  margin-top: 5%;
-  margin-bottom: 3%;
+  margin-top: 1vh;
+  margin-bottom: 0.5vh;
 }
 
 .spanWrap {
@@ -322,11 +321,12 @@
 
 /* carousel */
 .carousel {
-  margin-top: 7%;
+  margin: 0 auto;
   border-radius: 5px;
   border: 0;
-  width: 100%;
-  height: 55vh;
+  width: 90%;
+  height: 35vh;
+  margin-top: 1vh;
 }
 
 /* 선택완료, 뒤로가기 버튼 */
@@ -334,15 +334,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-top: 10%;
+  margin-top: 1vh;
 }
 
 .buttonWrap button {
   border: 0;
   border-radius: 5px;
-  margin: 3% 0 3% 0;
+  margin: 1vh 0 1vh 0;
   height: 40px;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }
 
 .selected {
@@ -353,4 +353,42 @@
 .back {
   background-color: #999999;
   color: white;
+}
+
+
+
+.worldMapModal {
+  position: fixed;
+  background-color: #ffffff;
+  border: none;
+  width: 304px;
+  height: 63vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  border-radius: 0 1rem 1rem 1rem;
+  padding: 1.5rem 1.4rem;
+  animation: 0.2s ease-in-out loadEffect2;
+}
+
+@keyframes loadEffect2 {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+
+  65% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) scale(1.01);
+  }
+
+  85% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(0.97);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }

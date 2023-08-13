@@ -1,14 +1,28 @@
 .chatMain {
+  justify-content: center;
+  align-items: center;
+  display: inline-block;
   background-color: rgb(243, 235, 255);
   position: relative;
-  margin: 10% 3%;
-  padding: 5% 4%;
-  height: 88vh;
+  left: 24%;
+  top: 7%;
+  width: 50%;
+  margin-left: 0.8%;
+  margin-right: 2%;
+  height: 80vh;
   border-radius: 2rem 2rem 2rem 2rem;
   overflow: scroll;
   box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
-  font-size: 0.875rem;
-  animation: 0.2s ease-in-out loadEffect1;
+  font-size: 0.475rem;
+  animation: 0.2s ease-in-out, loadEffect1;
+}
+/* 모바일 스타일 */
+@media (max-width: 500px) {
+  .chatMain {
+    width: 96%; /* 모바일 화면에 맞게 너비 조정 */
+    left: 2%;
+    margin: 0;
+  }
 }
 @keyframes loadEffect1 {
   0% {
@@ -27,10 +41,11 @@
 /* 상단 정보 부분 */
 .chatHeader {
   color: #7d00ff;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   display: flex;
   padding: 0 3%;
+  margin-top: 3%;
 }
 
 .chatHeader button {
@@ -40,32 +55,36 @@
 .chatHeader * {
   background-color: rgb(243, 235, 255);
 }
+.cancel {
+  width: 10%;
+}
 .time {
-  width: 60%;
+  margin-left: 22%;
+  max-width: 40%;
+  min-width: 40%;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   border: none;
-  margin-left: 30%;
 }
 .headerRight {
   display: flex;
-  width: 50%;
-}
-.siren {
-  margin-left: 50%;
+  position: absolute;
+  right: 0;
+  padding-right: 10%;
 }
 
 .downBtn {
-  margin-left: 10%;
+  margin-left: 50%;
 }
+
 /* 모달 중간선  */
 .divider {
+  margin: 2%;
   margin-top: 3%;
   display: block;
   height: 0.2rem;
-  width: 100%;
   background-color: #7d00ff;
 }
 /* 채팅 보내기 */
@@ -73,14 +92,14 @@
   color: black;
 }
 .sendBar {
-  position: relative;
-  bottom: 0;
-  left: 4%;
-  height: 4.5%;
+  position: absolute;
   width: 90%;
+  bottom: 2%;
+  height: 5%;
   display: flex;
   padding: 1%;
-  justify-content: space-between;
+  left: 4%;
+  justify-self: center;
   align-items: center;
   border-radius: 1rem;
   background-color: rgb(255, 255, 255);
@@ -96,16 +115,15 @@
   border-radius: 5px;
   background-color: rgb(255, 255, 255);
   outline: none;
-  /* border: 1px solid black; */
 }
 
 .sendBar button {
   background-image: url("/public/img/send.png");
   background-repeat: no-repeat;
   background-position: 50% center;
-  margin-right: 1vh;
-  padding-right: 5vh;
-  padding-top: 4vh;
+  margin-right: 0.5rem;
+  padding-right: 2rem;
+  padding-top: 2rem;
   border: none;
   background-color: rgb(255, 255, 255);
 }
@@ -156,11 +174,85 @@
 }
 
 .chat {
-  margin-top: 4%;
-  margin-bottom: 7%;
-  height: 74vh;
-  overflow: scroll;
+  margin: 1vh 2% 3vh 2%;
+  min-height: 78%;
+  max-height: 81%;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
+  scrollbar-width: 3rem; /* 파이어폭스 */
+}
+
+/* 나갈꺼야? */
+.exitConfirmationModal {
+  position: fixed;
+  width: 40%;
+  height: 18%;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+/* 모바일 스타일 */
+@media (max-width: 500px) {
+  .exitConfirmationModal {
+    width: 60%; /* 모바일 화면에 맞게 너비 조정 */
+    left: 50%;
+    height: 18%;
+    margin: 0;
+  }
+}
+.exitConfirmationModal p {
+  line-height: 180%;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.caution {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.modal_divider {
+  /* width: 99%;
+  height: 2px; */
+  margin: 3% 0 10% 0;
+  background-color: #7d00ff;
+}
+
+.button_area {
+  display: flex;
+  margin: 10% 0 0 0;
+  justify-content: space-between;
+}
+
+.exit_button {
+  border: none;
+  width: 80px;
+  padding: 8px 0 8px 0;
+  background-color: #7d00ff;
+  border-radius: 8px 8px 8px 8px;
+  color: #ffffff;
+  font-size: 10px;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
+}
+
+/* 
+font-size : 15px // 10 ~ 12px
+*/
+
+.cancel_button {
+  border: none;
+  width: 80px;
+  padding: 8px 0 8px 0;
+  border-radius: 8px 8px 8px 8px;
+  background-color: gray;
+  color: #ffffff;
+  font-size: 10px;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }

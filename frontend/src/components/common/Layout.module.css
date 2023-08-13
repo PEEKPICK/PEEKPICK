@@ -1,7 +1,11 @@
 .layout {
-  position: fixed;
+  /* position: fixed; */
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
+  width: 25.75rem;
+  height: 57rem;
+}
+.layout::-webkit-scrollbar {
+  width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
 }

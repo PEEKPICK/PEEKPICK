@@ -1,8 +1,10 @@
 .emojiArea {
-  margin-top: 8rem;
-  margin-left: 2rem;
-  height: 20rem;
-  width: 20rem;
+  margin-top: 12vh;
+  margin-left: 4vh;
+  max-width: 330px;
+  width: 80vw;
+  max-height: 600px;
+  height: 35vh;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 7x7 격자 생성 */
   grid-template-rows: repeat(4, 1fr);
@@ -12,21 +14,27 @@
 }
 
 .EmojiBtn {
-  display: flex;
+  border: none;
+  display: inline-block;
   justify-content: center;
   align-items: center;
   width: 100%; /* 버튼을 격자 칸에 꽉 채우도록 설정 */
   height: 100%;
-  border: none;
   cursor: pointer;
   background: none;
   transform: rotate(-30deg); /* 다이아몬드 회전 */
 }
-
+.meter {
+  background-color: #ffffff;
+  display: block;
+  border-radius: 3rem;
+}
 .EmojiImg {
+  display: inline-block;
   object-fit: contain;
   transition: transform 0.3s ease;
-  width: 4em;
+  min-width: 3em;
+  width: 100%;
   animation: 0.2s ease-in-out loadEffect1;
 }
 

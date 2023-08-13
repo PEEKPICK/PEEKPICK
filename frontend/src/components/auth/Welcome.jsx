@@ -24,19 +24,21 @@ const Welcome = () => {
   };
 
   return (
-    <div className={common.container}>
-      <h1 className={classes.title}>환영합니다!</h1>
-      <div>
-        <p>타인과 당신의 취향에 대해
-          <br />
-          부담없이 이야기를 나눌 수 있어요!
-        </p>
-      </div>
-      <div>
-        <img src="img/confetti.gif" alt='confetti' className={classes.confetti} />
-      </div>
-      <div>
-        <button onClick={startapp} className={common.next}>시작하기</button>
+    <div className={common.side}>
+      <div className={common.container}>
+        <h1 className={classes.title}>환영합니다!</h1>
+        <div>
+          <p>타인과 당신의 취향에 대해
+            <br />
+            부담없이 이야기를 나눌 수 있어요!
+          </p>
+        </div>
+        <div>
+          <img src="img/confetti.gif" alt='confetti' className={classes.confetti} />
+        </div>
+        <div>
+          <button onClick={startapp} className={common.next}>시작하기</button>
+        </div>
       </div>
     </div>
   );

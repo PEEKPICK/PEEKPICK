@@ -1,38 +1,33 @@
 .container {
-  position: fixed;
-  bottom: 5%;
-  width: 90%;
-  left: 5%;
-  height: auto;
-  display: inline-block;
-  z-index: 99;
+  z-index: -1;
+  width: 99vw;
+  max-width: 414px;
+  min-width: 200px;
 }
 
 .navibar {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
   justify-content: center;
+  align-items: center;
   background-color: white;
   border-radius: 5vh;
-  border: 0;
-  box-shadow: 1px 1px 1px 1px rgba(125, 0, 255, 0.5);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-color: rgba(125, 0, 255);
-  height: auto;
-  width: 100%;
-  z-index: 10;
+  height: 4rem;
+
 }
 
 .navibar div {
   text-align: center;
   justify-content: center;
-  padding: 5%;
-  margin: 5%;
+  width: 100%;
+  margin: 4% 3%;
+  padding: 5px 0;
   text-decoration: none;
-  border-radius: 5vh;
+  border-radius: 1.875rem;
 }
 
 .navibar div img {
-  max-width: 100%;
   height: auto;
 }
 
@@ -42,6 +37,7 @@
 
 .on {
   background-color: rgba(125, 0, 225);
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   color: white;
 }
 
@@ -51,14 +47,10 @@
   grid-template-columns: 1fr 7fr 1fr;
   padding: 4% 0% 9% 0%;
   bottom: 10%;
-  width: 90%;
   justify-items: center;
   border: 1px solid;
   border-bottom: none;
   border-color: rgba(125, 0, 225, 1);
-  border-top-left-radius: 3vh;
-  border-top-right-radius: 3vh;
-  z-index: -1;
   background-color: rgba(255, 255, 255, 0.8);
 }
 .upBtn {

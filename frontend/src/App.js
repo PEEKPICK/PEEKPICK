@@ -1,8 +1,7 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
-
-// import { useSelector } from "react-redux";
+import Modal from "react-modal";
 
 // router import
 // 준형
@@ -31,6 +30,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ToastNotification from "./components/pick/ToastNotification";
 import { chatActions } from "./store/chatSlice";
+import { modalActions } from "./store/modalSlice";
 
 // 기타공용
 import { customAxios } from "./api/customAxios";
@@ -47,6 +47,7 @@ function App() {
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
+  const distanceValue = useSelector((state) => state.location.userPos.distance);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
   const getNickName = useSelector((state) => state.roomId.nickName);
 
@@ -64,6 +65,17 @@ function App() {
       return token !== null;
     };
     setIsAuthenticated(checkTokenInLocalStorage());
+
+    // 이미지 우클릭 방지
+    const preventImageContextMenu = (event) => {
+      if (event.target.tagName === "IMG") {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("contextmenu", preventImageContextMenu);
+    return () => {
+      window.removeEventListener("contextmenu", preventImageContextMenu);
+    };
   }, []);
 
   //위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!위치 찍어!?!?!
@@ -80,7 +92,7 @@ function App() {
               x: position.coords.longitude,
               y: position.coords.latitude,
             },
-            distance: 100000000,
+            distance: distanceValue,
           };
           // 위치 정보를 스토어에 저장
           dispatch(
@@ -96,20 +108,17 @@ function App() {
           console.error("위치 못가져왔는디:", error);
         }
       }
-      // else {
-      //   console.log("위치 또는 토큰이 인증되지 않았습니다.");
-      // }
     };
     //초기 실행
     handlePosChange();
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, isAuthenticated, distanceValue]);
 
   // sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?sse연결 할꺼니??!?!?!?!?
   const fetchData = async () => {
     if (isAuthenticated) {
       // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
       try {
-        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+        const sseURL = "https://peekpick.online/api/picker/sse";
         const eventSource = new EventSourcePolyfill(sseURL, {
           headers: {
             "Content-Type": "text/event-stream",
@@ -171,7 +180,7 @@ function App() {
             });
           }
         });
-
+        Modal.setAppElement('#root')
         // 수락하기
         eventSource.addEventListener("CHAT_START", (e) => {
           // 채팅 시작
@@ -182,12 +191,19 @@ function App() {
             const roomId = jsonData.roomId;
             const opponent = jsonData.opponent;
             console.log("수락roomId보냄: ", roomId);
+            const createTime = jsonData.createTime;
+            const endTime = jsonData.endTime;
+            console.log("createTime", createTime);
+            console.log("endTime", endTime);
             console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
+            dispatch(chatActions.updateEndTime(endTime));
+            dispatch(chatActions.updateTime(createTime));
+
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-              // console.log("response2", res);
+              console.log("response2", res);
               const opponentData = res.data.data;
               console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
@@ -205,6 +221,8 @@ function App() {
               expireFlag: "",
               hideProgressBar: true,
             });
+            dispatch(chatActions.updateChatModalState(true));
+            dispatch(modalActions.closeModal());
           }
         });
       } catch (error) {
@@ -260,23 +278,7 @@ function App() {
       {/* 라우터 */}
       <Routes>
         <>
-          {!isAuthenticated && (
-            <>
-              {/* 준형 */}
-              <Route path="/" element={<Login />} />
-              <Route path="/oauth2/redirect" element={<Redirect />} />
-              <Route path="/userinfo" element={<UserInfo />} />
-              <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/usernickname" element={<UserNickname />} />
-              <Route path="/userlike" element={<UserLike />} />
-              <Route path="/UserLikeHate" element={<UserLikeHate />} />
-              <Route path="/userhate" element={<UserHate />} />
-              <Route path="/welcome" element={<Welcome />} />
-              <Route path="/branding" element={<Branding />} />
-              <Route path="/*" element={<AlreadyLogin />} />
-            </>
-          )}
-          {isAuthenticated && (
+          {isAuthenticated ? (
             <>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Picker />} />
@@ -291,7 +293,24 @@ function App() {
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>
-          )}
+          )
+            :
+            (
+              <>
+                {/* 준형 */}
+                <Route path="/" element={<Login />} />
+                <Route path="/oauth2/redirect" element={<Redirect />} />
+                <Route path="/userinfo" element={<UserInfo />} />
+                <Route path="/userprofile" element={<UserProfile />} />
+                <Route path="/usernickname" element={<UserNickname />} />
+                <Route path="/userlike" element={<UserLike />} />
+                <Route path="/UserLikeHate" element={<UserLikeHate />} />
+                <Route path="/userhate" element={<UserHate />} />
+                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/branding" element={<Branding />} />
+                <Route path="/*" element={<AlreadyLogin />} />
+              </>
+            )}
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
