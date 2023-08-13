@@ -48,37 +48,50 @@ const EmojiLocation = ({ findInfo }) => {
               onClick={() => handleOpenPeekModal(current, index)}
               style={randomPosition()}
               > 
-              {current.viewed ? current.special ?
-                <img
-                  key={index}
-                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling_Heart_grey.gif"
-                  alt={current.peekId}
-                  className={classes.EmojiImg}
-                  id={index}
-                /> : <img
-                  key={index}
-                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
-                  alt={current.peekId}
-                  className={classes.EmojiImg}
-                  id={index}
-                /> : current.special
+          {current.admin 
+            ? <img
+                key={index}
+                src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png"
+                alt={current.peekId}
+                className={classes.EmojiImg}
+                id={index}
+              />
+            : (current.viewed 
+              ? (current.special 
                 ? <img
-                  key={index}
-                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling+Heart.png"
-                  alt={current.peekId}
-                  className={classes.EmojiImg}
-                  id={index}
-                /> : <img
-                  key={index}
-                  src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Red+Heart.png"
-                  alt={current.peekId}
-                  className={classes.EmojiImg}
-                  id={index}
-                />
+                    key={index}
+                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling_Heart_grey.gif"
+                    alt={current.peekId}
+                    className={classes.EmojiImg}
+                    id={index}
+                  />
+                : <img
+                    key={index}
+                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
+                    alt={current.peekId}
+                    className={classes.EmojiImg}
+                    id={index}
+                  />
+                )
+              : (current.special 
+                ? <img
+                    key={index}
+                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling+Heart.png"
+                    alt={current.peekId}
+                    className={classes.EmojiImg}
+                    id={index}
+                  />
+                : <img
+                    key={index}
+                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Red+Heart.png"
+                    alt={current.peekId}
+                    className={classes.EmojiImg}
+                    id={index}
+                  />
+                )
+              )
+          }
 
-
-
-              }
             </button>
           </>
           ))}
