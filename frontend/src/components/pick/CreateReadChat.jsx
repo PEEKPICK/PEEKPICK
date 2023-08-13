@@ -212,9 +212,7 @@ const CreateReadChat = ({ isModalState }) => {
                 )}
               </div>
             ))}
-            <div id="box" className={classes.box} ref={scrollRef}>
-              a
-            </div>
+            <div id="box" className={classes.box} ref={scrollRef} />
           </ul>
         </div>
         <div className={classes.sendBar}>
