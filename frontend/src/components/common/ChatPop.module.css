@@ -1,14 +1,13 @@
 .container {
-  position: fixed;
+  /* position: fixed; */
   bottom: 5%;
   width: 90%;
   left: 5%;
   height: auto;
   display: inline-block;
-  z-index: 99;
 }
 .alert {
-  position: fixed;
+  /* position: fixed; */
   display: grid;
   grid-template-columns: 1fr 7fr 1fr;
   padding: 4% 0% 9% 0%;
