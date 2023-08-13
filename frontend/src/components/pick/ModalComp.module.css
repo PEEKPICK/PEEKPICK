@@ -52,13 +52,13 @@
 
 .nickname {
   margin-top: 5%;
-  font-size: 1rem;
+  font-size: 18px;
   font-weight: 700;
   margin-right: 1%;
 }
 
 .intro {
-  font-size: 12px;
+  font-size: 13px;
   width: 95%;
   height: 2.875rem;
   margin-top: 3%;
@@ -68,6 +68,14 @@
   padding-left: 3%;
   background-color: rgba(125, 0, 255, 0.1);
 }
+
+.intro img {
+  height: 2em;  
+  width: auto;  
+  vertical-align: middle;  
+  margin-right: 0.3em;  
+}
+ 
 
 /* 모달 중간선  */
 .divider {
@@ -81,7 +89,7 @@
   display: flex;
   flex-direction: column;
   padding: 1%;
-  font-size: 12px;
+  font-size: 14px;
   height: 50%;
 }
 
@@ -225,7 +233,7 @@ progress {
 }
 
 ::-webkit-progress-bar {
-  background-color: lightgray;
+  background-color: rgba(125, 0, 255, 0.5);
   border-radius: 5px;
   overflow: hidden;
   height: 15px;
@@ -235,6 +243,7 @@ progress {
   background-color: #7d00ff;
   border-radius: 5px;
 }
+
 
 .likehate {
   display: flex;
@@ -263,10 +272,25 @@ progress {
   margin-left: 1.5%;
 }
 
-.bottomvalue{
+.bottomvalue {
   width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.bottomvalue > span:first-child {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  transform: translateX(50%) translateY(-5px);
+}
+
+.bottomvalue > span:last-child {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  transform: translateX(-50%) translateY(-5px);
 }
