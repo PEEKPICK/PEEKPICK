@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
@@ -11,13 +11,11 @@ import { toast } from "react-hot-toast";
 const FindPeek = () => {
   const dispatch = useDispatch();
   //주변 유져 정보
-
-
+  
+  
   const myPos = useSelector((state) => state.location.userPos);
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
-
-
-  const emojiCall = useCallback(() => {
+  const emojiCall = useCallback((myPos) => {
     customAxios.post("/peek", myPos).then((response) => {
       // console.log("PEEK", response);
       const peekArrayOrigin = response.data.data;
@@ -27,6 +25,7 @@ const FindPeek = () => {
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
         console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // eslint-disable-next-line
         if (limitedUserArray.length == 0) {
           toast('주변에 작성된 PEEK가 없어요 💔', {
             icon: '💔',
@@ -35,7 +34,23 @@ const FindPeek = () => {
         dispatch(findPeekActions.updatePeekInfo(limitedUserArray));
       }
     });
-  }, [myPos, dispatch]);
+    // eslint-disable-next-line
+  }, [myPos]);
+
+  const [emojiFlag, setEmojiFlag] = useState(false);
+
+  const emojiCallWithDelay = useCallback(() => {
+      if (emojiFlag) return;
+      setEmojiFlag(true);
+
+      emojiCall(myPos);
+
+      setTimeout(() => {
+        setEmojiFlag(false);
+      }, 2000);
+      // eslint-disable-next-line
+    }, [emojiFlag, emojiCall]);
+
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
@@ -56,7 +71,7 @@ const FindPeek = () => {
     <>
       <div className={classes.ParentreloadBtn}>
         {/* 버튼 클릭 시 handleEmojiCall 함수를 호출 */}
-        <button className={classes.reloadBtn} onClick={() => emojiCall(myPos)}>
+        <button className={classes.reloadBtn} onClick={() => emojiCallWithDelay(myPos)}>
           <img src="./img/redheart.png" alt="새로고침" />
           피크 찾기
         </button>
