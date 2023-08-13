@@ -211,7 +211,7 @@
   justify-content: space-between;
 }
 
-.exit_button{
+.exit_button {
   border: none;
   width: 80px;
   padding: 8px 0 8px 0;
@@ -220,7 +220,6 @@
   color: #ffffff;
   font-size: 10px;
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
- 
 }
 
 /* 

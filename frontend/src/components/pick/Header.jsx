@@ -1,4 +1,4 @@
-import { customAxios, authAxios } from '../../api/customAxios';
+import { customAxios, authAxios } from "../../api/customAxios";
 
 import Modal from "react-modal";
 import Slider from "react-slick";
@@ -8,11 +8,11 @@ import "slick-carousel/slick/slick-theme.css";
 import classes from "./Header.module.css";
 
 import { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 
-import { authActions } from '../../store/authSlice';
-import { locationActions } from '../../store/locationSlice';
+import { authActions } from "../../store/authSlice";
+import { locationActions } from "../../store/locationSlice";
 
 const Header = () => {
   // 상태관리
@@ -34,14 +34,14 @@ const Header = () => {
 
   // 거리조절 리덕스 변경
   const changeDistance = (dist) => {
-    localStorage.setItem('distance', dist);
+    localStorage.setItem("distance", dist);
 
     setSelectedDistance(dist);
 
     const sendToData = {
       distance: dist,
     };
-    
+
     dispatch(locationActions.updateDist(sendToData));
   };
 
@@ -51,60 +51,64 @@ const Header = () => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    initialSlide: checkMap-1,
+    initialSlide: checkMap - 1,
 
-    beforeChange: (slide, newSlide) => setCheckMap(newSlide+1),
+    beforeChange: (slide, newSlide) => setCheckMap(newSlide + 1),
   };
 
   // 사용자가 선택한 월드맵 받아와서 리덕스 저장
   useEffect(() => {
-    customAxios.get('/member/info')
-      .then(response => {
+    customAxios
+      .get("/member/info")
+      .then((response) => {
         // 리덕스 변경
-        dispatch(authActions.updateUserMap({
-          worldId: response.data.data.world.worldId,
-          openUrl: response.data.data.world.openUrl,
-          closeUrl: response.data.data.world.closeUrl,
-        }))
+        dispatch(
+          authActions.updateUserMap({
+            worldId: response.data.data.world.worldId,
+            openUrl: response.data.data.world.openUrl,
+            closeUrl: response.data.data.world.closeUrl,
+          })
+        );
 
         // 상태갱신
-        setCheckMap(response.data.data.world.worldId)
+        setCheckMap(response.data.data.world.worldId);
       })
-      .catch(error => {
-        console.log(error)
-      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, [dispatch]);
 
   // 페이지 렌딩 시 월드맵 선택 정보 받아옴
   useEffect(() => {
-    authAxios.get('/member/world')
-      .then(response => {
-        setWorldMapList(response.data.data)
+    authAxios
+      .get("/member/world")
+      .then((response) => {
+        setWorldMapList(response.data.data);
         console.log(
           `%c          ██████╗ ███████╗███████╗██╗  ██╗██████╗ ██╗ ██████╗██╗  ██╗    
           %c██╔══██╗██╔════╝██╔════╝██║ ██╔╝██╔══██╗██║██╔════╝██║ ██╔╝    
           %c██████╔╝█████╗  █████╗  █████╔╝ ██████╔╝██║██║     █████╔╝     
           %c██╔═══╝ ██╔══╝  ██╔══╝  ██╔═██╗ ██╔═══╝ ██║██║     ██╔═██╗     
           %c██║     ███████╗███████╗██║  ██╗██║     ██║╚██████╗██║  ██╗    
-          %c╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝╚═╝  ╚═╝`, 
-          'color: #7D00FF;',
-          'color: #7D00FF;',
-          'color: #7D00FF;',
-          'color: #7D00FF;',
-          'color: #7D00FF;',
-          'color: #7D00FF;'
-          );
+          %c╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝╚═╝  ╚═╝`,
+          "color: #7D00FF;",
+          "color: #7D00FF;",
+          "color: #7D00FF;",
+          "color: #7D00FF;",
+          "color: #7D00FF;",
+          "color: #7D00FF;"
+        );
       })
-      .catch(error => {
-        console.log(error)
-      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   // 로컬스토리지에서 사용자가 설정한 거리 가져오기
   useEffect(() => {
-    const localDist = localStorage.getItem('distance')
+    const localDist = localStorage.getItem("distance");
     if (localDist === null) {
-      localStorage.setItem('distance', 50)
+      localStorage.setItem("distance", 50);
     } else {
       setSelectedDistance(parseInt(localDist));
     }
@@ -122,31 +126,44 @@ const Header = () => {
       worldId: checkMap,
     };
     // axios
-    customAxios.post('/member/world', dataToSend)
-      .then(response => {
+    customAxios
+      .post("/member/world", dataToSend)
+      .then((response) => {
         if (response.data.code === "200") {
           if (location.pathname === "/peek") {
             window.location.replace("/peek");
           } else {
             window.location.replace("/");
           }
-
         } else {
-          console.log('문제가 발생했습니다.')
+          console.log("문제가 발생했습니다.");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-      })
+      });
   };
 
   return (
     <>
       <div className={classes.headerMain}>
         <button className={classes.button}>
-          <img src="/img/distance.svg" alt="거리조절버튼" onClick={() => {setIsDistance(true); setIsWorldMap(false);}} />
+          <img
+            src="/img/distance.svg"
+            alt="거리조절버튼"
+            onClick={() => {
+              setIsDistance(true);
+              setIsWorldMap(false);
+            }}
+          />
         </button>
-        <button className={classes.button} onClick={() => {setIsWorldMap(true); setIsDistance(false);}}>
+        <button
+          className={classes.button}
+          onClick={() => {
+            setIsWorldMap(true);
+            setIsDistance(false);
+          }}
+        >
           <img src="/img/worldmap.svg" alt="알림버튼" />
         </button>
       </div>
@@ -158,7 +175,12 @@ const Header = () => {
         >
           <div className={classes.closeHeader}>
             <p>거리 설정</p>
-            <img src="img/cancel.png" alt="cancel" onClick={() => setIsDistance(false)} className={classes.distanceClose} />
+            <img
+              src="img/cancel.png"
+              alt="cancel"
+              onClick={() => setIsDistance(false)}
+              className={classes.distanceClose}
+            />
           </div>
           <span className={classes.headerText}>{textToShow}</span>
           <div className={classes.divider}></div>
@@ -209,8 +231,8 @@ const Header = () => {
       )}
       {isWorldMap && (
         <Modal
-        isOpen={isWorldMap}
-        onRequestClose={() => setIsWorldMap(false)} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+          isOpen={isWorldMap}
+          onRequestClose={() => setIsWorldMap(false)} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
         >
           <div className={classes.worldMapContainer}>
             <h1>월드 선택</h1>
@@ -220,31 +242,21 @@ const Header = () => {
             </div>
             {/* 월드맵 캐러샐 */}
             <div className={classes.sliderWrapper}>
-              <Slider {...settings} >
-                {worldMapList.map(item => (
-                  <div className={classes.content_box}
-                    key={item.worldId}
-                  >
+              <Slider {...settings}>
+                {worldMapList.map((item) => (
+                  <div className={classes.content_box} key={item.worldId}>
                     {/* 버그 리포트 : 캐러셀을 안움직이면 기존의 값이 들어감.. 해결 방법 좀 */}
-                    <img
-                      src={item.openUrl}
-                      alt=""
-                      className={classes.carousel}
-                    />
+                    <img src={item.openUrl} alt="" className={classes.carousel} />
                   </div>
                 ))}
               </Slider>
             </div>
             <div className={classes.buttonWrap}>
-              <button
-                className={classes.selected}
-                onClick={checkOutHandler}
-              >선택 완료
+              <button className={classes.selected} onClick={checkOutHandler}>
+                선택 완료
               </button>
-              <button
-                className={classes.back}
-                onClick={moveBackHandler}
-              >뒤로 가기
+              <button className={classes.back} onClick={moveBackHandler}>
+                뒤로 가기
               </button>
             </div>
           </div>

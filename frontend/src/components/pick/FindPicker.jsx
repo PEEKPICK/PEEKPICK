@@ -19,11 +19,11 @@ const FindPicker = () => {
         const maxEmojisToShow = 100;
         //정보 저장
         const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        console.log("넘어온 limitedUserArray: ", limitedUserArray);
         dispatch(findUserActions.updateUserInfo(limitedUserArray));
       }
     });
-  }, [myPos, dispatch]);
+  }, [myPos]);
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
