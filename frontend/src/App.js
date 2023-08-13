@@ -104,7 +104,6 @@ function App() {
               distance: updatedPos.distance,
             })
           );
-          alert([...updatedPos]);
         } catch (error) {
           console.error("위치 못가져왔는디:", error);
         }
