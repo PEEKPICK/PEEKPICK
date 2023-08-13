@@ -153,7 +153,7 @@ const UserInfo = () => {
           type="tel"
           name="user-phone"
           ref={phoneRef}
-          placeholder="전화번호 (ex. 010-1234-5678)"
+          placeholder="(선택) 전화번호(ex. 010-1234-5678)"
           onChange={autoHypenPhone}
         />
       );
@@ -210,7 +210,7 @@ const UserInfo = () => {
 
   // 모달검사 함수 (하나라도 정보가 없다면 모달을 보여줌)
   const isAnyFieldEmpty = () => {
-    return !(username && email && phone && birthday);
+    return !(username && email && birthday);
   };
 
   // 모달종료 함수
