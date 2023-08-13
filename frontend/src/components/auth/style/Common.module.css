@@ -5,6 +5,7 @@
   width: 80%;
   height: 100vh;
   margin: 0 auto;
+
 }
 
 .container h1 {
@@ -45,7 +46,16 @@
   border: 1px solid #7d00ff;
 }
 
+.listmaker{
+  overflow-x: scroll;
+}
+
+.listmaker::-webkit-scrollbar {
+  display: none; /* 크롬, 사파리, 오페라, 엣지 */
+}
 .largelist {
+
+  width: 200%;
   margin-top: 3vh;
   padding: 0;
   display: flex;
