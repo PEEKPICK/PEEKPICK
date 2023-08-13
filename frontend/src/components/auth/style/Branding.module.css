@@ -1,15 +1,22 @@
 /* 브랜딩 페이지 CSS */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .container img {
   width: 400px;
-  height: 765px;
+  height: 700px;
 }
 
 .container button {
-  width: 100%;
-  height: 70px;
+  width: 320px;
+  height: 55px;
   border: 0;
+  border-radius: 10px;
   background-color: #7d00ff;
   color: white;
-  font-size: 20px;
+  font-size: 15px;
   font-weight: 600;
 }
