@@ -1,11 +1,8 @@
 package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.*;
-import com.vvs.peekpick.exception.CustomException;
-import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.peek.dto.*;
-import com.vvs.peekpick.peek.repository.PeekRepository;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
@@ -176,7 +173,7 @@ public class PeekServiceImpl implements PeekService {
 
             Avatar avatar = peekAvatarService.findAvatar(writer.getAvatar().getAvatarId());
             PeekAvatarDto peekAvatarDto = PeekAvatarDto.builder()
-                    .avatarId(avatarId)
+                    .writerId(peekRedisDto.getMemberId())
                     .nickname(avatar.getNickname())
                     .bio(avatar.getBio())
                     .emoji(avatar.getEmoji())
