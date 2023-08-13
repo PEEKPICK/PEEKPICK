@@ -47,9 +47,11 @@ const chatSlice = createSlice({
       state.roomId = null;
       state.opponent = null;
       state.createTime = null;
+      state.endTime = null;
       state.connectState = false;
       state.opponentURL = null;
       state.opponentId = null;
+      state.chatModalState = false;
       state.nickName = null;
     },
     updateRestTime: (state, action) => {

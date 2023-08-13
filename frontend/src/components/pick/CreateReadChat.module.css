@@ -14,7 +14,7 @@
   overflow: scroll;
   box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
   font-size: 0.475rem;
-  animation: 0.2s ease-in-out loadEffect1;
+  animation: 0.2s ease-in-out, loadEffect1;
 }
 /* 모바일 스타일 */
 @media (max-width: 500px) {
@@ -81,10 +81,10 @@
 
 /* 모달 중간선  */
 .divider {
+  margin: 2%;
   margin-top: 3%;
   display: block;
   height: 0.2rem;
-  width: 100%;
   background-color: #7d00ff;
 }
 /* 채팅 보내기 */
@@ -174,8 +174,7 @@
 }
 
 .chat {
-  margin-top: 1vh;
-  margin-bottom: 3vh;
+  margin: 1vh 2% 3vh 2%;
   min-height: 78%;
   max-height: 81%;
   overflow-y: scroll;
@@ -183,7 +182,6 @@
   flex-direction: column;
   -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
   scrollbar-width: 3rem; /* 파이어폭스 */
-  /* border: 1px solid black; */
 }
 
 /* 나갈꺼야? */
