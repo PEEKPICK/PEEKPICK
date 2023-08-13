@@ -1,7 +1,7 @@
 .pickerMain {
   background-image: url("../../../public/img/free.png");
   background-size: cover;
-  border: 1px solid rgba(0, 0, 0, 0);
+  /* border: 1px solid rgba(0, 0, 0, 0); */
   margin: 0;
   padding: 0;
   height: 100%;

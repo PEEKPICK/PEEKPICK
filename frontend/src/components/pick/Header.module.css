@@ -1,9 +1,10 @@
 .headerMain {
-  margin: 10% 5% 0 5%;
+  margin: 0 5% 0 5%;
   display: flex;
   justify-content: space-between;
   z-index: 1;
   animation: 0.2s ease-in-out loadEffect1;
+  padding-top: 10%;
 }
 
 @keyframes loadEffect1 {
