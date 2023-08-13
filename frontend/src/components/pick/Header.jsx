@@ -4,6 +4,7 @@ import Modal from "react-modal";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { toast } from "react-hot-toast";
 
 import classes from "./Header.module.css";
 
@@ -153,15 +154,18 @@ const Header = () => {
             alt="거리조절버튼"
             onClick={() => {
               setIsDistance(true);
-              setIsWorldMap(false);
+              // setIsWorldMap(false);
             }}
           />
         </button>
         <button
           className={classes.button}
           onClick={() => {
-            setIsWorldMap(true);
-            setIsDistance(false);
+            // setIsWorldMap(true);
+            // setIsDistance(false);
+            toast('개발 중인 서비스예요! 🛠', {
+              icon: '🛠',
+            });
           }}
         >
           <img src="/img/worldmap.svg" alt="알림버튼" />
