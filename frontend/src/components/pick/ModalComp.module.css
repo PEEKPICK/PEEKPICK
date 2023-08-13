@@ -158,6 +158,40 @@
   border: none;
   box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
+.pickwaiting {
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 60%;
+  max-width: 60%;
+  height: 40px;
+  border-radius: 1.5rem;
+  background-color: #a0a0a0;
+  color: #ffffff;
+  border: none;
+  box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
+}
+.waiting::before {
+  content: "기다리는 중...";
+  animation: loadingAnimation 1s infinite;
+}
+@keyframes loadingAnimation {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  75% {
+    opacity: 1;
+  }
+}
 
 .pick:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
