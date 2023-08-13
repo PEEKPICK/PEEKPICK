@@ -166,12 +166,17 @@
   margin-bottom: 1rem;
   min-height: 80%;
   max-height: 80%;
-  overflow: scroll;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
   width: 100%;
+  -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
+  scrollbar-width: 3rem; /* 파이어폭스 */
+  border: 1px solid black;
 }
-
+::-webkit-scrollbar {
+  display: none;
+}
 /* 나갈꺼야? */
 .exitConfirmationModal {
   position: fixed;
