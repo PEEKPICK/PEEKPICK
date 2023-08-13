@@ -1,16 +1,15 @@
-.top{
+.top {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(125,0,225,0.65);
+  background-color: rgb(125, 0, 225, 0.65);
   padding: 12% 0% 5% 0%;
   color: white;
 }
 
-.top img{
-  position: absolute;
-  left:10%;
-  top:5%;
+.top img {
+  position: fixed;
+  margin-left: 1%;
   background-color: white;
 }
 
@@ -51,16 +50,15 @@
 .noticetext {
   font-size: 16px;
   color: #333;
-  flex:1;
+  flex: 1;
 }
 
-.noticetextimg{
+.noticetextimg {
   display: flex;
 }
 
-.content{
+.content {
   width: 80%;
   display: flex;
   margin-left: 10%;
 }
-

@@ -40,13 +40,13 @@ const SignOut = forwardRef((props, ref) => {
         {/* x 버튼 click 시 회원 탈퇴 화면 종료 */}
         <img src="img/cancel.png" alt="" onClick={SignOutDisplay} />
       </div>
-      <hr className={classes.hr}/>
+      <hr className={classes.hr} />
       <div className={classes.explanation}>
-        <span>
-          회원 탈퇴 어쩌구 저쩌구 모든 정보가 삭제 어쩌구
-          너는 지금뭐해 자니 밖이야 뜬금 없는 문자를 돌려 보지만
-          어떻게 해볼까란 뜻은 아니야
-        </span>
+      <span>회원 탈퇴 안내</span>
+      <span>정말로 회원 탈퇴를 하시겠습니까?</span>
+      <span>모든 데이터와 정보가</span> 
+      <span>영구적으로 삭제됩니다.</span>   
+      <span>탈퇴 후에는 복구가 불가능합니다.</span>              
       </div>
 
       <div className={classes.agree}>
