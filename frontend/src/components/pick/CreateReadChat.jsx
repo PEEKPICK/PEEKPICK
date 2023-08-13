@@ -71,6 +71,7 @@ const CreateReadChat = ({ isModalState }) => {
       });
     };
     connect();
+    // eslint-disable-next-line
   }, [getRoomId]);
 
   useEffect(() => {
@@ -188,6 +189,7 @@ const CreateReadChat = ({ isModalState }) => {
           <ul id="messageList">
             {receivedMessages.map((message) => (
               <div className={classes.chatBubble} key={uuid()}>
+                {/* eslint-disable-next-line */}
                 {message.sender == opponent ? (
                   <li className={classes.selfMessage}>{message.message}</li>
                 ) : (
