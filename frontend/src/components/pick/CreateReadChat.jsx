@@ -260,10 +260,20 @@ const CreateReadChat = ({ isModalState }) => {
         </div>
         {showExitConfirmationModal && (
           <div className={classes.exitConfirmationModal}>
+            
+            <div className={classes.caution}>CAUTION</div>
+
+            <div className={classes.modal_divider}></div>
+
             <p>정말로 나가시겠습니까?</p>
             <p>모든 대화의 내용이 삭제됩니다.</p>
-            <button onClick={() => exitChat()}>나가기</button>
-            <button onClick={() => closeExitConfirmationModal()}>취소</button>
+
+            <div className={classes.button_area}>
+              <button onClick={() => exitChat()} 
+                className={classes.exit_button}>나가기</button>
+              <button onClick={() => closeExitConfirmationModal()}
+                className={classes.cancel_button}>취소</button>
+            </div>
           </div>
         )}
       </Modal>
