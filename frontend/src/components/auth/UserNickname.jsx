@@ -57,65 +57,67 @@ const UserNickname = () => {
       setShowModal(true);
     } else {
       const changedNickname = {
-      prefixId: prefix,
-      nickname: nickname,
-    }
-    dispatch(authActions.updateUserNickname(changedNickname));
-    navigate('/userlikehate');
+        prefixId: prefix,
+        nickname: nickname,
+      }
+      dispatch(authActions.updateUserNickname(changedNickname));
+      navigate('/userlikehate');
     }
   };
 
   return (
-    <div className={common.container}>
-      <div className={common.title}>
-        <h1>닉네임</h1>
-        <h1 className={common.pointColor}>PICK</h1>
-      </div>
-      <div>
-        <p>자신을 나타낼 수 있는 정보는
-          <br />
-          최대한 삼가해주세요!
-        </p>
-      </div>
-      <div className={common.linetag}>
-        <div className={classes.line1}></div>
-        <div className={classes.line2}></div>
-      </div>
-      <div className={classes.allWrap}>
+    <div className={common.side}>
+      <div className={common.container}>
+        <div className={common.title}>
+          <h1>닉네임</h1>
+          <h1 className={common.pointColor}>PICK</h1>
+        </div>
         <div>
+          <p>자신을 나타낼 수 있는 정보는
+            <br />
+            최대한 삼가해주세요!
+          </p>
+        </div>
+        <div className={common.linetag}>
+          <div className={classes.line1}></div>
+          <div className={classes.line2}></div>
+        </div>
+        <div className={classes.allWrap}>
           <div>
-            <h3>타이틀</h3>
-          </div>
-          <div className={classes.prefixWrap}>
-            <div className={classes.prefix}>
-              {content}
+            <div>
+              <h3>타이틀</h3>
             </div>
-            <div className={classes.reload}>
-              <img src="img/reloadWhite.png" alt="reload" onClick={randomPrefix} />
+            <div className={classes.prefixWrap}>
+              <div className={classes.prefix}>
+                {content}
+              </div>
+              <div className={classes.reload}>
+                <img src="img/reloadWhite.png" alt="reload" onClick={randomPrefix} />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className={classes.nickname}>
+              <h3>닉네임</h3>
+            </div>
+            <div>
+              <input
+                type="text"
+                placeholder="최대 6글자까지 입력이 가능합니다."
+                maxLength="6"
+                onInput={e => maxLengthHandler(e, 6)}
+                onChange={e => setNickname(e.target.value)}
+                className={classes.nicknameInput}
+                required
+              />
             </div>
           </div>
         </div>
         <div>
-          <div className={classes.nickname}>
-            <h3>닉네임</h3>
-          </div>
-          <div>
-            <input
-              type="text"
-              placeholder="최대 6글자까지 입력이 가능합니다."
-              maxLength="6"
-              onInput={e => maxLengthHandler(e, 6)}
-              onChange={e => setNickname(e.target.value)}
-              className={classes.nicknameInput}
-              required
-            />
-          </div>
+          <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
         </div>
+        {showModal && <Modal onClose={closeModal} check={2} />}
       </div>
-      <div>
-        <button onClick={moveToUserLikeHate} className={common.next}>다음으로</button>
-      </div>
-      {showModal && <Modal onClose={closeModal} check={2} />}
     </div>
   );
 }
