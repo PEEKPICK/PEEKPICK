@@ -17,7 +17,6 @@ const EmojiLocation = ({ findInfo }) => {
       dispatch(modalActions.openPeekModal(res.data.data));
       // dispatch(findPeekActions.toggleViewed(peekId));
     })
-    
   };
 
   const gridSize = 4; // 격자 크기 (4x4)
