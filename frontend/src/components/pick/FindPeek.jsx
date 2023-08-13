@@ -6,6 +6,8 @@ import { findPeekActions } from "../../store/findPeekSlice";
 import PeekLocation from "./PeekLocation";
 import ModalWrite from "./ModalWrite";
 import { modalsActions } from "../../store/modalsSlice";
+import { toast } from "react-hot-toast";
+
 const FindPeek = () => {
   const dispatch = useDispatch();
   //주변 유져 정보
@@ -25,6 +27,11 @@ const FindPeek = () => {
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
         console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        if (limitedUserArray.length == 0) {
+          toast('주변에 작성된 PEEK가 없어요 💔', {
+            icon: '💔',
+          });
+        }
         dispatch(findPeekActions.updatePeekInfo(limitedUserArray));
       }
     });

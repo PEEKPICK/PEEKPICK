@@ -6,7 +6,7 @@ const authSlice = createSlice({
     memberId: '',
     name: '',
     email: '',
-    phone: '',
+    phone: '1',
     birthday: '',
     gender: '',
     emojiId: '',
