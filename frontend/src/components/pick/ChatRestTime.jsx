@@ -28,6 +28,7 @@ const CreateReadChat = () => {
       return () => clearInterval(timerId);
     } else if (timeLeft <= 0) {
       setTimeLeft("Time's up!");
+      return;
     }
     // eslint-disable-next-line
   }, [timeLeft]);
