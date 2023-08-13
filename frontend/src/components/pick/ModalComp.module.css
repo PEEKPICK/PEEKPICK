@@ -50,6 +50,15 @@
   margin-top: 0.8rem;
 }
 
+.pickItem {
+  margin-right: 10px;
+}
+
+.goodImg {
+  width: 15px;
+  margin-right: 2px;
+}
+
 .nickname {
   margin-top: 5%;
   font-size: 18px;
