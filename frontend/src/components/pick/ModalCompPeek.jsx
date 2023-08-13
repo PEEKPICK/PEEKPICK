@@ -135,8 +135,8 @@ const ModalComp = () => {
         >
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
-            <img
-              src={isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
+          <img
+              src={isSelectedEmoji.peekAvatarDto.avatarId === 61 ? "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png" : isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
               alt="프로필"
               className={classes.profileImg}
             />
