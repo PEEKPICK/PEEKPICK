@@ -1,6 +1,7 @@
 .container {
   z-index: -1;
   width: 99vw;
+  margin-left: 0.5vw;
   max-width: 415px;
   min-width: 200px;
 }

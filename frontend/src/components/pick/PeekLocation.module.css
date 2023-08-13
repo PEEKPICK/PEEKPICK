@@ -1,8 +1,9 @@
 .emojiArea {
-  margin-top: 8rem;
-  margin-left: 2rem;
-  height: 20rem;
-  width: 20rem;
+  margin-top: 12vh;
+  margin-left: 4vh;
+  max-width: 330px;
+  width: 80vw;
+  height: 35vh;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 7x7 격자 생성 */
   grid-template-rows: repeat(4, 1fr);
@@ -31,7 +32,8 @@
   display: inline-block;
   object-fit: contain;
   transition: transform 0.3s ease;
-  width: 4em;
+  min-width: 3em;
+  width: 5.5vh;
   animation: 0.2s ease-in-out loadEffect1;
 }
 
