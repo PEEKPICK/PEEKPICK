@@ -122,7 +122,7 @@ function App() {
     if (isAuthenticated) {
       // console.log("isAuthenticated 인증되었습니다. sse를 시도합니다");
       try {
-        const sseURL = "https://i9b309.p.ssafy.io/api/picker/sse";
+        const sseURL = "https://peekpick.online/api/picker/sse";
         const eventSource = new EventSourcePolyfill(sseURL, {
           headers: {
             "Content-Type": "text/event-stream",

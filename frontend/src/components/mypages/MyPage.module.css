@@ -2,7 +2,7 @@
 
 .mypage {
     display: inline;
-    background-color: white;
+    /* background-color: white; */
     justify-content: center;
     overflow : scroll;
 }
