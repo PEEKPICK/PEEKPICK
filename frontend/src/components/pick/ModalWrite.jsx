@@ -37,27 +37,21 @@ const ModalWrite = ({ emojiCall }) => {
     f.append("longitude", userPos.point.x);
     f.append("latitude", userPos.point.y);
 
-    setTimeout(() => {
-      customAxios.post("/peek/write", f)
-        .then((response) => {
-          dispatch(modalsActions.closeModal())
-          toast.success("PEEK 입력 완료");
-          setWriteData("");
-          emojiCall();
-          setTimeout(() => {
-            setIsButtonDisabled(false); // 3초 후 버튼을 다시 활성화
-          }, 3000);
-        })
-        .catch((response) => {
-          setWriteData("");
-          console.log(response);
-          toast.error("ERROR");
-          dispatch(modalsActions.closeModal())
-          setTimeout(() => {
-            setIsButtonDisabled(false); // 3초 후 버튼을 다시 활성화
-          }, 3000);
-        })
-    }, 2000);
+
+    customAxios.post("/peek/write", f)
+      .then((response) => {
+        dispatch(modalsActions.closeModal())
+        toast.success("PEEK 입력 완료");
+        setWriteData("");
+        emojiCall();
+      })
+      .catch((response) => {
+        setWriteData("");
+        console.log(response);
+        toast.error("ERROR");
+        dispatch(modalsActions.closeModal())
+      })
+
   };
 
   return (
