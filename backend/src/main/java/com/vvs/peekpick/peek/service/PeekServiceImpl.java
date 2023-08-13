@@ -94,28 +94,28 @@ public class PeekServiceImpl implements PeekService {
                 randomPeeks.add(responsePeekListDto);
             }
 
-            while(randomPeeks.size()==MAX_PEEK) {
-                int randomIndex = random.nextInt(allPeeks.size());
-                if(peekRedisService.getPeek(allPeeks.get(randomIndex).getPeekId()).getMemberId()!=1L)
-                {
-                    randomPeeks.add(allPeeks.get(randomIndex));
-                    allPeeks.remove(randomIndex);
-                }
-            }
+//            while(randomPeeks.size()==MAX_PEEK) {
+//                int randomIndex = random.nextInt(allPeeks.size());
+//                if(peekRedisService.getPeek(allPeeks.get(randomIndex).getPeekId()).getMemberId()!=1L)
+//                {
+//                    randomPeeks.add(allPeeks.get(randomIndex));
+//                    allPeeks.remove(randomIndex);
+//                }
+//            }
 
             // allPeeks에서 관리자가 작성자가 아닌 것들만 필터링하고 랜덤으로 섞기
-//            List<ResponsePeekListDto> nonAdminPeeks = allPeeks.stream()
-//                    .filter(peek -> !peek.isAdmin())
-//                    .collect(Collectors.toList());
-//            Collections.shuffle(nonAdminPeeks);
-//
-//            // randomPeeks에 추가할 수 있는 남은 개수 계산
-//            int remainingPeeks = MAX_PEEK - randomPeeks.size();
-//
-//            // 남은 개수만큼 randomPeeks에 추가
-//            for (int i = 0; i < Math.min(remainingPeeks, nonAdminPeeks.size()); i++) {
-//                randomPeeks.add(nonAdminPeeks.get(i));
-//            }
+            List<ResponsePeekListDto> nonAdminPeeks = allPeeks.stream()
+                    .filter(peek -> !peek.isAdmin())
+                    .collect(Collectors.toList());
+            Collections.shuffle(nonAdminPeeks);
+
+            // randomPeeks에 추가할 수 있는 남은 개수 계산
+            int remainingPeeks = MAX_PEEK - randomPeeks.size();
+
+            // 남은 개수만큼 randomPeeks에 추가
+            for (int i = 0; i < Math.min(remainingPeeks, nonAdminPeeks.size()); i++) {
+                randomPeeks.add(nonAdminPeeks.get(i));
+            }
 
 //            if(allPeeks.size() <= MAX_PEEK){
 //                randomPeeks = allPeeks;
