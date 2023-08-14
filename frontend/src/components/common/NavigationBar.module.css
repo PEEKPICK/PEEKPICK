@@ -1,12 +1,14 @@
 .container {
+  position: fixed;
   width: 95vw;
+  bottom: 2vh;
   margin-top: -0.1rem;
   height: 7rem;
-  padding: 0 2.5vw 0 2.5vw;
+  /* padding: 0 2.5vw 0 2.5vw; */
   /* position: relative; */
   max-width: 415px;
   min-width: 200px;
-  background-color: white;
+  /* background-color: white; */
 }
 
 .navibar {
