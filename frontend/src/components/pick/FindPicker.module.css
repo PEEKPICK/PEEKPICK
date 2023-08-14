@@ -44,13 +44,3 @@
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
-.writeposition {
-  position: relative;
-  margin-top: 8.5vh;
-  margin-left: 30px;
-}
-
-.writeposition img {
-  width: 6vh;
-  min-width: 4vh;
-}
