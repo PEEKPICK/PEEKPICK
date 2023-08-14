@@ -167,7 +167,7 @@ const LikeEdit = () => {
           {middleDataAxios ? (
             <div className={common.middlelist}>
               {middleLikeList.map(middleItem => (
-                <div key={middleItem.categoryId}>
+                <div key={middleItem.categoryId} className={classes.itemWrap}>
                   <input
                     type="checkbox"
                     id={middleItem.categoryId}

@@ -1,5 +1,5 @@
 import classes from "./Peek.module.css";
-import Header from "./Header";
+// import Header from "./Header";
 import FindPeek from "./FindPeek";
 import React from "react";
 
@@ -11,7 +11,7 @@ function Peek() {
   };
   return (
     <div className={classes.pickerMain} style={inlineStyles}>
-      <Header></Header>
+      {/* <Header></Header> */}
       <FindPeek></FindPeek>
     </div>
   );
