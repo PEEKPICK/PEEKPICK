@@ -28,8 +28,8 @@ const ModalComp = () => {
       }, 15000); // 15초
     }
     customAxios.get(`/picker/chat-request/${isSelectedEmoji.avatarId}`).then((response) => {
-      console.log(response.data.message);
-      console.log("aaa", isSelectedEmoji);
+      // console.log(response.data.message);
+      // console.log("aaa", isSelectedEmoji);
       const nickNameSum = `${isSelectedEmoji.prefix.content} ${isSelectedEmoji.nickname}`;
       const toastContent = <ToastNotification message={`${nickNameSum}님 에게 채팅을 요청했습니다.`} />;
       toast(toastContent, {
@@ -42,6 +42,7 @@ const ModalComp = () => {
       });
     });
   };
+  
   return (
     <>
       {isModalState && isSelectedEmoji && (
