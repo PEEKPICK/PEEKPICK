@@ -49,7 +49,7 @@ const ModalWrite = ({ emojiCall }) => {
       })
       .catch((response) => {
         setWriteData("");
-        console.log(response);
+        // console.log(response);
         toast.error("ERROR");
         dispatch(modalsActions.closeModal())
       })

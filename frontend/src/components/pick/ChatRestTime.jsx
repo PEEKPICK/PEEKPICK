@@ -14,7 +14,7 @@ const CreateReadChat = () => {
     return `${minutes}:${sec}`;
   };
   useEffect(() => {
-    console.log("createTime", createTime);
+    // console.log("createTime", createTime);
     if (createTime && endTime) {
       const koreaTime = new Date(endTime);
       koreaTime.setHours(koreaTime.getHours() + 9);

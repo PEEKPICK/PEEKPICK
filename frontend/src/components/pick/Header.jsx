@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import { authActions } from "../../store/authSlice";
 import { locationActions } from "../../store/locationSlice";
 // import { Toast } from "react-hot-toast";
+
 const Header = () => {
   // 상태관리
   const [isDistance, setIsDistance] = useState(false);

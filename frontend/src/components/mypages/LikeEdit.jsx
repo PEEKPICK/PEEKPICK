@@ -76,7 +76,6 @@ const LikeEdit = () => {
 
   // 중분류 선택 시, 5개 여부 파악 및 리스트에 추가
   const middleListCheck = (categoryId, middle) => {
-    console.log(categoryId, middle)
     if (!tempMiddleList.includes(categoryId)) {
       if (tempMiddleList.length < 5) {
         setTempMiddleList((prevList) => [...prevList, categoryId])
@@ -106,7 +105,7 @@ const LikeEdit = () => {
       likes: tempMiddleList,
       like: middleItem,
     }
-    console.log(tempMiddleList)
+    // console.log(tempMiddleList)
     customAxios.put('/member/info/like', { likes: tempMiddleList })
       .then((response) => {
         navigate('/mypage');
