@@ -5,8 +5,9 @@
   background-color: white;
   justify-content: center;
   width: 100vw;
-  max-width: 414px;
-  height: 80vh;
+  position: relative;
+  top:0;                                                                                         
+  height: 87vh;
 }
 
 .bodyMain * {
@@ -18,7 +19,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   background-color: rgba(125, 0, 255, 0.75);
-  height: 7vh;
+  height: 8vh;
   color: white;
   font-size: x-large;
   margin: 0;
@@ -98,9 +99,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 5%;
+  margin-top: 4vh;
   background-color: rgba(125, 0, 255, 0.1);
-  padding: 5%;
+  padding: 10%;
   margin-left: 10%;
   margin-right: 10%;
   border-radius: 1vh;
@@ -111,7 +112,6 @@
 
 .likehate {
   display: flex;
-  margin-bottom: 2%;
   align-items: center;
   margin-left: 5%;
 }
@@ -164,5 +164,4 @@
   margin-left: 5%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);
-  margin-bottom: 5vh;
 }

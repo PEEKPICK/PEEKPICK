@@ -1,13 +1,14 @@
 .pickerMain {
   background-position: center;
   background-size: 110vh;
-  max-width: 414px;
+  max-width: 415px;
   width: 100vw;
   min-width: 300px;
-  height: 80vh;
+  height: 87vh;
   min-height: 300px;
   margin: 0;
   padding: 0;
+  background-color: #98c7fc;
   background-repeat: no-repeat;
 }
 ::-webkit-scrollbar {
