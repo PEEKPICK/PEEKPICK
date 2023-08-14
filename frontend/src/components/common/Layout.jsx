@@ -7,8 +7,6 @@ import {useLocation } from 'react-router-dom';
 function Layout() {
   const location = useLocation();
 
-  
-
   return (
     <div className={classes.layout}>
       {location.pathname !== '/mypage' &&  <Header/>}
