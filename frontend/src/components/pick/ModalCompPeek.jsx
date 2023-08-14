@@ -180,7 +180,7 @@ const ModalComp = () => {
             <div className={classes.modalBodyPeek}>
               {isSelectedEmoji.peekDetailDto.content &&
                 isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
-                <p>{isSelectedEmoji.peekDetailDto.content}</p>
+                <p className={classes.viewContent}>{isSelectedEmoji.peekDetailDto.content}</p>
               ) : (
                 <p>내용이 없습니다.</p>
               )}

@@ -1,27 +1,25 @@
 import { toast } from "react-hot-toast";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import common from "./style/Common.module.css";
 import classes from "./style/Login.module.css";
 
 const Login = () => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const loginHandler = (service) => {
     window.location.href = `https://i9b309.p.ssafy.io/api/oauth2/authorization/${service}`;
   };
 
-  // const goBranding = () => {
-  //   navigate('/branding');
-  // }
+  const goBranding = () => {
+    navigate('/branding');
+  }
 
   return (
     <div className={common.side}>
       <div className={classes.container}>
         <img src="img/temp_background.png" alt="background" className={classes.background} />
         <div className={classes.buttons}>
-          <span className={classes.info}>
-            PEEKPICK이 처음이신가요? <a href="/branding">서비스소개 바로가기</a>
-          </span>
+          <img src="img/service_information.svg" alt="service_information" onClick={() => goBranding()} />
           <img src="img/kakao_login.png" alt="kakao" onClick={() => loginHandler("kakao")} />
           {/* <img src="img/naver_login.png" alt="naver" onClick={() => loginHandler('naver')} /> */}
           <img

@@ -11,10 +11,12 @@ const ModalWrite = ({ emojiCall }) => {
   const userPos = useSelector((state) => state.location.userPos);
   const dispatch = useDispatch();
   const [writeData, setWriteData] = useState("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false); // 추가된 부분
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);  
+  const [currentLength, setCurrentLength] = useState(0);
 
   const handleWrite = (e) => {
     setWriteData(e.target.value);
+    setCurrentLength(e.target.value.length);
   };
 
   const handleCloseModal = () => {
@@ -67,7 +69,8 @@ const ModalWrite = ({ emojiCall }) => {
         </div>
         <hr className={classes.hr} />
         <div className={classes.content}>
-          <textarea onChange={handleWrite} className={classes.text}></textarea>
+            <textarea onChange={handleWrite} className={classes.text} maxLength={120}></textarea>
+            <div className={classes.charCount}>{currentLength}/120</div>
         </div>
         <div className={classes.imgthrow}>
           <button className={classes.button} onClick={postWrite} disabled={isButtonDisabled}>입력 완료</button> {/* 수정된 부분 */}
