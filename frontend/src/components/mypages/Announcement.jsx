@@ -17,7 +17,7 @@ const Announcement = () => {
 
 
   return (
-    <div>
+    <div className={classes.side}>
       <div className={classes.top}>
         {/* 뒤로가기 클릭시 마이페이지 onCLick */}
         <Link to="/mypage">

@@ -23,15 +23,10 @@ const LogOut = forwardRef((props, ref) => {
 
   const LogOutDisplay = () => {
     props.setLogoutView(false);
-    localStorage.removeItem('jwtToken');
   };
 
   const Logout = () => {
-    const jwtToken = localStorage.getItem('jwtToken');
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`,
-    }
-    customAxios.post('/member/logout', { headers })
+    customAxios.post('/member/logout')
       .then(response => {
         console.log(response)
         localStorage.clear();

@@ -1,16 +1,22 @@
+.side{
+  background-color: white;
+  height: 100vh;
+}
+
+
 .top {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-content: center;
+  justify-items: center;
   background-color: rgb(125, 0, 225, 0.65);
-  padding: 12% 0% 5% 0%;
+  padding: 10% 0% 5% 0%;
   color: white;
 }
 
 .top img {
-  position: fixed;
-  margin-left: 1%;
-  background-color: white;
+  grid:1;
+  margin-right: 70px;
 }
 
 

@@ -4,8 +4,9 @@
   /* display: inline; */
   background-color: white;
   justify-content: center;
-  overflow: scroll;
-  height: 80%;
+  width: 100vw;
+  max-width: 414px;
+  height: 80vh;
 }
 
 .bodyMain * {
@@ -17,7 +18,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   background-color: rgba(125, 0, 255, 0.75);
-  height: 8vh;
+  height: 7vh;
   color: white;
   font-size: x-large;
   margin: 0;
@@ -163,5 +164,5 @@
   margin-left: 5%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);
-  margin-bottom: 7%;
+  margin-bottom: 5vh;
 }
