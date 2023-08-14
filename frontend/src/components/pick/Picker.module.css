@@ -1,14 +1,15 @@
 .pickerMain {
   background-position: center;
   background-size: 110vh;
-  max-width: 414px;
+  max-width: 415px;
   width: 100vw;
   min-width: 300px;
-  height: 80vh;
+  height: 87vh;
   min-height: 300px;
   margin: 0;
   padding: 0;
   background-repeat: no-repeat;
+  background-color: #98c7fc;
 }
 .pickerMain::-webkit-scrollbar {
   width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
