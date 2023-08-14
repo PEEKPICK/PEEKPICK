@@ -5,17 +5,13 @@ import classes from "./ModalComp.module.css";
 import { useState, useEffect } from "react";
 import { customAxios } from "../../api/customAxios";
 
-
-
 const ModalComp = () => {
   //유져 정보 모달용
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
 
-  console.log(isSelectedEmoji);
-
-
+  // console.log(isSelectedEmoji);
 
   // 이 함수들은 좋아요, 싫어요 버튼을 클릭했을 때, 바로 반응되도록 만들어짐
   const [likeCount, setLikeCount] = useState(0);
@@ -23,7 +19,7 @@ const ModalComp = () => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
- 
+
   const [finishTime, setFinishTime] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0); // 초기값은 0으로 설정
   const formatTime = (seconds) => {
@@ -107,6 +103,7 @@ const ModalComp = () => {
       })
       .catch((res) => { });
   };
+
   const hateTouch = () => {
     customAxios
       .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: false })
@@ -115,6 +112,7 @@ const ModalComp = () => {
         setCheckh(!checkh);
       });
   };
+  
   const hateCancleTouch = () => {
     customAxios
       .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: false })
@@ -180,7 +178,7 @@ const ModalComp = () => {
             <div className={classes.modalBodyPeek}>
               {isSelectedEmoji.peekDetailDto.content &&
                 isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
-                <p>{isSelectedEmoji.peekDetailDto.content}</p>
+                <p className={classes.viewContent}>{isSelectedEmoji.peekDetailDto.content}</p>
               ) : (
                 <p>내용이 없습니다.</p>
               )}

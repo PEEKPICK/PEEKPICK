@@ -141,23 +141,15 @@ const UserInfo = () => {
 
   // 휴대폰 번호가 있다면 있는 것으로 처리하고 아니면 input창 보여줌
   const phoneIsValid = () => {
-    if (userInfo.phone !== '1') {
-      return (
-        <div>
-          {phone}
-        </div>
-      );
-    } else {
-      return (
-        <input
-          type="tel"
-          name="user-phone"
-          ref={phoneRef}
-          placeholder="(선택) 전화번호(ex. 010-1234-5678)"
-          onChange={autoHypenPhone}
-        />
-      );
-    }
+    return (
+      <input
+        type="tel"
+        name="user-phone"
+        ref={phoneRef}
+        placeholder="(선택) 전화번호(ex. 010-1234-5678)"
+        onChange={autoHypenPhone}
+      />
+    );
   };
 
   // 생년월일 자동 하이픈 생성 함수 + 상태관리

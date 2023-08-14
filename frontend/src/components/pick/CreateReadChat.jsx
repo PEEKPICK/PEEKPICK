@@ -57,7 +57,7 @@ const CreateReadChat = ({ isModalState }) => {
         setStompClient(factory);
         factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
           const parseMessage = JSON.parse(chatMessage.body);
-          console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
+          // console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
             scrollToBottom();
@@ -135,7 +135,7 @@ const CreateReadChat = ({ isModalState }) => {
           })
           
         );
-        console.log("나가요!!!");
+        // console.log("나가요!!!");
       }
     };
 
@@ -153,11 +153,11 @@ const CreateReadChat = ({ isModalState }) => {
     customAxios
       .post("/picker/chat-end", requestBody)
       .then(() => {
-        console.log("요청 성공:", "나가기 성공");
+        // console.log("요청 성공:", "나가기 성공");
         dispatch(chatActions.callRoomID(""));
       })
       .catch(() => {
-        console.error("요청 실패:", "나가기 실패");
+        // console.error("요청 실패:", "나가기 실패");
       });
     dispatch(chatActions.updateOpponentNickName());
   };

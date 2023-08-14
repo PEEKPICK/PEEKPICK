@@ -222,7 +222,10 @@
   margin-right: 5%;
   border-radius: 5%;
 }
-
+.viewContent {
+  width: 265px;
+  word-wrap: break-word;
+}
 .peekImg {
   display: flex;
   width: 35%;

@@ -10,9 +10,7 @@ import { toast } from "react-hot-toast";
 
 const FindPeek = () => {
   const dispatch = useDispatch();
-  //주변 유져 정보
-  
-  
+  //주변 유저 정보
   const myPos = useSelector((state) => state.location.userPos);
   const findInfo = useSelector((state) => state.findPeek.peekInfomation);
   const emojiCall = useCallback((myPos) => {
@@ -24,7 +22,7 @@ const FindPeek = () => {
         const maxEmojisToShow = 10;
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-        console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
         // eslint-disable-next-line
         if (limitedUserArray.length == 0) {
           toast('주변에 작성된 PEEK가 없어요 💔', {

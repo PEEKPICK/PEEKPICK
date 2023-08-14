@@ -7,14 +7,12 @@ const Announcement = () => {
   const [contentVisible, setContentVisible] = useState({});
 
   // 버튼 클릭 시 해당 공지사항 내용을 토글하는 함수입니다.
-
   const toggleContent = (id) => {
     setContentVisible((prevVisible) => ({
       ...prevVisible,
       [id]: !prevVisible[id]
     }));
   };
-
 
   return (
     <div className={classes.side}>

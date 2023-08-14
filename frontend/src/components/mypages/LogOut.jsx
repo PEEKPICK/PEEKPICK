@@ -3,7 +3,6 @@ import classes from './LogOut.module.css';
 import { customAxios } from '../../api/customAxios';
 const LogOut = forwardRef((props, ref) => {
   let wrapperRef = useRef();
- 
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -28,14 +27,13 @@ const LogOut = forwardRef((props, ref) => {
   const Logout = () => {
     customAxios.post('/member/logout')
       .then(response => {
-        console.log(response)
+        // console.log(response)
         localStorage.clear();
         // 바꿔야함
         window.location.replace('/');
         // setTimeout(()=>{
         //   navigate('/');
         // },1000)
-    
       })
       .catch(response => {
         console.log(response)
