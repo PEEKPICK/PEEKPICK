@@ -5,6 +5,8 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  background-color: rgb(147, 199, 255);
+  width: 100%;
 }
 .layout::-webkit-scrollbar {
   width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
