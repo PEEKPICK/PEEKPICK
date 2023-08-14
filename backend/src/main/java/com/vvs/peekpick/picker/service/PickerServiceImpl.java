@@ -16,10 +16,7 @@ import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.GeoResult;
-import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
+import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -198,7 +195,7 @@ public class PickerServiceImpl implements PickerService {
     @Override
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
         // 현재위치로부터 반경 Distance(m)에 있는 Picker 리스트 조회
-        GeoResults<RedisGeoCommands.GeoLocation<String>> radius = geoOperations.radius(CONNECT_SESSION, new Circle(picker.getPoint(), picker.getDistance()));
+        GeoResults<RedisGeoCommands.GeoLocation<String>> radius = geoOperations.radius(CONNECT_SESSION, new Circle(picker.getPoint(), new Distance(picker.getDistance(), RedisGeoCommands.DistanceUnit.METERS)));
         HashSet<String> pickerList = new HashSet<>();
 
         // 반경 이내에 있는 Picker 인원 수
