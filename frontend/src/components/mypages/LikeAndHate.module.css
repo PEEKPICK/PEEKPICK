@@ -14,7 +14,7 @@
   background-color: #7d00ff;
   text-align: center;
   line-height: 150%;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .disLike {
@@ -26,7 +26,7 @@
   background-color: rgba(125, 0, 255, 0.5);
   text-align: center;
   line-height: 150%;
-  font-size: 15px;
+  font-size: 17px;
 }
 
 .likehate a button{
@@ -61,20 +61,18 @@
   display: flex;
   flex-wrap: wrap;
   margin-left: 7%;
-  margin-bottom: 2%;
+  margin-bottom: 5%;
 }
 
 .items {
-  font-size: 11px;
+  font-size: 13px;
   border: 0.5px solid;
   border-color: rgba(125, 0, 225);
   border-radius: 10px;
   background-color: white;
   color: black;
   margin: 0.7vh;
-  /* width: 12vh; */
   padding: 0.5vh;
-  /* height: 3vh; */
   display: flex;
   justify-content: center;
   align-items: center;
