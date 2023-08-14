@@ -12,6 +12,7 @@ import Modal from "react-modal";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 Modal.setAppElement("#root");
+window.onbeforeunload = function () {return false;}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
