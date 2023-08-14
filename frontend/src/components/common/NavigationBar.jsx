@@ -15,15 +15,10 @@ const NavigationBar = () => {
   //채팅
   const isModalState = useSelector((state) => state.roomId.chatModalState);
 
-
-  const containerStyle = {
-    backgroundColor: myPage ? "#ffffff" : "#98c7fc",
-  };
-  useEffect(() => {});
-
+  useEffect(() => { });
   return (
     <>
-      <div className={classes.containerStyle} style={containerStyle}>
+      <div className={classes.container}>
         {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
         <ChatPop />
         <nav className={classes.navibar}>
