@@ -1,12 +1,11 @@
 .alert {
-  position: relative;
   display: grid;
   height: 2rem;
   grid-template-columns: 1fr 7fr 1fr;
   justify-items: center;
   align-items: center;
-  width: 100vw;
-  max-width: 410px;
+  width: 95vw;
+  max-width: 415px;
   min-width: 200px;
   border-bottom: none;
   border-color: rgba(125, 0, 225, 1);
@@ -17,11 +16,11 @@
   transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 .alert.show {
-  transform: translateY(-305%) scale(0.93);
+  transform: translateY(0) scale(0.93);
   opacity: 1;
 }
 .alert.hide {
-  /* transform: translateY(-100%) scale(0.5); */
+  transform: translateY(100%) scale(0);
   z-index:-1;
   opacity: 1;
 }

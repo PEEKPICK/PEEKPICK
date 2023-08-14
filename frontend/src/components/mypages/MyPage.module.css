@@ -5,9 +5,9 @@
   background-color: white;
   justify-content: center;
   width: 100vw;
-  position: relative;
-  top:0;                                                                                         
-  height: 87vh;
+  max-width: 415px;
+  position: relative;                                                                                        
+  height: 100vh;
 }
 
 .bodyMain * {
@@ -156,7 +156,6 @@
   margin-left: 5%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);
-  /* margin-bottom: 5%; */
 }
 
 .hr2 {
