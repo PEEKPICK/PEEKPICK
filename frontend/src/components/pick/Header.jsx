@@ -14,7 +14,7 @@ import { useLocation } from "react-router-dom";
 
 import { authActions } from "../../store/authSlice";
 import { locationActions } from "../../store/locationSlice";
-
+// import { Toast } from "react-hot-toast";
 const Header = () => {
   // 상태관리
   const [isDistance, setIsDistance] = useState(false);
@@ -35,6 +35,9 @@ const Header = () => {
 
   // 거리조절 리덕스 변경
   const changeDistance = (dist) => {
+    toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
+      id: "changeDistance",
+    });
     localStorage.setItem("distance", dist);
 
     setSelectedDistance(dist);
@@ -196,8 +199,8 @@ const Header = () => {
                   id="1"
                   value="50"
                   name="debt-amount"
-                  checked={selectedDistance === 50}
-                  onChange={() => changeDistance(50)}
+                  checked={selectedDistance === 50000000}
+                  onChange={() => changeDistance(50000000)}
                 />
                 <label htmlFor="1" data-debt-amount="50m"></label>
                 <input
@@ -205,8 +208,8 @@ const Header = () => {
                   id="2"
                   value="100"
                   name="debt-amount"
-                  checked={selectedDistance === 100}
-                  onChange={() => changeDistance(100)}
+                  checked={selectedDistance === 100000000}
+                  onChange={() => changeDistance(100000000)}
                 />
                 <label htmlFor="2" data-debt-amount="100m"></label>
                 <input
@@ -214,8 +217,8 @@ const Header = () => {
                   id="3"
                   value="150"
                   name="debt-amount"
-                  checked={selectedDistance === 150}
-                  onChange={() => changeDistance(150)}
+                  checked={selectedDistance === 150000000}
+                  onChange={() => changeDistance(150000000)}
                 />
                 <label htmlFor="3" data-debt-amount="150m"></label>
                 <input
@@ -223,8 +226,8 @@ const Header = () => {
                   id="4"
                   value="200"
                   name="debt-amount"
-                  checked={selectedDistance === 200}
-                  onChange={() => changeDistance(200)}
+                  checked={selectedDistance === 200000000}
+                  onChange={() => changeDistance(200000000)}
                 />
                 <label htmlFor="4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
