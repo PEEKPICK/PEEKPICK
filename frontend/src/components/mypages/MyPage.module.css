@@ -6,9 +6,8 @@
   justify-content: center;
   width: 100vw;
   max-width: 415px;
-  position: relative;
-  top:0;                                                                                         
-  height: 87vh;
+  position: relative;                                                                                        
+  height: 100vh;
 }
 
 .bodyMain * {
@@ -157,7 +156,6 @@
   margin-left: 5%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);
-  /* margin-bottom: 5%; */
 }
 
 .hr2 {
