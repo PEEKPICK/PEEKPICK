@@ -5,6 +5,7 @@
   background-color: white;
   justify-content: center;
   width: 100vw;
+  max-width: 415px;
   position: relative;
   top:0;                                                                                         
   height: 87vh;
