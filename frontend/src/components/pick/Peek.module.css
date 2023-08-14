@@ -1,8 +1,9 @@
 .pickerMain {
   background-position: center;
   background-size: 110vh;
-  max-width: 415px;
+  max-width: 414px;
   width: 100vw;
+  min-width: 300px;
   height: 80vh;
   min-height: 300px;
   margin: 0;

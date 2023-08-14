@@ -4,6 +4,7 @@
   max-width: 330px;
   width: 80vw;
   height: 35vh;
+  max-height: 600px;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 7x7 격자 생성 */
   grid-template-rows: repeat(4, 1fr);
@@ -26,6 +27,7 @@
 
 .EmojiImg {
   object-fit: contain;
+  /* display: inline-block; */
   transition: transform 0.3s ease;
   min-width: 3em;
   width: 100%;

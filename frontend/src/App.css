@@ -4,11 +4,11 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-content: center;
-  width: 100vw;
+  align-items:center;
   height: 100vh;
   max-width: 414px;
   margin: auto;
+  border: 0;
 }
 .toast-message {
   background-color: #f4e9ff !important;
