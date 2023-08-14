@@ -1,12 +1,15 @@
 /* 테스트용 주석 */
 
 .headerMain {
+  position: relative;
   margin: 0 5% 0 5%;
   display: flex;
   justify-content: space-between;
-  z-index: 1;
   animation: 0.2s ease-in-out loadEffect1;
   padding-top: 10%;
+  width: 95vw;
+  max-width: 415px;
+  min-width: 200px;
 }
 
 
