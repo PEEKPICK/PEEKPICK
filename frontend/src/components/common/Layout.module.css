@@ -1,7 +1,8 @@
 .layout {
-  /* position: fixed; */
   margin: 0;
   padding: 0;
-  width: 25.75rem;
-  height: 57rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }

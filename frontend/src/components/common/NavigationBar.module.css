@@ -1,8 +1,7 @@
 .container {
   z-index: -1;
-  width: 99vw;
+  width: 95vw;
   max-width: 414px;
-  min-width: 200px;
 }
 
 .navibar {
