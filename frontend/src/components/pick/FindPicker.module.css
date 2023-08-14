@@ -46,8 +46,8 @@
 
 .writeposition {
   position: relative;
-  left: 310px;
-  top: 11vh;
+  bottom: -10vh;
+  left: 85vw;
 }
 
 .writeposition img {
