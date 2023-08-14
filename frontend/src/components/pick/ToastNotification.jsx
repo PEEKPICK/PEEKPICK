@@ -71,6 +71,7 @@ const CustomToast = ({ message, senderId, requestTime }) => {
       console.error(error);
     }
     toast.dismiss({ containerId: "an  Id" });
+    dispatch(chatActions.resetState());
   };
 
   return (

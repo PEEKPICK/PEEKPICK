@@ -10,3 +10,7 @@
   padding: 0;
   background-repeat: no-repeat;
 }
+.pickerMain::-webkit-scrollbar {
+  width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
+}

@@ -1,16 +1,29 @@
 .chatMain {
   justify-content: center;
   align-items: center;
+  display: inline-block;
   background-color: rgb(243, 235, 255);
   position: relative;
-  margin: 10% 3%;
-  padding: 1% 4%;
-  height: 80%;
+  left: 24%;
+  top: 7%;
+  width: 50%;
+  margin-left: 0.8%;
+  margin-right: 2%;
+  height: 80vh;
   border-radius: 2rem 2rem 2rem 2rem;
   overflow: scroll;
   box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
-  font-size: 0.875rem;
-  animation: 0.2s ease-in-out loadEffect1;
+  font-size: 0.475rem;
+  animation: 0.2s ease-in-out, loadEffect1;
+  z-index: 10;
+}
+/* 모바일 스타일 */
+@media (max-width: 500px) {
+  .chatMain {
+    width: 96%; /* 모바일 화면에 맞게 너비 조정 */
+    left: 2%;
+    margin: 0;
+  }
 }
 @keyframes loadEffect1 {
   0% {
@@ -29,7 +42,7 @@
 /* 상단 정보 부분 */
 .chatHeader {
   color: #7d00ff;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 700;
   display: flex;
   padding: 0 3%;
@@ -69,10 +82,10 @@
 
 /* 모달 중간선  */
 .divider {
+  margin: 2%;
   margin-top: 3%;
   display: block;
   height: 0.2rem;
-  width: 100%;
   background-color: #7d00ff;
 }
 /* 채팅 보내기 */
@@ -86,6 +99,7 @@
   height: 5%;
   display: flex;
   padding: 1%;
+  left: 4%;
   justify-self: center;
   align-items: center;
   border-radius: 1rem;
@@ -102,7 +116,6 @@
   border-radius: 5px;
   background-color: rgb(255, 255, 255);
   outline: none;
-  /* border: 1px solid black; */
 }
 
 .sendBar button {
@@ -162,20 +175,20 @@
 }
 
 .chat {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  min-height: 80%;
-  max-height: 80%;
-  overflow: scroll;
+  margin: 1vh 2% 3vh 2%;
+  min-height: 78%;
+  max-height: 81%;
+  overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
+  scrollbar-width: 3rem; /* 파이어폭스 */
 }
 
 /* 나갈꺼야? */
 .exitConfirmationModal {
   position: fixed;
-  width: 60%;
+  width: 40%;
   height: 18%;
   top: 40%;
   left: 50%;
@@ -185,7 +198,15 @@
   padding: 20px;
   box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
-
+/* 모바일 스타일 */
+@media (max-width: 500px) {
+  .exitConfirmationModal {
+    width: 60%; /* 모바일 화면에 맞게 너비 조정 */
+    left: 50%;
+    height: 18%;
+    margin: 0;
+  }
+}
 .exitConfirmationModal p {
   line-height: 180%;
   font-size: 12px;
@@ -199,8 +220,8 @@
 }
 
 .modal_divider {
-  width: 99%;
-  height: 2px;
+  /* width: 99%;
+  height: 2px; */
   margin: 3% 0 10% 0;
   background-color: #7d00ff;
 }
