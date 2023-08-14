@@ -1,9 +1,10 @@
 .layout {
-  /* position: fixed; */
   margin: 0;
   padding: 0;
-  width: 25.75rem;
-  height: 57rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .layout::-webkit-scrollbar {
   width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
