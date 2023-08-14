@@ -271,6 +271,8 @@ function App() {
     // eslint-disable-next-line
   }, [isAuthenticated, getPosX, getPosY, document.visibilityState]);
 
+
+  
   return (
     <div className="App">
       <div>
