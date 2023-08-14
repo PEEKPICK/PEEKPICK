@@ -19,9 +19,6 @@ const NavigationBar = () => {
   return (
     <>
       <div className={classes.container}>
-        {/* 채팅 모달 */}
-        <ChatPop />
-        <CreateReadChat isModalState={isModalState} />
         {/* 개별적으로 클릭시 그쪽 색상 들어오게 div css 설정 잘하기 */}
         <nav className={classes.navibar}>
           <div
@@ -53,6 +50,9 @@ const NavigationBar = () => {
           </div>
         </nav>
       </div>
+      {/* 채팅 모달 */}
+      <ChatPop />
+      <CreateReadChat isModalState={isModalState} />
     </>
   );
 };

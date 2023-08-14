@@ -1,7 +1,10 @@
 .container {
-  z-index: -1;
-  width: 99vw;
-  max-width: 414px;
+  width: 100vw;
+  margin-top: 1.3rem;
+  padding-bottom: 0.2rem;
+  position: relative;
+  background-color: none;
+  max-width: 410px;
   min-width: 200px;
 }
 
@@ -14,13 +17,12 @@
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-color: rgba(125, 0, 255);
   height: 4rem;
-
 }
 
 .navibar div {
   text-align: center;
   justify-content: center;
-  width: 100%;
+  width: 30vw;
   margin: 4% 3%;
   padding: 5px 0;
   text-decoration: none;
