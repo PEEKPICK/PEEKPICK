@@ -2,6 +2,7 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Modal from "react-modal";
+import common from './components/auth/style/Common.module.css';
 
 // router import
 // 준형
@@ -281,12 +282,12 @@ function App() {
           {isAuthenticated ? (
             <>
               <Route path="/" element={<Layout />}>
-                <Route index element={<Picker />} />
+                <Route  path="/" element={<Picker />} />
                 <Route path="peek" element={<Peek />} />
                 {/* 용범  */}
                 <Route path="mypage" element={<MyPage />} />
               </Route>
-              <Route path="profile" element={<Profile />} />
+              <Route path="profile" element={<Profile />}/>
               <Route path="/announcement" element={<Announcement />} />
               <Route path="/likeedit" element={<LikeEdit />} />
               <Route path="/hateedit" element={<HateEdit />} />

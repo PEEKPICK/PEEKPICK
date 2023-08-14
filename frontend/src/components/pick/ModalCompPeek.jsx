@@ -151,18 +151,18 @@ const ModalComp = () => {
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span> */}
               {/* 한줄소개 넣어야함 */}
-  
-              <p className={classes.intro}>            
-                  <span className={classes.timer} style={{ marginRight: '20px' }}>
-                      <img src="img/timer.png" alt="Peek timer" className="timer-img" />
-                      {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
-                  </span>
 
-                  <span className={classes.distance}>
-                      <img src="img/peek_distance.png" alt="Peek distance" className="distance-img" />
-                      {isSelectedEmoji.peekDetailDto.distance} m 
+              <div className={classes.intro}  style={{  backgroundColor:"#ffffff", marginTop:"-5px" }}>
+                  <span className={classes.timer} style={{ marginLeft: '-10px' , fontWeight:700, width:"120px"}}> 
+                        <img src="img/hourglass.png" alt="모래시계" />            
+                        {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
+                  </span> 
+
+                  <span className={classes.distance} style={{fontWeight:700}}>
+                        <img src="img/placeholder.png" alt="모래시계" />            
+                        {isSelectedEmoji.peekDetailDto.distance} m 
                   </span>
-              </p>
+              </div>
 
           
             </div>

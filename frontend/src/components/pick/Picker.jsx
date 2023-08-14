@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import classes from "./Picker.module.css";
-import Header from "./Header";
+// import Header from "./Header";
 import FindPicker from "./FindPicker";
 
 function Picker() {
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
+  // const [backgroundImageUrl, setBackgroundImageUrl] = useState("");
 
   const inlineStyles = {
     backgroundImage: `url("/img/maps/BigBen.png")`,
@@ -12,7 +12,7 @@ function Picker() {
 
   return (
     <div className={classes.pickerMain} style={inlineStyles}>
-      <Header></Header>
+      {/* <Header></Header> */}
       <FindPicker></FindPicker>
     </div>
   );
