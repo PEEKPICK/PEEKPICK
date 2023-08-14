@@ -83,6 +83,7 @@
   height: 80%;
   border: 0;
   background-color: transparent;
+  word-wrap: break-word;
 }
 textarea:focus {
   outline: none;
