@@ -79,10 +79,10 @@
 }
 
 .intro img {
-  height: 2em;  
+  height: 1rem;  
   width: auto;  
   vertical-align: middle;  
-  margin-right: 0.3em;  
+  margin-right: 0.3rem;  
 }
 
 
@@ -167,6 +167,7 @@
   border: none;
   box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
+
 .pickwaiting {
   font-size: 17px;
   font-weight: 600;
@@ -182,10 +183,12 @@
   border: none;
   box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
+
 .waiting::before {
   content: "기다리는 중...";
   animation: loadingAnimation 1s infinite;
 }
+
 @keyframes loadingAnimation {
   0%,
   100% {
@@ -210,6 +213,7 @@
 .modalbodys {
   display: flex;
 }
+
 .modalBodyPeek {
   display: flex;
   padding: 0.8rem 0.5rem;
@@ -222,10 +226,12 @@
   margin-right: 5%;
   border-radius: 5%;
 }
+
 .viewContent {
   width: 265px;
   word-wrap: break-word;
 }
+
 .peekImg {
   display: flex;
   width: 35%;
