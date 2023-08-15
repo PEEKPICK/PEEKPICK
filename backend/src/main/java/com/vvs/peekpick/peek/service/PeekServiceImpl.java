@@ -249,7 +249,7 @@ public class PeekServiceImpl implements PeekService {
 
             int likeCnt = peekRedisDto.getLikeCount();
             int disLikeCnt = peekRedisDto.getDisLikeCount();
-
+            Long ttl = peekRedisService.getPeekTtl(peekId);  // 기존 TTL 가져오기
 
             //사용가 해당 Peek의 react를 On -> Off
             if (peekRedisService.getReactionMember(memberId, like, peekId)) {
@@ -259,6 +259,10 @@ public class PeekServiceImpl implements PeekService {
                 }
                 if(like) likeCnt--;
                 else disLikeCnt--;
+
+                if (ttl != null && ttl > 0) {
+                    ttl -= 60*PEEK_REACTION_TIME;  //초 단위로 변경
+                }
             }
             //사용가 해당 Peek의 react를 Off -> On
             else {
@@ -266,6 +270,10 @@ public class PeekServiceImpl implements PeekService {
                     updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
                 if(like) likeCnt++;
                 else disLikeCnt++;
+
+                if (ttl != null && ttl > 0) {
+                    ttl += 60*PEEK_REACTION_TIME;  //초 단위로 변경
+                }
             }
 
 //            // (원래 기획) Peek 지속시간을 24시간으로 제한, 24시간 설정된 Peek은 Hot Peek으로
@@ -291,10 +299,8 @@ public class PeekServiceImpl implements PeekService {
                     .finishTime(updatedFinishTime)
                     .special(special)
                     .build();
-            Long ttl = peekRedisService.getPeekTtl(peekId);  // 기존 TTL 가져오기
-            if (ttl != null && ttl > 0) {
-                ttl += 60*PEEK_REACTION_TIME;  //초 단위로 변경
-            }
+
+
             peekRedisService.setPeekValueOps(peekId, updatedPeekRedisDto, ttl);
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } catch (Exception e) {
