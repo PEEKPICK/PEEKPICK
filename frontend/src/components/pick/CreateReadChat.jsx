@@ -21,6 +21,7 @@ const CreateReadChat = ({ isModalState }) => {
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
+  const [singo, setSingo] = useState(false);
   const scrollRef = useRef();
   const createTime = useSelector((state) => state.roomId.createTime);
   const chatPop = () => {
@@ -39,6 +40,7 @@ const CreateReadChat = ({ isModalState }) => {
 
   const closeExitConfirmationModal = () => {
     setShowExitConfirmationModal(false);
+    setSingo(false);
   };
 
   const exitChat = () => {
@@ -167,10 +169,15 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const sirenHandler = () => {
+    setSingo(true);
+  };
+
+  const sirenChat = () => {
     toast("신고가 완료됐습니다! 🚨", {
       icon: "🚨",
     });
-    handleExitConfirmation();
+    declare();
+    closeExitConfirmationModal();
   };
 
   return (
@@ -287,6 +294,25 @@ const CreateReadChat = ({ isModalState }) => {
 
             <div className={classes.button_area}>
               <button onClick={() => exitChat()} className={classes.exit_button}>
+                나가기
+              </button>
+              <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
+                취소
+              </button>
+            </div>
+          </div>
+        )}
+        {singo && (
+          <div className={classes.exitConfirmationModal}>
+            <div className={classes.caution}>CAUTION</div>
+
+            <div className={classes.modal_divider}></div>
+
+            <p>정말로 신고하시겠습니까?</p>
+            <p>신고를 하면 채팅이 종료하게 됩니다.</p>
+
+            <div className={classes.button_area}>
+              <button onClick={() => sirenChat()} className={classes.exit_button}>
                 나가기
               </button>
               <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
