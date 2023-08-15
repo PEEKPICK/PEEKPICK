@@ -8,7 +8,7 @@
   border-radius: 2vh;
   transform: translate(-50%, -50%) scale(1);
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
-  height: 35%;
+  height: 40%;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;
 }

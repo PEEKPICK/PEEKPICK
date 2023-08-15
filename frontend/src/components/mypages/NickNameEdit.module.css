@@ -7,7 +7,7 @@
   border-radius: 8px;
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
   width: 280px;
-  height: 40%;
+  height: 50%;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;
   transform: translate(-50%, -50%) scale(1);
