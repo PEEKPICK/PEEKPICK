@@ -230,6 +230,7 @@
 .viewContent {
   width: 265px;
   word-wrap: break-word;
+  font-size: 16px;
 }
 
 .peekImg {
@@ -248,26 +249,69 @@
 
 .likeDisLike {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   height: 6rem;
   width: 100%;
 }
 
 .likes {
+  display: grid;
+  grid-template-columns: 15fr 1fr;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+}
+
+.likes span {
+    margin-top: 5px;
+    font-family: 'KBO-Dia-Gothic_bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.likes img {
+  /* margin-left: 15px; */
+  width: 30px;
+  height: auto;
+  margin-left: 10px;
+}
+
+.hates {
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+}
+
+.hates span {
+  margin-top: 5%;
+  font-family: 'KBO-Dia-Gothic_bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.hates img {
+  width: 30px;
+  /* margin-right: 15px; */
+  height: auto;
+  margin-right: 10px;
+}
+
+.vs{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0;
 }
-
-.likes span {
-  margin-top: 5%;
-}
-
-.likes img {
-  width: 30px;
-  height: 30px;
+.vs img {
+  width: 60px;
+  height: auto;
 }
 
 .progressdiv {
@@ -279,7 +323,7 @@
 progress {
   -webkit-appearance: none;
   appearance: none;
-  width: 80%;
+  width: 85%;
   color: white;
   margin-bottom: 5%;
 }
