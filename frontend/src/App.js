@@ -180,7 +180,7 @@ function App() {
             });
           }
         });
-        Modal.setAppElement('#root')
+        Modal.setAppElement("#root");
         // 수락하기
         eventSource.addEventListener("CHAT_START", (e) => {
           // 채팅 시작
@@ -270,10 +270,8 @@ function App() {
     // eslint-disable-next-line
   }, [isAuthenticated, getPosX, getPosY, document.visibilityState]);
 
-
-  
   return (
-    <div className="App">
+    <div className="App" id="App">
       <div>
         <Toaster />
       </div>
@@ -283,36 +281,34 @@ function App() {
           {isAuthenticated ? (
             <>
               <Route path="/" element={<Layout />}>
-                <Route  path="/" element={<Picker />} />
+                <Route path="/" element={<Picker />} />
                 <Route path="peek" element={<Peek />} />
                 {/* 용범  */}
                 <Route path="mypage" element={<MyPage />} />
               </Route>
-              <Route path="profile" element={<Profile />}/>
+              <Route path="profile" element={<Profile />} />
               <Route path="/announcement" element={<Announcement />} />
               <Route path="/likeedit" element={<LikeEdit />} />
               <Route path="/hateedit" element={<HateEdit />} />
               {/* 기타 */}
               <Route path="/*" element={<AlreadyLogin />} />
             </>
-          )
-            :
-            (
-              <>
-                {/* 준형 */}
-                <Route path="/" element={<Login />} />
-                <Route path="/oauth2/redirect" element={<Redirect />} />
-                <Route path="/userinfo" element={<UserInfo />} />
-                <Route path="/userprofile" element={<UserProfile />} />
-                <Route path="/usernickname" element={<UserNickname />} />
-                <Route path="/userlike" element={<UserLike />} />
-                <Route path="/UserLikeHate" element={<UserLikeHate />} />
-                <Route path="/userhate" element={<UserHate />} />
-                <Route path="/welcome" element={<Welcome />} />
-                <Route path="/branding" element={<Branding />} />
-                <Route path="/*" element={<AlreadyLogin />} />
-              </>
-            )}
+          ) : (
+            <>
+              {/* 준형 */}
+              <Route path="/" element={<Login />} />
+              <Route path="/oauth2/redirect" element={<Redirect />} />
+              <Route path="/userinfo" element={<UserInfo />} />
+              <Route path="/userprofile" element={<UserProfile />} />
+              <Route path="/usernickname" element={<UserNickname />} />
+              <Route path="/userlike" element={<UserLike />} />
+              <Route path="/UserLikeHate" element={<UserLikeHate />} />
+              <Route path="/userhate" element={<UserHate />} />
+              <Route path="/welcome" element={<Welcome />} />
+              <Route path="/branding" element={<Branding />} />
+              <Route path="/*" element={<AlreadyLogin />} />
+            </>
+          )}
         </>
       </Routes>
       {/* ToastContainer를 추가 */}
