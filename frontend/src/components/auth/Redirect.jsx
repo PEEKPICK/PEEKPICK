@@ -6,7 +6,6 @@ const Redirect = () => {
     const token = urlSearchParams.get("token");
 
     if (token !== null) {
-      localStorage.clear();
       localStorage.setItem("jwtToken", token);
       window.location.replace("/");
     }
