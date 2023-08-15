@@ -22,11 +22,17 @@ const ModalComp = () => {
 
   const [finishTime, setFinishTime] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0); // 초기값은 0으로 설정
+  
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const sec = seconds % 60;
-    return `${hours} : ${minutes} : ${sec}`;
+    
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = sec < 10 ? `0${sec}` : sec;
+    
+    return `${formattedHours} : ${formattedMinutes} : ${formattedSeconds}`;
   };
   
   useEffect(() => {
@@ -206,7 +212,6 @@ const ModalComp = () => {
               }
 
             </div>
-
           </div>
           <div className={classes.progressdiv}>
             {
