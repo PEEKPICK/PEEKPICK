@@ -28,7 +28,7 @@ const LogOut = forwardRef((props, ref) => {
     customAxios.post('/member/logout')
       .then(response => {
         // console.log(response)
-        localStorage.clear();
+        localStorage.removeItem('jwtToken');
         // 바꿔야함
         window.location.replace('/');
         // setTimeout(()=>{

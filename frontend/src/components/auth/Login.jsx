@@ -20,10 +20,9 @@ const Login = () => {
   useEffect(() => {
     const storedIsNewUser = localStorage.getItem('isNewUser');
     if (storedIsNewUser === 'false') {
-      setIsNewUser(false);
     } else {
       localStorage.setItem('isNewUser', 'false');
-      navigate('/branding');
+      // navigate('/branding');
     }
   }, []);
 
