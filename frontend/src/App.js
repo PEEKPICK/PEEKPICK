@@ -2,7 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Modal from "react-modal";
-import common from './components/auth/style/Common.module.css';
 
 // router import
 // 준형

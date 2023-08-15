@@ -2,7 +2,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import common from "./style/Common.module.css";
 import classes from "./style/Login.module.css";
-import { useState,useEffect } from "react";
+import { useEffect } from "react";
 const Login = () => {
   const navigate = useNavigate();
 
@@ -13,10 +13,8 @@ const Login = () => {
   const goBranding = () => {
     navigate('/branding');
   };
-  
-  // 첫 사용자만 뜨게 하는 페이지
-  const [isNewUser, setIsNewUser] = useState(true);
-  
+
+  // 첫 사용자만 뜨게 하는 페이지  
   useEffect(() => {
     const storedIsNewUser = localStorage.getItem('isNewUser');
     if (storedIsNewUser === 'false') {
@@ -24,6 +22,7 @@ const Login = () => {
       localStorage.setItem('isNewUser', 'false');
       navigate('/branding');
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
