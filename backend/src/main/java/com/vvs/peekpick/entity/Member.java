@@ -1,9 +1,12 @@
 package com.vvs.peekpick.entity;
 
+import com.sun.istack.NotNull;
 import com.vvs.peekpick.member.dto.SignUpDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -37,6 +40,13 @@ public class Member {
         this.birthday = signUpDto.getBirthday();
     }
 
+    @NotNull
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
     @Override
     public String toString() {
         return "Member{" +
