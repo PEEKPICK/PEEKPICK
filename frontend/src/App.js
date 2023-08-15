@@ -2,7 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Modal from "react-modal";
-
 // router import
 // 준형
 import Login from "./components/auth/Login";
@@ -43,6 +42,8 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useDispatch();
+  //스플래쉬
+  const [isLoading, setIsLoading] = useState(false); // 스플래시 화면 로딩 상태 추가
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
@@ -52,12 +53,16 @@ function App() {
   // const getNickName = useSelector((state) => state.roomId.nickName);
 
   // PWA 적용을 위한 vh변환 함수
+
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
 
   useEffect(() => {
+    const splashTimeout = setTimeout(() => {
+      setIsLoading(true); // 스플래시 화면 로딩 완료 처리
+    }, 800);
     // vh변환 함수 작동
     setScreenSize();
     const checkTokenInLocalStorage = () => {
@@ -74,6 +79,7 @@ function App() {
     };
     window.addEventListener("contextmenu", preventImageContextMenu);
     return () => {
+      clearTimeout(splashTimeout); // 타임아웃 클리어
       window.removeEventListener("contextmenu", preventImageContextMenu);
     };
   }, []);
@@ -272,47 +278,56 @@ function App() {
 
   return (
     <div className="App" id="App">
-      <div>
-        <Toaster />
-      </div>
-      {/* 라우터 */}
-      <Routes>
-        <Route path="/branding" element={<Branding />} />
+      {/* 스플래시 화면 */}
+      {!isLoading ? (
+        <div id="SplashDiv">
+          <img src="/img/EyesPinBig.png" alt="Splash" className="Splash" id="Splash" />
+        </div>
+      ) : (
         <>
-          {isAuthenticated ? (
+          <div>
+            <Toaster />
+          </div>
+          {/* 라우터 */}
+          <Routes>
+            <Route path="/branding" element={<Branding />} />
             <>
-              <Route path="/" element={<Layout />}>
-                <Route path="/" element={<Picker />} />
-                <Route path="peek" element={<Peek />} />
-                {/* 용범  */}
-                <Route path="mypage" element={<MyPage />} />
-              </Route>
-              <Route path="profile" element={<Profile />} />
-              <Route path="/announcement" element={<Announcement />} />
-              <Route path="/likeedit" element={<LikeEdit />} />
-              <Route path="/hateedit" element={<HateEdit />} />
-              {/* 기타 */}
-              <Route path="/*" element={<AlreadyLogin />} />
+              {isAuthenticated ? (
+                <>
+                  <Route path="/" element={<Layout />}>
+                    <Route path="/" element={<Picker />} />
+                    <Route path="peek" element={<Peek />} />
+                    {/* 용범  */}
+                    <Route path="mypage" element={<MyPage />} />
+                  </Route>
+                  <Route path="profile" element={<Profile />} />
+                  <Route path="/announcement" element={<Announcement />} />
+                  <Route path="/likeedit" element={<LikeEdit />} />
+                  <Route path="/hateedit" element={<HateEdit />} />
+                  {/* 기타 */}
+                  <Route path="/*" element={<AlreadyLogin />} />
+                </>
+              ) : (
+                <>
+                  {/* 준형 */}
+                  <Route path="/" element={<Login />} />
+                  <Route path="/oauth2/redirect" element={<Redirect />} />
+                  <Route path="/userinfo" element={<UserInfo />} />
+                  <Route path="/userprofile" element={<UserProfile />} />
+                  <Route path="/usernickname" element={<UserNickname />} />
+                  <Route path="/userlike" element={<UserLike />} />
+                  <Route path="/UserLikeHate" element={<UserLikeHate />} />
+                  <Route path="/userhate" element={<UserHate />} />
+                  <Route path="/welcome" element={<Welcome />} />
+                  <Route path="/*" element={<AlreadyLogin />} />
+                </>
+              )}
             </>
-          ) : (
-            <>
-              {/* 준형 */}
-              <Route path="/" element={<Login />} />
-              <Route path="/oauth2/redirect" element={<Redirect />} />
-              <Route path="/userinfo" element={<UserInfo />} />
-              <Route path="/userprofile" element={<UserProfile />} />
-              <Route path="/usernickname" element={<UserNickname />} />
-              <Route path="/userlike" element={<UserLike />} />
-              <Route path="/UserLikeHate" element={<UserLikeHate />} />
-              <Route path="/userhate" element={<UserHate />} />
-              <Route path="/welcome" element={<Welcome />} />
-              <Route path="/*" element={<AlreadyLogin />} />
-            </>
-          )}
+          </Routes>
+          {/* ToastContainer를 추가 */}
+          <ToastContainer />
         </>
-      </Routes>
-      {/* ToastContainer를 추가 */}
-      <ToastContainer />
+      )}
     </div>
   );
 }
