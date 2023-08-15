@@ -12,7 +12,6 @@ const EmojiLocation = ({ findInfo }) => {
   //   const peekId = current.peekId;
   //   document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
 
-
   //   customAxios.get(`/peek/${peekId}?distance=${current.distance}`).then((res) => {
   //     dispatch(modalActions.openPeekModal(res.data.data));
   //     // dispatch(findPeekActions.toggleViewed(peekId));
@@ -21,17 +20,16 @@ const EmojiLocation = ({ findInfo }) => {
 
   const handleOpenPeekModal = (current, index) => {
     const peekId = current.peekId;
-    
+
     if (!current.admin) {
-      document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
+      document.getElementById(index).src = "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png";
     }
-    
+
     customAxios.get(`/peek/${peekId}?distance=${current.distance}`).then((res) => {
       dispatch(modalActions.openPeekModal(res.data.data));
       // dispatch(findPeekActions.toggleViewed(peekId));
     });
   };
-  
 
   const gridSize = 4; // 격자 크기 (4x4)
   const grid = new Array(gridSize).fill(null).map(() => new Array(gridSize).fill(false));
@@ -55,59 +53,58 @@ const EmojiLocation = ({ findInfo }) => {
       {findInfo.length > 0 ? (
         <div className={classes.emojiArea}>
           {findInfo.map((current, index) => (
-            <>
-            <button
-              key={index}
-              className={classes.EmojiBtn}
-              onClick={() => handleOpenPeekModal(current, index)}
-              style={randomPosition()}
-              > 
-          {current.admin 
-            ? <img
+            <React.Fragment key={`${current.peekId}_${index}`}>
+              <button
                 key={index}
-                src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png"
-                alt={current.peekId}
-                className={classes.EmojiImg}
-                id={index}
-              />
-            : (current.viewed 
-              ? (current.special 
-                ? <img
+                className={classes.EmojiBtn}
+                onClick={() => handleOpenPeekModal(current, index)}
+                style={randomPosition()}
+              >
+                {current.admin ? (
+                  <img
                     key={index}
-                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling_Heart_grey.gif"
+                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png"
                     alt={current.peekId}
                     className={classes.EmojiImg}
                     id={index}
                   />
-                : <img
-                    key={index}
-                    src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
-                    alt={current.peekId}
-                    className={classes.EmojiImg}
-                    id={index}
-                  />
-                )
-              : (current.special 
-                ? <img
+                ) : current.viewed ? (
+                  current.special ? (
+                    <img
+                      key={index}
+                      src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling_Heart_grey.gif"
+                      alt={current.peekId}
+                      className={classes.EmojiImg}
+                      id={index}
+                    />
+                  ) : (
+                    <img
+                      key={index}
+                      src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Grey+Heart.png"
+                      alt={current.peekId}
+                      className={classes.EmojiImg}
+                      id={index}
+                    />
+                  )
+                ) : current.special ? (
+                  <img
                     key={index}
                     src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Sparkling+Heart.png"
                     alt={current.peekId}
                     className={classes.EmojiImg}
                     id={index}
                   />
-                : <img
+                ) : (
+                  <img
                     key={index}
                     src="https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Red+Heart.png"
                     alt={current.peekId}
                     className={classes.EmojiImg}
                     id={index}
                   />
-                )
-              )
-          }
-
-            </button>
-          </>
+                )}
+              </button>
+            </React.Fragment>
           ))}
         </div>
       ) : (
