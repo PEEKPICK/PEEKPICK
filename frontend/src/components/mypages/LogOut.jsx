@@ -27,16 +27,15 @@ const LogOut = forwardRef((props, ref) => {
   const Logout = () => {
     customAxios.post('/member/logout')
       .then(response => {
-        // console.log(response)
         localStorage.removeItem('jwtToken');
-        // 바꿔야함
         window.location.replace('/');
         // setTimeout(()=>{
         //   navigate('/');
         // },1000)
       })
       .catch(response => {
-        console.log(response)
+        localStorage.removeItem('jwtToken');
+        window.location.replace('/');
       })
   };
 
