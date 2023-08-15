@@ -1,7 +1,7 @@
 .pickerMain {
   background-position: center;
   /* background-size: 110vw; */
-  background-size: 330%;
+  background-size: 280%;
   position: relative;
   max-width: 415px;
   width: 100vw;
@@ -10,7 +10,6 @@
   min-height: 300px;
   margin: 0;
   padding: 0;
-  background-color: #98c7fc;
   background-repeat: no-repeat;
 }
 .pickerMain::-webkit-scrollbar {
