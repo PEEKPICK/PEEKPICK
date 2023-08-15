@@ -14,18 +14,16 @@ function Layout() {
 
   useEffect(() => {
     setWorldId(getWorldId);
-    console.log("getWorldId", getWorldId);
+    // console.log("getWorldId", getWorldId);
   }, [getWorldId]);
 
   const backgroundColors = ["#63b3ff", "#af8e88", "#e9b36a", "#81b249", "#a7a49a", "#3f504f", "#c9bdb2"];
 
   useEffect(() => {
     if (worldId >= 1 && worldId <= backgroundColors.length) {
-      setIsValidWorldId(backgroundColors[worldId - 1]);
-      console.log("isValidWorldId", isValidWorldId);
+      setIsValidWorldId(true);
     } else {
-      setIsValidWorldId(backgroundColors[worldId - 1]);
-      console.log("isValidWorldId", isValidWorldId);
+      setIsValidWorldId(false);
     }
     // eslint-disable-next-line
   }, [worldId]); // worldId가 변경될 때마다 useEffect 실행

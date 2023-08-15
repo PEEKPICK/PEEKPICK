@@ -116,7 +116,7 @@ const Header = () => {
     };
     // 보낼 데이터 선택
     const selectedItem = worldMapList.find((item) => item.worldId === checkMap);
-    console.log(selectedItem);
+    // console.log(selectedItem);
     if (selectedItem) {
       dispatch(changeMapSliceActions.updateIdOpenUrl(selectedItem.openUrl));
       dispatch(changeMapSliceActions.updateIdCloseUrl(selectedItem.closeUrl));
@@ -129,10 +129,10 @@ const Header = () => {
         if (response.data.code === "200") {
           if (location.pathname === "/peek") {
             // window.location.replace("/peek");
-            console.log(dataToSend);
+            // console.log(dataToSend);
           } else {
             // window.location.replace("/");
-            console.log(dataToSend);
+            // console.log(dataToSend);
           }
         } else {
           console.log("문제가 발생했습니다.");

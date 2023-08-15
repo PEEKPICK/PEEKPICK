@@ -3,8 +3,8 @@ import classes from "./Picker.module.css";
 // import Header from "./Header";
 import FindPicker from "./FindPicker";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+
 function Picker() {
   const openUrl = useSelector((state) => state.changeMap.openUrl);
   const [backgroundImageUrl, setBackgroundImageUrl] = useState();
@@ -29,7 +29,9 @@ function Picker() {
     // backgroundColor: `#63b3ff`,
     // backgroundColor: `#af8e88`,
     // backgroundImage: `url("/img/free.png")`,
-    backgroundImage: backgroundImageUrl ? `url(${backgroundImageUrl})` : `url("/img/maps/StatueLibertyBack.png")`,
+    backgroundImage: backgroundImageUrl
+      ? `url(${backgroundImageUrl})`
+      : `url("https://peekpick-app.s3.ap-northeast-2.amazonaws.com/StatueLibertyBack.png")`,
     // 다른 스타일 속성들
   };
 
