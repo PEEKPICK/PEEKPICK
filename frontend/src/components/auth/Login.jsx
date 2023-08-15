@@ -45,14 +45,14 @@ const Login = () => {
         <img src="img/temp_background.png" alt="background" className={classes.background} />
         <div className={classes.buttons}>
           <img src="img/service_information.svg" alt="service_information" onClick={() => goBranding()} />
-          <img src="img/kakao_login.png" alt="kakao" onClick={() => loginHandler("kakao")} />
+          <img src="img/kakao_login.svg" alt="kakao" onClick={() => loginHandler("kakao")} />
           {/* <img src="img/naver_login.png" alt="naver" onClick={() => loginHandler('naver')} /> */}
           <img
-            src="img/naver_login.png"
+            src="img/naver_login.svg"
             alt="naver"
             onClick={() => toast.error("개발 중인 서비스입니다.")}
           />
-          <img src="img/google_login.png" alt="google" onClick={() => loginHandler("google")} />
+          <img src="img/google_login.svg" alt="google" onClick={() => loginHandler("google")} />
         </div>
       </div>
     </div>
