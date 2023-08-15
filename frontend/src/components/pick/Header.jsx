@@ -36,9 +36,9 @@ const Header = () => {
 
   // 거리조절 리덕스 변경
   const changeDistance = (dist) => {
-    toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
-      id: "changeDistance",
-    });
+    // toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
+    //   id: "changeDistance",
+    // });
     localStorage.setItem("distance", dist);
 
     setSelectedDistance(dist);
@@ -186,8 +186,8 @@ const Header = () => {
                   id="1"
                   value="50"
                   name="debt-amount"
-                  checked={selectedDistance === 50000000}
-                  onChange={() => changeDistance(50000000)}
+                  checked={selectedDistance === 50}
+                  onChange={() => changeDistance(50)}
                 />
                 <label htmlFor="1" data-debt-amount="50m"></label>
                 <input
@@ -195,8 +195,8 @@ const Header = () => {
                   id="2"
                   value="100"
                   name="debt-amount"
-                  checked={selectedDistance === 100000000}
-                  onChange={() => changeDistance(100000000)}
+                  checked={selectedDistance === 100}
+                  onChange={() => changeDistance(100)}
                 />
                 <label htmlFor="2" data-debt-amount="100m"></label>
                 <input
@@ -204,8 +204,8 @@ const Header = () => {
                   id="3"
                   value="150"
                   name="debt-amount"
-                  checked={selectedDistance === 150000000}
-                  onChange={() => changeDistance(150000000)}
+                  checked={selectedDistance === 150}
+                  onChange={() => changeDistance(150)}
                 />
                 <label htmlFor="3" data-debt-amount="150m"></label>
                 <input
@@ -213,8 +213,8 @@ const Header = () => {
                   id="4"
                   value="200"
                   name="debt-amount"
-                  checked={selectedDistance === 200000000}
-                  onChange={() => changeDistance(200000000)}
+                  checked={selectedDistance === 200}
+                  onChange={() => changeDistance(200)}
                 />
                 <label htmlFor="4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
