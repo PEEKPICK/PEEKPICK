@@ -4,7 +4,6 @@ import Modal from "react-modal";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { toast } from "react-hot-toast";
 
 import classes from "./Header.module.css";
 
@@ -14,15 +13,16 @@ import { useLocation } from "react-router-dom";
 
 import { authActions } from "../../store/authSlice";
 import { locationActions } from "../../store/locationSlice";
+import { changeMapSliceActions } from "../../store/changeMapSlice";
 // import { Toast } from "react-hot-toast";
+
 const Header = () => {
   // 상태관리
   const [isDistance, setIsDistance] = useState(false);
   const [isWorldMap, setIsWorldMap] = useState(false);
   const [worldMapList, setWorldMapList] = useState([]);
-  const [checkMap, setCheckMap] = useState(1);
+  const [checkMap, setCheckMap] = useState(null);
   const [selectedDistance, setSelectedDistance] = useState(50);
-
   // 함수 선언
   const location = useLocation();
   const dispatch = useDispatch();
@@ -35,9 +35,9 @@ const Header = () => {
 
   // 거리조절 리덕스 변경
   const changeDistance = (dist) => {
-    toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
-      id: "changeDistance",
-    });
+    // toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
+    //   id: "changeDistance",
+    // });
     localStorage.setItem("distance", dist);
 
     setSelectedDistance(dist);
@@ -47,17 +47,6 @@ const Header = () => {
     };
 
     dispatch(locationActions.updateDist(sendToData));
-  };
-
-  // 캐러셀 세팅
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    initialSlide: checkMap - 1,
-
-    beforeChange: (slide, newSlide) => setCheckMap(newSlide + 1),
   };
 
   // 사용자가 선택한 월드맵 받아와서 리덕스 저장
@@ -88,25 +77,22 @@ const Header = () => {
       .get("/member/world")
       .then((response) => {
         setWorldMapList(response.data.data);
-        console.log(
-          `%c          ██████╗ ███████╗███████╗██╗  ██╗██████╗ ██╗ ██████╗██╗  ██╗    
-          %c██╔══██╗██╔════╝██╔════╝██║ ██╔╝██╔══██╗██║██╔════╝██║ ██╔╝    
-          %c██████╔╝█████╗  █████╗  █████╔╝ ██████╔╝██║██║     █████╔╝     
-          %c██╔═══╝ ██╔══╝  ██╔══╝  ██╔═██╗ ██╔═══╝ ██║██║     ██╔═██╗     
-          %c██║     ███████╗███████╗██║  ██╗██║     ██║╚██████╗██║  ██╗    
-          %c╚═╝     ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝ ╚═════╝╚═╝  ╚═╝`,
-          "color: #7D00FF;",
-          "color: #7D00FF;",
-          "color: #7D00FF;",
-          "color: #7D00FF;",
-          "color: #7D00FF;",
-          "color: #7D00FF;"
-        );
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
+
+  // 캐러셀 세팅
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: checkMap - 1,
+
+    beforeChange: (slide, newSlide) => setCheckMap(newSlide + 1),
+  };
 
   // 로컬스토리지에서 사용자가 설정한 거리 가져오기
   useEffect(() => {
@@ -125,19 +111,28 @@ const Header = () => {
 
   // 선택완료 버튼
   const checkOutHandler = () => {
-    // 보낼 데이터 선택
     const dataToSend = {
       worldId: checkMap,
     };
+    // 보낼 데이터 선택
+    const selectedItem = worldMapList.find((item) => item.worldId === checkMap);
+    // console.log(selectedItem);
+    if (selectedItem) {
+      dispatch(changeMapSliceActions.updateIdOpenUrl(selectedItem.openUrl));
+      dispatch(changeMapSliceActions.updateIdCloseUrl(selectedItem.closeUrl));
+      dispatch(changeMapSliceActions.updateId(selectedItem.worldId));
+    }
     // axios
     customAxios
       .post("/member/world", dataToSend)
       .then((response) => {
         if (response.data.code === "200") {
           if (location.pathname === "/peek") {
-            window.location.replace("/peek");
+            // window.location.replace("/peek");
+            // console.log(dataToSend);
           } else {
-            window.location.replace("/");
+            // window.location.replace("/");
+            // console.log(dataToSend);
           }
         } else {
           console.log("문제가 발생했습니다.");
@@ -146,6 +141,8 @@ const Header = () => {
       .catch((error) => {
         console.log(error);
       });
+
+    setIsWorldMap(false);
   };
 
   return (
@@ -164,11 +161,8 @@ const Header = () => {
         <button
           className={classes.button}
           onClick={() => {
-            // setIsWorldMap(true);
+            setIsWorldMap(true);
             // setIsDistance(false);
-            toast('개발 중인 서비스예요! 🛠', {
-              icon: '🛠',
-            });
           }}
         >
           <img src="/img/worldmap.svg" alt="알림버튼" />
@@ -196,40 +190,40 @@ const Header = () => {
               <div className={classes.debtAmountSlider}>
                 <input
                   type="radio"
-                  id="1"
+                  id="peek_distance_1"
                   value="50"
                   name="debt-amount"
-                  checked={selectedDistance === 50000000}
-                  onChange={() => changeDistance(50000000)}
+                  checked={selectedDistance === 50}
+                  onChange={() => changeDistance(50)}
                 />
-                <label htmlFor="1" data-debt-amount="50m"></label>
+                <label htmlFor="peek_distance_1" data-debt-amount="50m"></label>
                 <input
                   type="radio"
-                  id="2"
+                  id="peek_distance_2"
                   value="100"
                   name="debt-amount"
-                  checked={selectedDistance === 100000000}
-                  onChange={() => changeDistance(100000000)}
+                  checked={selectedDistance === 100}
+                  onChange={() => changeDistance(100)}
                 />
-                <label htmlFor="2" data-debt-amount="100m"></label>
+                <label htmlFor="peek_distance_2" data-debt-amount="100m"></label>
                 <input
                   type="radio"
-                  id="3"
+                  id="peek_distance_3"
                   value="150"
                   name="debt-amount"
-                  checked={selectedDistance === 150000000}
-                  onChange={() => changeDistance(150000000)}
+                  checked={selectedDistance === 150}
+                  onChange={() => changeDistance(150)}
                 />
-                <label htmlFor="3" data-debt-amount="150m"></label>
+                <label htmlFor="peek_distance_3" data-debt-amount="150m"></label>
                 <input
                   type="radio"
-                  id="4"
+                  id="peek_distance_4"
                   value="200"
                   name="debt-amount"
-                  checked={selectedDistance === 200000000}
-                  onChange={() => changeDistance(200000000)}
+                  checked={selectedDistance === 200}
+                  onChange={() => changeDistance(200)}
                 />
-                <label htmlFor="4" data-debt-amount="200m"></label>
+                <label htmlFor="peek_distance_4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
               </div>
             </form>
@@ -249,24 +243,26 @@ const Header = () => {
               <span>숨겨진 업적을 달성하면 잠금이 풀립니다!</span>
             </div>
             {/* 월드맵 캐러샐 */}
-            <div className={classes.sliderWrapper}>
-              <Slider {...settings}>
-                {worldMapList.map((item) => (
-                  <div className={classes.content_box} key={item.worldId}>
-                    {/* 버그 리포트 : 캐러셀을 안움직이면 기존의 값이 들어감.. 해결 방법 좀 */}
-                    <img src={item.openUrl} alt="" className={classes.carousel} />
-                  </div>
-                ))}
-              </Slider>
-            </div>
-            <div className={classes.buttonWrap}>
-              <button className={classes.selected} onClick={checkOutHandler}>
-                선택 완료
-              </button>
-              <button className={classes.back} onClick={moveBackHandler}>
-                뒤로 가기
-              </button>
-            </div>
+            <>
+              <div className={classes.sliderWrapper}>
+                <Slider {...settings}>
+                  {worldMapList.map((item) => (
+                    <div className={classes.contentBox} key={item.worldId}>
+                      {/* 버그 리포트 : 캐러셀을 안움직이면 기존의 값이 들어감.. 해결 방법 좀 */}
+                      <img src={item.closeUrl} alt="" className={classes.carousel} />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+              <div className={classes.buttonWrap}>
+                <button className={classes.selected} onClick={checkOutHandler}>
+                  선택 완료
+                </button>
+                <button className={classes.back} onClick={moveBackHandler}>
+                  뒤로 가기
+                </button>
+              </div>
+            </>
           </div>
         </Modal>
       )}

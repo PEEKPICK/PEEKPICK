@@ -12,7 +12,6 @@
   min-width: 200px;
 }
 
-
 .button {
   border: none;
   cursor: pointer;
@@ -186,34 +185,34 @@
   display: none;
 }
 
-.debtAmountSlider input:checked+label::before {
+.debtAmountSlider input:checked + label::before {
   font-weight: 800;
   opacity: 1;
 }
 
-.debtAmountSlider input:checked+label::after {
+.debtAmountSlider input:checked + label::after {
   border-width: 4px;
   transform: translate(-50%, -50%) scale(0.75);
 }
 
-.debtAmountSlider input:checked~.debtAmountPos {
+.debtAmountSlider input:checked ~ .debtAmountPos {
   opacity: 1;
 }
 
 /* 선택된 버튼 중간에 생기는 포인트 */
-.debtAmountSlider input:nth-child(1):checked~.debtAmountPos {
+.debtAmountSlider input:nth-child(1):checked ~ .debtAmountPos {
   left: 12.5%;
 }
 
-.debtAmountSlider input:nth-child(3):checked~.debtAmountPos {
+.debtAmountSlider input:nth-child(3):checked ~ .debtAmountPos {
   left: 37.5%;
 }
 
-.debtAmountSlider input:nth-child(5):checked~.debtAmountPos {
+.debtAmountSlider input:nth-child(5):checked ~ .debtAmountPos {
   left: 62.5%;
 }
 
-.debtAmountSlider input:nth-child(7):checked~.debtAmountPos {
+.debtAmountSlider input:nth-child(7):checked ~ .debtAmountPos {
   left: 87.5%;
 }
 
@@ -232,12 +231,12 @@
   z-index: 2;
 }
 
-.form:valid .debtAmountSlider input:checked+label::before {
+.form:valid .debtAmountSlider input:checked + label::before {
   transform: translate(-50%, 45px) scale(1.1);
   transition: all 0.3s linear;
 }
 
-.form+button {
+.form + button {
   display: block;
   position: relative;
   margin: 56px auto 0;
@@ -255,23 +254,23 @@
   cursor: pointer;
 }
 
-.form+button:hover {
+.form + button:hover {
   background: rgba(125, 0, 255, 1);
   color: #fff;
 }
 
-.form+button:active {
+.form + button:active {
   transform: scale(0.9);
 }
 
-.form+button:focus {
+.form + button:focus {
   background: #4caf50;
   border-color: #4caf50;
   color: #fff;
   pointer-events: none;
 }
 
-.form+button::before {
+.form + button::before {
   display: inline-block;
   width: 0;
   opacity: 0;
@@ -283,7 +282,7 @@
   animation: spin 1s linear infinite;
 }
 
-.form:invalid+button {
+.form:invalid + button {
   pointer-events: none;
   opacity: 0.25;
 }
@@ -309,8 +308,6 @@
   display: flex;
   flex-direction: column;
 }
-
-
 
 .worldMapContainer h1 {
   margin-top: 1vh;
@@ -358,8 +355,6 @@
   color: white;
 }
 
-
-
 .worldMapModal {
   position: fixed;
   background-color: #ffffff;
@@ -369,7 +364,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%) scale(1);
-  border-radius: 0 1rem 1rem 1rem;
+  border-radius: 1rem;
   padding: 1.5rem 1.4rem;
   animation: 0.2s ease-in-out loadEffect2;
 }

@@ -2,8 +2,6 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Modal from "react-modal";
-import common from './components/auth/style/Common.module.css';
-
 // router import
 // 준형
 import Login from "./components/auth/Login";
@@ -44,21 +42,27 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   const dispatch = useDispatch();
+  //스플래쉬
+  const [isLoading, setIsLoading] = useState(false); // 스플래시 화면 로딩 상태 추가
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   // Connect | disConnect
   const getPosX = useSelector((state) => state.location.userPos.point.x);
   const getPosY = useSelector((state) => state.location.userPos.point.y);
   const distanceValue = useSelector((state) => state.location.userPos.distance);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
-  const getNickName = useSelector((state) => state.roomId.nickName);
+  // const getNickName = useSelector((state) => state.roomId.nickName);
 
   // PWA 적용을 위한 vh변환 함수
+
   function setScreenSize() {
     let vh = window.innerHeight * 0.01;
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
 
   useEffect(() => {
+    const splashTimeout = setTimeout(() => {
+      setIsLoading(true); // 스플래시 화면 로딩 완료 처리
+    }, 800);
     // vh변환 함수 작동
     setScreenSize();
     const checkTokenInLocalStorage = () => {
@@ -75,6 +79,7 @@ function App() {
     };
     window.addEventListener("contextmenu", preventImageContextMenu);
     return () => {
+      clearTimeout(splashTimeout); // 타임아웃 클리어
       window.removeEventListener("contextmenu", preventImageContextMenu);
     };
   }, []);
@@ -137,20 +142,20 @@ function App() {
 
         eventSource.addEventListener("REQUEST", (e) => {
           // 채팅 요청 / 응답
-          console.log("REQUEST", e);
+          // console.log("REQUEST", e);
           if (e.data.includes("senderId")) {
             const jsonData = JSON.parse(e.data);
             const senderId = jsonData.senderId;
             const requestTime = jsonData.requestTime;
-            console.log("채팅 받음", jsonData);
+            // console.log("채팅 받음", jsonData);
             customAxios.get(`/member/chat/info?avatarId=${senderId}`).then((res) => {
               // console.log("response2", res);
               const opponentData = res.data.data;
-              console.log("상대 정보: ", opponentData);
+              // console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
               dispatch(chatActions.updateURL(opponentData));
               dispatch(chatActions.updateOpponentNickName(nickNameSum));
-              console.log("getNickNameeeee", getNickName);
+              // console.log("getNickNameeeee", getNickName);
               // 토스트 메시지 띄우기
               const toastContent = (
                 <ToastNotification
@@ -170,7 +175,7 @@ function App() {
           }
           // 거절하기
           if (e.data === "채팅이 거절되었습니다.") {
-            console.log("거절: ", e.data);
+            // console.log("거절: ", e.data);
             const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
             toast(toastContent, {
               position: "top-right",
@@ -181,22 +186,22 @@ function App() {
             });
           }
         });
-        Modal.setAppElement('#root')
+        Modal.setAppElement("#root");
         // 수락하기
         eventSource.addEventListener("CHAT_START", (e) => {
           // 채팅 시작
-          console.log("CHAT_START !! :", e);
+          // console.log("CHAT_START !! :", e);
           // 요청 수락
           if (e.data.includes("roomId")) {
             const jsonData = JSON.parse(e.data);
             const roomId = jsonData.roomId;
             const opponent = jsonData.opponent;
-            console.log("수락roomId보냄: ", roomId);
+            // console.log("수락roomId보냄: ", roomId);
             const createTime = jsonData.createTime;
             const endTime = jsonData.endTime;
-            console.log("createTime", createTime);
-            console.log("endTime", endTime);
-            console.log("수락opponent보냄: ", opponent);
+            // console.log("createTime", createTime);
+            // console.log("endTime", endTime);
+            // console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
@@ -204,13 +209,13 @@ function App() {
             dispatch(chatActions.updateTime(createTime));
 
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-              console.log("response2", res);
+              // console.log("response2", res);
               const opponentData = res.data.data;
-              console.log("상대 정보: ", opponentData);
+              // console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
               dispatch(chatActions.updateURL(opponentData));
               dispatch(chatActions.updateOpponentNickName(nickNameSum));
-              console.log("getNickNameeeee", getNickName);
+              // console.log("getNickNameeeee", getNickName);
             });
             const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
             toast(toastContent, {
@@ -247,13 +252,13 @@ function App() {
               },
             })
             .then((e) => {
-              console.log("보는중: ", e.data);
+              // console.log("보는중: ", e.data);
               fetchData();
             });
         } else {
           // 앱이 백그라운드에 있을 때
           customAxios.get("/picker/disconnect").then((res) => {
-            console.log("안봐?!!?", res.data);
+            // console.log("안봐?!!?", res.data);
           });
         }
       }
@@ -272,50 +277,57 @@ function App() {
   }, [isAuthenticated, getPosX, getPosY, document.visibilityState]);
 
   return (
-    <div className="App">
-      <div>
-        <Toaster />
-      </div>
-      {/* 라우터 */}
-      <Routes>
+    <div className="App" id="App">
+      {/* 스플래시 화면 */}
+      {!isLoading ? (
+        <div id="SplashDiv">
+          <img src="/img/EyesPinBig.png" alt="Splash" className="Splash" id="Splash" />
+        </div>
+      ) : (
         <>
-          {isAuthenticated ? (
+          <div>
+            <Toaster />
+          </div>
+          {/* 라우터 */}
+          <Routes>
+            <Route path="/branding" element={<Branding />} />
             <>
-              <Route path="/" element={<Layout />}>
-                <Route  path="/" element={<Picker />} />
-                <Route path="peek" element={<Peek />} />
-                {/* 용범  */}
-                <Route path="mypage" element={<MyPage />} />
-              </Route>
-              <Route path="profile" element={<Profile />}/>
-              <Route path="/announcement" element={<Announcement />} />
-              <Route path="/likeedit" element={<LikeEdit />} />
-              <Route path="/hateedit" element={<HateEdit />} />
-              {/* 기타 */}
-              <Route path="/*" element={<AlreadyLogin />} />
+              {isAuthenticated ? (
+                <>
+                  <Route path="/" element={<Layout />}>
+                    <Route path="/" element={<Picker />} />
+                    <Route path="peek" element={<Peek />} />
+                    {/* 용범  */}
+                    <Route path="mypage" element={<MyPage />} />
+                  </Route>
+                  <Route path="profile" element={<Profile />} />
+                  <Route path="/announcement" element={<Announcement />} />
+                  <Route path="/likeedit" element={<LikeEdit />} />
+                  <Route path="/hateedit" element={<HateEdit />} />
+                  {/* 기타 */}
+                  <Route path="/*" element={<AlreadyLogin />} />
+                </>
+              ) : (
+                <>
+                  {/* 준형 */}
+                  <Route path="/" element={<Login />} />
+                  <Route path="/oauth2/redirect" element={<Redirect />} />
+                  <Route path="/userinfo" element={<UserInfo />} />
+                  <Route path="/userprofile" element={<UserProfile />} />
+                  <Route path="/usernickname" element={<UserNickname />} />
+                  <Route path="/userlike" element={<UserLike />} />
+                  <Route path="/UserLikeHate" element={<UserLikeHate />} />
+                  <Route path="/userhate" element={<UserHate />} />
+                  <Route path="/welcome" element={<Welcome />} />
+                  <Route path="/*" element={<AlreadyLogin />} />
+                </>
+              )}
             </>
-          )
-            :
-            (
-              <>
-                {/* 준형 */}
-                <Route path="/" element={<Login />} />
-                <Route path="/oauth2/redirect" element={<Redirect />} />
-                <Route path="/userinfo" element={<UserInfo />} />
-                <Route path="/userprofile" element={<UserProfile />} />
-                <Route path="/usernickname" element={<UserNickname />} />
-                <Route path="/userlike" element={<UserLike />} />
-                <Route path="/UserLikeHate" element={<UserLikeHate />} />
-                <Route path="/userhate" element={<UserHate />} />
-                <Route path="/welcome" element={<Welcome />} />
-                <Route path="/branding" element={<Branding />} />
-                <Route path="/*" element={<AlreadyLogin />} />
-              </>
-            )}
+          </Routes>
+          {/* ToastContainer를 추가 */}
+          <ToastContainer />
         </>
-      </Routes>
-      {/* ToastContainer를 추가 */}
-      <ToastContainer />
+      )}
     </div>
   );
 }

@@ -79,12 +79,12 @@
 }
 
 .intro img {
-  height: 2em;  
+  height: 1rem;  
   width: auto;  
   vertical-align: middle;  
-  margin-right: 0.3em;  
+  margin-right: 0.3rem;  
 }
- 
+
 
 /* 모달 중간선  */
 .divider {
@@ -167,6 +167,7 @@
   border: none;
   box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
+
 .pickwaiting {
   font-size: 17px;
   font-weight: 600;
@@ -182,10 +183,12 @@
   border: none;
   box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
+
 .waiting::before {
   content: "기다리는 중...";
   animation: loadingAnimation 1s infinite;
 }
+
 @keyframes loadingAnimation {
   0%,
   100% {
@@ -210,11 +213,12 @@
 .modalbodys {
   display: flex;
 }
+
 .modalBodyPeek {
   display: flex;
   padding: 0.8rem 0.5rem;
   position: relative;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   height: 10rem;
   width: 85%;
   background-color: rgba(125, 0, 255, 0.1);
@@ -222,10 +226,13 @@
   margin-right: 5%;
   border-radius: 5%;
 }
+
 .viewContent {
   width: 265px;
   word-wrap: break-word;
+  font-size: 16px;
 }
+
 .peekImg {
   display: flex;
   width: 35%;
@@ -242,26 +249,69 @@
 
 .likeDisLike {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   height: 6rem;
   width: 100%;
 }
 
 .likes {
+  display: grid;
+  grid-template-columns: 15fr 1fr;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+}
+
+.likes span {
+    margin-top: 5px;
+    font-family: 'KBO-Dia-Gothic_bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.likes img {
+  /* margin-left: 15px; */
+  width: 30px;
+  height: auto;
+  margin-left: 10px;
+}
+
+.hates {
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+}
+
+.hates span {
+  margin-top: 5%;
+  font-family: 'KBO-Dia-Gothic_bold';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+.hates img {
+  width: 30px;
+  /* margin-right: 15px; */
+  height: auto;
+  margin-right: 10px;
+}
+
+.vs{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0;
 }
-
-.likes span {
-  margin-top: 5%;
-}
-
-.likes img {
-  width: 20px;
-  height: 20px;
+.vs img {
+  width: 60px;
+  height: auto;
 }
 
 .progressdiv {
@@ -273,7 +323,7 @@
 progress {
   -webkit-appearance: none;
   appearance: none;
-  width: 80%;
+  width: 85%;
   color: white;
   margin-bottom: 5%;
 }
@@ -340,4 +390,8 @@ progress {
   right: 0;
   bottom: 100%;
   transform: translateX(-50%) translateY(-5px);
+}
+
+.timer{
+  width: 70%;
 }

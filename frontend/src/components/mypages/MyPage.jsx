@@ -80,7 +80,7 @@ const MyPage = () => {
       if (isTokenExpired()) {
         try {
           const response = await customAxios.get("/member/info");
-          console.log(response);
+          // console.log(response);
           setPickPoint(response.data.data.pickPoint);
           setLikeCount(response.data.data.likeCount);
           setChatCount(response.data.data.chatCount);
@@ -142,7 +142,7 @@ const MyPage = () => {
         }
       } else {
         const response = await customAxios.post("/auth/refresh");
-        console.log(response);
+        // console.log(response);
       }
     };
 

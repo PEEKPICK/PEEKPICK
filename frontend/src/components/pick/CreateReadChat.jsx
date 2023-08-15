@@ -21,6 +21,7 @@ const CreateReadChat = ({ isModalState }) => {
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
+  const [singo, setSingo] = useState(false);
   const scrollRef = useRef();
   const createTime = useSelector((state) => state.roomId.createTime);
   const chatPop = () => {
@@ -39,6 +40,7 @@ const CreateReadChat = ({ isModalState }) => {
 
   const closeExitConfirmationModal = () => {
     setShowExitConfirmationModal(false);
+    setSingo(false);
   };
 
   const exitChat = () => {
@@ -57,7 +59,7 @@ const CreateReadChat = ({ isModalState }) => {
         setStompClient(factory);
         factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
           const parseMessage = JSON.parse(chatMessage.body);
-          console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
+          // console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
             scrollToBottom();
@@ -135,7 +137,7 @@ const CreateReadChat = ({ isModalState }) => {
           })
           
         );
-        console.log("나가요!!!");
+        // console.log("나가요!!!");
       }
     };
 
@@ -153,11 +155,11 @@ const CreateReadChat = ({ isModalState }) => {
     customAxios
       .post("/picker/chat-end", requestBody)
       .then(() => {
-        console.log("요청 성공:", "나가기 성공");
+        // console.log("요청 성공:", "나가기 성공");
         dispatch(chatActions.callRoomID(""));
       })
       .catch(() => {
-        console.error("요청 실패:", "나가기 실패");
+        // console.error("요청 실패:", "나가기 실패");
       });
     dispatch(chatActions.updateOpponentNickName());
   };
@@ -167,10 +169,15 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const sirenHandler = () => {
+    setSingo(true);
+  };
+
+  const sirenChat = () => {
     toast("신고가 완료됐습니다! 🚨", {
       icon: "🚨",
     });
-    handleExitConfirmation();
+    declare();
+    closeExitConfirmationModal();
   };
 
   return (
@@ -287,6 +294,25 @@ const CreateReadChat = ({ isModalState }) => {
 
             <div className={classes.button_area}>
               <button onClick={() => exitChat()} className={classes.exit_button}>
+                나가기
+              </button>
+              <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
+                취소
+              </button>
+            </div>
+          </div>
+        )}
+        {singo && (
+          <div className={classes.exitConfirmationModal}>
+            <div className={classes.caution}>CAUTION</div>
+
+            <div className={classes.modal_divider}></div>
+
+            <p>정말로 신고하시겠습니까?</p>
+            <p>신고를 하면 채팅이 종료하게 됩니다.</p>
+
+            <div className={classes.button_area}>
+              <button onClick={() => sirenChat()} className={classes.exit_button}>
                 나가기
               </button>
               <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>

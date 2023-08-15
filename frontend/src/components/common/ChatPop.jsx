@@ -18,7 +18,7 @@ const ChatPop = () => {
     }
   }, [getRoomId]);
   const chatPop = () => {
-    console.log("getRoomId", getRoomId);
+    // console.log("getRoomId", getRoomId);
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
   return (
