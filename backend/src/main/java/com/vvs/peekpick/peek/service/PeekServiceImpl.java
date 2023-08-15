@@ -1,11 +1,8 @@
 package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.*;
-import com.vvs.peekpick.exception.CustomException;
-import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.peek.dto.*;
-import com.vvs.peekpick.peek.repository.PeekRepository;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
 import com.vvs.peekpick.response.ResponseService;
@@ -24,7 +21,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
-    private final int MAX_PEEK = 8; // 화면 단에 전닿해주는 Peek 수 (이벤트 코드)
+    private final int MAX_PEEK = 8; // 화면 단에 전달해주는 Peek 수 (이벤트 코드)
     //private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
     private final int PEEK_ORIGIN_TIME = 1440*2; // PEEK 기본 지속 시간 (분) (이벤트 코드)
     //private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
@@ -176,7 +173,7 @@ public class PeekServiceImpl implements PeekService {
 
             Avatar avatar = peekAvatarService.findAvatar(writer.getAvatar().getAvatarId());
             PeekAvatarDto peekAvatarDto = PeekAvatarDto.builder()
-                    .avatarId(avatarId)
+                    .writerId(peekRedisDto.getMemberId())
                     .nickname(avatar.getNickname())
                     .bio(avatar.getBio())
                     .emoji(avatar.getEmoji())
