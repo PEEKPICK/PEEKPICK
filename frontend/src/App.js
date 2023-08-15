@@ -49,7 +49,7 @@ function App() {
   const getPosY = useSelector((state) => state.location.userPos.point.y);
   const distanceValue = useSelector((state) => state.location.userPos.distance);
   // const getOpponent = useSelector((state) => state.roomId.opponent);
-  const getNickName = useSelector((state) => state.roomId.nickName);
+  // const getNickName = useSelector((state) => state.roomId.nickName);
 
   // PWA 적용을 위한 vh변환 함수
   function setScreenSize() {
