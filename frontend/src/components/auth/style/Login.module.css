@@ -76,7 +76,7 @@
   margin: 1vh 0 1vh 0;
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  bottom: 2vh;
+  bottom: 23vh;
   max-width: 270px;
 }
 .b2 {
@@ -85,7 +85,7 @@
   margin: 1vh 0 1vh 0;
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  bottom: 9vh;
+  bottom: 16vh;
   max-width: 270px;
 }
 .b3 {
@@ -94,7 +94,7 @@
   margin: 1vh 0 1vh 0;
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  bottom: 16vh;
+  bottom: 9vh;
   max-width: 270px;
 }
 .b4 {
@@ -103,6 +103,6 @@
   margin: 1vh 0 1vh 0;
   box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
   border-radius: 12px;
-  bottom: 23vh;
+  bottom: 2vh;
   max-width: 270px;
 }
