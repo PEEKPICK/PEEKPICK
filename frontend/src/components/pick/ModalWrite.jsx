@@ -21,7 +21,8 @@ const ModalWrite = ({ emojiCall }) => {
 
   const handleCloseModal = () => {
     setWriteData("");
-    dispatch(modalsActions.closeModal())
+    setCurrentLength(0); // 모달을 닫을 때 currentLength를 0으로 설정
+    dispatch(modalsActions.closeModal()) 
   };
 
   const postWrite = () => {
@@ -33,7 +34,8 @@ const ModalWrite = ({ emojiCall }) => {
     }
 
     setIsButtonDisabled(true);  // 버튼을 비활성화
-
+    setCurrentLength(0);  // currentLength를 0으로 설정
+    
     let f = new FormData();
     f.append("content", writeData);
     f.append("longitude", userPos.point.x);
