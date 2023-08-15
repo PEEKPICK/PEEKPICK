@@ -136,20 +136,20 @@ function App() {
 
         eventSource.addEventListener("REQUEST", (e) => {
           // 채팅 요청 / 응답
-          console.log("REQUEST", e);
+          // console.log("REQUEST", e);
           if (e.data.includes("senderId")) {
             const jsonData = JSON.parse(e.data);
             const senderId = jsonData.senderId;
             const requestTime = jsonData.requestTime;
-            console.log("채팅 받음", jsonData);
+            // console.log("채팅 받음", jsonData);
             customAxios.get(`/member/chat/info?avatarId=${senderId}`).then((res) => {
               // console.log("response2", res);
               const opponentData = res.data.data;
-              console.log("상대 정보: ", opponentData);
+              // console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
               dispatch(chatActions.updateURL(opponentData));
               dispatch(chatActions.updateOpponentNickName(nickNameSum));
-              console.log("getNickNameeeee", getNickName);
+              // console.log("getNickNameeeee", getNickName);
               // 토스트 메시지 띄우기
               const toastContent = (
                 <ToastNotification
@@ -169,7 +169,7 @@ function App() {
           }
           // 거절하기
           if (e.data === "채팅이 거절되었습니다.") {
-            console.log("거절: ", e.data);
+            // console.log("거절: ", e.data);
             const toastContent = <ToastNotification message={"채팅 요청이 거절되었습니다."} />;
             toast(toastContent, {
               position: "top-right",
@@ -184,18 +184,18 @@ function App() {
         // 수락하기
         eventSource.addEventListener("CHAT_START", (e) => {
           // 채팅 시작
-          console.log("CHAT_START !! :", e);
+          // console.log("CHAT_START !! :", e);
           // 요청 수락
           if (e.data.includes("roomId")) {
             const jsonData = JSON.parse(e.data);
             const roomId = jsonData.roomId;
             const opponent = jsonData.opponent;
-            console.log("수락roomId보냄: ", roomId);
+            // console.log("수락roomId보냄: ", roomId);
             const createTime = jsonData.createTime;
             const endTime = jsonData.endTime;
-            console.log("createTime", createTime);
-            console.log("endTime", endTime);
-            console.log("수락opponent보냄: ", opponent);
+            // console.log("createTime", createTime);
+            // console.log("endTime", endTime);
+            // console.log("수락opponent보냄: ", opponent);
             dispatch(chatActions.callRoomID(roomId));
             dispatch(chatActions.updateConnectState(true));
             dispatch(chatActions.updateOpponent(opponent));
@@ -203,13 +203,13 @@ function App() {
             dispatch(chatActions.updateTime(createTime));
 
             customAxios.get(`/member/chat/info?avatarId=${opponent}`).then((res) => {
-              console.log("response2", res);
+              // console.log("response2", res);
               const opponentData = res.data.data;
-              console.log("상대 정보: ", opponentData);
+              // console.log("상대 정보: ", opponentData);
               const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
               dispatch(chatActions.updateURL(opponentData));
               dispatch(chatActions.updateOpponentNickName(nickNameSum));
-              console.log("getNickNameeeee", getNickName);
+              // console.log("getNickNameeeee", getNickName);
             });
             const toastContent = <ToastNotification message={"채팅 요청이 수락되었습니다."} />;
             toast(toastContent, {
@@ -246,13 +246,13 @@ function App() {
               },
             })
             .then((e) => {
-              console.log("보는중: ", e.data);
+              // console.log("보는중: ", e.data);
               fetchData();
             });
         } else {
           // 앱이 백그라운드에 있을 때
           customAxios.get("/picker/disconnect").then((res) => {
-            console.log("안봐?!!?", res.data);
+            // console.log("안봐?!!?", res.data);
           });
         }
       }
