@@ -266,8 +266,8 @@
 }
 
 .likes img {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
 }
 
 .progressdiv {
@@ -346,4 +346,8 @@ progress {
   right: 0;
   bottom: 100%;
   transform: translateX(-50%) translateY(-5px);
+}
+
+.timer{
+  width: 70%;
 }

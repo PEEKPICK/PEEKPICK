@@ -190,40 +190,40 @@ const Header = () => {
               <div className={classes.debtAmountSlider}>
                 <input
                   type="radio"
-                  id="1"
+                  id="peek_distance_1"
                   value="50"
                   name="debt-amount"
                   checked={selectedDistance === 50}
                   onChange={() => changeDistance(50)}
                 />
-                <label htmlFor="1" data-debt-amount="50m"></label>
+                <label htmlFor="peek_distance_1" data-debt-amount="50m"></label>
                 <input
                   type="radio"
-                  id="2"
+                  id="peek_distance_2"
                   value="100"
                   name="debt-amount"
                   checked={selectedDistance === 100}
                   onChange={() => changeDistance(100)}
                 />
-                <label htmlFor="2" data-debt-amount="100m"></label>
+                <label htmlFor="peek_distance_2" data-debt-amount="100m"></label>
                 <input
                   type="radio"
-                  id="3"
+                  id="peek_distance_3"
                   value="150"
                   name="debt-amount"
                   checked={selectedDistance === 150}
                   onChange={() => changeDistance(150)}
                 />
-                <label htmlFor="3" data-debt-amount="150m"></label>
+                <label htmlFor="peek_distance_3" data-debt-amount="150m"></label>
                 <input
                   type="radio"
-                  id="4"
+                  id="peek_distance_4"
                   value="200"
                   name="debt-amount"
                   checked={selectedDistance === 200}
                   onChange={() => changeDistance(200)}
                 />
-                <label htmlFor="4" data-debt-amount="200m"></label>
+                <label htmlFor="peek_distance_4" data-debt-amount="200m"></label>
                 <div className={classes.debtAmountPos}></div>
               </div>
             </form>
