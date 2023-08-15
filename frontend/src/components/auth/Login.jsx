@@ -12,9 +12,9 @@ const Login = () => {
 
   const goBranding = () => {
     navigate('/branding');
-  }
+  };
+  
   // 첫 사용자만 뜨게 하는 페이지
-
   const [isNewUser, setIsNewUser] = useState(true);
   
   useEffect(() => {
@@ -22,7 +22,7 @@ const Login = () => {
     if (storedIsNewUser === 'false') {
     } else {
       localStorage.setItem('isNewUser', 'false');
-      // navigate('/branding');
+      navigate('/branding');
     }
   }, []);
 
