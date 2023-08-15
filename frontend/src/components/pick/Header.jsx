@@ -240,7 +240,7 @@ const Header = () => {
             <h1>월드 선택</h1>
             <div className={classes.spanWrap}>
               <span>개성넘치는 자신만의 월드를 골라보세요.</span>
-              <span>숨겨진 업적을 달성하면 잠금이 풀립니다!</span>
+              {/* <span>숨겨진 업적을 달성하면 잠금이 풀립니다!</span> */}
             </div>
             {/* 월드맵 캐러샐 */}
             <>
