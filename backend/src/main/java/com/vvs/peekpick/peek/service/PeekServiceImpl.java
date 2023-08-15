@@ -53,18 +53,17 @@ public class PeekServiceImpl implements PeekService {
                 int distance = nearPeek.getDistance();
                 PeekRedisDto peekRedisDto = peekRedisService.getPeekValueOps(peekId);
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
-                // 개발 완료 시 아래 로직을 여기 감싸줄 예정
-//                if(peekRedisDto.isSpecial() | !isViewed) {
-//
-//                }
-                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                        .peekId(peekRedisDto.getPeekId())
-                        .distance(distance)
-                        .special(peekRedisDto.isSpecial())
-                        .viewed(isViewed)
-                        .admin(peekRedisDto.getMemberId()==1L)
-                        .build();
-                allPeeks.add(responsePeekListDto);
+
+                if(peekRedisDto.getMemberId() == 1L | peekRedisDto.isSpecial() | !isViewed) {
+                    ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                            .peekId(peekRedisDto.getPeekId())
+                            .distance(distance)
+                            .special(peekRedisDto.isSpecial())
+                            .viewed(isViewed)
+                            .admin(peekRedisDto.getMemberId()==1L)
+                            .build();
+                    allPeeks.add(responsePeekListDto);
+                }
             }
             System.out.println(allPeeks);
             if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
