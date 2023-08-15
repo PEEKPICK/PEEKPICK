@@ -277,6 +277,7 @@ function App() {
       </div>
       {/* 라우터 */}
       <Routes>
+        <Route path="/branding" element={<Branding />} />
         <>
           {isAuthenticated ? (
             <>
@@ -305,7 +306,6 @@ function App() {
               <Route path="/UserLikeHate" element={<UserLikeHate />} />
               <Route path="/userhate" element={<UserHate />} />
               <Route path="/welcome" element={<Welcome />} />
-              <Route path="/branding" element={<Branding />} />
               <Route path="/*" element={<AlreadyLogin />} />
             </>
           )}
