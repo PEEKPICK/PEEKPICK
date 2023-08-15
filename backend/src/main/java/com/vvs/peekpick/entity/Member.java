@@ -39,8 +39,6 @@ public class Member {
         this.phone = signUpDto.getPhone();
         this.birthday = signUpDto.getBirthday();
     }
-
-    @NotNull
     private LocalDateTime createdAt;
 
     @PrePersist
