@@ -151,10 +151,10 @@ const Header = () => {
         <button
           className={classes.button}
           onClick={() => {
-            // setIsWorldMap(true);
+            setIsWorldMap(true);
             // setIsDistance(false);
-            toast('개발 중인 서비스예요! 🛠', {
-              icon: '🛠',
+            toast("개발 중인 서비스예요! 🛠", {
+              icon: "🛠",
             });
           }}
         >
@@ -239,9 +239,9 @@ const Header = () => {
             <div className={classes.sliderWrapper}>
               <Slider {...settings}>
                 {worldMapList.map((item) => (
-                  <div className={classes.content_box} key={item.worldId}>
+                  <div className={classes.contentBox} key={item.worldId}>
                     {/* 버그 리포트 : 캐러셀을 안움직이면 기존의 값이 들어감.. 해결 방법 좀 */}
-                    <img src={item.openUrl} alt="" className={classes.carousel} />
+                    <img src={"/img/maps/TajimahalBack.png"} alt="" className={classes.carousel} />
                   </div>
                 ))}
               </Slider>
