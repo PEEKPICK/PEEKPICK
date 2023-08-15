@@ -157,7 +157,7 @@ const ModalComp = () => {
                   </span> 
 
                   <span className={classes.distance} style={{fontWeight:700}}>
-                        <img src="img/placeholder.png" alt="모래시계" />            
+                        <img src="img/placeholder.png" alt="" />            
                         {isSelectedEmoji.peekDetailDto.distance} m 
                   </span>
               </div>

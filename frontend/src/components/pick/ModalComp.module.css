@@ -347,3 +347,7 @@ progress {
   bottom: 100%;
   transform: translateX(-50%) translateY(-5px);
 }
+
+.timer{
+  width: 70%;
+}
