@@ -2,7 +2,7 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import common from "./style/Common.module.css";
 import classes from "./style/Login.module.css";
-import { useState,useEffect } from "react";
+import { useEffect } from "react";
 const Login = () => {
   const navigate = useNavigate();
 
@@ -22,6 +22,7 @@ const Login = () => {
       localStorage.setItem('isNewUser', 'false');
       navigate('/branding');
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
