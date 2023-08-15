@@ -32,9 +32,8 @@ const Login = () => {
     );
 
     const storedIsNewUser = localStorage.getItem('isNewUser');
-    if (storedIsNewUser === 'false') {
-    } else {
-      localStorage.setItem('isNewUser', 'false');
+    if (storedIsNewUser !== 'true') {
+      localStorage.setItem('isNewUser', 'true');
       navigate('/branding');
     }
     // eslint-disable-next-line
