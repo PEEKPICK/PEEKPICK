@@ -22,9 +22,8 @@ public class BadWordFiltering implements BadWords {
     public String changeAll(String text) {
         for (String word : set) {
             String patternWord = word.chars()
-                    .mapToObj(c -> Pattern.quote(String.valueOf((char) c)))
-                    //.collect(Collectors.joining(".*?"));  // 욕설 문자 사이에 모든 문자 및 공백을 포함
-                    .collect(Collectors.joining("[0-9a-zA-Z&&[^ㄱ-ㅎㅏ-ㅣ]]*"));  // 욕설 문자 사이에 숫자, 알파벳, 그리고 특수문자(한글 자음 및 모음 제외) 포함
+                    .mapToObj(c -> Pattern.quote(String.valueOf((char) c))) 
+                    .collect(Collectors.joining("[0-9a-zA-Zㄱ-ㅎㅏ-ㅣ]*")); // 욕설 문자 사이에 숫자, 알파벳, 그리고 특수문자(한글 자음 및 모음 제외) 포함
 
             text = Pattern.compile(patternWord, Pattern.DOTALL)
                     .matcher(text)
