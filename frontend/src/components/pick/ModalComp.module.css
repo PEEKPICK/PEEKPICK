@@ -266,6 +266,7 @@
 .likes span {
     margin-top: 5px;
     font-family: 'KBO-Dia-Gothic_bold';
+    font-size: 18px;
     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
     font-weight: 700;
     font-style: normal;
@@ -288,11 +289,12 @@
 }
 
 .hates span {
-  margin-top: 5%;
-  font-family: 'KBO-Dia-Gothic_bold';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
-  font-weight: 700;
-  font-style: normal;
+    margin-top: 5px;
+    font-family: 'KBO-Dia-Gothic_bold';
+    font-size: 18px;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
 }
 
 .hates img {
