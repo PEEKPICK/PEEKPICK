@@ -49,14 +49,14 @@ const FindPeek = () => {
   const emojiCall = useCallback(() => {
     handlePosChange();
     customAxios.post("/peek", myPos).then((response) => {
-      // console.log("myPos", myPos);
+      // console.log("peek", myPos);
       const peekArrayOrigin = response.data.data;
       if (Array.isArray(peekArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
         const maxEmojisToShow = 8;
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // console.log("넘어온 limitedUserArray: ", peekArrayOrigin);
         // eslint-disable-next-line
         if (limitedUserArray.length == 0) {
           toast("주변에 작성된 PEEK가 없어요 💔", {
@@ -67,7 +67,7 @@ const FindPeek = () => {
       }
     });
     // eslint-disable-next-line
-  }, []);
+  }, [distanceValue]);
 
   const [emojiFlag, setEmojiFlag] = useState(false);
 
@@ -84,15 +84,14 @@ const FindPeek = () => {
 
   useEffect(() => {
     // 2초 딜레이 후에 emojiCall 함수 호출
-
-    const timeout = setTimeout(() => {
-      emojiCall(myPos);
-    }, 1000);
+    // const timeout = setTimeout(() => {
+    emojiCall();
+    // }, 1000);
 
     // cleanup 함수에서 timeout 해제
-    return () => {
-      clearTimeout(timeout);
-    };
+    // return () => {
+    //   clearTimeout(timeout);
+    // };
     // eslint-disable-next-line
   }, [emojiCall]);
 

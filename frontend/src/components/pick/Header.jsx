@@ -33,22 +33,6 @@ const Header = () => {
       ? "보고 싶은 PEEK의 거리를 설정할 수 있어요."
       : "보고 싶은 PICKER의 거리를 설정할 수 있어요.";
 
-  // 거리조절 리덕스 변경
-  const changeDistance = (dist) => {
-    // toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
-    //   id: "changeDistance",
-    // });
-    localStorage.setItem("distance", dist);
-
-    setSelectedDistance(dist);
-
-    const sendToData = {
-      distance: dist,
-    };
-
-    dispatch(locationActions.updateDist(sendToData));
-  };
-
   // 사용자가 선택한 월드맵 받아와서 리덕스 저장
   useEffect(() => {
     customAxios
@@ -104,6 +88,21 @@ const Header = () => {
     }
   }, [selectedDistance]);
 
+  // 거리조절 리덕스 변경
+  const changeDistance = (dist) => {
+    // toast.success("테스트 기간에는 거리제한이 없습니다 *^^*", {
+    //   id: "changeDistance",
+    // });
+    localStorage.setItem("distance", dist);
+
+    setSelectedDistance(dist);
+
+    const sendToData = {
+      distance: dist,
+    };
+
+    dispatch(locationActions.updateDist(sendToData));
+  };
   // 뒤로가기 버튼
   const moveBackHandler = () => {
     setIsWorldMap(false);
@@ -118,8 +117,8 @@ const Header = () => {
     const selectedItem = worldMapList.find((item) => item.worldId === checkMap);
     // console.log(selectedItem);
     if (selectedItem) {
-      localStorage.setItem('worldMap', selectedItem.openUrl);
-      localStorage.setItem('worldMapId', selectedItem.worldId);
+      localStorage.setItem("worldMap", selectedItem.openUrl);
+      localStorage.setItem("worldMapId", selectedItem.worldId);
       dispatch(changeMapSliceActions.updateIdOpenUrl(selectedItem.openUrl));
       dispatch(changeMapSliceActions.updateIdCloseUrl(selectedItem.closeUrl));
       dispatch(changeMapSliceActions.updateId(selectedItem.worldId));
