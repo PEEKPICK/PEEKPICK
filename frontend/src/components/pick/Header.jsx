@@ -118,6 +118,8 @@ const Header = () => {
     const selectedItem = worldMapList.find((item) => item.worldId === checkMap);
     // console.log(selectedItem);
     if (selectedItem) {
+      localStorage.setItem('worldMap', selectedItem.openUrl);
+      localStorage.setItem('worldMapId', selectedItem.worldId);
       dispatch(changeMapSliceActions.updateIdOpenUrl(selectedItem.openUrl));
       dispatch(changeMapSliceActions.updateIdCloseUrl(selectedItem.closeUrl));
       dispatch(changeMapSliceActions.updateId(selectedItem.worldId));

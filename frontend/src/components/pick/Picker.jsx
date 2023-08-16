@@ -6,12 +6,17 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
 function Picker() {
-  const openUrl = useSelector((state) => state.changeMap.openUrl);
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState();
+  const mapInfo = useSelector((state) => state.changeMap);
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
 
   useEffect(() => {
-    setBackgroundImageUrl(openUrl);
-  }, [openUrl]);
+    const worldMapUrl = localStorage.getItem('worldMap')
+    if (mapInfo.openUrl === null) {
+      setBackgroundImageUrl(worldMapUrl);
+    } else {
+      setBackgroundImageUrl(mapInfo.openUrl);
+    }
+  }, [mapInfo]);
 
   const inlineStyles = {
     backgroundImage: backgroundImageUrl
