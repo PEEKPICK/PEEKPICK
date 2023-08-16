@@ -93,7 +93,9 @@ const FindPeek = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [myPos, emojiCall]);
+    // eslint-disable-next-line
+  }, [emojiCall]);
+
   const handleOpenWriteModal = () => {
     dispatch(modalsActions.openPeekWrite());
   };

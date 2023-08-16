@@ -91,7 +91,8 @@ const FindPicker = () => {
     return () => {
       clearTimeout(timeout);
     };
-  }, [myPos, emojiCall]);
+    // eslint-disable-next-line
+  }, [emojiCall]);
 
   return (
     <>
