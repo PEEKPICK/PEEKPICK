@@ -13,7 +13,12 @@ function Layout() {
   const [isValidWorldId, setIsValidWorldId] = useState(false);
 
   useEffect(() => {
-    setWorldId(getWorldId);
+    const worldMapId = localStorage.getItem('worldMapId');
+    if (getWorldId === null) {
+      setWorldId(worldMapId);
+    } else {
+      setWorldId(getWorldId);
+    }
     // console.log("getWorldId", getWorldId);
   }, [getWorldId]);
 

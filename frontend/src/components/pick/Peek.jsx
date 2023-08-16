@@ -6,28 +6,19 @@ import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 
 function Peek() {
-  const openUrl = useSelector((state) => state.changeMap.openUrl);
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState();
+  const mapInfo = useSelector((state) => state.changeMap);
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
 
   useEffect(() => {
-    setBackgroundImageUrl(openUrl);
-  }, [openUrl]);
+    const worldMapUrl = localStorage.getItem('worldMap')
+    if (mapInfo.openUrl === null) {
+      setBackgroundImageUrl(worldMapUrl);
+    } else {
+      setBackgroundImageUrl(mapInfo.openUrl);
+    }
+  }, [mapInfo]);
+
   const inlineStyles = {
-    // backgroundImage: `url("/img/maps/BigBenBack.png")`,
-    // backgroundImage: `url("/img/maps/EiffelTowerBack.png")`,
-    // backgroundImage: `url("/img/maps/KermlinBack.png")`,
-    // backgroundImage: `url("/img/maps/PiramidsBack.png")`,
-    // backgroundImage: `url("/img/maps/PisaTowerBack.png")`,
-    // backgroundImage: `url("/img/maps/StatueLibertyBack.png")`,
-    // backgroundImage: `url("/img/maps/TajimahalBack.png")`,
-    // backgroundColor: `#3f504f`,
-    // backgroundColor: `#c9bdb2`,
-    // backgroundColor: `#a7a49a`,
-    // backgroundColor: `#e9b36a`,
-    // backgroundColor: `#81b249`,
-    // backgroundColor: `#63b3ff`,
-    // backgroundColor: `#af8e88`,
-    // backgroundImage: `url("/img/free.png")`,
     backgroundImage: backgroundImageUrl
       ? `url(${backgroundImageUrl})`
       : `url("https://peekpick-app.s3.ap-northeast-2.amazonaws.com/StatueLibertyBack.png")`,
