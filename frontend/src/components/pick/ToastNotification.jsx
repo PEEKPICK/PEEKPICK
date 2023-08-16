@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import classes from "./ToastNotification.module.css";
 import { customAxios } from "../../api/customAxios";
@@ -8,7 +8,7 @@ import { chatActions } from "../../store/chatSlice";
 
 const CustomToast = ({ message, senderId, requestTime }) => {
   const dispatch = useDispatch();
-  const getOpponent = useSelector((state) => state.roomId.opponent);
+  // const getOpponent = useSelector((state) => state.roomId.opponent);
   // 수락
   const handleAccept = async () => {
     try {

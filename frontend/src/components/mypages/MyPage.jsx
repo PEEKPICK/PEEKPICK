@@ -141,7 +141,7 @@ const MyPage = () => {
           console.error(error);
         }
       } else {
-        const response = await customAxios.post("/auth/refresh");
+        await customAxios.post("/auth/refresh");
         // console.log(response);
       }
     };
@@ -164,7 +164,13 @@ const MyPage = () => {
           prefix={prefix}
         />
       )}
-      {visible && <Settings setVisible={setVisible} setLogoutView={setLogoutView} setSignoutView={setSignoutView} />}
+      {visible && (
+        <Settings
+          setVisible={setVisible}
+          setLogoutView={setLogoutView}
+          setSignoutView={setSignoutView}
+        />
+      )}
       <div className={classes.mypagetopbackgroundcolor}>
         <div className={classes.mypagetop}>
           <span>마이페이지</span>
@@ -205,7 +211,13 @@ const MyPage = () => {
         </div>
 
         <hr className={classes.hr} />
-        <LikeAndHate ModalOutSide={ModalOutSide} like={like} hate={hate} likes={likes} disLikes={disLikes} />
+        <LikeAndHate
+          ModalOutSide={ModalOutSide}
+          like={like}
+          hate={hate}
+          likes={likes}
+          disLikes={disLikes}
+        />
 
         <hr className={classes.hr2} />
       </div>
