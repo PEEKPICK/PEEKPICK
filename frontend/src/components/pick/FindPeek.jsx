@@ -67,7 +67,7 @@ const FindPeek = () => {
       }
     });
     // eslint-disable-next-line
-  }, [myPos]);
+  }, []);
 
   const [emojiFlag, setEmojiFlag] = useState(false);
 

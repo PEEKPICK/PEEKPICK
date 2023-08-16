@@ -66,7 +66,7 @@ const FindPicker = () => {
       }
     });
     // eslint-disable-next-line
-  }, [myPos]);
+  }, []);
 
   const [emojiFlag, setEmojiFlag] = useState(false);
 
