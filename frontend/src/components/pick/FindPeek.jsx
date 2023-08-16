@@ -97,6 +97,8 @@ const FindPeek = () => {
   }, [emojiCall]);
 
   const handleOpenWriteModal = () => {
+    handlePosChange();
+
     dispatch(modalsActions.openPeekWrite());
   };
   return (
