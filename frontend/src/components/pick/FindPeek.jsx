@@ -49,14 +49,14 @@ const FindPeek = () => {
   const emojiCall = useCallback(() => {
     handlePosChange();
     customAxios.post("/peek", myPos).then((response) => {
-      console.log("myPos", myPos);
+      // console.log("myPos", myPos);
       const peekArrayOrigin = response.data.data;
       if (Array.isArray(peekArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
         const maxEmojisToShow = 8;
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
-        console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
         // eslint-disable-next-line
         if (limitedUserArray.length == 0) {
           toast("주변에 작성된 PEEK가 없어요 💔", {

@@ -47,14 +47,14 @@ const FindPicker = () => {
   const emojiCall = useCallback(() => {
     handlePosChange();
     customAxios.post("/picker", myPos).then((response) => {
-      console.log("myPos", myPos);
+      // console.log("myPos", myPos);
       const userArrayOrigin = response.data.data;
       if (Array.isArray(userArrayOrigin)) {
         // 최대 n개의 이모지만 보여주기
         const maxEmojisToShow = 8;
         //정보 저장
         const limitedUserArray = userArrayOrigin.slice(0, maxEmojisToShow);
-        console.log("넘어온 limitedUserArray: ", limitedUserArray);
+        // console.log("넘어온 limitedUserArray: ", limitedUserArray);
         // 길이 0이면 Toast 알림
         // eslint-disable-next-line
         if (limitedUserArray.length == 0) {
