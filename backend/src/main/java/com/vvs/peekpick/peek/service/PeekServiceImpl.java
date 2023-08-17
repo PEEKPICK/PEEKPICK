@@ -287,7 +287,7 @@ public class PeekServiceImpl implements PeekService {
 //            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
 //                special = true;
 //            }
-            if(likeCnt+disLikeCnt >= 10) special = true;
+            if(likeCnt+disLikeCnt >= 5) special = true;
             if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
                 updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
             }
