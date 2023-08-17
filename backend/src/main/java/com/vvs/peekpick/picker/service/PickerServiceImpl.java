@@ -216,7 +216,7 @@ public class PickerServiceImpl implements PickerService {
                 pickerList.add(value.getContent().getName());
             }
         }
-
+        log.info("Picker list : {}", pickerList);
         List<AvatarDto> avatarDtoList = new ArrayList<>();
         // 획득한 Id를 통해 이모지, 닉네임, 한줄소개, 호불호 반환
         pickerList.forEach(value -> avatarDtoList.add(memberService.getAvatarInfo(Long.parseLong(value))));

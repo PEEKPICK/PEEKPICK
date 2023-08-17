@@ -81,8 +81,7 @@ public class PeekServiceImpl implements PeekService {
                 }
             }
 
-
-            System.out.println(randomPeeks);
+            log.info("Peek list : {}", randomPeeks);
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
