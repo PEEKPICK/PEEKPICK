@@ -186,7 +186,12 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const checkUserProfile = () => {
+    // EmojiForChat안에 상대 유저 정보가 다 들어있다!!!
     setIsUserModal(true);
+  };
+
+  const closeCheckUserProfile = () => {
+    setIsUserModal(false);
   };
 
   return (
@@ -335,12 +340,61 @@ const CreateReadChat = ({ isModalState }) => {
             </div>
           </div>
         )}
+        {isUserModal && (
+          <Modal
+          isOpen={isUserModal}
+          onRequestClose={() => closeCheckUserProfile()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+          contentLabel="Selected Emoji Modal"
+          className={classes.modalMain}
+        >
+          {/* 모달 내용에 선택된 avatarId를 표시 */}
+          <div className={classes.modalHead}>
+            <img src={EmojiForChat.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
+            <div className={classes.modalHeadText}>
+              <span className={classes.nickname}>
+                {EmojiForChat.prefix.content} {EmojiForChat.nickname}
+              </span>
+              <div>
+                <span style={{ marginRight: "0.2rem" }}>PICK</span>
+                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{EmojiForChat.chatCount}</span>
+                <span style={{ marginLeft: "0.2rem" }} className={classes.pickItem}>회</span>
+                <img src="img/goodFill.png" alt="goodFill" className={classes.goodImg} />
+                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{EmojiForChat.likeCount}</span>
+                <span style={{ marginLeft: "0.2rem" }}>회</span>
+              </div>
+              {EmojiForChat.bio && EmojiForChat.bio.trim() !== "" ? (
+                <p className={classes.intro}>{EmojiForChat.bio}</p>
+              ) : (
+                <p className={classes.intro}>내용이 없습니다.</p>
+              )}
+            </div>
+          </div>
+          <div className={classes.divider}></div>
+          <div className={classes.modalBody}>
+            <div className={classes.likeWrap}>
+              <p className={classes.like}>좋아해요</p>
+              <p className={classes.itemWrap}>
+                {EmojiForChat.likes.map((like, index) => (
+                  <div key={index} className={classes.items}>
+                    #{like.middle}
+                  </div>
+                ))}
+              </p>
+            </div>
+            <div>
+              <p className={classes.disLike}>싫어해요</p>
+              <p className={classes.itemWrap}>
+                {EmojiForChat.disLikes.map((disLikes, index) => (
+                  <span key={index} className={classes.items}>
+                    #{disLikes.middle}
+                  </span>
+                ))}
+              </p>
+            </div>
+          </div>
+        </Modal>
+        )}
       </Modal>
-      {isUserModal && 
-        <div>
-          
-        </div>
-      }
     </>
   );
 };
