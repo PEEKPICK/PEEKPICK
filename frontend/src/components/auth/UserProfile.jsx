@@ -12,7 +12,7 @@ import common from './style/Common.module.css';
 const UserProfile = () => {
   // 상태관리
   const [randomEmoji, setRandomEmoji] = useState('https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Astonished+Face.png');
-  const [emojiId, setEmojiId] = useState('1');
+  const [emojiId, setEmojiId] = useState('8');
 
   // 함수설정
   const navigate = useNavigate();
