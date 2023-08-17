@@ -12,6 +12,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class PeekAvatarDto {
+    private Long writerId;
     private String nickname;
     private String bio;
 

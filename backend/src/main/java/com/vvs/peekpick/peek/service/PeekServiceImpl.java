@@ -1,8 +1,6 @@
 package com.vvs.peekpick.peek.service;
 
 import com.vvs.peekpick.entity.*;
-import com.vvs.peekpick.exception.CustomException;
-import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.peek.dto.*;
 import com.vvs.peekpick.response.CommonResponse;
@@ -13,7 +11,6 @@ import com.vvs.peekpick.wordFilter.BadWordFiltering;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.geo.*;
-import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -24,13 +21,14 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
-    private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
+    private final int MAX_PEEK = 8; // 화면 단에 전달해주는 Peek 수 (이벤트 코드)
+    //private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
+    private final int PEEK_ORIGIN_TIME = 1440*2; // PEEK 기본 지속 시간 (분) (이벤트 코드)
+    //private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
     private final int PEEK_REACTION_TIME = 10; // 좋아요, 싫어요 시 증가되는 시간 (분)
-
-    private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
+    private final int PEEK_MAX_HOUR = 72; // Peek 최대 지속 시간 (시간) (이벤트 코드)
+    //private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
     private final Random random = new Random();
-
     private final ResponseService responseService;
     private final PeekMemberService peekMemberService;
     private final PeekRdbService peekRdbService;
@@ -39,10 +37,10 @@ public class PeekServiceImpl implements PeekService {
     private final  MemberServiceImpl memberService;
     private final BadWordFiltering filtering = new BadWordFiltering("♡");
 
-
     @Override
     public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
         try {
+            log.info("요쳥 받은 point : {}", requestSearchPeekDto.getPoint());
             // 반경 m로 원 생성
             Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance()));
 
@@ -53,23 +51,25 @@ public class PeekServiceImpl implements PeekService {
             List<ResponsePeekListDto> allPeeks = new ArrayList<>();
             for (PeekNearSearchDto nearPeek: nearPeeks) {
                 Long peekId = Long.parseLong(nearPeek.getPeekId());
-                Double distance = nearPeek.getDistance();
+                int distance = nearPeek.getDistance();
                 PeekRedisDto peekRedisDto = peekRedisService.getPeekValueOps(peekId);
                 boolean isViewed = peekRedisService.getViewdByMember(memberId, peekId);
-                // 개발 완료 시 아래 로직을 여기 감싸줄 예정
-//                if(peekRedisDto.isSpecial() | !isViewed) {
-//
-//                }
-                ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
-                        .peekId(peekRedisDto.getPeekId())
-                        .distance(distance)
-                        .special(peekRedisDto.isSpecial())
-                        .viewed(isViewed)
-                        .build();
-                allPeeks.add(responsePeekListDto);
-            }
 
-            if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
+                if(peekRedisDto.getMemberId() == 1L | peekRedisDto.isSpecial() | !isViewed) {
+                    ResponsePeekListDto responsePeekListDto = ResponsePeekListDto.builder()
+                            .peekId(peekRedisDto.getPeekId())
+                            .distance(distance)
+                            .special(peekRedisDto.isSpecial())
+                            .viewed(isViewed)
+                            .admin(peekRedisDto.getMemberId()==1L)
+                            .build();
+                    allPeeks.add(responsePeekListDto);
+                }
+            }
+            if(allPeeks.size() == 0 ) {
+                log.info("Peek list size is 0 : {}", allPeeks);
+                return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
+            }
 
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
             List<ResponsePeekListDto> randomPeeks;
@@ -83,9 +83,12 @@ public class PeekServiceImpl implements PeekService {
                     allPeeks.remove(randomIndex);
                 }
             }
+
+            log.info("Peek list : {}", randomPeeks);
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
+            log.info("내 주변 Peek 예외 처리 : {}", e);
             return responseService.failureDataResponse(ResponseStatus.PEEK_FAILURE, null);
         }
     }
@@ -106,10 +109,8 @@ public class PeekServiceImpl implements PeekService {
                     .writeTime(time)
                     .build();
 
-
             //RDB에 Peek 저장 후 id 값 받아옴
             Long peekId = peekRdbService.savePeek(peek);
-
 
             //redis에 저장하기 위한 Peek 객체 생성
             PeekRedisDto peekRedisDto = PeekRedisDto.builder()
@@ -135,20 +136,20 @@ public class PeekServiceImpl implements PeekService {
             return responseService.successCommonResponse(ResponseStatus.ADD_SUCCESS);
         }
         catch (Exception e) {
+            log.info("입력 예외 처리 : {}", e.getMessage());
             return responseService.failureCommonResponse(ResponseStatus.PEEK_FAILURE);
         }
     }
 
 
     @Override
-    public DataResponse getPeek(Long memberId, Long peekId) {
+    public DataResponse getPeek(Long avatarId, Long memberId, Long peekId, int distance) {
         try{
             // Redis에서 Peek 가져오기
             PeekRedisDto peekRedisDto = peekRedisService.getPeek(peekId);
 
             // 해당 Peek가 만료되었을 때
             if(peekRedisDto==null) return responseService.failureDataResponse(ResponseStatus.PEEK_EXPIRED, null);
-
 
             // 현재 사용자가 해당 Peek을 본 것으로 처리
             peekRedisService.setViewedByMember(memberId, peekId);
@@ -167,11 +168,13 @@ public class PeekServiceImpl implements PeekService {
                     .finishTime(peekRedisDto.getFinishTime())
                     .liked(isLiked)
                     .disLiked(isDisLiked)
+                    .distance(distance)
                     .build();
             Member writer = peekMemberService.findMember(peekRedisDto.getMemberId());
 
             Avatar avatar = peekAvatarService.findAvatar(writer.getAvatar().getAvatarId());
             PeekAvatarDto peekAvatarDto = PeekAvatarDto.builder()
+                    .writerId(peekRedisDto.getMemberId())
                     .nickname(avatar.getNickname())
                     .bio(avatar.getBio())
                     .emoji(avatar.getEmoji())
@@ -247,16 +250,20 @@ public class PeekServiceImpl implements PeekService {
 
             int likeCnt = peekRedisDto.getLikeCount();
             int disLikeCnt = peekRedisDto.getDisLikeCount();
-
+            Long ttl = peekRedisService.getPeekTtl(peekId);  // 기존 TTL 가져오기
 
             //사용가 해당 Peek의 react를 On -> Off
             if (peekRedisService.getReactionMember(memberId, like, peekId)) {
                 peekRedisService.setPeekReactionOff(memberId, like, peekId);
-                if (peekRedisDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME).isAfter(LocalDateTime.now())) {
+                if (peekRedisDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME).isAfter(LocalDateTime.now().plusMinutes(1))) {
                     updatedFinishTime = peekRedisDto.getFinishTime().minusMinutes(PEEK_REACTION_TIME);
                 }
                 if(like) likeCnt--;
                 else disLikeCnt--;
+
+                if (ttl != null && ttl > 0) {
+                    ttl -= 60*PEEK_REACTION_TIME;  //초 단위로 변경
+                }
             }
             //사용가 해당 Peek의 react를 Off -> On
             else {
@@ -264,6 +271,10 @@ public class PeekServiceImpl implements PeekService {
                     updatedFinishTime = peekRedisDto.getFinishTime().plusMinutes(PEEK_REACTION_TIME);
                 if(like) likeCnt++;
                 else disLikeCnt++;
+
+                if (ttl != null && ttl > 0) {
+                    ttl += 60*PEEK_REACTION_TIME;  //초 단위로 변경
+                }
             }
 
 //            // (원래 기획) Peek 지속시간을 24시간으로 제한, 24시간 설정된 Peek은 Hot Peek으로
@@ -274,9 +285,10 @@ public class PeekServiceImpl implements PeekService {
 
             // (임시) Peek 지속시간을 24시간으로 제한,
             // 지속 시간 80분으로(좋아요 싫어요 총 2개 이상) 설정된 Peek은 Hot Peek으로
-            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
-                special = true;
-            }
+//            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
+//                special = true;
+//            }
+            if(likeCnt+disLikeCnt >= 5) special = true;
             if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
                 updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
             }
@@ -288,10 +300,8 @@ public class PeekServiceImpl implements PeekService {
                     .finishTime(updatedFinishTime)
                     .special(special)
                     .build();
-            Long ttl = peekRedisService.getPeekTtl(peekId);  // 기존 TTL 가져오기
-            if (ttl != null && ttl > 0) {
-                ttl += 60*PEEK_REACTION_TIME;  //초 단위로 변경
-            }
+
+
             peekRedisService.setPeekValueOps(peekId, updatedPeekRedisDto, ttl);
             return responseService.successCommonResponse(ResponseStatus.ADD_REACTION_SUCCESS);
         } catch (Exception e) {

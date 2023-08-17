@@ -9,5 +9,5 @@ import lombok.Getter;
 @AllArgsConstructor
 public class PeekNearSearchDto {
     String peekId;
-    Double distance;
+    int distance;
 }

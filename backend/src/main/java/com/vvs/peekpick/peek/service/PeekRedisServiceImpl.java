@@ -130,11 +130,25 @@ public class PeekRedisServiceImpl implements PeekRedisService{
             PeekNearSearchDto peekNearSearchDto = PeekNearSearchDto
                     .builder()
                     .peekId(location.getContent().getName())
-                    .distance(location.getDistance().getValue())
+                    .distance((int) location.getDistance().getValue())
                     .build();
             peekNearSearchDtoList.add(peekNearSearchDto);
         });
         return peekNearSearchDtoList;
+    }
+
+    @Override
+    public Point getPeekLocation(Long peekId) {
+        try {
+            List<Point> points = geoOps.position(PEEK_LOCATION_REDIS, String.valueOf(peekId));
+            if (points != null && !points.isEmpty()) {
+                return points.get(0);
+            }
+            return null;
+        } catch (DataAccessException e) {
+            log.error("Error getting location from Redis: ", e);
+            return null;
+        }
     }
 
     @Override
