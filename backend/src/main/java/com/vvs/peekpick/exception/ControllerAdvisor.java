@@ -19,6 +19,7 @@ public class ControllerAdvisor {
         return response;
     }
 
+
     /* 어디에서도 잡지 못한 예외 핸들링 */
     @ExceptionHandler(Exception.class)
     public CommonResponse exceptionHandler(Exception e) {

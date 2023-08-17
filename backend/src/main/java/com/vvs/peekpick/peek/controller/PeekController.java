@@ -1,46 +1,84 @@
 package com.vvs.peekpick.peek.controller;
 
-import com.vvs.peekpick.peek.dto.PeekDto;
-import com.vvs.peekpick.peek.dto.PeekLocationDto;
-import com.vvs.peekpick.peek.service.PeekRedisService;
+import com.vvs.peekpick.peek.dto.RequestPeekDto;
+import com.vvs.peekpick.peek.dto.RequestSearchPeekDto;
+import com.vvs.peekpick.peek.service.PeekService;
+import com.vvs.peekpick.report.dto.RequestReportDto;
 import com.vvs.peekpick.response.CommonResponse;
 import com.vvs.peekpick.response.DataResponse;
+import com.vvs.peekpick.util.AwsS3Util;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.geo.Point;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-@Slf4j
+import java.io.IOException;
+import java.util.Map;
+
+//@Slf4j
 @RestController
 @RequestMapping("/peek")
 @RequiredArgsConstructor
 public class PeekController {
 
-    private final PeekRedisService peekRedisService;
+    private final AwsS3Util awsS3Util;
 
+    private final PeekService peekService;
+
+    //내 주변 peek 가져오기
     @PostMapping
-    public ResponseEntity<CommonResponse> addPeek(@RequestBody PeekLocationDto peekLocationDto, @RequestBody PeekDto peekDto) {
-        return ResponseEntity.ok(peekRedisService.addPeek(peekLocationDto, peekDto));
+    public DataResponse findNearPeek(Authentication authentication, @RequestBody RequestSearchPeekDto requestSearchPeekDto) {
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        return peekService.findNearPeek(memberId, requestSearchPeekDto);
     }
+
+//    // peek 작성
+    @PostMapping(value = "/write")
+    public CommonResponse addPeek(Authentication authentication, RequestPeekDto requestPeekDto, MultipartFile img) throws IOException {
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+
+        System.out.println(requestPeekDto);
+        // 파일을 S3에 저장하고 URL 가져옴
+        String imageUrl = null;
+        // 파일이 제공되면 S3에 저장하고 URL 가져옴
+        if (img != null && !img.isEmpty()) {
+            imageUrl = awsS3Util.s3SaveFile(img);
+        }
+
+        // RDB, Redis에 Peek 정보를 저장
+        return peekService.addPeek(memberId, requestPeekDto, imageUrl);
+    }
+
+    // 특정 peek 세부 내용 가져오기
+//    @GetMapping("/{peekId}")
+//    public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId) {
+//        Long avatarId = Long.parseLong(authentication.getName());
+//        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+//        return peekService.getPeek(memberId, peekId);
+//    }
 
     @GetMapping("/{peekId}")
-    public ResponseEntity<DataResponse> findPeekById(@PathVariable Long peekId) {
-        return ResponseEntity.ok(peekRedisService.getPeek(peekId));
+    public DataResponse getPeek(Authentication authentication, @PathVariable Long peekId, @RequestParam String distance) {
+        Long avatarId = Long.parseLong(authentication.getName());
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        int dist = Integer.parseInt(distance);
+        return peekService.getPeek(avatarId, memberId, peekId, dist);
     }
 
+
+    // 특정 peek 삭제
     @DeleteMapping("/{peekId}")
-    public ResponseEntity<CommonResponse> deletePeek(@PathVariable Long peekId) {
-        return ResponseEntity.ok(peekRedisService.deletePeek(peekId));
+    public CommonResponse deletePeek(Authentication authentication, @PathVariable Long peekId) {
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        return peekService.deletePeek(memberId, peekId);
     }
 
-    @GetMapping("/near")
-    public ResponseEntity<DataResponse> findNearPeek(@RequestBody Point point, @RequestParam double radius) {
-        return ResponseEntity.ok(peekRedisService.findNearPeek(point, radius));
-    }
-
-    @PostMapping("/{peekId}/reaction")
-    public ResponseEntity<CommonResponse> addReaction(@PathVariable Long peekId, @RequestParam boolean like, @RequestParam int count) {
-        return ResponseEntity.ok(peekRedisService.addReaction(peekId, like, count));
+    // 특정 peek 좋아요/싫어요
+    @PostMapping("/{peekId}")
+    public CommonResponse addReaction(Authentication authentication, @PathVariable Long peekId, @RequestBody Map<String, Object> reaction) {
+        Long memberId = Long.parseLong(authentication.getCredentials().toString());
+        boolean like = Boolean.parseBoolean(reaction.get("like").toString());
+        return peekService.addReaction(memberId, peekId, like);
     }
 }
