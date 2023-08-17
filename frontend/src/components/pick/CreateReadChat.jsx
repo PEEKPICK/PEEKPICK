@@ -12,18 +12,23 @@ import ChatRestTime from "./ChatRestTime";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
+
   const newModalState = useSelector((state) => state.roomId.chatModalState);
   const getRoomId = useSelector((state) => state.roomId.roomId);
   const EmojiForChat = useSelector((state) => state.roomId.opponentURL);
   const opponent = useSelector((state) => state.roomId.opponent);
   const getNickName = useSelector((state) => state.roomId.nickName);
+  const createTime = useSelector((state) => state.roomId.createTime);
+
   const [stompClient, setStompClient] = useState(null);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
   const [singo, setSingo] = useState(false);
+  const [isUserModal, setIsUserModal] = useState(false);
+
   const scrollRef = useRef();
-  const createTime = useSelector((state) => state.roomId.createTime);
+  
   const chatPop = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
@@ -180,6 +185,10 @@ const CreateReadChat = ({ isModalState }) => {
     closeExitConfirmationModal();
   };
 
+  const checkUserProfile = () => {
+    setIsUserModal(true);
+  };
+
   return (
     <>
       <Modal
@@ -219,7 +228,12 @@ const CreateReadChat = ({ isModalState }) => {
                   <>
                     <div className={classes.opponentMain}>
                       {EmojiForChat !== null && (
-                        <img src={EmojiForChat.emoji.imageUrl} alt="상대방" className={classes.otherIcon} />
+                        <img
+                          src={EmojiForChat.emoji.imageUrl}
+                          alt="상대방"
+                          className={classes.otherIcon}
+                          onClick={() => checkUserProfile()}
+                        />
                       )}
                       {EmojiForChat !== null ? (
                         <li className={classes.nickName} key={uuid()}>
@@ -322,6 +336,11 @@ const CreateReadChat = ({ isModalState }) => {
           </div>
         )}
       </Modal>
+      {isUserModal && 
+        <div>
+          
+        </div>
+      }
     </>
   );
 };
