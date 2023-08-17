@@ -197,7 +197,7 @@ const Header = () => {
                   checked={selectedDistance === 500}
                   onChange={() => changeDistance(500)}
                 />
-                <label htmlFor="peek_distance_1" data-debt-amount="500m"></label>
+                <label htmlFor="peek_distance_1" data-debt-amount="0.5km"></label>
                 <input
                   type="radio"
                   id="peek_distance_2"
@@ -206,7 +206,7 @@ const Header = () => {
                   checked={selectedDistance === 1000}
                   onChange={() => changeDistance(1000)}
                 />
-                <label htmlFor="peek_distance_2" data-debt-amount="1000m"></label>
+                <label htmlFor="peek_distance_2" data-debt-amount="1km"></label>
                 <input
                   type="radio"
                   id="peek_distance_3"
@@ -215,7 +215,7 @@ const Header = () => {
                   checked={selectedDistance === 1500}
                   onChange={() => changeDistance(1500)}
                 />
-                <label htmlFor="peek_distance_3" data-debt-amount="1500m"></label>
+                <label htmlFor="peek_distance_3" data-debt-amount="1.5km"></label>
                 <input
                   type="radio"
                   id="peek_distance_4"
@@ -224,7 +224,7 @@ const Header = () => {
                   checked={selectedDistance === 2000}
                   onChange={() => changeDistance(2000)}
                 />
-                <label htmlFor="peek_distance_4" data-debt-amount="2000m"></label>
+                <label htmlFor="peek_distance_4" data-debt-amount="2.0km"></label>
                 <div className={classes.debtAmountPos}></div>
               </div>
             </form>
