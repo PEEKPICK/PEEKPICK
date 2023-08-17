@@ -82,7 +82,7 @@ const Header = () => {
   useEffect(() => {
     const localDist = localStorage.getItem("distance");
     if (localDist === null) {
-      localStorage.setItem("distance", 50);
+      localStorage.setItem("distance", 500);
     } else {
       setSelectedDistance(parseInt(localDist));
     }
@@ -194,37 +194,37 @@ const Header = () => {
                   id="peek_distance_1"
                   value="50"
                   name="debt-amount"
-                  checked={selectedDistance === 50}
-                  onChange={() => changeDistance(50)}
+                  checked={selectedDistance === 500}
+                  onChange={() => changeDistance(500)}
                 />
-                <label htmlFor="peek_distance_1" data-debt-amount="50m"></label>
+                <label htmlFor="peek_distance_1" data-debt-amount="500m"></label>
                 <input
                   type="radio"
                   id="peek_distance_2"
                   value="100"
                   name="debt-amount"
-                  checked={selectedDistance === 100}
-                  onChange={() => changeDistance(100)}
+                  checked={selectedDistance === 1000}
+                  onChange={() => changeDistance(1000)}
                 />
-                <label htmlFor="peek_distance_2" data-debt-amount="100m"></label>
+                <label htmlFor="peek_distance_2" data-debt-amount="1000m"></label>
                 <input
                   type="radio"
                   id="peek_distance_3"
                   value="150"
                   name="debt-amount"
-                  checked={selectedDistance === 150}
-                  onChange={() => changeDistance(150)}
+                  checked={selectedDistance === 1500}
+                  onChange={() => changeDistance(1500)}
                 />
-                <label htmlFor="peek_distance_3" data-debt-amount="150m"></label>
+                <label htmlFor="peek_distance_3" data-debt-amount="1500m"></label>
                 <input
                   type="radio"
                   id="peek_distance_4"
                   value="200"
                   name="debt-amount"
-                  checked={selectedDistance === 200}
-                  onChange={() => changeDistance(200)}
+                  checked={selectedDistance === 2000}
+                  onChange={() => changeDistance(2000)}
                 />
-                <label htmlFor="peek_distance_4" data-debt-amount="200m"></label>
+                <label htmlFor="peek_distance_4" data-debt-amount="2000m"></label>
                 <div className={classes.debtAmountPos}></div>
               </div>
             </form>
