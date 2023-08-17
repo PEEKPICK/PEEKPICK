@@ -5,17 +5,13 @@ import classes from "./ModalComp.module.css";
 import { useState, useEffect } from "react";
 import { customAxios } from "../../api/customAxios";
 
-
-
 const ModalComp = () => {
   //유져 정보 모달용
   const dispatch = useDispatch();
   const isModalState = useSelector((state) => state.modal.isOpen);
   const isSelectedEmoji = useSelector((state) => state.modal.selectedEmoji);
 
-
-
-
+  // console.log(isSelectedEmoji);
 
   // 이 함수들은 좋아요, 싫어요 버튼을 클릭했을 때, 바로 반응되도록 만들어짐
   const [likeCount, setLikeCount] = useState(0);
@@ -23,51 +19,54 @@ const ModalComp = () => {
   const [processBar, setProcessBar] = useState(0);
   const [checkl, setCheckl] = useState(false);
   const [checkh, setCheckh] = useState(false);
- 
+
   const [finishTime, setFinishTime] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0); // 초기값은 0으로 설정
+
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const sec = seconds % 60;
-    return `${hours}h ${minutes}m ${sec}s`;
+
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const formattedSeconds = sec < 10 ? `0${sec}` : sec;
+
+    return `${formattedHours} : ${formattedMinutes} : ${formattedSeconds}`;
   };
-  
+
   useEffect(() => {
-      if (isSelectedEmoji) { 
-          const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
-          koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
-          setFinishTime(koreaTime);
-      }
+    if (isSelectedEmoji) {
+      const koreaTime = new Date(isSelectedEmoji.peekDetailDto.finishTime);
+      koreaTime.setHours(koreaTime.getHours() + 9); // UTC + 9시간 = 한국 시간
+      setFinishTime(koreaTime);
+    }
   }, [isSelectedEmoji]);
-  
+
   useEffect(() => {
-      if (finishTime) {
-          const now = new Date();
-          const difference = finishTime - now;
-          const secondsLeft = Math.floor(difference / 1000);
-          
-          setTimeLeft(secondsLeft);
-      }
+    if (finishTime) {
+      const now = new Date();
+      const difference = finishTime - now;
+      const secondsLeft = Math.floor(difference / 1000);
+
+      setTimeLeft(secondsLeft);
+    }
   }, [finishTime]);
-  
+
   useEffect(() => {
-      if (timeLeft > 0) {
-          const timerId = setInterval(() => {
-              setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
-          }, 1000);
-  
-          return () => clearInterval(timerId); // 컴포넌트 unmount 시 타이머 제거
-      }
-      else if (timeLeft === 0) {
-          setTimeLeft("Time's up!");
-      }
+    if (timeLeft > 0) {
+      const timerId = setInterval(() => {
+        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+      }, 1000);
+
+      return () => clearInterval(timerId); // 컴포넌트 unmount 시 타이머 제거
+    }
+    else if (timeLeft === 0) {
+      setTimeLeft("Time's up!");
+    }
   }, [timeLeft]);
 
 
-  
-
-  
 
   useEffect(() => {
     if (isSelectedEmoji) {
@@ -82,7 +81,11 @@ const ModalComp = () => {
 
   // 퍼센트 창이 바로 반응하도록, 마운트 추가
   useEffect(() => {
-    setProcessBar(Math.floor((likeCount / (likeCount + disLikeCount)) * 100));
+    if (likeCount + disLikeCount > 0) {
+      setProcessBar(Math.floor((likeCount / (likeCount + disLikeCount)) * 100));
+    } else {
+      setProcessBar(0);
+    }
   }, [likeCount, disLikeCount]);
 
 
@@ -110,6 +113,7 @@ const ModalComp = () => {
       })
       .catch((res) => { });
   };
+
   const hateTouch = () => {
     customAxios
       .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: false })
@@ -118,6 +122,7 @@ const ModalComp = () => {
         setCheckh(!checkh);
       });
   };
+
   const hateCancleTouch = () => {
     customAxios
       .post(`/peek/${isSelectedEmoji.peekDetailDto.peekId}`, { like: false })
@@ -126,6 +131,7 @@ const ModalComp = () => {
         setCheckh(!checkh);
       });
   };
+
   return (
     <>
       {isModalState && isSelectedEmoji && (
@@ -138,28 +144,35 @@ const ModalComp = () => {
           {/* 모달 내용에 선택된 avatarId를 표시 */}
           <div className={classes.modalHead}>
             <img
-              src={isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
+              src={isSelectedEmoji.peekAvatarDto.writerId === 1 ? "https://peekpick-app.s3.ap-northeast-2.amazonaws.com/Wrapped+Gift.png" : isSelectedEmoji.peekAvatarDto.emoji.imageUrl}
               alt="프로필"
               className={classes.profileImg}
             />
             <div className={classes.modalHeadText}>
               <span className={classes.nickname}>
-                {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
-                {isSelectedEmoji.peekAvatarDto.nickname}
+                {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "PEEKPICK" : isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+                {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
+                {/* {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+                {isSelectedEmoji.peekAvatarDto.nickname} */}
               </span>
-              <span style={{ marginRight: "0.2rem" }}>PICK</span>
+              {/* <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
-              <span style={{ marginLeft: "0.2rem" }}>회</span>
+              <span style={{ marginLeft: "0.2rem" }}>회</span> */}
               {/* 한줄소개 넣어야함 */}
-              {isSelectedEmoji.peekAvatarDto.bio &&
-                isSelectedEmoji.peekAvatarDto.bio.trim() !== "" ? (
-                <p className={classes.intro}>{isSelectedEmoji.peekAvatarDto.bio}</p>
-              ) : (
-                <p className={classes.intro}>내용이 없습니다.</p>
-              )}
-            <span className={classes.timer}>
-                {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
-            </span>
+
+              <div className={classes.intro} style={{ backgroundColor: "#ffffff", marginTop: "-5px" }}>
+                <span className={classes.timer} style={{ marginLeft: '-10px', fontWeight: 700, width: "120px" }}>
+                  <img src="img/hourglass.png" alt="모래시계" />
+                  {typeof timeLeft === "number" ? formatTime(timeLeft) : timeLeft}
+                </span>
+
+                <span className={classes.distance} style={{ fontWeight: 700 }}>
+                  <img src="img/placeholder.png" alt="" />
+                  {isSelectedEmoji.peekDetailDto.distance} m
+                </span>
+              </div>
+
+
             </div>
           </div>
           <div className={classes.divider}></div>
@@ -175,7 +188,7 @@ const ModalComp = () => {
             <div className={classes.modalBodyPeek}>
               {isSelectedEmoji.peekDetailDto.content &&
                 isSelectedEmoji.peekDetailDto.content.trim() !== "" ? (
-                <p>{isSelectedEmoji.peekDetailDto.content}</p>
+                <p className={classes.viewContent}>{isSelectedEmoji.peekDetailDto.content}</p>
               ) : (
                 <p>내용이 없습니다.</p>
               )}
@@ -191,9 +204,21 @@ const ModalComp = () => {
                   :
                   <img src="img/Like_Off.png" alt="따봉" onClick={likeTouch} />
               }
-
+              {likeCount || disLikeCount ?
+                <span>{processBar}%</span>
+                :
+                <span></span>
+              }
             </div>
-            <div className={classes.likes}>
+            <div className={classes.vs}>
+              <img src="img/VS.png" alt="" className={classes.VS} />
+            </div>
+            <div className={classes.hates}>
+              {likeCount || disLikeCount ?
+                <span>{100 - processBar}%</span>
+                :
+                <span></span>
+              }
               {
                 checkh
                   ?
@@ -201,23 +226,22 @@ const ModalComp = () => {
                   :
                   <img src="img/DisLike_Off.png" alt="우우" onClick={hateTouch} />
               }
-
             </div>
-
           </div>
           <div className={classes.progressdiv}>
             {
               likeCount || disLikeCount
                 ?
                 <div className={classes.bottomvalue}>
-                  <span>{processBar}%</span>
-                <progress value={processBar} min="0" max="100" className={classes.progress}></progress>
+                  {/* <span>{processBar}</span> */}
+                  <progress value={processBar} min="0" max="100" className={classes.progress}></progress>
+                  {/* <span>{100 - processBar} </span> */}
                 </div>
                 :
-                <span>아직 아무도 좋아요 싫어요를 하지 않았어요!</span>
-
+                <span></span>
             }
           </div>
+
         </Modal>
       )}
     </>

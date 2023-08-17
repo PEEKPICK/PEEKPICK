@@ -39,18 +39,18 @@
 .reloadBtn img {
   margin-right: 0.5rem;
   width: 1.3rem;
-
 }
 .reloadBtn:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
 }
 
 .writeposition {
-  position: fixed;
-  right: 8%;
-  bottom: 20%;
+  position: relative;
+  bottom: -10vh;
+  left: 85vw;
 }
 
 .writeposition img {
-  width: 130%;
+  width: 5.5vh;
+  min-width: 4vh;
 }

@@ -1,9 +1,18 @@
 .pickerMain {
-  background-image: url("../../../public/img/free.png");
-  background-size: cover;
-  /* border: 1px solid rgba(0, 0, 0, 0); */
+  background-position: center;
+  /* background-size: 110vw; */
+  background-size: 280%;
+  position: relative;
+  max-width: 415px;
+  width: 100vw;
+  min-width: 300px;
+  height: 70vh;
+  min-height: 300px;
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
+  background-repeat: no-repeat;
+}
+::-webkit-scrollbar {
+  /* 크롬, 사파리, 오페라, 엣지 */
+  display: none;
 }

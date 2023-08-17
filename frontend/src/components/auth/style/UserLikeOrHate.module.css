@@ -27,8 +27,9 @@
   color: white;
   font-size: x-small;
   height: 2vh;
-  width: 4vh;
+  width: 11vw;
   padding: 0;
+  box-shadow: 0.1rem 0.1rem 0.15rem rgba(0, 0, 0, 0.25);
 }
 
 .hate {

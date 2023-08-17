@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface PickerService {
 
-    CommonResponse connectSession(ConnectingPickerDto picker);
+    SseEmitter connectSession(ConnectingPickerDto picker);
 
     DataResponse<List> getPickerListByDistance(SearchPickerDto picker);
 

@@ -8,7 +8,7 @@
   border-radius: 1.3rem 1.3rem 1.3rem 1.3rem;
   box-shadow: 0 0.03rem 1.25rem rgba(0, 0, 0, 0.25);
   font-size: 0.875rem;
-  width: 80%;
+  width: 312px;
   transform: translate(-50%, -50%) scale(1);
   overflow: auto;
   animation: 0.2s ease-in-out loadEffect1;
@@ -50,15 +50,24 @@
   margin-top: 0.8rem;
 }
 
+.pickItem {
+  margin-right: 10px;
+}
+
+.goodImg {
+  width: 15px;
+  margin-right: 2px;
+}
+
 .nickname {
   margin-top: 5%;
-  font-size: 1rem;
+  font-size: 18px;
   font-weight: 700;
   margin-right: 1%;
 }
 
 .intro {
-  font-size: 12px;
+  font-size: 13px;
   width: 95%;
   height: 2.875rem;
   margin-top: 3%;
@@ -68,6 +77,14 @@
   padding-left: 3%;
   background-color: rgba(125, 0, 255, 0.1);
 }
+
+.intro img {
+  height: 1rem;  
+  width: auto;  
+  vertical-align: middle;  
+  margin-right: 0.3rem;  
+}
+
 
 /* 모달 중간선  */
 .divider {
@@ -81,7 +98,7 @@
   display: flex;
   flex-direction: column;
   padding: 1%;
-  font-size: 12px;
+  font-size: 14px;
   height: 50%;
 }
 
@@ -92,7 +109,7 @@
 .like {
   padding: 1% 3%;
   border-radius: 10px;
-  width: 15%;
+  width: 20%;
   margin-left: 3%;
   color: white;
   background-color: #7d00ff;
@@ -104,10 +121,10 @@
 .disLike {
   padding: 1% 3%;
   border-radius: 10px;
-  width: 15%;
+  width: 20%;
   margin-left: 3%;
   color: white;
-  background-color: #7d00ff;
+  background-color: rgba(125, 0, 255, 0.5);
   text-align: center;
   line-height: 150%;
   font-size: 15px;
@@ -151,6 +168,43 @@
   box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
 }
 
+.pickwaiting {
+  font-size: 17px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 60%;
+  max-width: 60%;
+  height: 40px;
+  border-radius: 1.5rem;
+  background-color: #a0a0a0;
+  color: #ffffff;
+  border: none;
+  box-shadow: 1px 1px 1.5px rgba(0, 0, 0, 0.55);
+}
+
+.waiting::before {
+  content: "기다리는 중...";
+  animation: loadingAnimation 1s infinite;
+}
+
+@keyframes loadingAnimation {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.75;
+  }
+  75% {
+    opacity: 1;
+  }
+}
+
 .pick:active {
   box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   color: rgba(255, 255, 255, 0.5);
@@ -159,17 +213,24 @@
 .modalbodys {
   display: flex;
 }
+
 .modalBodyPeek {
   display: flex;
   padding: 0.8rem 0.5rem;
   position: relative;
-  font-size: 0.75rem;
+  font-size: 0.9rem;
   height: 10rem;
   width: 85%;
   background-color: rgba(125, 0, 255, 0.1);
   margin-left: 5%;
   margin-right: 5%;
   border-radius: 5%;
+}
+
+.viewContent {
+  width: 265px;
+  word-wrap: break-word;
+  font-size: 16px;
 }
 
 .peekImg {
@@ -188,26 +249,71 @@
 
 .likeDisLike {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   height: 6rem;
   width: 100%;
 }
 
 .likes {
+  display: grid;
+  grid-template-columns: 15fr 1fr;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+}
+
+.likes span {
+    margin-top: 5px;
+    font-family: 'KBO-Dia-Gothic_bold';
+    font-size: 18px;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.likes img {
+  /* margin-left: 15px; */
+  width: 30px;
+  height: auto;
+  margin-left: 10px;
+}
+
+.hates {
+  display: grid;
+  grid-template-columns: 1fr 15fr;
+  /* flex-direction: column; */
+  align-items: center;
+  justify-items: center;
+  padding: 0;
+}
+
+.hates span {
+    margin-top: 5px;
+    font-family: 'KBO-Dia-Gothic_bold';
+    font-size: 18px;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/KBO-Dia-Gothic_bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+.hates img {
+  width: 30px;
+  /* margin-right: 15px; */
+  height: auto;
+  margin-right: 10px;
+}
+
+.vs{
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 0;
 }
-
-.likes span {
-  margin-top: 5%;
-}
-
-.likes img {
-  width: 20px;
-  height: 20px;
+.vs img {
+  width: 60px;
+  height: auto;
 }
 
 .progressdiv {
@@ -219,13 +325,13 @@
 progress {
   -webkit-appearance: none;
   appearance: none;
-  width: 80%;
+  width: 85%;
   color: white;
   margin-bottom: 5%;
 }
 
 ::-webkit-progress-bar {
-  background-color: lightgray;
+  background-color: rgba(125, 0, 255, 0.5);
   border-radius: 5px;
   overflow: hidden;
   height: 15px;
@@ -235,6 +341,7 @@ progress {
   background-color: #7d00ff;
   border-radius: 5px;
 }
+
 
 .likehate {
   display: flex;
@@ -263,10 +370,30 @@ progress {
   margin-left: 1.5%;
 }
 
-.bottomvalue{
+.bottomvalue {
   width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+
+.bottomvalue > span:first-child {
+  position: absolute;
+  left: 0;
+  bottom: 100%;
+  transform: translateX(50%) translateY(-5px);
+
+}
+
+.bottomvalue > span:last-child {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.timer{
+  width: 70%;
 }

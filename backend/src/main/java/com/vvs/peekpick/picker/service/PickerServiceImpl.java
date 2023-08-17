@@ -47,8 +47,8 @@ public class PickerServiceImpl implements PickerService {
     private static final String SSE_START = "SSE_START";
 
     // 주변 최대 Picker 수
-    private final int MAX_PICKER_COUNT = 15;
-    private final Random random = new Random();
+    private static final int MAX_PICKER_COUNT = 15;
+    private static final Random random = new Random();
 
     private final ResponseService responseService;
     private final PickerJpaRepository pickerJpaRepository;

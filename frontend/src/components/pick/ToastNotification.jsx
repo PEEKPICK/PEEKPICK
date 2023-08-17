@@ -1,13 +1,14 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import classes from "./ToastNotification.module.css";
 import { customAxios } from "../../api/customAxios";
 import { chatActions } from "../../store/chatSlice";
 // import { modalActions } from "../../store/modalSlice";
+
 const CustomToast = ({ message, senderId, requestTime }) => {
   const dispatch = useDispatch();
-  const getOpponent = useSelector((state) => state.roomId.opponent);
+  // const getOpponent = useSelector((state) => state.roomId.opponent);
   // 수락
   const handleAccept = async () => {
     try {
@@ -19,28 +20,29 @@ const CustomToast = ({ message, senderId, requestTime }) => {
         requestTime: requestTime,
         response: "Y",
       };
-      console.log(body);
+      // console.log(body);
       const response1 = await customAxios.post("/picker/chat-response", body);
-      console.log("채팅 수락: ", response1.data);
+      // console.log("채팅 수락: ", response1.data);
 
       const roomId = response1.data.data.roomId;
       const opponent = response1.data.data.opponent;
       const createTime = response1.data.data.createTime;
       const endTime = response1.data.data.endTime;
-
+      // console.log("createTime", createTime);
+      // console.log("endTime", endTime);
       dispatch(chatActions.callRoomID(roomId));
-      dispatch(chatActions.updateOpponent(opponent));
       dispatch(chatActions.updateConnectState(true));
+      dispatch(chatActions.updateOpponent(opponent));
       dispatch(chatActions.updateEndTime(endTime));
       dispatch(chatActions.updateTime(createTime));
-      console.log("roomId보냄", roomId);
-      console.log("opponen보냄", getOpponent);
+      // console.log("roomId보냄", roomId);
+      // console.log("opponen보냄", getOpponent);
 
       const response2 = await customAxios.get(`/member/chat/info?avatarId=${opponent}`);
-      console.log("response2", response2);
-      console.log("getOpponent", getOpponent);
+      // console.log("response2", response2);
+      // console.log("getOpponent", getOpponent);
       const opponentData = response2.data.data;
-      console.log("상대정보: ", opponentData);
+      // console.log("상대정보: ", opponentData);
       const nickNameSum = `${opponentData.prefix.content} ${opponentData.nickname}`;
       dispatch(chatActions.updateURL(opponentData));
       dispatch(chatActions.updateOpponentNickName(nickNameSum));
@@ -64,12 +66,13 @@ const CustomToast = ({ message, senderId, requestTime }) => {
 
       // console.log("body", body);
       await customAxios.post("/picker/chat-response", body).then((response) => {
-        console.log("채팅 거절 : ", response.data);
+        // console.log("채팅 거절 : ", response.data);
       });
     } catch (error) {
       console.error(error);
     }
     toast.dismiss({ containerId: "an  Id" });
+    dispatch(chatActions.resetState());
   };
 
   return (

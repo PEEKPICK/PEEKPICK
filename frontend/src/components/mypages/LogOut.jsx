@@ -3,7 +3,6 @@ import classes from './LogOut.module.css';
 import { customAxios } from '../../api/customAxios';
 const LogOut = forwardRef((props, ref) => {
   let wrapperRef = useRef();
- 
 
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
@@ -23,27 +22,20 @@ const LogOut = forwardRef((props, ref) => {
 
   const LogOutDisplay = () => {
     props.setLogoutView(false);
-    localStorage.removeItem('jwtToken');
   };
 
   const Logout = () => {
-    const jwtToken = localStorage.getItem('jwtToken');
-    const headers = {
-      Authorization: `Bearer ${jwtToken}`,
-    }
-    customAxios.post('/member/logout', { headers })
+    customAxios.post('/member/logout')
       .then(response => {
-        console.log(response)
-        localStorage.clear();
-        // 바꿔야함
+        localStorage.removeItem('jwtToken');
         window.location.replace('/');
         // setTimeout(()=>{
         //   navigate('/');
         // },1000)
-    
       })
       .catch(response => {
-        console.log(response)
+        localStorage.removeItem('jwtToken');
+        window.location.replace('/');
       })
   };
 

@@ -79,7 +79,6 @@ const LikeEdit = () => {
 
   // 중분류 선택 시, 5개 여부 파악 및 리스트에 추가
   const middleListCheck = (categoryId, middle) => {
-    console.log(categoryId, middle)
     if (!tempMiddleList.includes(categoryId)) {
       if (tempMiddleList.length < 5) {
         setTempMiddleList((prevList) => [...prevList, categoryId])
@@ -113,90 +112,93 @@ const LikeEdit = () => {
       disLikes: tempMiddleList,
       hate: middleItem,
     }
-    console.log(tempMiddleList)
+    // console.log(tempMiddleList)
     customAxios.put('/member/info/disLike', { disLikes: tempMiddleList }, { headers })
       .then((response) => {
         navigate('/mypage');
         dispatch(authActions.updateUserHate(changedDisLikes))
-        toast.success("싫어요 수정 성공");
+        toast.success("싫어해요 수정 완료");
         // console.log(response)
       }).catch((response) => {
-        toast.error("싫어요 수정 실패");
+        toast.error("수정 실패");
       })
   };
 
   return (
-    <div className={common.container}>
-      <div>
+    <div className={common.side}>
+
+      <div className={common.container}>
         <div>
-          <h1>싫어해요</h1>
+          <div>
+            <h1>싫어해요</h1>
+          </div>
+          <div>
+            <p>(최대 5개 선택 가능)</p>
+          </div>
+        </div>
+        <div className={common.defaultLine}></div>
+        <div className={common.listmaker}>
+          {dataAxios ? (
+            <div className={common.largelist}>
+              {likeList.map((item, index) => (
+                <div key={index} className={classes.radioWrap}>
+                  <input
+                    type="radio"
+                    name="selectedItem"
+                    id={`radio_${index}_${middleItem.categoryId}`}
+                    value={item}
+                    checked={selectedLargeItem === item}
+                    className={`${classes.radio} ${classes.customRadio}`}
+                    onChange={() => selectLargeItemHandler(item)}
+                  />
+                  <label
+                    htmlFor={`radio_${index}_${middleItem.categoryId}`}
+                    className={classes.userLabel}
+                  >
+                    {item}
+                  </label>
+                </div>
+              ))}
+            </div>
+          ) : (<span>에러가 발생했습니다.</span>)}
+        </div>
+        <div className={classes.middle}>
+          {middleDataAxios ? (
+            <div className={common.middlelist}>
+              {middleLikeList.map(middleItem => (
+                <div key={middleItem.categoryId} className={classes.itemWrap}>
+                  <input
+                    type="checkbox"
+                    id={middleItem.categoryId}
+                    value={middleItem.categoryId}
+                    checked={tempMiddleList.includes(middleItem.categoryId)}
+                    onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
+                    className={`${classes.checkbox} ${classes.customCheckbox}`}
+                  />
+                  <label
+                    htmlFor={middleItem.categoryId}
+                    className={`${classes.checkboxLabel} ${classes.userLabel}`}
+                  >
+                    {middleItem.middle}
+                  </label>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className={classes.error}>
+              <span>대분류를 선택해주세요!</span>
+            </div>
+          )}
         </div>
         <div>
-          <p>(최대 5개 선택 가능)</p>
+          {modalOpen && <Modal onClose={closeModal} check={1} />}
         </div>
-      </div>
-      <div className={common.defaultLine}></div>
-      <div>
-        {dataAxios ? (
-          <div className={common.largelist}>
-            {likeList.map((item, index) => (
-              <div key={index} className={classes.radioWrap}>
-                <input
-                  type="radio"
-                  name="selectedItem"
-                  id={`radio_${index}_${middleItem.categoryId}`}
-                  value={item}
-                  checked={selectedLargeItem === item}
-                  className={`${classes.radio} ${classes.customRadio}`}
-                  onChange={() => selectLargeItemHandler(item)}
-                />
-                <label
-                  htmlFor={`radio_${index}_${middleItem.categoryId}`}
-                  className={classes.userLabel}
-                >
-                  {item}
-                </label>
-              </div>
-            ))}
-          </div>
-        ) : (<span>에러가 발생했습니다.</span>)}
-      </div>
-      <div className={classes.middle}>
-        {middleDataAxios ? (
-          <div className={common.middlelist}>
-            {middleLikeList.map(middleItem => (
-              <div key={middleItem.categoryId}>
-                <input
-                  type="checkbox"
-                  id={middleItem.categoryId}
-                  value={middleItem.categoryId}
-                  checked={tempMiddleList.includes(middleItem.categoryId)}
-                  onChange={() => middleListCheck(middleItem.categoryId, middleItem.middle)}
-                  className={`${classes.checkbox} ${classes.customCheckbox}`}
-                />
-                <label
-                  htmlFor={middleItem.categoryId}
-                  className={`${classes.checkboxLabel} ${classes.userLabel}`}
-                >
-                  {middleItem.middle}
-                </label>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className={classes.error}>
-            <span>대분류를 선택해주세요!</span>
-          </div>
-        )}
-      </div>
-      <div>
-        {modalOpen && <Modal onClose={closeModal} check={1} />}
-      </div>
-      <div>
-        <button
-          onClick={selectedFinish}
-          className={common.next}
-        >선택완료</button>
+        <div>
+          <button
+            onClick={selectedFinish}
+            className={common.next}
+          >수정 완료</button>
+        </div>
       </div>
     </div>
   );

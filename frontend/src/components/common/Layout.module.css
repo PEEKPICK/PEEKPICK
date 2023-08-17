@@ -1,7 +1,15 @@
 .layout {
-  /* position: fixed; */
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
+
+  flex-direction: column;
+  /* background-color: #63b3ff; */
   width: 100%;
   height: 100vh;
+}
+.layout::-webkit-scrollbar {
+  width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
 }

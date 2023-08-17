@@ -1,157 +1,166 @@
 /* mypage 전체 */
 
 .mypage {
-    display: inline;
-    background-color: white;
-    justify-content: center;
-    overflow : scroll;
+  /* display: inline; */
+  background-color: white;
+  justify-content: center;
+  width: 100vw;
+  max-width: 415px;
+  position: relative;                                                                                        
+  height: 100vh;
 }
 
+.bodyMain * {
+  background-color: none;
+}
 /* mypage 상단 */
 
 .mypagetop {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(125, 0, 255, 0.75);
-    height: 8vh;
-    color:white;
-    font-size: x-large;
-    margin:0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: rgba(125, 0, 255, 0.75);
+  height: 8vh;
+  color: white;
+  font-size: x-large;
+  margin: 0;
+  align-items: center;
+  justify-items: center;
 }
 
-.settingimg {
-    position: absolute;
-    right: 7%;
-    width: 7%;
+.mypagetop span {
+  grid-column: 2;
+}
+.mypagetop img {
+  grid-column: 3;
+  margin-left: 40px;
 }
 
 /* 프로필 이미지 */
 
 .profileimg {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-image: linear-gradient(to bottom, rgba(125, 0, 255, 0.75) 50%, white 25%);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+  background-image: linear-gradient(to bottom, rgba(125, 0, 255, 0.75) 50%, white 25%);
 }
 
-.profileimg img {
-    display: flex;
-    justify-content: center;
-    width: 20%;
-    background-color: white;
-    border-radius: 5vh;
-    padding: 1vh;
-
+.emoji {
+  grid-column: 2;
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  background-color: white;
+  border-radius: 5vh;
+  padding: 1vh;
 }
 
-.profileimg a {
-    display: flex;
-    justify-content: center;
-    width: 20%;
-    background-color: white;
-    border-radius: 5vh;
+.refresh {
+  grid-column: 3;
+  width: 20%;
+  display: flex;
+  margin-top: auto;
+  margin-left: -210px;
+}
+.refresh img {
+  width: 100%;
+  /* background-color: lightgray; */
+  border-radius: 100%;
+  border: 3px solid white;
 }
 
-.profileimg a img {
-    width: 100%;
-    padding: 1vh;
+.text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 5%;
 }
-
-
-
 
 /* 닉네임하고 편집 버튼 */
 
 .profilename {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .profilename img {
-    position: relative;
-    left: 10px;
-    width: 2.5%;
-    background-color: #E2E2E2;
-    padding: 1% 2% 1% 2%;
-    border-radius: 1vh;
+  position: relative;
+  left: 10px;
+  width: 2.5%;
+  background-color: #e2e2e2;
+  padding: 1% 2% 1% 2%;
+  border-radius: 1vh;
 }
-
-
 
 /* 한줄 소개 */
 
 .oneline {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 5%;
-    background-color: rgba(125, 0, 255, 0.1);
-    padding: 5%;
-    margin-left: 10%;
-    margin-right: 10%;
-    border-radius: 1vh;
-    text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vh;
+  background-color: rgba(125, 0, 255, 0.1);
+  padding: 5%;
+  margin-left: 10%;
+  margin-right: 10%;
+  border-radius: 1vh;
+  text-align: center;
 }
 
 /* 호불호 */
 
 .likehate {
-    display: flex;
-    margin-bottom: 2%;
-    align-items: center;
-    margin-left: 5%;
+  display: flex;
+  align-items: center;
+  margin-left: 5%;
 }
 
 .likehate a button {
-    /* margin 하면 빈공간에도 클릭이 된다 이거 내일 해보자 */
-    color: white;
-    background-color: rgba(125, 0, 225);
-    width: 100%;
-    border: 0;
-    padding: 0.4vh 0.6vh 0.4vh 0.6vh;
-    border-radius: 0.3vh;
+  /* margin 하면 빈공간에도 클릭이 된다 이거 내일 해보자 */
+  color: white;
+  background-color: rgba(125, 0, 225);
+  width: 100%;
+  border: 0;
+  padding: 0.4vh 0.6vh 0.4vh 0.6vh;
+  border-radius: 0.3vh;
 }
 
 .likehate button {
-    color: white;
-    background-color: rgba(125, 0, 225);
-    border: 0;
-    padding: 0.4vh 0.6vh 0.4vh 0.6vh;
-    border-radius: 0.3vh;
+  color: white;
+  background-color: rgba(125, 0, 225);
+  border: 0;
+  padding: 0.4vh 0.6vh 0.4vh 0.6vh;
+  border-radius: 0.3vh;
 }
 
 .likehate span {
-    margin-right: 3%;
+  margin-right: 3%;
 }
 
 /* 고객센터 이미지 */
 
 .customercenterimg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5%;
 }
 
 .customercenterimg img {
-    width: 90%;
+  width: 90%;
 }
 
 .hr {
-    width: 90%;
-    margin-left: 5%;
-    border: 1px solid;
-    border-color: rgba(125, 0, 225);
-    /* margin-bottom: 5%; */
+  width: 90%;
+  margin-left: 5%;
+  border: 1px solid;
+  border-color: rgba(125, 0, 225);
 }
 
-.hr2{
-    width: 90%;
-    margin-left: 5%;
-    border: 1px solid;
-    border-color: rgba(125, 0, 225);
-    margin-bottom: 7%;
+.hr2 {
+  width: 90%;
+  margin-left: 5%;
+  border: 1px solid;
+  border-color: rgba(125, 0, 225);
 }
-

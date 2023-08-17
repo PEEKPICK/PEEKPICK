@@ -13,6 +13,7 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 Modal.setAppElement("#root");
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>

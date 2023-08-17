@@ -1,28 +1,31 @@
 .logout{
-  position: absolute;
-  top: 20%;
-  left: 10%;
+  position: fixed;
+  top:40%;
+  left:50%;
+  width: 280px;
   background-color: #fff;
   padding: 20px;
   border-radius: 2vh;
+  transform: translate(-50%, -50%) scale(1);
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
-  width: 70%;
-  height: 35%;
+  height: 40%;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;
 }
 @keyframes loadEffect1 {
   0% {
     opacity: 0;
-    transform: scale(0.7);
+    transform: translate(-50%, -50%) scale(0.7);
   }
+
   85% {
     opacity: 0.85;
-    transform: scale(1.01);
+    transform: translate(-50%, -50%) scale(1.01);
   }
+
   100% {
     opacity: 1;
-    transform: scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 

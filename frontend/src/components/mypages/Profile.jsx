@@ -40,7 +40,7 @@ const Profile = (props) => {
         // 리덕스에 정보 저장을 위한 데이터 생성
         const sendToMyPageData = {
           emojiUrl: emojiUrl,
-          emojiMoveUrl : moveEmoji,
+          emojiMoveUrl: moveEmoji,
         }
         const sendToProfile = {
           emojiId: emojiId,
@@ -58,32 +58,35 @@ const Profile = (props) => {
   }
 
   return (
-    <div className={classes.profile}>
-      <div className={classes.profiletop}>
-        <h1>프로필 변경</h1>
-        {/* 클릭시 마이페이지로 이동하는 x 버튼 */}
-        <img src="img/cancel.png" alt="" onClick={moveToMyPage} />
-      </div>
-      <hr className={classes.hr} />
-      <div className={classes.emoji}>
-        {/* 백에서 전달하는 이모지 */}
-        {emojiCheck ? <img src={moveEmoji} alt="" /> : <img src={userInfo.emojiMoveUrl} alt="" />}
-        {/* 클릭시 백에서 이모지 전달 버튼 */}
-      </div>
-      <div onClick={changeImg} className={classes.return}>
-        <h4>다시 뽑기</h4>
-      </div>
-      {/* 다시 뽑기 한번이상 클릭시 선택완료 버튼 색상 on */}
-      {/* 클릭시 props로 이모지 마이페이지로 전달 */}
-      {emojiCheck ?
-        <div onClick={ImgChangePut} className={classes.completeon}>
-          <h4>선택 완료</h4>
+    <div className={classes.side}>
+      <div className={classes.profile}>
+        <div className={classes.profiletop}>
+          <h1>프로필 변경</h1>
+          {/* 클릭시 마이페이지로 이동하는 x 버튼 */}
+          <img src="img/cancel.png" alt="" onClick={moveToMyPage} />
         </div>
-        :
-        <div onClick={ImgChangePut} className={classes.complete}>
-          <h4>선택 완료</h4>
-        </div>}
-
+        <hr className={classes.hr} />
+        <div className={classes.emoji}>
+          {/* 백에서 전달하는 이모지 */}
+          {emojiCheck ? <img src={moveEmoji} alt="" /> : <img src={userInfo.emojiMoveUrl} alt="" />}
+          {/* 클릭시 백에서 이모지 전달 버튼 */}
+        </div>
+        <div onClick={changeImg} className={classes.return}>
+          <h4>다시 뽑기</h4>
+        </div>
+        {/* 다시 뽑기 한번이상 클릭시 선택완료 버튼 색상 on */}
+        {/* 클릭시 props로 이모지 마이페이지로 전달 */}
+        <div>
+          {emojiCheck ?
+            <div onClick={ImgChangePut} className={classes.completeon}>
+              <h4>선택 완료</h4>
+            </div>
+            :
+            <div onClick={ImgChangePut} className={classes.complete}>
+              <h4>선택 완료</h4>
+            </div>}
+        </div>
+      </div>
     </div>
   );
 }

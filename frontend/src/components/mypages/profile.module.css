@@ -1,7 +1,12 @@
+.side{
+  background-color: white;
+}
+
 .profile {
   width: 80%;
   position: relative;
   margin: 0 auto;
+  height: 100vh;
 }
 
 .profiletop {
@@ -41,7 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 25%;
+  margin-top: 20%;
   text-decoration: none;
   background-color: rgba(125, 0, 225);
   padding: 6% 0% 6% 0%;
@@ -54,13 +59,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 25%;
+  margin-top: 20%;
   text-decoration: none;
   background-color: gray;
   padding: 6% 0% 6% 0%;
   border-radius: 1vh;
   color: white;
   text-decoration: none;
+  margin-bottom: 5%;
 }
 
 .hr {
