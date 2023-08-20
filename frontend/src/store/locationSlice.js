@@ -18,8 +18,8 @@ const locationSlice = createSlice({
         x: 0,
         y: 0,
       },
-      // distance: checkDistance(),
-      distance: 500000000,
+      distance: checkDistance(),
+      // distance: 500000000,
     },
   },
   reducers: {
