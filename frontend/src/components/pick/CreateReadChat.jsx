@@ -55,6 +55,36 @@ const CreateReadChat = ({ isModalState }) => {
     declare();
     closeExitConfirmationModal();
   };
+  const checkUserProfile = () => {
+    // EmojiForChat안에 상대 유저 정보가 다 들어있다!!!
+    setIsUserModal(true);
+  };
+
+  const closeCheckUserProfile = () => {
+    setIsUserModal(false);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // 기본 엔터 동작 방지
+      if (!inputMessage.trim()) {
+        toast.error("입력하세요", {
+          id: "textareaIsEmpty",
+        });
+      } else {
+        joinChatRoom();
+      }
+      if (stompClient === null) {
+        toast.error("대화 상대가 없습니다.", {
+          id: "notCommunity",
+        });
+      }
+    }
+  };
+
+  const showMessage = useCallback((message) => {
+    setReceivedMessages((prevMessages) => [...prevMessages, message]);
+  }, []);
 
   // 스크롤을 부드럽게 최하단으로 내리는 함수
   const scrollToBottom = () => {
@@ -63,42 +93,23 @@ const CreateReadChat = ({ isModalState }) => {
       scrollContainer.scrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
     }
   };
-  useEffect(() => {
+
+  const handleInputMessageChange = (e) => {
+    setInputMessage(e.target.value);
     scrollToBottom();
+  };
 
-    const connect = () => {
-      const socket = new SockJS(`https://peekpick.online/ws`);
-      const factory = Stomp.over(socket);
-      factory.reconnect_delay = 2000;
+  const sirenHandler = () => {
+    setSingo(true);
+  };
 
-      factory.connect({}, (frame) => {
-        setStompClient(factory);
-        factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
-          const parseMessage = JSON.parse(chatMessage.body);
-          // console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
-          if (parseMessage.expireFlag === "Y") {
-            showMessage(parseMessage);
-            dispatch(chatActions.updateEndTime(createTime));
-            scrollToBottom();
-            // dispatch(chatActions.resetState());
-            if (stompClient !== null) {
-              setStompClient(null);
-              scrollToBottom();
-            }
-          } else {
-            showMessage(parseMessage);
-            scrollToBottom();
-          }
-        });
-      });
-    };
-    connect();
-    // eslint-disable-next-line
-  }, [getRoomId]);
-
-  useEffect(() => {
-    setReceivedMessages([]);
-  }, [getRoomId]);
+  const sirenChat = () => {
+    toast("신고가 완료됐습니다! 🚨", {
+      icon: "🚨",
+    });
+    declare();
+    closeExitConfirmationModal();
+  };
 
   const joinChatRoom = () => {
     if (stompClient && getRoomId !== null && inputMessage.trim() !== "") {
@@ -164,60 +175,47 @@ const CreateReadChat = ({ isModalState }) => {
     dispatch(chatActions.updateOpponentNickName());
   };
 
-  const handleInputMessageChange = (e) => {
-    setInputMessage(e.target.value);
+  useEffect(() => {
     scrollToBottom();
-  };
 
-  const sirenHandler = () => {
-    setSingo(true);
-  };
+    const connect = () => {
+      const socket = new SockJS(`https://peekpick.online/ws`);
+      const factory = Stomp.over(socket);
+      factory.reconnect_delay = 2000;
 
-  const sirenChat = () => {
-    toast("신고가 완료됐습니다! 🚨", {
-      icon: "🚨",
-    });
-    declare();
-    closeExitConfirmationModal();
-  };
-
-  const checkUserProfile = () => {
-    // EmojiForChat안에 상대 유저 정보가 다 들어있다!!!
-    setIsUserModal(true);
-  };
-
-  const closeCheckUserProfile = () => {
-    setIsUserModal(false);
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault(); // 기본 엔터 동작 방지
-      if (!inputMessage.trim()) {
-        toast.error("입력하세요", {
-          id: "textareaIsEmpty",
+      factory.connect({}, (frame) => {
+        setStompClient(factory);
+        factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
+          const parseMessage = JSON.parse(chatMessage.body);
+          // console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
+          if (parseMessage.expireFlag === "Y") {
+            showMessage(parseMessage);
+            dispatch(chatActions.updateEndTime(createTime));
+            scrollToBottom();
+            // dispatch(chatActions.resetState());
+            if (stompClient !== null) {
+              setStompClient(null);
+              scrollToBottom();
+            }
+          } else {
+            showMessage(parseMessage);
+            scrollToBottom();
+          }
         });
-      } else {
-        joinChatRoom();
-      }
-      if (stompClient === null) {
-        toast.error("대화 상대가 없습니다.", {
-          id: "notCommunity",
-        });
-      }
-    }
-  };
+      });
+    };
+    connect();
+    // eslint-disable-next-line
+  }, [getRoomId]);
 
-  const showMessage = useCallback((message) => {
-    setReceivedMessages((prevMessages) => [...prevMessages, message]);
-  }, []);
+  useEffect(() => {
+    setReceivedMessages([]);
+  }, [getRoomId]);
 
   useEffect(() => {
     // 메시지가 갱신될 때마다 스크롤을 최하단으로 이동
     scrollToBottom();
   }, [receivedMessages, inputMessage]);
-
-  scrollToBottom();
 
   return (
     <>
