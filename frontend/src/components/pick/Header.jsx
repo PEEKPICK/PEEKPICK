@@ -17,11 +17,20 @@ import { changeMapSliceActions } from "../../store/changeMapSlice";
 // import { Toast } from "react-hot-toast";
 
 const Header = () => {
+  // 로컬에 월드맵 정보가 있는지 판단하고, 있으면 로컬 값을 사용하고 아니면 1번값 사용하기.
+  const checkMapId = () => {
+    if (localStorage.getItem('worldMapId') === null) {
+      return 1;
+    } else {
+      return localStorage.getItem('worldMapId');
+    }
+  }
+
   // 상태관리
   const [isDistance, setIsDistance] = useState(false);
   const [isWorldMap, setIsWorldMap] = useState(false);
   const [worldMapList, setWorldMapList] = useState([]);
-  const [checkMap, setCheckMap] = useState(null);
+  const [checkMap, setCheckMap] = useState(checkMapId());
   const [selectedDistance, setSelectedDistance] = useState(500);
   // 함수 선언
   const location = useLocation();
