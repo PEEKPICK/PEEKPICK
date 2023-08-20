@@ -22,12 +22,15 @@ import java.util.*;
 @RequiredArgsConstructor
 public class PeekServiceImpl implements PeekService {
     private final int MAX_PEEK = 8; // 화면 단에 전달해주는 Peek 수 (이벤트 코드)
-    //private final int MAX_PEEK = 10; // 화면 단에 전닿해주는 Peek 수
-    private final int PEEK_ORIGIN_TIME = 1440*2; // PEEK 기본 지속 시간 (분) (이벤트 코드)
-    //private final int PEEK_ORIGIN_TIME = 60; // PEEK 기본 지속 시간 (분)
-    private final int PEEK_REACTION_TIME = 10; // 좋아요, 싫어요 시 증가되는 시간 (분)
-    private final int PEEK_MAX_HOUR = 72; // Peek 최대 지속 시간 (시간) (이벤트 코드)
-    //private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
+
+    //private final int PEEK_ORIGIN_TIME = 1440*2; // PEEK 기본 지속 시간 (분) (이벤트 코드)
+    private final int PEEK_ORIGIN_TIME = 60*12; // PEEK 기본 지속 시간 (분)
+    private final int PEEK_REACTION_TIME = 30; // 좋아요, 싫어요 시 증가되는 시간 (분)
+    //private final int PEEK_MAX_HOUR = 72; // Peek 최대 지속 시간 (시간) (이벤트 코드)
+    private final int PEEK_MAX_HOUR = 24; // Peek 최대 지속 시간 (시간)
+
+    private final int PEEK_SPECIAL_CHECK = 5; // special PEEK가 되는 좋아요+싫어요의 기준
+
     private final Random random = new Random();
     private final ResponseService responseService;
     private final PeekMemberService peekMemberService;
@@ -180,6 +183,7 @@ public class PeekServiceImpl implements PeekService {
                     .build();
 
             ResponsePeekDto responsePeekDto = ResponsePeekDto.builder()
+                    .nowUserId(memberId)
                     .peekDetailDto(peekDetailDto)
                     .peekAvatarDto(peekAvatarDto)
                     .build();
@@ -286,7 +290,7 @@ public class PeekServiceImpl implements PeekService {
 //            if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toMinutes() >= 80) {
 //                special = true;
 //            }
-            if(likeCnt+disLikeCnt >= 5) special = true;
+            if(likeCnt+disLikeCnt >= PEEK_SPECIAL_CHECK) special = true;
             if (Duration.between(peekRedisDto.getWriteTime(), updatedFinishTime).toHours() >= PEEK_MAX_HOUR) {
                 updatedFinishTime = peekRedisDto.getWriteTime().plusHours(PEEK_MAX_HOUR);
             }

@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 @AllArgsConstructor
 public class ResponsePeekDto {
+    private Long nowUserId;
     private PeekDetailDto peekDetailDto;
     private PeekAvatarDto peekAvatarDto;
 }
