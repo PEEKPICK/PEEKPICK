@@ -162,17 +162,26 @@ const ModalComp = () => {
   };
 
   const sirenChat = () => {
+    const requestReportDto = {
+      "reportCategoryId" : 6,
+      "reportContent" : "신고 내용 텍스트"
+    };
     customAxios
-    .post(`/report/peek/${isSelectedEmoji.peekDetailDto.peekId}`, {  })
-    .then((res) => { 
+    .post(`/report/peek/${isSelectedEmoji.peekDetailDto.peekId}`, requestReportDto) 
+    .then((res) => {
+      // 성공 시 처리
+      toast("신고가 완료됐습니다! 🚨", {
+        icon: "🚨",
+      });
+      handleCloseModal();
+      closeExitConfirmationModal();
     })
-    .catch((res) => { });
-
-    toast("신고가 완료됐습니다! 🚨", {
-      icon: "🚨",
+    .catch((res) => { 
+      // 실패 시 처리
+      toast("신고에 실패했습니다. 😞", {
+        icon: "😞",
+      });
     });
-    handleCloseModal();
-    closeExitConfirmationModal();
   };
   
   return (
