@@ -65,13 +65,13 @@ public class ChatServiceImpl implements ChatService {
      */
     @Override
     public CommonResponse exitChatRoom(String roomId) {
-        List<Object> objects = chatRepository.chatEnd(roomId);
+        List<String> objects = chatRepository.chatEnd(roomId);
         String delimiter = "\\D";
 
         StringBuilder sb = new StringBuilder();
 
-        for (Object object : objects){
-            sb.append(object.toString());
+        for (String str : objects){
+            sb.append(str);
         }
 
         log.info("ExitChatRoom Start : {} ", sb.toString());
@@ -79,9 +79,7 @@ public class ChatServiceImpl implements ChatService {
         // Log String 으로 변경
         Chat chat = Chat.builder()
                 .roomId(roomId)
-                .content(objects.stream()
-                        .map(Object::toString)
-                        .collect(Collectors.joining(delimiter)))
+                .content(String.join(delimiter, objects))
                 .build();
         log.info("Chatting Log : {}", chat.getContent());
 
