@@ -21,14 +21,16 @@ const CreateReadChat = ({ isModalState }) => {
   const createTime = useSelector((state) => state.roomId.createTime);
 
   const [stompClient, setStompClient] = useState(null);
-  const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
   const [singo, setSingo] = useState(false);
   const [isUserModal, setIsUserModal] = useState(false);
+  //최하단
+  const chatListRef = useRef(null);
+  // 입력창의 메시지 상태와 전송된 메시지 상태 분리
+  const [inputMessage, setInputMessage] = useState("");
+  // -------------------------------
 
-  const scrollRef = useRef();
-  
   const chatPop = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
   };
@@ -54,7 +56,6 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
     const connect = () => {
       const socket = new SockJS(`https://peekpick.online/ws`);
       const factory = Stomp.over(socket);
@@ -67,7 +68,6 @@ const CreateReadChat = ({ isModalState }) => {
           // console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
-            scrollToBottom();
             dispatch(chatActions.updateEndTime(createTime));
             // dispatch(chatActions.resetState());
             if (stompClient !== null) {
@@ -75,50 +75,36 @@ const CreateReadChat = ({ isModalState }) => {
             }
           } else {
             showMessage(parseMessage);
-            scrollToBottom();
           }
-          scrollToBottom();
         });
-        scrollToBottom();
       });
-      scrollToBottom();
     };
     connect();
     // eslint-disable-next-line
   }, [getRoomId]);
 
   useEffect(() => {
-    scrollToBottom();
     setReceivedMessages([]);
   }, [getRoomId]);
 
   const joinChatRoom = () => {
-    if (stompClient && getRoomId !== null) {
+    if (stompClient && getRoomId !== null && inputMessage.trim() !== "") {
       stompClient.send(
         "/pub/chat/publish",
         {},
         JSON.stringify({
           roomId: getRoomId,
           sender: opponent,
-          message: message,
+          message: inputMessage,
           sendTime: "",
           expireFlag: "",
         })
       );
-      setMessage("");
-      scrollToBottom();
-    }
-    scrollToBottom();
-  };
-
-  const scrollToBottom = () => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+      setInputMessage("");
     }
   };
 
   const showMessage = (message) => {
-    scrollToBottom();
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
   };
 
@@ -140,7 +126,6 @@ const CreateReadChat = ({ isModalState }) => {
             sendTime: "",
             expireFlag: "Y",
           })
-          
         );
         // console.log("나가요!!!");
       }
@@ -170,7 +155,7 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   const handleInputMessageChange = (e) => {
-    setMessage(e.target.value);
+    setInputMessage(e.target.value);
   };
 
   const sirenHandler = () => {
@@ -193,6 +178,36 @@ const CreateReadChat = ({ isModalState }) => {
   const closeCheckUserProfile = () => {
     setIsUserModal(false);
   };
+
+  // 스크롤을 부드럽게 최하단으로 내리는 함수
+  const scrollToBottom = () => {
+    if (chatListRef.current) {
+      const scrollContainer = chatListRef.current;
+      const targetScroll = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+      const currentScroll = scrollContainer.scrollTop;
+
+      // 스크롤 애니메이션에 사용할 프레임 수와 간격 설정
+      const frames = 15; // 애니메이션 프레임 수
+
+      const step = (targetScroll - currentScroll) / frames;
+      let count = 0;
+
+      const animateScroll = () => {
+        if (count < frames) {
+          count++;
+          scrollContainer.scrollTop += step;
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      animateScroll();
+    }
+  };
+
+  useEffect(() => {
+    // 메시지가 갱신될 때마다 스크롤을 최하단으로 이동
+    scrollToBottom();
+  }, [receivedMessages]);
 
   return (
     <>
@@ -222,7 +237,12 @@ const CreateReadChat = ({ isModalState }) => {
           </div>
         </div>
         <div className={classes.divider} />{" "}
-        <div className={classes.chat}>
+        <div
+          className={classes.chat}
+          ref={chatListRef}
+          // onScroll={handleScroll}
+          // style={{ overflowY: "auto", maxHeight: "81%", minHeight: "78%" }}
+        >
           <ul id="messageList">
             {receivedMessages.map((message) => (
               <div className={classes.chatBubble} key={uuid()}>
@@ -255,7 +275,6 @@ const CreateReadChat = ({ isModalState }) => {
               </div>
             ))}
           </ul>
-            <div id="box" className={classes.box} ref={scrollRef} />
         </div>
         <div className={classes.sendBar}>
           <input
@@ -263,17 +282,16 @@ const CreateReadChat = ({ isModalState }) => {
             className={classes.inputBox}
             type="text"
             id="message"
-            value={message}
+            value={inputMessage}
             onChange={handleInputMessageChange}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                if (!message.trim()) {
+                if (!inputMessage.trim()) {
                   toast.error("입력하세요", {
                     id: "textareaIsEmpty",
                   });
                 } else {
                   joinChatRoom();
-                  scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
                 }
                 if (stompClient === null) {
                   toast.error("대화 상대가 없습니다.", {
@@ -283,16 +301,16 @@ const CreateReadChat = ({ isModalState }) => {
               }
             }}
           />
+
           <button
             disabled={showExitConfirmationModal}
             onClick={() => {
-              if (!message.trim()) {
+              if (!inputMessage.trim()) {
                 toast.error("입력하세요", {
                   id: "textareaIsEmpty",
                 });
               } else {
                 joinChatRoom();
-                scrollToBottom(); // 메시지를 전송하고 나서 스크롤 아래로 이동
               }
               if (stompClient === null) {
                 toast.error("대화 상대가 없습니다.", {
@@ -342,57 +360,59 @@ const CreateReadChat = ({ isModalState }) => {
         )}
         {isUserModal && (
           <Modal
-          isOpen={isUserModal}
-          onRequestClose={() => closeCheckUserProfile()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
-          contentLabel="Selected Emoji Modal"
-          className={classes.modalMain}
-        >
-          {/* 모달 내용에 선택된 avatarId를 표시 */}
-          <div className={classes.modalHead}>
-            <img src={EmojiForChat.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
-            <div className={classes.modalHeadText}>
-              <span className={classes.nickname}>
-                {EmojiForChat.prefix.content} {EmojiForChat.nickname}
-              </span>
-              <div>
-                <span style={{ marginRight: "0.2rem" }}>PICK</span>
-                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{EmojiForChat.chatCount}</span>
-                <span style={{ marginLeft: "0.2rem" }} className={classes.pickItem}>회</span>
-                <img src="img/goodFill.png" alt="goodFill" className={classes.goodImg} />
-                <span style={{ color: "#7d00ff", fontWeight: "700" }}>{EmojiForChat.likeCount}</span>
-                <span style={{ marginLeft: "0.2rem" }}>회</span>
-              </div>
-              {EmojiForChat.bio && EmojiForChat.bio.trim() !== "" ? (
-                <p className={classes.intro}>{EmojiForChat.bio}</p>
-              ) : (
-                <p className={classes.intro}>내용이 없습니다.</p>
-              )}
-            </div>
-          </div>
-          <div className={classes.divider}></div>
-          <div className={classes.modalBody}>
-            <div className={classes.likeWrap}>
-              <p className={classes.like}>좋아해요</p>
-              <p className={classes.itemWrap}>
-                {EmojiForChat.likes.map((like, index) => (
-                  <div key={index} className={classes.items}>
-                    #{like.middle}
-                  </div>
-                ))}
-              </p>
-            </div>
-            <div>
-              <p className={classes.disLike}>싫어해요</p>
-              <p className={classes.itemWrap}>
-                {EmojiForChat.disLikes.map((disLikes, index) => (
-                  <span key={index} className={classes.items}>
-                    #{disLikes.middle}
+            isOpen={isUserModal}
+            onRequestClose={() => closeCheckUserProfile()} // 모달 바깥을 클릭하거나 ESC 키를 누르면 모달을 닫음
+            contentLabel="Selected Emoji Modal"
+            className={classes.modalMain}
+          >
+            {/* 모달 내용에 선택된 avatarId를 표시 */}
+            <div className={classes.modalHead}>
+              <img src={EmojiForChat.emoji.animatedImageUrl} alt="프로필" className={classes.profileImg} />
+              <div className={classes.modalHeadText}>
+                <span className={classes.nickname}>
+                  {EmojiForChat.prefix.content} {EmojiForChat.nickname}
+                </span>
+                <div>
+                  <span style={{ marginRight: "0.2rem" }}>PICK</span>
+                  <span style={{ color: "#7d00ff", fontWeight: "700" }}>{EmojiForChat.chatCount}</span>
+                  <span style={{ marginLeft: "0.2rem" }} className={classes.pickItem}>
+                    회
                   </span>
-                ))}
-              </p>
+                  <img src="img/goodFill.png" alt="goodFill" className={classes.goodImg} />
+                  <span style={{ color: "#7d00ff", fontWeight: "700" }}>{EmojiForChat.likeCount}</span>
+                  <span style={{ marginLeft: "0.2rem" }}>회</span>
+                </div>
+                {EmojiForChat.bio && EmojiForChat.bio.trim() !== "" ? (
+                  <p className={classes.intro}>{EmojiForChat.bio}</p>
+                ) : (
+                  <p className={classes.intro}>내용이 없습니다.</p>
+                )}
+              </div>
             </div>
-          </div>
-        </Modal>
+            <div className={classes.divider}></div>
+            <div className={classes.modalBody}>
+              <div className={classes.likeWrap}>
+                <p className={classes.like}>좋아해요</p>
+                <p className={classes.itemWrap}>
+                  {EmojiForChat.likes.map((like, index) => (
+                    <div key={index} className={classes.items}>
+                      #{like.middle}
+                    </div>
+                  ))}
+                </p>
+              </div>
+              <div>
+                <p className={classes.disLike}>싫어해요</p>
+                <p className={classes.itemWrap}>
+                  {EmojiForChat.disLikes.map((disLikes, index) => (
+                    <span key={index} className={classes.items}>
+                      #{disLikes.middle}
+                    </span>
+                  ))}
+                </p>
+              </div>
+            </div>
+          </Modal>
         )}
       </Modal>
     </>
