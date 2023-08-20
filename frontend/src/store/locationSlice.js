@@ -1,5 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const checkDistance = () => {
+  if (localStorage.getItem('distance') === null) {
+    return 500;
+  } else {
+    return localStorage.getItem('distance');
+  }
+};
+
 const locationSlice = createSlice({
   name: "location",
   initialState: {
@@ -10,7 +18,7 @@ const locationSlice = createSlice({
         x: 0,
         y: 0,
       },
-      distance: 500,
+      distance: checkDistance(),
     },
   },
   reducers: {
