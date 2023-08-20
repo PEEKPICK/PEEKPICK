@@ -162,6 +162,12 @@ const ModalComp = () => {
   };
 
   const sirenChat = () => {
+    customAxios
+    .post(`/report/peek/${isSelectedEmoji.peekDetailDto.peekId}`, {  })
+    .then((res) => { 
+    })
+    .catch((res) => { });
+
     toast("신고가 완료됐습니다! 🚨", {
       icon: "🚨",
     });
@@ -290,11 +296,10 @@ const ModalComp = () => {
 
               <div className={classes.modal_divider}></div>
 
-              <p>정말로 신고하시겠습니까?</p>
-              <p>신고 시 PEEK가 종료됩니다.</p>
+              <p>Peek를 신고하시겠습니까?</p> 
 
               <div className={classes.button_area}>
-                <button onClick={() => sirenChat()} className={classes.exit_button}>
+                <button onClick={() => sirenChat()} className={classes.exit_button} >
                   신고하기
                 </button>
                 <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
