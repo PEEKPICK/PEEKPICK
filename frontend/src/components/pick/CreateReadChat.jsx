@@ -71,17 +71,16 @@ const CreateReadChat = ({ isModalState }) => {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault(); // 기본 엔터 동작 방지
-      if (!inputMessage.trim()) {
-        toast.error("입력하세요", {
-          id: "textareaIsEmpty",
-        });
-      } else {
-        joinChatRoom();
-      }
       if (stompClient === null) {
         toast.error("대화 상대가 없습니다.", {
           id: "notCommunity",
         });
+      } else if (!inputMessage.trim() && stompClient === null) {
+        toast.error("대화 상대가 없습니다.", {
+          id: "notCommunity",
+        });
+      } else {
+        joinChatRoom();
       }
     }
   };
@@ -340,7 +339,6 @@ const CreateReadChat = ({ isModalState }) => {
             onChange={handleInputMessageChange}
             onKeyDown={handleKeyPress}
           />
-
           <button disabled={showExitConfirmationModal} onClick={handleKeyPressButton} />
         </div>
         {showExitConfirmationModal && (
