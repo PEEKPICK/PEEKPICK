@@ -9,6 +9,7 @@ import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-hot-toast";
 import ChatRestTime from "./ChatRestTime";
+import { useCallback } from "react";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -55,7 +56,16 @@ const CreateReadChat = ({ isModalState }) => {
     closeExitConfirmationModal();
   };
 
+  // 스크롤을 부드럽게 최하단으로 내리는 함수
+  const scrollToBottom = () => {
+    if (chatListRef.current) {
+      const scrollContainer = chatListRef.current;
+      scrollContainer.scrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
+    }
+  };
   useEffect(() => {
+    scrollToBottom();
+
     const connect = () => {
       const socket = new SockJS(`https://peekpick.online/ws`);
       const factory = Stomp.over(socket);
@@ -69,12 +79,15 @@ const CreateReadChat = ({ isModalState }) => {
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
             dispatch(chatActions.updateEndTime(createTime));
+            scrollToBottom();
             // dispatch(chatActions.resetState());
             if (stompClient !== null) {
               setStompClient(null);
+              scrollToBottom();
             }
           } else {
             showMessage(parseMessage);
+            scrollToBottom();
           }
         });
       });
@@ -102,10 +115,7 @@ const CreateReadChat = ({ isModalState }) => {
       );
       setInputMessage("");
     }
-  };
-
-  const showMessage = (message) => {
-    setReceivedMessages((prevMessages) => [...prevMessages, message]);
+    scrollToBottom();
   };
 
   const declare = () => {
@@ -156,6 +166,7 @@ const CreateReadChat = ({ isModalState }) => {
 
   const handleInputMessageChange = (e) => {
     setInputMessage(e.target.value);
+    scrollToBottom();
   };
 
   const sirenHandler = () => {
@@ -179,35 +190,34 @@ const CreateReadChat = ({ isModalState }) => {
     setIsUserModal(false);
   };
 
-  // 스크롤을 부드럽게 최하단으로 내리는 함수
-  const scrollToBottom = () => {
-    if (chatListRef.current) {
-      const scrollContainer = chatListRef.current;
-      const targetScroll = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-      const currentScroll = scrollContainer.scrollTop;
-
-      // 스크롤 애니메이션에 사용할 프레임 수와 간격 설정
-      const frames = 15; // 애니메이션 프레임 수
-
-      const step = (targetScroll - currentScroll) / frames;
-      let count = 0;
-
-      const animateScroll = () => {
-        if (count < frames) {
-          count++;
-          scrollContainer.scrollTop += step;
-          requestAnimationFrame(animateScroll);
-        }
-      };
-
-      animateScroll();
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault(); // 기본 엔터 동작 방지
+      if (!inputMessage.trim()) {
+        toast.error("입력하세요", {
+          id: "textareaIsEmpty",
+        });
+      } else {
+        joinChatRoom();
+      }
+      if (stompClient === null) {
+        toast.error("대화 상대가 없습니다.", {
+          id: "notCommunity",
+        });
+      }
     }
   };
+
+  const showMessage = useCallback((message) => {
+    setReceivedMessages((prevMessages) => [...prevMessages, message]);
+  }, []);
 
   useEffect(() => {
     // 메시지가 갱신될 때마다 스크롤을 최하단으로 이동
     scrollToBottom();
-  }, [receivedMessages]);
+  }, [receivedMessages, inputMessage]);
+
+  scrollToBottom();
 
   return (
     <>
@@ -284,41 +294,10 @@ const CreateReadChat = ({ isModalState }) => {
             id="message"
             value={inputMessage}
             onChange={handleInputMessageChange}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                if (!inputMessage.trim()) {
-                  toast.error("입력하세요", {
-                    id: "textareaIsEmpty",
-                  });
-                } else {
-                  joinChatRoom();
-                }
-                if (stompClient === null) {
-                  toast.error("대화 상대가 없습니다.", {
-                    id: "notCommunity",
-                  });
-                }
-              }
-            }}
+            onKeyDown={handleKeyPress}
           />
 
-          <button
-            disabled={showExitConfirmationModal}
-            onClick={() => {
-              if (!inputMessage.trim()) {
-                toast.error("입력하세요", {
-                  id: "textareaIsEmpty",
-                });
-              } else {
-                joinChatRoom();
-              }
-              if (stompClient === null) {
-                toast.error("대화 상대가 없습니다.", {
-                  id: "notCommunity",
-                });
-              }
-            }}
-          />
+          <button disabled={showExitConfirmationModal} onClick={handleKeyPress} />
         </div>
         {showExitConfirmationModal && (
           <div className={classes.exitConfirmationModal}>

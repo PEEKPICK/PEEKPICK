@@ -178,7 +178,7 @@
   margin: 1vh 2% 3vh 2%;
   min-height: 78%;
   max-height: 81%;
-  overflow-y: scroll;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
