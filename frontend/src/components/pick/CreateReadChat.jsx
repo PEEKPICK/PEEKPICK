@@ -318,25 +318,6 @@ const CreateReadChat = ({ isModalState }) => {
             </div>
           </div>
         )}
-        {singo && (
-          <div className={classes.exitConfirmationModal}>
-            <div className={classes.caution}>CAUTION</div>
-
-            <div className={classes.modal_divider}></div>
-
-            <p>정말로 신고하시겠습니까?</p>
-            <p>신고를 하면 채팅이 종료하게 됩니다.</p>
-
-            <div className={classes.button_area}>
-              <button onClick={() => sirenChat()} className={classes.exit_button}>
-                나가기
-              </button>
-              <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
-                취소
-              </button>
-            </div>
-          </div>
-        )}
         {isUserModal && (
           <Modal
             isOpen={isUserModal}
