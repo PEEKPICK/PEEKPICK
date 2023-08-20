@@ -183,7 +183,6 @@
   flex-direction: column;
   -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
   scrollbar-width: 3rem; /* 파이어폭스 */
-  border: 1px solid black;
 }
 
 /* 나갈꺼야? */
