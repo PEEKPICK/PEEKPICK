@@ -64,6 +64,10 @@ const CreateReadChat = ({ isModalState }) => {
     setIsUserModal(false);
   };
 
+  const handleKeyPressButton = () => {
+    handleKeyPress({ key: "Enter", preventDefault: () => {} });
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault(); // 기본 엔터 동작 방지
@@ -114,7 +118,7 @@ const CreateReadChat = ({ isModalState }) => {
     // };
 
     // customAxios
-    // .post(`/report/picker/${getRoomId}`, requestReportDto) 
+    // .post(`/report/picker/${getRoomId}`, requestReportDto)
     // .then((res) => {
     //   // 성공 시 처리
     //   toast("신고가 완료됐습니다! 🚨", {
@@ -123,12 +127,12 @@ const CreateReadChat = ({ isModalState }) => {
     //   declare();
     //   closeExitConfirmationModal();
     // })
-    // .catch((res) => { 
+    // .catch((res) => {
     //   // 실패 시 처리
     //   toast("신고에 실패했습니다. 😞", {
     //     icon: "😞",
     //   });
-    // }); 
+    // });
   };
 
   const joinChatRoom = () => {
@@ -294,8 +298,8 @@ const CreateReadChat = ({ isModalState }) => {
           // onScroll={handleScroll}
         >
           <ul id="messageList">
-            {receivedMessages.map((message) => (
-              <div className={classes.chatBubble} key={message.id}>
+            {receivedMessages.map((message, index) => (
+              <div className={classes.chatBubble} key={index}>
                 {/* eslint-disable-next-line */}
                 {message.sender == opponent ? (
                   <li className={classes.selfMessage}>{message.message}</li>
@@ -337,7 +341,7 @@ const CreateReadChat = ({ isModalState }) => {
             onKeyDown={handleKeyPress}
           />
 
-          <button disabled={showExitConfirmationModal} onClick={handleKeyPress} />
+          <button disabled={showExitConfirmationModal} onClick={handleKeyPressButton} />
         </div>
         {showExitConfirmationModal && (
           <div className={classes.exitConfirmationModal}>
