@@ -14,4 +14,12 @@ public class RequestPeekDto {
     private double longitude; //경도
     private double latitude; //위도
 
+    @Override
+    public String toString() {
+        return "RequestPeekDto{" +
+                "content='" + content + '\'' +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                '}';
+    }
 }

@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ChatRepository {
 
     // 채팅방에 발행되는 메시지를 처리할 Listener
+    @Qualifier("redisMessageListenerContainer")
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     // 발행/구독 서비스
     private final ChatSubscriber chatSubscriber;
@@ -34,7 +35,10 @@ public class ChatRepository {
 
     @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
-    private ListOperations<String, Object> opsListChat;
+
+    private final RedisTemplate<String, String> listRedisTemplate;
+//    private ListOperations<String, Object> opsListChat;
+    private ListOperations<String, String> opsListChat;
     private Map<String, ChatRoomDto> topics;
 
     // Redis 저장을 위한 Key 값
@@ -43,14 +47,15 @@ public class ChatRepository {
     @PostConstruct
     private void init() {
         topics = new ConcurrentHashMap<>();
-        opsListChat = redisTemplate.opsForList();
+//        opsListChat = redisTemplate.opsForList();
+        opsListChat = listRedisTemplate.opsForList();
     }
 
-    public String createChatRoom() {
+    public String createChatRoom(LocalDateTime now) {
         String roomId = UUID.randomUUID().toString();
         ChannelTopic topic = new ChannelTopic(roomId);
         ChatRoomDto chatRoomDto = ChatRoomDto.builder()
-                .createTime(LocalDateTime.now())
+                .createTime(now)
                 .channelTopic(topic)
                 .build();
         redisMessageListenerContainer.addMessageListener(chatSubscriber, topic);
@@ -71,11 +76,20 @@ public class ChatRepository {
     }
 
     public void chatLogAppend(String message, String roomId) {
+        log.info("=== ChatRepository === \n" +
+                " Message : {} \n" +
+                " RoomId : {} ", message, roomId);
         opsListChat.rightPush(CHAT_KEY + roomId, message);
     }
 
-    public List<Object> chatEnd(String roomId) {
-        List<Object> result = opsListChat.range(CHAT_KEY + roomId, 0, -1);
+//    public List<Object> chatEnd(String roomId) {
+//        List<Object> result = opsListChat.range(CHAT_KEY + roomId, 0, -1);
+//        opsListChat.getOperations().delete(CHAT_KEY + roomId);
+//        return result;
+//    }
+
+    public List<String> chatEnd(String roomId) {
+        List<String> result = opsListChat.range(CHAT_KEY + roomId, 0, -1);
         opsListChat.getOperations().delete(CHAT_KEY + roomId);
         return result;
     }

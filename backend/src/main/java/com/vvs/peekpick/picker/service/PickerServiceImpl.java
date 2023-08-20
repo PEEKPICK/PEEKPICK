@@ -3,6 +3,7 @@ package com.vvs.peekpick.picker.service;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
 import com.vvs.peekpick.member.dto.AvatarDto;
+import com.vvs.peekpick.member.service.MemberService;
 import com.vvs.peekpick.member.service.MemberServiceImpl;
 import com.vvs.peekpick.picker.dto.*;
 import com.vvs.peekpick.picker.repository.PickerJpaRepository;
@@ -15,10 +16,7 @@ import com.vvs.peekpick.response.ResponseStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.geo.Circle;
-import org.springframework.data.geo.GeoResult;
-import org.springframework.data.geo.GeoResults;
-import org.springframework.data.geo.Point;
+import org.springframework.data.geo.*;
 import org.springframework.data.redis.connection.RedisGeoCommands;
 import org.springframework.data.redis.core.GeoOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -44,6 +42,10 @@ public class PickerServiceImpl implements PickerService {
     private final String REQUEST_REJECTED = "채팅이 거절되었습니다.";
     private final String REQUEST_ACCEPTED = "채팅이 수락되었습니다.";
 
+    private static final String CHAT_REQUEST = "REQUEST";
+    private static final String CHAT_START = "CHAT_START";
+    private static final String SSE_START = "SSE_START";
+
     // 주변 최대 Picker 수
     private final int MAX_PICKER_COUNT = 15;
     private final Random random = new Random();
@@ -53,7 +55,7 @@ public class PickerServiceImpl implements PickerService {
     private final PickerRedisRepository pickerRedisRepository;
     private final RedisTemplate<String, String> redisTemplate;
     private final SseEmitterRepository sseEmitterRepository;
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
     private final ChatService chatService;
 
     private GeoOperations<String, String> geoOperations;
@@ -85,7 +87,7 @@ public class PickerServiceImpl implements PickerService {
     public SseEmitter connectSseSession(Long avatarId) {
         SseEmitter emitter = createEmitter(avatarId);
         // 연결 수립을 위한 Dummy 이벤트 전송
-        sendToClient(avatarId, avatarId + " : [SSE Emitter Created]");
+        sendToClient(avatarId, avatarId + " : [SSE Emitter Created]", SSE_START);
         return emitter;
     }
 
@@ -126,7 +128,7 @@ public class PickerServiceImpl implements PickerService {
         ChatRequestDto chatRequestDto = ChatRequestDto.builder()
                 .senderId(senderAvatarId)
                 .requestTime(LocalDateTime.now()).build();
-        sendToClient(targetId, chatRequestDto);
+        sendToClient(targetId, chatRequestDto, CHAT_REQUEST);
         return responseService.successCommonResponse(ResponseStatus.CHAT_REQUEST_SUCCESS);
     }
 
@@ -140,7 +142,7 @@ public class PickerServiceImpl implements PickerService {
     public DataResponse chatResponseReceive(ChatResponseDto chatResponseDto) {
         // 거절
         if ("N".equals(chatResponseDto.getResponse())) {
-            sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED);
+            sendToClient(chatResponseDto.getRequestSenderId(), REQUEST_REJECTED, CHAT_REQUEST);
             return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_REJECTED, null);
         }
         // 수락
@@ -152,20 +154,28 @@ public class PickerServiceImpl implements PickerService {
                 if (point == null) { // 상대가 접속중이지 않을 때
                     throw new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED);
                 } else { // 상대가 접속중일 때
-                    String roomId = chatService.createChatRoom(chatResponseDto.getRequestSenderId(), chatResponseDto.getRequestReceiverId());
+                    LocalDateTime now = LocalDateTime.now();
+                    String roomId = chatService.createChatRoom(chatResponseDto.getRequestSenderId(), chatResponseDto.getRequestReceiverId(), now);
+
+                    // PICK Point 증가
+                    memberService.updatePickPoint(chatResponseDto.getRequestReceiverId(), chatResponseDto.getRequestSenderId());
 
                     // 요청자 + 채팅방 정보 ( 응답자에게 전송 )
                     ChatNotificationDto senderNotification = ChatNotificationDto.builder()
                             .opponent(chatResponseDto.getRequestSenderId())
                             .roomId(roomId)
+                            .createTime(now)
+                            .endTime(now.plusMinutes(10))
                             .build();
 
                     // 응답자 + 채팅방 정보 ( 요청자에게 전송 )
                     ChatNotificationDto receiverNotification = ChatNotificationDto.builder()
                             .opponent(chatResponseDto.getRequestReceiverId())
                             .roomId(roomId)
+                            .createTime(now)
+                            .endTime(now.plusMinutes(10))
                             .build();
-                    sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification);
+                    sendToClient(chatResponseDto.getRequestSenderId(), receiverNotification, CHAT_START);
                     return responseService.successDataResponse(ResponseStatus.CHAT_REQUEST_ACCEPTED, senderNotification);
                 }
             }
@@ -185,8 +195,7 @@ public class PickerServiceImpl implements PickerService {
     @Override
     public DataResponse getPickerListByDistance(SearchPickerDto picker) {
         // 현재위치로부터 반경 Distance(m)에 있는 Picker 리스트 조회
-        GeoResults<RedisGeoCommands.GeoLocation<String>> radius = geoOperations.radius(CONNECT_SESSION, new Circle(picker.getPoint(), picker.getDistance()));
-
+        GeoResults<RedisGeoCommands.GeoLocation<String>> radius = geoOperations.radius(CONNECT_SESSION, new Circle(picker.getPoint(), new Distance(picker.getDistance(), RedisGeoCommands.DistanceUnit.METERS)));
         HashSet<String> pickerList = new HashSet<>();
 
         // 반경 이내에 있는 Picker 인원 수
@@ -207,7 +216,7 @@ public class PickerServiceImpl implements PickerService {
                 pickerList.add(value.getContent().getName());
             }
         }
-
+        log.info("Picker list : {}", pickerList);
         List<AvatarDto> avatarDtoList = new ArrayList<>();
         // 획득한 Id를 통해 이모지, 닉네임, 한줄소개, 호불호 반환
         pickerList.forEach(value -> avatarDtoList.add(memberService.getAvatarInfo(Long.parseLong(value))));
@@ -248,13 +257,13 @@ public class PickerServiceImpl implements PickerService {
      * @param targetId - SSE를 받는 대상 ID
      * @param data     - Event 내용
      */
-    private void sendToClient(Long targetId, Object data) {
+    private void sendToClient(Long targetId, Object data, String name) {
         SseEmitter emitter = sseEmitterRepository.get(targetId).orElseThrow(
                 () -> new CustomException(ExceptionStatus.PICKER_NOT_FOUNDED)
         );
 
         try {
-            emitter.send(SseEmitter.event().id(String.valueOf(targetId)).data(data));
+            emitter.send(SseEmitter.event().name(name).id(String.valueOf(targetId)).data(data));
         } catch (Exception e) {
             sseEmitterRepository.remove(targetId);
             emitter.completeWithError(e);

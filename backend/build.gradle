@@ -56,6 +56,10 @@ dependencies {
 	//s3 파일 업로드 위해
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
+	// 23.08.07 프로메테우스, 그라파나
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+	implementation 'io.micrometer:micrometer-core'
 }
 
 tasks.named('test') {

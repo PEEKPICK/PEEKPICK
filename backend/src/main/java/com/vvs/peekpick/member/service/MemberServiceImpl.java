@@ -3,7 +3,6 @@ package com.vvs.peekpick.member.service;
 import com.vvs.peekpick.entity.*;
 import com.vvs.peekpick.exception.CustomException;
 import com.vvs.peekpick.exception.ExceptionStatus;
-import com.vvs.peekpick.global.auth.util.CookieUtil;
 import com.vvs.peekpick.global.auth.util.JwtTokenProvider;
 import com.vvs.peekpick.global.auth.dto.Token;
 import com.vvs.peekpick.member.dto.AvatarDto;
@@ -105,7 +104,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아바타 정보 수정
-    @Override
     public void updateAvatarInfo(Long avatarId, Map<String, String> param) {
         Avatar avatar = findByAvatarId(avatarId);
 
@@ -123,7 +121,6 @@ public class MemberServiceImpl implements MemberService {
 
 
     // 아바타 이모지 수정
-    @Override
     public void updateAvatarEmoji(Long avatarId, Long emojiId) {
         Avatar avatar = findByAvatarId(avatarId);
 
@@ -134,23 +131,46 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 아바타 likes 태그 수정
-    @Override
     public void updateAvatarLikes(Long avatarId, List<Long> likes) {
         Avatar avatar = findByAvatarId(avatarId);
         updateTaste(avatar, "L", likes);
     }
 
     // 아바타 dislikes 태그 수정
-    @Override
     public void updateAvatarDisLikes(Long avatarId, List<Long> disLikes) {
         Avatar avatar = findByAvatarId(avatarId);
         updateTaste(avatar, "D", disLikes);
     }
 
     // 로그아웃
-    @Override
     public void logout(Long avatarId) {
         refreshTokenRepository.deleteByAvatarId(avatarId);
+    }
+
+    // 채팅 시작 시 채팅 횟수 증가
+    public void updatePickPoint(Long avatarId1, Long avatarId2) {
+        memberRepository.updateChatCountByMemberId(avatarId1);
+        memberRepository.updateChatCountByMemberId(avatarId2);
+    }
+
+    // Peek 좋아요, 싫어요 업데이트
+    public void updateLikeDisLikeCount(Long memberId, int likeCount, int disLikeCount) {
+        memberRepository.updateLikeDisLikeCountByMemberId(memberId, likeCount, disLikeCount);
+    }
+
+    // World 변경
+    public void updateWorld(Long avatarId, Long worldId) {
+            avatarRepository.updateWorldByAvatarId(avatarId, worldId);
+    }
+
+    // 채팅 상대방 데이터 조회
+    public AvatarDto getOtherMemberInfo(Long avatarId) {
+        Avatar avatar = avatarRepository.findById(avatarId)
+                                        .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+        Achievement achievement = achievementRepository.findById(avatarId)
+                                  .orElseThrow(() -> new CustomException(ExceptionStatus.NOT_FOUND_AVATAR));
+
+        return avatar.toAvatarDto(achievement);
     }
 
     // 취향 태그 수정

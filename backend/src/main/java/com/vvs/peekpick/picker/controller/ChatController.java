@@ -35,9 +35,9 @@ public class ChatController {
         ChatRoomDto chatRoomDto = chatService.getChatRoom(messageDto.getRoomId());
         if (LocalDateTime.now().isAfter(chatRoomDto.getCreateTime().plusMinutes(10))){
             // 10분 이후 메시지를 잠금
-            messageDto.expiredMessage();
-
+            messageDto.expireMessage();
         }else {
+            messageDto.setSendTime(LocalDateTime.now().toString());
             chatService.appendLog(messageDto);
         }
         chatPublisher.publish(chatRoomDto.getChannelTopic(), messageDto);
