@@ -35,6 +35,7 @@ public class ChatRepository {
 
     @Qualifier("commonRedisTemplate")
     private final RedisTemplate<String, Object> redisTemplate;
+    @Qualifier("chatLogRedisTemplate")
     private final RedisTemplate<String, String> listRedisTemplate;
 //    private ListOperations<String, Object> opsListChat;
     private ListOperations<String, String> opsListChat;
