@@ -142,7 +142,6 @@ const MyPage = () => {
         }
       } else {
         await customAxios.post("/auth/refresh");
-        // console.log(response);
       }
     };
 
