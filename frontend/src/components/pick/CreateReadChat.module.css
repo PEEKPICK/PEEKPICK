@@ -96,7 +96,7 @@
   position: absolute;
   width: 90%;
   bottom: 2%;
-  height: 5%;
+  height: 1.5rem;
   display: flex;
   padding: 1%;
   left: 4%;
@@ -122,9 +122,9 @@
   background-image: url("/public/img/send.png");
   background-repeat: no-repeat;
   background-position: 50% center;
-  margin-right: 0.5rem;
-  padding-right: 2rem;
-  padding-top: 2rem;
+  margin: 5%;
+  padding-right: 7vw;
+  padding-top: 7vw;
   border: none;
   background-color: rgb(255, 255, 255);
 }
@@ -176,11 +176,19 @@
 
 .chat {
   margin: 1vh 2% 3vh 2%;
-  min-height: 78%;
+  height: 85%;
   max-height: 81%;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
+  scrollbar-width: 3rem; /* 파이어폭스 */
+  border: 1px solid black;
+}
+
+.keyboardVisible {
+  border: 1px solid red;
+  max-height: 70%;
   -ms-overflow-style: 3rem; /* 인터넷 익스플로러 */
   scrollbar-width: 3rem; /* 파이어폭스 */
 }
