@@ -23,6 +23,7 @@ const Header = () => {
   const [worldMapList, setWorldMapList] = useState([]);
   const [checkMap, setCheckMap] = useState(null);
   const [selectedDistance, setSelectedDistance] = useState(500);
+
   // 함수 선언
   const location = useLocation();
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ const Header = () => {
 
     dispatch(locationActions.updateDist(sendToData));
   };
+
   // 뒤로가기 버튼
   const moveBackHandler = () => {
     setIsWorldMap(false);

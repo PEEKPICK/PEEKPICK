@@ -4,6 +4,7 @@ import { modalActions } from "../../store/modalSlice";
 import classes from "./ModalComp.module.css";
 import { useState, useEffect } from "react";
 import { customAxios } from "../../api/customAxios";
+import { toast } from "react-hot-toast";
 
 const ModalComp = () => {
   //유져 정보 모달용
@@ -27,9 +28,9 @@ const ModalComp = () => {
   const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
   const [singo, setSingo] = useState(false);
 
-  const handleExitConfirmation = () => {
-    setShowExitConfirmationModal(true);
-  };
+  // const handleExitConfirmation = () => {
+  //   setShowExitConfirmationModal(true);
+  // };
 
   const closeExitConfirmationModal = () => {
     setShowExitConfirmationModal(false);
@@ -81,8 +82,6 @@ const ModalComp = () => {
     }
   }, [timeLeft]);
 
-
-
   useEffect(() => {
     if (isSelectedEmoji) {
       // isSelectedEmoji가 null이 아닐 때만 업데이트
@@ -93,7 +92,6 @@ const ModalComp = () => {
     }
   }, [isSelectedEmoji]);
 
-
   // 퍼센트 창이 바로 반응하도록, 마운트 추가
   useEffect(() => {
     if (likeCount + disLikeCount > 0) {
@@ -102,8 +100,6 @@ const ModalComp = () => {
       setProcessBar(0);
     }
   }, [likeCount, disLikeCount]);
-
-
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
@@ -151,21 +147,28 @@ const ModalComp = () => {
       });
   };
 
-  
-  
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   
   // 시간 제한
-    const handleButtonClick = (clickHandler) => {
-      if (!isButtonDisabled) {
-        setIsButtonDisabled(true); // 클릭 비활성화
-        clickHandler();
+  const handleButtonClick = (clickHandler) => {
+    if (!isButtonDisabled) {
+      setIsButtonDisabled(true); // 클릭 비활성화
+      clickHandler();
+
+      setTimeout(() => {
+        setIsButtonDisabled(false); // 2초 후에 클릭 활성화
+      }, 1000);
+    }
+  };
+
+  const sirenChat = () => {
+    toast("신고가 완료됐습니다! 🚨", {
+      icon: "🚨",
+    });
+    handleCloseModal();
+    closeExitConfirmationModal();
+  };
   
-        setTimeout(() => {
-          setIsButtonDisabled(false); // 2초 후에 클릭 활성화
-        }, 1000);
-      }
-    };
   return (
     <>
       {isModalState && isSelectedEmoji && (
@@ -281,7 +284,25 @@ const ModalComp = () => {
                 <span></span>
             }
           </div>
+          {singo && (
+            <div className={classes.exitConfirmationModal}>
+              <div className={classes.caution}>CAUTION</div>
 
+              <div className={classes.modal_divider}></div>
+
+              <p>정말로 신고하시겠습니까?</p>
+              <p>신고 시 PEEK가 종료됩니다.</p>
+
+              <div className={classes.button_area}>
+                <button onClick={() => sirenChat()} className={classes.exit_button}>
+                  신고하기
+                </button>
+                <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
+                  취소
+                </button>
+              </div>
+            </div>
+          )}
         </Modal>
       )}
     </>
