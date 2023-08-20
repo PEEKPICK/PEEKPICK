@@ -68,6 +68,14 @@ public class ChatServiceImpl implements ChatService {
         List<Object> objects = chatRepository.chatEnd(roomId);
         String delimiter = "\\D";
 
+        StringBuilder sb = new StringBuilder();
+
+        for (Object object : objects){
+            sb.append(object.toString());
+        }
+
+        log.info("ExitChatRoom Start : {} ", sb.toString());
+
         // Log String 으로 변경
         Chat chat = Chat.builder()
                 .roomId(roomId)
@@ -75,6 +83,8 @@ public class ChatServiceImpl implements ChatService {
                         .map(Object::toString)
                         .collect(Collectors.joining(delimiter)))
                 .build();
+        log.info("Chatting Log : {}", chat.getContent());
+
         // Log 저장
         chatJpaRepository.save(chat);
         
@@ -90,8 +100,6 @@ public class ChatServiceImpl implements ChatService {
      */
     @Override
     public void appendLog(ChatMessageDto messageDto) {
-        log.info("Chat Service Impl : {} \n", messageDto.toString());
-        log.info("Chat Service Impl Room Id : {} ", messageDto.getRoomId());
         chatRepository.chatLogAppend(messageDto.toString(), messageDto.getRoomId());
     }
 
