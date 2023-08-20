@@ -37,6 +37,7 @@ public class ChatController {
             // 10분 이후 메시지를 잠금
             messageDto.expireMessage();
         }else {
+            log.info("Chat Controller : {} // {}", messageDto.getRoomId(), messageDto.getMessage());
             chatService.appendLog(messageDto);
         }
         chatPublisher.publish(chatRoomDto.getChannelTopic(), messageDto);

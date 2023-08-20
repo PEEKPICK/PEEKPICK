@@ -90,6 +90,7 @@ public class ChatServiceImpl implements ChatService {
      */
     @Override
     public void appendLog(ChatMessageDto messageDto) {
+        log.info("message : {} // roomId : {}", messageDto.getMessage(), messageDto.getRoomId());
         chatRepository.chatLogAppend(messageDto.toString(), messageDto.getRoomId());
     }
 
