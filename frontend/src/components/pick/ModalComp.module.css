@@ -93,15 +93,12 @@
   background-color: rgba(125, 0, 255, 0.1);
 }
 
-
 .intro img {
   height: 1rem;  
   width: auto;  
   vertical-align: middle;  
   margin-right: 0.3rem;  
 }
-
-
 
 /* 모달 중간선  */
 .divider {
@@ -328,6 +325,7 @@
   justify-content: center;
   padding: 0;
 }
+
 .vs img {
   width: 60px;
   height: auto;
@@ -413,4 +411,73 @@ progress {
 
 .timer{
   width: 70%;
+}
+
+/* 신고 모달 */
+.exitConfirmationModal {
+  position: fixed;
+  width: 40%;
+  height: 30%;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 모바일 스타일 */
+@media (max-width: 500px) {
+  .exitConfirmationModal {
+    width: 60%; /* 모바일 화면에 맞게 너비 조정 */
+    left: 50%;
+    height: 30%;
+    margin: 0;
+  }
+}
+
+.exitConfirmationModal p {
+  line-height: 180%;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.caution {
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.modal_divider {
+  margin: 3% 0 10% 0;
+  background-color: #7d00ff;
+}
+
+.button_area {
+  display: flex;
+  margin: 10% 0 0 0;
+  justify-content: space-between;
+}
+
+.exit_button {
+  border: none;
+  width: 80px;
+  padding: 8px 0 8px 0;
+  background-color: #7d00ff;
+  border-radius: 8px 8px 8px 8px;
+  color: #ffffff;
+  font-size: 10px;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
+}
+
+.cancel_button {
+  border: none;
+  width: 80px;
+  padding: 8px 0 8px 0;
+  border-radius: 8px 8px 8px 8px;
+  background-color: gray;
+  color: #ffffff;
+  font-size: 10px;
+  box-shadow: 0.2rem 0.2rem 0.3rem rgba(0, 0, 0, 0.25);
 }

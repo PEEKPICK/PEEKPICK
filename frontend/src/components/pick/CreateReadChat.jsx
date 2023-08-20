@@ -329,7 +329,7 @@ const CreateReadChat = ({ isModalState }) => {
 
             <div className={classes.button_area}>
               <button onClick={() => sirenChat()} className={classes.exit_button}>
-                나가기
+                신고하기
               </button>
               <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
                 취소
