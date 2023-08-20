@@ -41,7 +41,7 @@ public class PeekRedisServiceImpl implements PeekRedisService{
 
     @Qualifier("peekRedisTemplate")
     private final RedisTemplate<String, Object> peekTemplate;
-    @Qualifier("chatLogRedisTemplate")
+
     private final RedisTemplate<String, String> locationTemplate;
     private GeoOperations<String, String> geoOps;
     private ValueOperations<String, Object> valueOps;

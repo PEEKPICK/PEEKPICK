@@ -87,15 +87,6 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, String> chatLogRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-        return redisTemplate;
-    }
-
-    @Bean
     public RedisMessageListenerContainer redisPeekListenerContainer(RedisConnectionFactory connectionFactory, MessageListener listener) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
