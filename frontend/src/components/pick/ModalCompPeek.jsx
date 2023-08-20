@@ -82,8 +82,6 @@ const ModalComp = () => {
     }
   }, [timeLeft]);
 
-
-
   useEffect(() => {
     if (isSelectedEmoji) {
       // isSelectedEmoji가 null이 아닐 때만 업데이트
@@ -94,7 +92,6 @@ const ModalComp = () => {
     }
   }, [isSelectedEmoji]);
 
-
   // 퍼센트 창이 바로 반응하도록, 마운트 추가
   useEffect(() => {
     if (likeCount + disLikeCount > 0) {
@@ -103,8 +100,6 @@ const ModalComp = () => {
       setProcessBar(0);
     }
   }, [likeCount, disLikeCount]);
-
-
 
   const handleCloseModal = () => {
     dispatch(modalActions.closeModal());
@@ -152,8 +147,6 @@ const ModalComp = () => {
       });
   };
 
-  
-  
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   
   // 시간 제한
