@@ -43,6 +43,7 @@ public class PeekServiceImpl implements PeekService {
     @Override
     public DataResponse findNearPeek(Long memberId, RequestSearchPeekDto requestSearchPeekDto) {
         try {
+            log.info("요쳥 받은 point : {}", requestSearchPeekDto.getPoint());
             // 반경 m로 원 생성
             Circle circle = new Circle(requestSearchPeekDto.getPoint(), new Distance(requestSearchPeekDto.getDistance()));
 
@@ -68,8 +69,10 @@ public class PeekServiceImpl implements PeekService {
                     allPeeks.add(responsePeekListDto);
                 }
             }
-            System.out.println(allPeeks);
-            if(allPeeks.size() == 0 ) return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
+            if(allPeeks.size() == 0 ) {
+                log.info("Peek list size is 0 : {}", allPeeks);
+                return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS_NO_PEEK, allPeeks);
+            }
 
             // 랜덤 추출 (max 보다 적게 있는 경우 있는대로만 가져옴)
             List<ResponsePeekListDto> randomPeeks;
@@ -84,8 +87,7 @@ public class PeekServiceImpl implements PeekService {
                 }
             }
 
-
-            System.out.println(randomPeeks);
+            log.info("Peek list : {}", randomPeeks);
             return responseService.successDataResponse(ResponseStatus.LOADING_PEEK_LIST_SUCCESS, randomPeeks);
         }
         catch (Exception e) {
