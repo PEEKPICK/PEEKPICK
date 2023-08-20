@@ -108,6 +108,27 @@ const CreateReadChat = ({ isModalState }) => {
     });
     declare();
     closeExitConfirmationModal();
+    // const requestReportDto = {
+    //   "reportCategoryId" : 6,
+    //   "reportContent" : "신고 내용 텍스트"
+    // };
+
+    // customAxios
+    // .post(`/report/picker/${getRoomId}`, requestReportDto) 
+    // .then((res) => {
+    //   // 성공 시 처리
+    //   toast("신고가 완료됐습니다! 🚨", {
+    //     icon: "🚨",
+    //   });
+    //   declare();
+    //   closeExitConfirmationModal();
+    // })
+    // .catch((res) => { 
+    //   // 실패 시 처리
+    //   toast("신고에 실패했습니다. 😞", {
+    //     icon: "😞",
+    //   });
+    // }); 
   };
 
   const joinChatRoom = () => {

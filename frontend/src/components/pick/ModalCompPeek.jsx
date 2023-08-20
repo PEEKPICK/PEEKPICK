@@ -161,12 +161,27 @@ const ModalComp = () => {
     }
   };
 
-  const sirenChat = () => {
-    toast("신고가 완료됐습니다! 🚨", {
-      icon: "🚨",
+  const sirenPeek = () => {
+    const requestReportDto = {
+      "reportCategoryId" : 6,
+      "reportContent" : "신고 내용 텍스트"
+    };
+    customAxios
+    .post(`/report/peek/${isSelectedEmoji.peekDetailDto.peekId}`, requestReportDto) 
+    .then((res) => {
+      // 성공 시 처리
+      toast("신고가 완료됐습니다! 🚨", {
+        icon: "🚨",
+      });
+      handleCloseModal();
+      closeExitConfirmationModal();
+    })
+    .catch((res) => { 
+      // 실패 시 처리
+      toast("신고에 실패했습니다. 😞", {
+        icon: "😞",
+      });
     });
-    handleCloseModal();
-    closeExitConfirmationModal();
   };
   
   return (
@@ -194,9 +209,14 @@ const ModalComp = () => {
                     {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
                   </span>
                 </div>
-                <button className={classes.siren} disabled={showExitConfirmationModal}>
-                  <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
-                </button>
+   
+                {
+                  // nowUserId와 writerId가 다른 경우에만 siren 버튼을 보여줌
+                  (isSelectedEmoji.nowUserId !== isSelectedEmoji.peekAvatarDto.writerId) &&
+                  <button className={classes.siren} disabled={showExitConfirmationModal}>
+                    <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
+                  </button>
+                }
               </div>
               {/* <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
@@ -290,11 +310,10 @@ const ModalComp = () => {
 
               <div className={classes.modal_divider}></div>
 
-              <p>정말로 신고하시겠습니까?</p>
-              <p>신고 시 PEEK가 종료됩니다.</p>
+              <p>Peek를 신고하시겠습니까?</p> 
 
               <div className={classes.button_area}>
-                <button onClick={() => sirenChat()} className={classes.exit_button}>
+                <button onClick={() => sirenPeek()} className={classes.exit_button} >
                   신고하기
                 </button>
                 <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
