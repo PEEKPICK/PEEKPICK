@@ -209,9 +209,14 @@ const ModalComp = () => {
                     {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
                   </span>
                 </div>
-                <button className={classes.siren} disabled={showExitConfirmationModal}>
-                  <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
-                </button>
+   
+                {
+                  // nowUserId와 writerId가 다른 경우에만 siren 버튼을 보여줌
+                  (isSelectedEmoji.nowUserId !== isSelectedEmoji.peekAvatarDto.writerId) &&
+                  <button className={classes.siren} disabled={showExitConfirmationModal}>
+                    <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
+                  </button>
+                }
               </div>
               {/* <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
