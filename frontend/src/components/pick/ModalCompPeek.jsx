@@ -23,6 +23,9 @@ const ModalComp = () => {
   const [finishTime, setFinishTime] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0); // 초기값은 0으로 설정
 
+
+
+
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
@@ -48,7 +51,6 @@ const ModalComp = () => {
       const now = new Date();
       const difference = finishTime - now;
       const secondsLeft = Math.floor(difference / 1000);
-
       setTimeLeft(secondsLeft);
     }
   }, [finishTime]);
@@ -58,7 +60,7 @@ const ModalComp = () => {
       const timerId = setInterval(() => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
-
+      console.log('check2')
       return () => clearInterval(timerId); // 컴포넌트 unmount 시 타이머 제거
     }
     else if (timeLeft === 0) {
@@ -100,6 +102,7 @@ const ModalComp = () => {
       .then((res) => {
         setLikeCount(likeCount + 1);
         setCheckl(!checkl);
+        setTimeLeft(timeLeft+600);
       })
       .catch((res) => { });
   };
@@ -110,6 +113,7 @@ const ModalComp = () => {
       .then((res) => {
         setLikeCount(likeCount - 1);
         setCheckl(!checkl);
+        setTimeLeft(timeLeft-600);
       })
       .catch((res) => { });
   };
@@ -120,6 +124,7 @@ const ModalComp = () => {
       .then((res) => {
         setDisLikeCount(disLikeCount + 1);
         setCheckh(!checkh);
+        setTimeLeft(timeLeft+600);
       });
   };
 
@@ -129,9 +134,25 @@ const ModalComp = () => {
       .then((res) => {
         setDisLikeCount(disLikeCount - 1);
         setCheckh(!checkh);
+        setTimeLeft(timeLeft-600);
       });
   };
 
+  
+  
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  
+  // 시간 제한
+    const handleButtonClick = (clickHandler) => {
+      if (!isButtonDisabled) {
+        setIsButtonDisabled(true); // 클릭 비활성화
+        clickHandler();
+  
+        setTimeout(() => {
+          setIsButtonDisabled(false); // 2초 후에 클릭 활성화
+        }, 1000);
+      }
+    };
   return (
     <>
       {isModalState && isSelectedEmoji && (
@@ -200,9 +221,9 @@ const ModalComp = () => {
               {
                 checkl
                   ?
-                  <img src="img/Like_On.png" alt="따봉색깔찬녀석" onClick={likeCancleTouch} />
+                  <img src="img/Like_On.png" alt="따봉색깔찬녀석" onClick={() => handleButtonClick(likeCancleTouch)} />
                   :
-                  <img src="img/Like_Off.png" alt="따봉" onClick={likeTouch} />
+                  <img src="img/Like_Off.png" alt="따봉" onClick={() => handleButtonClick(likeTouch)} />
               }
               {likeCount || disLikeCount ?
                 <span>{processBar}%</span>
@@ -222,9 +243,9 @@ const ModalComp = () => {
               {
                 checkh
                   ?
-                  <img src="img/DisLike_On.png" alt="따봉색깔찬녀석" onClick={hateCancleTouch} />
+                  <img src="img/DisLike_On.png" alt="따봉색깔찬녀석" onClick={() => handleButtonClick(hateCancleTouch)} />
                   :
-                  <img src="img/DisLike_Off.png" alt="우우" onClick={hateTouch} />
+                  <img src="img/DisLike_Off.png" alt="우우" onClick={() => handleButtonClick(hateTouch)} />
               }
             </div>
           </div>

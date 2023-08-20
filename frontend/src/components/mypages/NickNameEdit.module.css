@@ -7,7 +7,7 @@
   border-radius: 8px;
   box-shadow: 2px -2px 5px rgba(0, 0, 0, 0.3);
   width: 280px;
-  height: 42vh;
+  height: 43vh;
   z-index: 1015;
   animation: 0.2s ease-in-out loadEffect1;
   transform: translate(-50%, -50%) scale(1);
@@ -43,13 +43,13 @@
 /* 타이틀 */
 
 .title {
-  margin-top: 5%;
+  margin-top: 1vh;
 }
 
 .titleinline {
   display: flex;
   align-items: center;
-  margin-bottom: 3vh;
+  margin-bottom: 1vh;
   /* margin-left: 2%; */
 }
 
@@ -59,7 +59,7 @@
   border: 1px solid gray;
   width: 65%;
   padding-left: 3%;
-  margin-top: 2%;
+  margin-top: 1vh;
 }
 
 .titleinline img {
@@ -67,7 +67,7 @@
   margin-left: 10%;
   padding: 0.7vh 1.7vh 0.7vh 1.7vh;
   border-radius: 1.5vh;
-  margin-top: 2%;
+  margin-top: 1vh;
 }
 
 /* 닉네임 */
@@ -75,7 +75,7 @@
 .nickname {
   display: flex;
   align-items: center;
-  margin-bottom: 3.0vh;
+  margin-bottom: 2vh;
   /* margin-left: 1%; */
 }
 
@@ -85,7 +85,7 @@
   border: 1px solid gray;
   width: 65%;
   padding-left: 3%;
-  margin-top: 2%;
+  margin-top: 1vh;
 
 }
 
@@ -126,6 +126,6 @@
   width: 100%;
   border: 1px solid;
   border-color: rgba(125, 0, 225);
-  margin-top: 2%;
-  margin-bottom: 5%;
+  margin-top: 1vh;
+  margin-bottom: 2vh;
 }

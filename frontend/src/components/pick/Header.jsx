@@ -22,7 +22,7 @@ const Header = () => {
   const [isWorldMap, setIsWorldMap] = useState(false);
   const [worldMapList, setWorldMapList] = useState([]);
   const [checkMap, setCheckMap] = useState(null);
-  const [selectedDistance, setSelectedDistance] = useState(50);
+  const [selectedDistance, setSelectedDistance] = useState(500);
   // 함수 선언
   const location = useLocation();
   const dispatch = useDispatch();
@@ -192,7 +192,7 @@ const Header = () => {
                 <input
                   type="radio"
                   id="peek_distance_1"
-                  value="50"
+                  value="500"
                   name="debt-amount"
                   checked={selectedDistance === 500}
                   onChange={() => changeDistance(500)}
@@ -201,7 +201,7 @@ const Header = () => {
                 <input
                   type="radio"
                   id="peek_distance_2"
-                  value="100"
+                  value="1000"
                   name="debt-amount"
                   checked={selectedDistance === 1000}
                   onChange={() => changeDistance(1000)}
@@ -210,7 +210,7 @@ const Header = () => {
                 <input
                   type="radio"
                   id="peek_distance_3"
-                  value="150"
+                  value="1500"
                   name="debt-amount"
                   checked={selectedDistance === 1500}
                   onChange={() => changeDistance(1500)}
@@ -219,7 +219,7 @@ const Header = () => {
                 <input
                   type="radio"
                   id="peek_distance_4"
-                  value="200"
+                  value="2000"
                   name="debt-amount"
                   checked={selectedDistance === 2000}
                   onChange={() => changeDistance(2000)}

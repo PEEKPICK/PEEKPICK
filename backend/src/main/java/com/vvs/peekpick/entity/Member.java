@@ -1,8 +1,12 @@
 package com.vvs.peekpick.entity;
 
+import com.sun.istack.NotNull;
+import com.vvs.peekpick.member.dto.SignUpDto;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Entity
@@ -11,7 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
     private String email;
     private String name;
@@ -28,6 +32,19 @@ public class Member {
     @JoinColumn(name = "achievement_id")
     private Achievement achievement;
 
+    public void updateMember(SignUpDto signUpDto, Avatar avatar, Achievement achievement) {
+        this.avatar = avatar;
+        this.achievement = achievement;
+        this.gender = signUpDto.getGender();
+        this.phone = signUpDto.getPhone();
+        this.birthday = signUpDto.getBirthday();
+    }
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
     @Override
     public String toString() {
         return "Member{" +
