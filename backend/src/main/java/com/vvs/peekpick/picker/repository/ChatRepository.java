@@ -72,6 +72,9 @@ public class ChatRepository {
     }
 
     public void chatLogAppend(String message, String roomId) {
+        log.info("=== ChatRepository === \n" +
+                " Message : {} \n" +
+                " RoomId : {} ");
         opsListChat.rightPush(CHAT_KEY + roomId, message);
     }
 
