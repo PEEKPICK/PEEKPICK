@@ -39,6 +39,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // toast
 import { Toaster } from "react-hot-toast";
+import { isAsyncThunkAction } from "@reduxjs/toolkit";
 
 function App() {
   const dispatch = useDispatch();
@@ -65,11 +66,32 @@ function App() {
     }, 800);
     // vh변환 함수 작동
     setScreenSize();
-    const checkTokenInLocalStorage = () => {
-      const token = localStorage.getItem("jwtToken");
-      return token !== null;
-    };
-    setIsAuthenticated(checkTokenInLocalStorage());
+    // const checkTokenInLocalStorage = () => {
+    //   const token = localStorage.getItem("jwtToken");
+    //   return token !== null;
+    // };
+    // setIsAuthenticated(checkTokenInLocalStorage());
+
+  const token = localStorage.getItem('jwtToken');
+  function TokenExpired() {
+    if (token === null) return false;
+    else{
+      const decodedToken = JSON.parse(atob(token.split(".")[1]));
+      const decoded = decodedToken.exp;
+      const currentTime = Date.now() / 1000;
+      return decoded > currentTime;
+    }
+  }
+  const fetchData = async () => {
+    if (!TokenExpired()){
+      if (token !== null){
+        await customAxios.post("/auth/refresh");
+      }
+    }
+  }
+
+  fetchData();
+  setIsAuthenticated(TokenExpired());
 
     // 이미지 우클릭 방지
     const preventImageContextMenu = (event) => {
