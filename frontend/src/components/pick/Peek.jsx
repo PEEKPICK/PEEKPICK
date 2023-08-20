@@ -7,8 +7,10 @@ import { useState, useEffect } from "react";
 
 function Peek() {
   const mapInfo = useSelector((state) => state.changeMap);
-  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+  const distanceMap =useSelector((state) => state.location.userPos.distance);
 
+  const [backgroundImageUrl, setBackgroundImageUrl] = useState('');
+  const [mapType, setMapType] = useState(classes.pickerMain);
   useEffect(() => {
     const worldMapUrl = localStorage.getItem('worldMap')
     if (mapInfo.openUrl === null) {
@@ -18,6 +20,21 @@ function Peek() {
     }
   }, [mapInfo]);
 
+
+  useEffect (()=>{
+
+    if(distanceMap=== 500){
+     setMapType(classes.pickerMainOne);
+    } else if (distanceMap === 1000){
+     setMapType(classes.pickerMainTwo);
+    } else if ( distanceMap===1500){
+     setMapType(classes.pickerMainThree);
+    } else{
+     setMapType(classes.pickerMain);
+    }
+    // eslint-disable-next-line
+ },[distanceMap]);
+
   const inlineStyles = {
     backgroundImage: backgroundImageUrl
       ? `url(${backgroundImageUrl})`
@@ -25,7 +42,7 @@ function Peek() {
     // 다른 스타일 속성들
   };
   return (
-    <div className={classes.pickerMain} id="peekMain" style={inlineStyles}>
+    <div  className={mapType} id="peekMain" style={inlineStyles}>
       {/* <Header></Header> */}
       <FindPeek></FindPeek>
     </div>
