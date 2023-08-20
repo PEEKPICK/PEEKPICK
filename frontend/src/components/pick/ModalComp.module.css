@@ -59,11 +59,26 @@
   margin-right: 2px;
 }
 
+.nicknameAndSiren {
+  width: 95%;
+  display: flex;
+  align-items: center; 
+}
+
 .nickname {
+  flex-grow: 8; /* 또는 flex: 8; */
   margin-top: 5%;
   font-size: 18px;
   font-weight: 700;
   margin-right: 1%;
+}
+
+.siren {
+  flex-grow: 2; /* 또는 flex: 8; */
+  margin-top: 5%;
+  border: none; 
+  outline: none; 
+  background: transparent;
 }
 
 .intro {
@@ -78,12 +93,14 @@
   background-color: rgba(125, 0, 255, 0.1);
 }
 
+
 .intro img {
   height: 1rem;  
   width: auto;  
   vertical-align: middle;  
   margin-right: 0.3rem;  
 }
+
 
 
 /* 모달 중간선  */

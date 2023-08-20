@@ -24,7 +24,21 @@ const ModalComp = () => {
   const [timeLeft, setTimeLeft] = useState(0); // 초기값은 0으로 설정
 
 
+  const [showExitConfirmationModal, setShowExitConfirmationModal] = useState(false);
+  const [singo, setSingo] = useState(false);
 
+  const handleExitConfirmation = () => {
+    setShowExitConfirmationModal(true);
+  };
+
+  const closeExitConfirmationModal = () => {
+    setShowExitConfirmationModal(false);
+    setSingo(false);
+  };
+
+  const sirenHandler = () => {
+    setSingo(true);
+  };
 
   const formatTime = (seconds) => {
     const hours = Math.floor(seconds / 3600);
@@ -169,13 +183,19 @@ const ModalComp = () => {
               alt="프로필"
               className={classes.profileImg}
             />
+            
             <div className={classes.modalHeadText}>
-              <span className={classes.nickname}>
-                {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "PEEKPICK" : isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
-                {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
-                {/* {isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
-                {isSelectedEmoji.peekAvatarDto.nickname} */}
-              </span>
+              <div className={classes.nicknameAndSiren}>
+                <div className={classes.nickname}>
+                  <span>
+                    {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "PEEKPICK" : isSelectedEmoji.peekAvatarDto.prefix.content}{" "}
+                    {isSelectedEmoji.peekAvatarDto.writerId === 1 ? "관리자" : isSelectedEmoji.peekAvatarDto.nickname}
+                  </span>
+                </div>
+                <button className={classes.siren} disabled={showExitConfirmationModal}>
+                  <img src="img/siren.png" alt="신고" onClick={() => sirenHandler()} />
+                </button>
+              </div>
               {/* <span style={{ marginRight: "0.2rem" }}>PICK</span>
               <span style={{ color: "#7d00ff", fontWeight: "700" }}>10</span>
               <span style={{ marginLeft: "0.2rem" }}>회</span> */}
