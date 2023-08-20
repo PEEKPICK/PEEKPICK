@@ -87,6 +87,7 @@ public class ReportServiceImpl implements ReportService{
 
     @Override
     public CommonResponse chatReport(Long memberId, String roomId, RequestReportDto requestReportDto) {
+
         // 신고당한 chat room 조회
         ChatRoomDto chatRoomDto = chatService.getChatRoom(roomId);
 
@@ -105,7 +106,8 @@ public class ReportServiceImpl implements ReportService{
                 .victim(victim) //피신고자
                 .reportCategory(reportCategory) //reportCategory 객체
                 .contetnType("C") //chat
-                .reportContentId(roomId) //chat의 id
+                //.reportContentId(roomId) //chat의 id
+                .reportContentId("1")
                 .reportContent(requestReportDto.getReportContent()) //신고 내용
                 .reportTime(LocalDateTime.now()) //신고 작성 시간
                 .build();
