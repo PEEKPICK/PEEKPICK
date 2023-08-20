@@ -29,7 +29,8 @@ const CreateReadChat = ({ isModalState }) => {
   const chatListRef = useRef(null);
   // 입력창의 메시지 상태와 전송된 메시지 상태 분리
   const [inputMessage, setInputMessage] = useState("");
-  // -------------------------------
+  // 채팅바 올라옴
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const chatPop = () => {
     dispatch(chatActions.updateChatModalState(!isModalState));
@@ -232,7 +233,32 @@ const CreateReadChat = ({ isModalState }) => {
   useEffect(() => {
     // 메시지가 갱신될 때마다 스크롤을 최하단으로 이동
     scrollToBottom();
-  }, [receivedMessages]);
+    // eslint-disable-next-line
+  }, [receivedMessages, window.innerHeight]);
+
+  useEffect(() => {
+    const handleKeyboardVisibility = () => {
+      const initialViewHeight = window.innerHeight;
+
+      const handleResize = () => {
+        const currentViewHeight = window.innerHeight;
+        if (initialViewHeight > currentViewHeight) {
+          setIsKeyboardVisible(true);
+        } else {
+          setIsKeyboardVisible(false);
+        }
+      };
+
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    };
+
+    handleKeyboardVisibility();
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>
@@ -263,7 +289,7 @@ const CreateReadChat = ({ isModalState }) => {
         </div>
         <div className={classes.divider} />{" "}
         <div
-          className={classes.chat}
+          className={`${classes.chat} ${isKeyboardVisible ? classes.keyboardVisible : ""}`}
           ref={chatListRef}
           // onScroll={handleScroll}
         >
