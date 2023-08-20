@@ -9,7 +9,6 @@ import { customAxios } from "../../api/customAxios";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-hot-toast";
 import ChatRestTime from "./ChatRestTime";
-import { useCallback } from "react";
 
 const CreateReadChat = ({ isModalState }) => {
   const dispatch = useDispatch();
@@ -82,9 +81,9 @@ const CreateReadChat = ({ isModalState }) => {
     }
   };
 
-  const showMessage = useCallback((message) => {
+  const showMessage = (message) => {
     setReceivedMessages((prevMessages) => [...prevMessages, message]);
-  }, []);
+  };
 
   // 스크롤을 부드럽게 최하단으로 내리는 함수
   const scrollToBottom = () => {
@@ -96,7 +95,6 @@ const CreateReadChat = ({ isModalState }) => {
 
   const handleInputMessageChange = (e) => {
     setInputMessage(e.target.value);
-    scrollToBottom();
   };
 
   const sirenHandler = () => {
@@ -126,7 +124,6 @@ const CreateReadChat = ({ isModalState }) => {
       );
       setInputMessage("");
     }
-    scrollToBottom();
   };
 
   const declare = () => {
@@ -176,30 +173,29 @@ const CreateReadChat = ({ isModalState }) => {
   };
 
   useEffect(() => {
-    scrollToBottom();
-
     const connect = () => {
       const socket = new SockJS(`https://peekpick.online/ws`);
       const factory = Stomp.over(socket);
       factory.reconnect_delay = 2000;
 
       factory.connect({}, (frame) => {
-        setStompClient(factory);
+        setStompClient((prevStompClient) => {
+          if (prevStompClient) {
+            prevStompClient.disconnect();
+          }
+          return factory;
+        });
         factory.subscribe(`/sub/chat/room/${getRoomId}`, (chatMessage) => {
           const parseMessage = JSON.parse(chatMessage.body);
           // console.log("니가 보낸거!!!!!!!!!!!!", parseMessage);
           if (parseMessage.expireFlag === "Y") {
             showMessage(parseMessage);
             dispatch(chatActions.updateEndTime(createTime));
-            scrollToBottom();
-            // dispatch(chatActions.resetState());
             if (stompClient !== null) {
               setStompClient(null);
-              scrollToBottom();
             }
           } else {
             showMessage(parseMessage);
-            scrollToBottom();
           }
         });
       });
@@ -215,7 +211,7 @@ const CreateReadChat = ({ isModalState }) => {
   useEffect(() => {
     // 메시지가 갱신될 때마다 스크롤을 최하단으로 이동
     scrollToBottom();
-  }, [receivedMessages, inputMessage]);
+  }, [receivedMessages]);
 
   return (
     <>
@@ -249,11 +245,10 @@ const CreateReadChat = ({ isModalState }) => {
           className={classes.chat}
           ref={chatListRef}
           // onScroll={handleScroll}
-          // style={{ overflowY: "auto", maxHeight: "81%", minHeight: "78%" }}
         >
           <ul id="messageList">
             {receivedMessages.map((message) => (
-              <div className={classes.chatBubble} key={uuid()}>
+              <div className={classes.chatBubble} key={message.id}>
                 {/* eslint-disable-next-line */}
                 {message.sender == opponent ? (
                   <li className={classes.selfMessage}>{message.message}</li>

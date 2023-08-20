@@ -127,7 +127,7 @@ const Announcement = () => {
             )}
           </div>
         </div>
-        {contentVisible[4] && <div className={classes.content}>23.08.20.21.37 - autoChat</div>}
+        {contentVisible[4] && <div className={classes.content}>23.08.20.21.37 - autoChat2</div>}
       </div>
     </div>
   );
