@@ -74,7 +74,6 @@ const ModalComp = () => {
       const timerId = setInterval(() => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
-      console.log('check2')
       return () => clearInterval(timerId); // 컴포넌트 unmount 시 타이머 제거
     }
     else if (timeLeft === 0) {

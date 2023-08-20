@@ -1,7 +1,7 @@
 .pickerMain {
   background-position: center;
   /* background-size: 110vw; */
-  background-size: 280%;
+  background-size: 160%;
   position: relative;
   max-width: 415px;
   width: 100vw;
@@ -13,6 +13,64 @@
   background-repeat: no-repeat;
 }
 .pickerMain::-webkit-scrollbar {
+  width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
+}
+
+.pickerMainOne {
+  background-position: center;
+  /* background-size: 110vw; */
+  background-size: 280%;
+  position: relative;
+  max-width: 415px;
+  width: 100vw;
+  min-width: 300px;
+  height: 70vh;
+  min-height: 300px;
+  margin: 0;
+  padding: 0;
+  background-repeat: no-repeat;
+}
+.pickerMainOne::-webkit-scrollbar {
+  width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
+}
+
+.pickerMainTwo {
+  background-position: center;
+  /* background-size: 110vw; */
+  background-size: 240%;
+  position: relative;
+  max-width: 415px;
+  width: 100vw;
+  min-width: 300px;
+  height: 70vh;
+  min-height: 300px;
+  margin: 0;
+  padding: 0;
+  background-repeat: no-repeat;
+}
+.pickerMainTwo::-webkit-scrollbar {
+  width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
+  background: transparent; /* 스크롤바 배경을 투명하게 설정 */
+}
+
+
+.pickerMainThree {
+  background-position: center;
+  /* background-size: 110vw; */
+  background-size: 200%;
+  position: relative;
+  max-width: 415px;
+  width: 100vw;
+  min-width: 300px;
+  height: 70vh;
+  min-height: 300px;
+  margin: 0;
+  padding: 0;
+  background-repeat: no-repeat;
+}
+.pickerMainThree::-webkit-scrollbar {
   width: 0; /* 스크롤바의 너비를 0으로 설정하여 숨김 */
   background: transparent; /* 스크롤바 배경을 투명하게 설정 */
 }
