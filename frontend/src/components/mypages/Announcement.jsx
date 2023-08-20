@@ -100,9 +100,7 @@ const Announcement = () => {
           </div>
         </div>
         {contentVisible[3] && (
-          <div className={classes.content}>
-            아아..시간이 되버렸습니다.. 저는 최선을 다했어요.. 잘 되겠죠..?
-          </div>
+          <div className={classes.content}>아아..시간이 되버렸습니다.. 저는 최선을 다했어요.. 잘 되겠죠..?</div>
         )}
       </div>
       <div className={classes.noticecontent}>
@@ -129,7 +127,7 @@ const Announcement = () => {
             )}
           </div>
         </div>
-        {contentVisible[4] && <div className={classes.content}>23.08.16.13.15 - locChmod</div>}
+        {contentVisible[4] && <div className={classes.content}>23.08.20.21.37 - autoChat</div>}
       </div>
     </div>
   );
