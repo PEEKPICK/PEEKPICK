@@ -161,7 +161,7 @@ const ModalComp = () => {
     }
   };
 
-  const sirenChat = () => {
+  const sirenPeek = () => {
     const requestReportDto = {
       "reportCategoryId" : 6,
       "reportContent" : "신고 내용 텍스트"
@@ -313,7 +313,7 @@ const ModalComp = () => {
               <p>Peek를 신고하시겠습니까?</p> 
 
               <div className={classes.button_area}>
-                <button onClick={() => sirenChat()} className={classes.exit_button} >
+                <button onClick={() => sirenPeek()} className={classes.exit_button} >
                   신고하기
                 </button>
                 <button onClick={() => closeExitConfirmationModal()} className={classes.cancel_button}>
