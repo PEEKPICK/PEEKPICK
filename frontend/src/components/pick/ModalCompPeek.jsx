@@ -311,7 +311,7 @@ const ModalComp = () => {
               <div className={classes.modal_divider}></div>
 
               <p>Peek를 신고하시겠습니까?</p> 
-
+              <p>신고 내역이 저장됩니다.</p>
               <div className={classes.button_area}>
                 <button onClick={() => sirenPeek()} className={classes.exit_button} >
                   신고하기
