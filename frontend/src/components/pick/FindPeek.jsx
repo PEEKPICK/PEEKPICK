@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
@@ -7,9 +7,12 @@ import PeekLocation from "./PeekLocation";
 import ModalWrite from "./ModalWrite";
 import { modalsActions } from "../../store/modalsSlice";
 import { toast } from "react-hot-toast";
-import { locationActions } from "../../store/locationSlice";
+import { locationActions } from "../../store/locationSlice"; 
+
+
 
 const FindPeek = () => {
+  const isPeekToastActive = useRef(false);
   const dispatch = useDispatch();
   //주변 유저 정보
   const myPos = useSelector((state) => state.location.userPos);
@@ -45,7 +48,7 @@ const FindPeek = () => {
       }
     }
   };
-
+ 
   const emojiCall = useCallback(() => {
     handlePosChange();
     customAxios.post("/peek", myPos).then((response) => {
@@ -57,10 +60,15 @@ const FindPeek = () => {
         //정보 저장
         const limitedUserArray = peekArrayOrigin.slice(0, maxEmojisToShow);
         // console.log("넘어온 limitedUserArray: ", peekArrayOrigin);
-        // eslint-disable-next-line
-        if (limitedUserArray.length == 0) {
+        // eslint-disable-next-line 
+        if (limitedUserArray.length === 0 && !isPeekToastActive.current) {
+          // 토스트가 떠있지 않은 경우에만 토스트를 표시
+          isPeekToastActive.current = true; // 토스트가 떠있다고 표시
           toast("주변에 작성된 PEEK가 없어요 💔", {
             icon: "💔",
+            onClose: () => {
+              isPeekToastActive.current = false;  // 토스트가 닫혔다고 표시
+            }
           });
         }
         dispatch(findPeekActions.updatePeekInfo(limitedUserArray));

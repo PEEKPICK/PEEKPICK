@@ -1,13 +1,15 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { customAxios } from "../../api/customAxios";
 import classes from "./FindPicker.module.css";
 import { findUserActions } from "../../store/findUserSlice";
 import PickLocation from "./PickLocation";
 import { toast } from "react-hot-toast";
-import { locationActions } from "../../store/locationSlice";
+import { locationActions } from "../../store/locationSlice"; 
 
 const FindPicker = () => {
+  
+  const isPickerToastActive = useRef(false);
   const dispatch = useDispatch();
   //주변 유져 정보
   const myPos = useSelector((state) => state.location.userPos);
@@ -43,7 +45,7 @@ const FindPicker = () => {
       }
     }
   };
-
+ 
   const emojiCall = useCallback(() => {
     handlePosChange();
     customAxios.post("/picker", myPos).then((response) => {
@@ -57,9 +59,13 @@ const FindPicker = () => {
         // console.log("넘어온 limitedUserArray: ", limitedUserArray);
         // 길이 0이면 Toast 알림
         // eslint-disable-next-line
-        if (limitedUserArray.length == 0) {
+        if (limitedUserArray.length == 0 && !isPickerToastActive.current) {
+          isPickerToastActive.current = true; // 토스트가 떠있다고 표시
           toast("주변에 아무도 없어요 😭", {
             icon: "😭",
+            onClose: () => {
+              isPickerToastActive.current = false;  // 토스트가 닫혔다고 표시
+            }
           });
         }
         dispatch(findUserActions.updateUserInfo(limitedUserArray));
