@@ -103,20 +103,138 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 
 # 📺서비스 상세 내용 
 <details>
-<summary> 📲주요 기능(임시 이미지)</summary>
+<summary> 📲주요 기능</summary>
 <br/>
-<p align="center"> <img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/7910c4c8-7ef2-4f23-a044-add6efdae963"> </p>   
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/f9cb8ad1-0f36-443f-98cf-ce1634bfe674" height="400px" width="200px"/>    
 
-- <b> 익명 채팅 </b>   
-    - 현재 위치를 기반으로 타인(이하 ```피커```)과 일대일 채팅을 할 수 있습니다. 이 때, 채팅방은 ```10분간``` 유지되는 휘발성 채팅방입니다.   <br/> <br/>
+- <b> 메인 페이지 </b>   
+    - 처음 접속 시 보이는 페이지로 소셜로그인과 소개 페이지로 넘어갈 수 있습니다.  <br/> <br/>
 
-<p align="center"> <img src="https://github.com/PEEKPICK/PEEKPICK/assets/70866410/7910c4c8-7ef2-4f23-a044-add6efdae963"> </p>   
+<table>
+    <tr> 
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/ab333e19-46c3-4a37-a91b-e55d03451d98" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/68b81ae0-5f9e-4602-ac32-1eed0a1db2f7" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/9bd3255f-4e40-4e1e-8f1f-0e6eb439143f" height="400px" width="200px"> </td>
+    </tr>
+</table>
 
-- <b> 익명 메시지 </b>
-    - 현재 위치를 기반으로 메시지(이하 ```피크```)를 남길 수 있습니다
-    - 기본적으로 1시간 후 사라지는 휘발성을 가지고 있으며, 다른 피커가 관심을 표현할 경우 (좋아요, 싫어요) 10분 씩 지속시간이 늘어납니다.
-    - 지속시간은 최대 ```24시간``` 입니다.
-    - 지속시간이 일정 시간 이상일 경우, 특수한 이모지로 표시됩니다.
+- <b> 소개 페이지 </b>   
+    - 기기에서 첫 접속 시, 혹은 소개 페이지 버튼을 통해 이동할 수 있으며 서비스에 대한 간단한 소개를 제시합니다. <br/> <br/>
+
+<table>
+    <tr> 
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/d53c4824-580e-42ef-8e86-25386e28de51" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/d68a40f5-6150-44b4-8f17-fc32bfeeab63" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/fa2b6260-2cd4-43f0-a5de-bd180a2d8864" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/1aca0ec6-4d7e-4e7a-86f2-61e4e485c18d" height="400px" width="200px"> </td>
+    </tr>
+    <tr>
+        <td><p align="center"> 기본 신상정보 입력 </p></td>
+        <td><p align="center"> 이모지 다시 뽑기 </p></td>
+        <td><p align="center"> 접두사 및 닉네임 설정 </p></td>
+        <td><p align="center"> 취향 정보 선택 </p></td>
+    </tr>
+</table>
+
+- <b> 회원 가입 </b>
+    - 소셜로그인 이후 이모지, 접두사, 닉네임, 취향을 입력받습니다.
+    - 사용자의 편의를 위해 소셜 로그인 시 허용한 데이터는 미리 값을 채워주도록 하였습니다.
+    - 취향은 최소 1개, 최대 5개씩 선택할 수 있습니다. 
+</br></br>
+
+<img src="images/picker.gif" height="400px" width="200px">   
+
+- <b> PICKER (피커) </b>
+    - 현재 주변의 접속 중인 다른 유저들을 화면에 보여줍니다.
+    - 선택 시 취향 정보, 한 줄 소개, 채팅 횟수등을 확인할 수 있습니다.
+</br></br>
+
+<img src="images/distance.gif" height="400px" width="200px">   
+
+- <b> 거리 조절 </b>
+    - PICKER 혹은 PEEK를 탐색할 수 있는 거리를 설정한다.
+
+</br></br>
+
+<img src="images/chat_request.gif" height="400px" width="600px">   
+
+- <b> 채팅 요청 </b>
+    - PICKER를 선택 후 `PICK`버튼을 누르면 채팅 요청을 보냅니다.
+
+</br></br>
+
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/3312d653-0f04-4e15-ad1c-a33f9acb690c" height="400px" width="600px">   
+
+- <b> 채팅 </b>
+    - 15초 안에 수락한다면 채팅방이 개설됩니다.
+    - 거절 시 요청자에게 거절하였습니다. 알림이 보입니다.
+</br></br>
+
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/7a463b7f-718b-4dad-b6c4-0d1614c60817" height="400px" width="600px">   
+
+- <b> 상대방 정보 확인 </b>
+    - 채팅을 수락한 유저는 상대방의 이모지를 클릭함으로써 정보를 확인할 수 있습니다.
+</br></br>
+
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/7abb1caa-61a6-43a5-8c8d-91c1392263b1" height="400px" width="600px">   
+
+- <b> 필터링 </b>
+    - 익명 컨텐츠이므로 비속어 필터링을 적용했습니다.
+    - 비속어 사용 시 `♡`로 표시됩니다.
+</br></br>
+
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/10ef7607-92d0-4778-a7cd-373c7414b14a" height="400px" width="200px">   
+
+- <b> 신고 </b>
+    - 상대를 신고하고 나갈 수 있습니다.
+    - 채팅방을 나가면 상대는 더 이상 채팅을 보낼 수 없습니다. 채팅을 보내면 보낼 수 없다는 알림을 띄웁니다.
+
+</br></br>
+
+
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/e13ddbab-9e11-41c2-9917-86f6069171fe" height="400px" width="200px">   
+
+- <b> 맵 변경 </b>
+    - 배경으로 띄울 맵을 변경할 수 있습니다.
+
+</br></br>
+
+
+<table>
+    <tr> 
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/c93ed302-f6b9-4b8e-8c4e-badede389c24" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/fd969410-c615-4c16-96d2-851ef32b1936" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/a79858f3-7301-415d-a514-ff35cffa9f09" height="400px" width="200px"> </td>
+        <td> <img src="https://github.com/meoldae/Algorithm/assets/70866410/7d10303a-6a08-44d3-a915-0df844388b22" height="400px" width="200px"> </td>
+    </tr>
+    <tr>
+        <td><p align="center"> PEEK 확인 </p></td>
+        <td><p align="center"> PEEK 확인 후 </p></td>
+        <td><p align="center"> PEEK 신고 </p></td>
+        <td><p align="center"> PEEK 작성 </p></td>
+    </tr>
+</table>
+
+- <b> PEEK </b>
+    - 기본 1시간 후 휘발되는 메시지 `PEEK`를 보여줍니다.
+    - 선택 시 남긴 사람과 내용, 호불호 정도를 보여줍니다.
+    - 호불호 선택시 지속 시간이 10분 씩 증가합니다.
+    - 확인 후에 PEEK는 회색으로 변하며, 재 탐색시 다시 보여주지 않습니다.
+    - 비속어 필터링을 실시하며 신고가 가능합니다.
+    - 지속시간이 6시간 이상인 PEEK는 ✨빛나는 특별한 하트로 표현됩니다.
+    - 우측 하단 버튼을 통해 PEEK를 작성할 수 있습니다.
+
+</br></br>
+
+<img src="https://github.com/meoldae/Algorithm/assets/70866410/1c5a1f64-84ff-4d80-bb1b-66f8029eade8" height="400px" width="200px">   
+
+- <b> 마이페이지 </b>
+    - 기본 정보를 보여주고, 한줄소개, 닉네임, 접두사, 이모지 취향을 변경할 수 있습니다.
+    - 추후 맵 획득이나, 한정 이모지 획득 확장을 위한 POINT를 확인할 수 있습니다. POINT는 채팅 횟수와 PEEK `호` 선택 횟수를 통해 계산됩니다.
+    - 채팅 횟수와 PEEK `호`선택을 받은 횟수를 볼 수 있습니다.
+
+</br></br>
+
 
 </details>
 
