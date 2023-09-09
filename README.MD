@@ -262,7 +262,7 @@ PEEKPICK 은 점심시간, 쉬는시간, 버스 대기시간 등의 ```지루한
 <p align="center">
 <img src="https://github.com/meoldae/Algorithm/assets/70866410/05fe75df-e345-418e-8250-9748789e9ede"> </p>
 
-### 🔑Commit Comvention 
+### 🔑Commit Convention 
 |태그|설명|예시|
 |:--:|:--:|:--:|
 |Feat|새로운 기능 추가|Feat: 피커 거리순 찾기 기능 추가|
